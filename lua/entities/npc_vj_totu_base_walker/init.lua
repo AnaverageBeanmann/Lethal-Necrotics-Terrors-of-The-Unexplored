@@ -75,6 +75,7 @@ ENT.LNR_DoorToBreak = NULL
 ENT.ZappyDeath = false
 ENT.CanDoTheFunny = true
 ENT.CanDoBigFlinchy = true
+ENT.NextSplodeStumbleT = 0
 	-- ====== Sound File Paths ====== --
 -- Leave blank if you don't want any sounds to play
 ENT.FootSteps = {
@@ -312,6 +313,22 @@ function ENT:CustomOnPreInitialize()
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:CustomOnInitialize()
+     if math.random(1,3) == 1 && !self.LNR_Crawler then 
+        self.LNR_UsingRelaxedIdle = true
+		self.AnimTbl_IdleStand = {ACT_IDLE_RELAXED}
+end
+  if GetConVar("VJ_LNR_Runner"):GetInt() == 1 then
+     if math.random(1,3) == 1 && !self.LNR_Crawler && !self.LNR_Infected && self:GetClass() != "npc_vj_lnrhl2_charple" && self:GetClass() != "npc_vj_lnrhl2_corpse" && self:GetClass() != "npc_vj_lnrhl2_corpse_hev" && self:GetClass() != "npc_vj_lnr_corpse_zombie" && self:GetClass() != "npc_vj_lnr_cris" && self:GetClass() != "npc_vj_lnrhl2_combine_assn" then 
+        self.LNR_Runner = true
+		self.AnimTbl_Run = {ACT_RUN}
+	end	
+end	
+  if GetConVar("VJ_LNR_Crawl"):GetInt() == 1 then
+     if math.random(1,5) == 1 && self:GetClass() != "npc_vj_lnr_wal" && self:GetClass() != "npc_vj_lnr_wal_ply" && self:GetClass() != "npc_vj_lnr_corpse_zombie" && self:GetClass() != "npc_vj_lnr_cris" then 
+		self.LNR_Crawler = true
+		self:Cripple()	
+    end	
+end	
   if GetConVar("VJ_LNR_GroundRise"):GetInt() == 1 && self:IsDirtGround(self:GetPos()) then
      if math.random(1,5) == 1 && !self.LNR_Crawler && self:GetClass() != "npc_vj_lnr_wal_pm" && self:GetClass() != "npc_vj_lnr_wal" && self:GetClass() != "npc_vj_lnr_wal_ply" && self:GetClass() != "npc_vj_lnr_corpse_zombie" && self:GetClass() != "npc_vj_lnr_cris" then
         self:RiseFromGround()
@@ -703,19 +720,28 @@ end
 function ENT:CustomOnTakeDamage_AfterDamage(dmginfo,hitgroup)
 	if self.CanDoTheFunny == false or self.LNR_Crawler or self.LNR_Crippled then return end
 	-- if math.random (1,1) == 1 then
-	if math.random (1,16) == 1 then
+	-- if math.random (1,16) == 1 then
 		if dmginfo:IsBulletDamage() or dmginfo:IsDamageType(DMG_BUCKSHOT) or dmginfo:IsDamageType(DMG_SNIPER) then
 			if hitgroup == HITGROUP_HEAD or hitgroup == HITGROUP_CHEST or hitgroup == HITGROUP_STOMACH then
 				if self.LNR_NextStumbleT < CurTime() then
 					if dmginfo:GetDamage() > 49 or dmginfo:GetDamageForce():Length() > 10000 then
+					if math.random (1,2) == 1 then
 					self:VJ_ACT_PLAYACTIVITY(ACT_BIG_FLINCH,true,false,false)
+					self.LNR_NextStumbleT = CurTime() + 5
+					end
 					elseif dmginfo:GetDamage() > 24 or dmginfo:GetDamageForce():Length() > 5000 then
+					if math.random (1,3) == 1 then
 					self:VJ_ACT_PLAYACTIVITY(ACT_SMALL_FLINCH,true,false,false)
+					self.LNR_NextStumbleT = CurTime() + 5
+					end
 					else
+					if math.random (1,5) == 1 then
 					self:VJ_ACT_PLAYACTIVITY(ACT_STEP_BACK,true,1.6)
+					self.LNR_NextStumbleT = CurTime() + 3
+					end
 					end
 				end
-				self.LNR_NextStumbleT = CurTime() + 10
+				-- self.LNR_NextStumbleT = CurTime() + 10
 				-- self.LNR_NextStumbleT = CurTime() + 1
 			elseif hitgroup == HITGROUP_LEFTLEG or hitgroup == HITGROUP_RIGHTLEG then		 
 				if self.LNR_NextStumbleT < CurTime() then
@@ -724,8 +750,8 @@ function ENT:CustomOnTakeDamage_AfterDamage(dmginfo,hitgroup)
 					-- self.LNR_NextStumbleT = CurTime() + 1
 				end
 			end
-		-- end
-	elseif dmginfo:IsDamageType(DMG_CLUB) or dmginfo:IsDamageType(DMG_SLASH) or dmginfo:IsDamageType(DMG_GENERIC) or dmginfo:IsExplosionDamage() then
+		end
+	if dmginfo:IsDamageType(DMG_CLUB) or dmginfo:IsDamageType(DMG_SLASH) or dmginfo:IsDamageType(DMG_GENERIC) then
 		if dmginfo:GetDamage() > 49 or dmginfo:GetDamageForce():Length() > 10000 then
 			if self.LNR_NextShoveT < CurTime() then
 				self:VJ_ACT_PLAYACTIVITY(ACT_BIG_FLINCH,true,false,false)
@@ -741,7 +767,13 @@ function ENT:CustomOnTakeDamage_AfterDamage(dmginfo,hitgroup)
 		end
     return !self.LNR_Crawler && !self.LNR_Crippled && self:GetSequence() != self:LookupSequence("nz_spawn_climbout_fast") && self:GetSequence() != self:LookupSequence("nz_spawn_jump") && self:GetSequence() != self:LookupSequence("shove_forward_01") && self:GetSequence() != self:LookupSequence("infectionrise") && self:GetSequence() != self:LookupSequence("infectionrise2") && self:GetSequence() != self:LookupSequence("slumprise_a") && self:GetSequence() != self:LookupSequence("slumprise_a2") -- If we are stumbling or rising out of the ground or other specific activities then DO NOT flinch!	
 	end
-end
+-- end
+	if dmginfo:IsExplosionDamage() then
+		if self.NextSplodeStumbleT < CurTime() then
+		self:VJ_ACT_PLAYACTIVITY(ACT_BIG_FLINCH,true,false,false)
+		self.NextSplodeStumbleT = CurTime() + 5
+		end
+	end
 			if hitgroup == HITGROUP_LEFTLEG or hitgroup == HITGROUP_RIGHTLEG then
 			self.LNR_LegHP = self.LNR_LegHP -dmginfo:GetDamage()
 			end
@@ -776,6 +808,7 @@ end
 }	
     self:CapabilitiesRemove(bit.bor(CAP_MOVE_JUMP))
 	self:CapabilitiesRemove(bit.bor(CAP_MOVE_CLIMB))
+	self.HasDeathAnimation = false
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:CustomOnPriorToKilled(dmginfo, hitgroup)
@@ -787,6 +820,7 @@ function ENT:CustomOnPriorToKilled(dmginfo, hitgroup)
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:CustomDeathAnimationCode(dmginfo,hitgroup)
+	if self.LNR_Crawler then return end
 	if self:IsMoving() and dmginfo:IsBulletDamage() then
 		self.AnimTbl_Death = {"vjseq_nz_death_f_1",
 		"vjseq_nz_death_f_2",
