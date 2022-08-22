@@ -30,13 +30,14 @@ ENT.NextFlinchTime = 3
 ENT.HasHitGroupFlinching = true 
 ENT.HitGroupFlinching_DefaultWhenNotHit = true
 ENT.HitGroupFlinching_Values = {
-{HitGroup = {HITGROUP_HEAD}, Animation = {"vjges_flinch_head_01","vjges_flinch_head_02","vjges_ep_flinch_head"}}, 
+{HitGroup = {HITGROUP_HEAD}, Animation = {"vjges_flinch_head_1","vjges_flinch_head_2","vjges_flinch_head_3"}}, 
 {HitGroup = {HITGROUP_STOMACH}, Animation = {"vjges_flinch_stomach_01","vjges_flinch_stomach_02","vjges_ep_flinch_chest"}}, 
-{HitGroup = {HITGROUP_CHEST}, Animation = {"vjges_flinch_01","vjges_flinch_02","vjgesep_flinch_chest"}}, 
-{HitGroup = {HITGROUP_LEFTARM}, Animation = {"vjges_flinch_shoulder_l","vjges_ep_flinch_leftArm"}}, 
-{HitGroup = {HITGROUP_RIGHTARM}, Animation = {"vjges_flinch_shoulder_r","vjges_ep_flinch_rightArm"}}, 
-{HitGroup = {HITGROUP_LEFTLEG}, Animation = {"vjseq_ep_flinch_leftLeg"}}, 
-{HitGroup = {HITGROUP_RIGHTLEG}, Animation = {"vjseq_ep_flinch_rightLeg"}}}
+{HitGroup = {HITGROUP_CHEST}, Animation = {"vjges_flinch_chest_1","vjges_flinch_chest_2","vjges_flinch_chest_3"}}, 
+{HitGroup = {HITGROUP_LEFTARM}, Animation = {"vjges_flinch_leftarm_1","vjges_flinch_leftarm_2","vjges_flinch_leftarm_3"}}, 
+{HitGroup = {HITGROUP_RIGHTARM}, Animation = {"vjges_flinch_rightarm_1","vjges_flinch_rightarm_2","vjges_flinch_rightarm_3"}}, 
+-- {HitGroup = {HITGROUP_LEFTLEG}, Animation = {"vjseq_ep_flinch_leftLeg"}}, 
+-- {HitGroup = {HITGROUP_RIGHTLEG}, Animation = {"vjseq_ep_flinch_rightLeg"}}
+}
 ---------------------------------------------------------------------------------------------------------------------------------------------
 ENT.HasDeathAnimation = true
 ENT.DeathAnimationTime = 1.0
@@ -348,7 +349,8 @@ end
 function ENT:Zombie_Difficulty()
      if GetConVar("VJ_LNR_Difficulty"):GetInt() == 1 then // Easy
         self.StartHealth = 50
-	    self.MeleeAttackDamage = math.Rand(5,10)		
+	    self.MeleeAttackDamage = math.Rand(5,10)	
+		self.LNR_LegHP = 15	
      if self.LNR_CanUseWeapon then self.MeleeAttackDamage = math.Rand(10,15) end		
 end
      if GetConVar("VJ_LNR_Difficulty"):GetInt() == 2 then // Normal
@@ -359,16 +361,19 @@ end
      if GetConVar("VJ_LNR_Difficulty"):GetInt() == 3 then // Hard
         self.StartHealth = 150	
 	    self.MeleeAttackDamage = math.Rand(15,20)
+		self.LNR_LegHP = 35
      if self.LNR_CanUseWeapon then self.MeleeAttackDamage = math.Rand(20,25) end
 end
      if GetConVar("VJ_LNR_Difficulty"):GetInt() == 4 then // Nightmare
         self.StartHealth = 200
 	    self.MeleeAttackDamage = math.Rand(20,25)
+		self.LNR_LegHP = 45
      if self.LNR_CanUseWeapon then self.MeleeAttackDamage = math.Rand(25,30) end
 end
      if GetConVar("VJ_LNR_Difficulty"):GetInt() == 5 then // Apocalypse
         self.StartHealth = 250
 	    self.MeleeAttackDamage = math.Rand(25,30) 
+		self.LNR_LegHP = 55
      if self.LNR_CanUseWeapon then self.MeleeAttackDamage = math.Rand(30,35) end		
 end	
         self:SetHealth(self.StartHealth)	
@@ -514,8 +519,23 @@ function ENT:RiseFromGround()
     end)
 end  
 ---------------------------------------------------------------------------------------------------------------------------------------------
+function ENT:CustomOnChangeMovementType(movType)
+	if GetConVar("VJ_LNR_JumpClimb"):GetInt() == 0 or self.LNR_Crawler or self.LNR_Crippled then
+        self:CapabilitiesRemove(bit.bor(CAP_MOVE_JUMP))
+	    self:CapabilitiesRemove(bit.bor(CAP_MOVE_CLIMB)) 
+	end
+end
+---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:GetSightDirection()
 	return self:GetAttachment(self:LookupAttachment("eyes")).Ang:Forward() -- Attachment example
+end
+---------------------------------------------------------------------------------------------------------------------------------------------
+function ENT:CustomOn_PoseParameterLookingCode(pitch,yaw,roll) 
+    if self.LNR_Crawler or self.LNR_Crippled then self:SetPoseParameter("aim_pitch",0) self:SetPoseParameter("spine_yaw",0) self.PoseParameterLooking_Names = {pitch={"head_pitch"}, yaw={"head_yaw"}, roll={}} end
+end
+---------------------------------------------------------------------------------------------------------------------------------------------
+function ENT:Controller_IntMsg(ply)
+	ply:ChatPrint("DUCK: Break Door (If Valid & Option Is Enabled)")
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 -- function ENT:CustomOnChangeMovementType(movType)	
@@ -659,43 +679,104 @@ end
     end		
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
+function ENT:CustomOnFlinch_BeforeFlinch(dmginfo,hitgroup)
+   if self.LNR_Crawler or self.LNR_Crippled then return end	
+	-- if dmginfo:GetDamage() > 24 or dmginfo:GetDamageForce():Length() > 5000 then
+	if dmginfo:GetDamage() > 1 or dmginfo:GetDamageForce():Length() > 1 then
+		if hitgroup == HITGROUP_HEAD then
+			self:VJ_ACT_PLAYACTIVITY("vjges_ep_flinch_head",true,false)
+		elseif hitgroup == HITGROUP_CHEST then
+			self:VJ_ACT_PLAYACTIVITY("vjges_ep_flinch_chest",true,false)
+		elseif hitgroup == HITGROUP_LEFTARM then
+			self:VJ_ACT_PLAYACTIVITY("vjges_ep_flinch_leftArm",true,false)
+		elseif hitgroup == HITGROUP_RIGHTARM then
+			self:VJ_ACT_PLAYACTIVITY("vjges_ep_flinch_rightArm",true,false)
+		elseif hitgroup == HITGROUP_LEFTLEG then
+			self:VJ_ACT_PLAYACTIVITY("vjseq_flinch_leftleg",true,false)
+		elseif hitgroup == HITGROUP_RIGHTLEG then
+			self:VJ_ACT_PLAYACTIVITY("vjseq_flinch_rightleg",true,false)
+	end
+
+end
+end
+---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:CustomOnTakeDamage_AfterDamage(dmginfo,hitgroup)
 	if self.CanDoTheFunny == false or self.LNR_Crawler or self.LNR_Crippled then return end
-	if math.random (1,1) == 1 then
-	-- if math.random (1,16) == 1 then
+	-- if math.random (1,1) == 1 then
+	if math.random (1,16) == 1 then
 		if dmginfo:IsBulletDamage() or dmginfo:IsDamageType(DMG_BUCKSHOT) or dmginfo:IsDamageType(DMG_SNIPER) then
 			if hitgroup == HITGROUP_HEAD or hitgroup == HITGROUP_CHEST or hitgroup == HITGROUP_STOMACH then
 				if self.LNR_NextStumbleT < CurTime() then
+					if dmginfo:GetDamage() > 49 or dmginfo:GetDamageForce():Length() > 10000 then
+					self:VJ_ACT_PLAYACTIVITY(ACT_BIG_FLINCH,true,false,false)
+					elseif dmginfo:GetDamage() > 24 or dmginfo:GetDamageForce():Length() > 5000 then
+					self:VJ_ACT_PLAYACTIVITY(ACT_SMALL_FLINCH,true,false,false)
+					else
 					self:VJ_ACT_PLAYACTIVITY(ACT_STEP_BACK,true,1.6)
+					end
 				end
 				self.LNR_NextStumbleT = CurTime() + 10
+				-- self.LNR_NextStumbleT = CurTime() + 1
 			elseif hitgroup == HITGROUP_LEFTLEG or hitgroup == HITGROUP_RIGHTLEG then		 
 				if self.LNR_NextStumbleT < CurTime() then
 					self:VJ_ACT_PLAYACTIVITY(ACT_STEP_FORE,true,1.6)
 					self.LNR_NextStumbleT = CurTime() + 10
+					-- self.LNR_NextStumbleT = CurTime() + 1
 				end
 			end
 		-- end
 	elseif dmginfo:IsDamageType(DMG_CLUB) or dmginfo:IsDamageType(DMG_SLASH) or dmginfo:IsDamageType(DMG_GENERIC) or dmginfo:IsExplosionDamage() then
+		if dmginfo:GetDamage() > 49 or dmginfo:GetDamageForce():Length() > 10000 then
 			if self.LNR_NextShoveT < CurTime() then
 				self:VJ_ACT_PLAYACTIVITY(ACT_BIG_FLINCH,true,false,false)
 				self.LNR_NextShoveT = CurTime() + math.random(5,8)
+				-- self.LNR_NextShoveT = CurTime() + 1
+			end
+		elseif dmginfo:GetDamage() > 24 or dmginfo:GetDamageForce():Length() > 5000 then
+			if self.LNR_NextShoveT < CurTime() then
+				self:VJ_ACT_PLAYACTIVITY(ACT_SMALL_FLINCH,true,false,false)
+				self.LNR_NextShoveT = CurTime() + math.random(5,8)
+				-- self.LNR_NextShoveT = CurTime() + 1
 			end
 		end
     return !self.LNR_Crawler && !self.LNR_Crippled && self:GetSequence() != self:LookupSequence("nz_spawn_climbout_fast") && self:GetSequence() != self:LookupSequence("nz_spawn_jump") && self:GetSequence() != self:LookupSequence("shove_forward_01") && self:GetSequence() != self:LookupSequence("infectionrise") && self:GetSequence() != self:LookupSequence("infectionrise2") && self:GetSequence() != self:LookupSequence("slumprise_a") && self:GetSequence() != self:LookupSequence("slumprise_a2") -- If we are stumbling or rising out of the ground or other specific activities then DO NOT flinch!	
 	end
 end
+			if hitgroup == HITGROUP_LEFTLEG or hitgroup == HITGROUP_RIGHTLEG then
+			self.LNR_LegHP = self.LNR_LegHP -dmginfo:GetDamage()
+			end
+			if self.LNR_LegHP <= 0 then
+				self.LNR_Crippled = true
+				local anim = {"vjseq_nz_death_1","vjseq_nz_death_f_7","vjseq_nz_death_f_8"}				
+				//if math.random(1,4) == 1 then anim = {"vjseq_nz_death_1","vjseq_nz_death_f_7","vjseq_nz_death_f_8"} end
+				self:VJ_ACT_PLAYACTIVITY(anim,true,false,false)
+                self:Cripple()
+            end				
+end
+-- end
 ---------------------------------------------------------------------------------------------------------------------------------------------
-/*
-function ENT:CustomOnFlinch_BeforeFlinch(dmginfo,hitgroup)
-	if dmginfo:GetDamage() > 50 or dmginfo:GetDamageForce():Length() > 10000 or bit.band(dmginfo:GetDamageType(), DMG_BUCKSHOT) != 0 or dmginfo:IsDamageType(DMG_CLUB) or dmginfo:IsDamageType(DMG_SLASH) or dmginfo:IsDamageType(DMG_GENERIC) or dmginfo:IsExplosionDamage() then
-		self.AnimTbl_Flinch = {"vjseq_shove_backwards_07","vjseq_shove_backwards_08","vjseq_shove_backwards_09","vjseq_shove_backwards_10"} 
-	else
-		self.AnimTbl_Flinch = {"vjseq_shove_backwards_01","vjseq_shove_backwards_02","vjseq_shove_backwards_03","vjseq_shove_backwards_04","vjseq_shove_backwards_05","vjseq_shove_backwards_06"} 
+
+---------------------------------------------------------------------------------------------------------------------------------------------
+function ENT:Cripple()
+ if self.LNR_Walker then	 
+	self.AnimTbl_IdleStand = {ACT_IDLE_STIMULATED}
+	self.AnimTbl_Walk = {ACT_WALK_STIMULATED}
+	self.AnimTbl_Run = {ACT_WALK_STIMULATED}
+ elseif self.LNR_Infected then
+	self.AnimTbl_IdleStand = {ACT_IDLE_AGITATED}
+	self.AnimTbl_Walk = {ACT_WALK_AGITATED}
+	self.AnimTbl_Run = {ACT_WALK_AGITATED}
 end
-    return !self.LNR_Crawler && !self.LNR_Crippled && self:GetSequence() != self:LookupSequence("nz_spawn_climbout_fast") && self:GetSequence() != self:LookupSequence("nz_spawn_jump") && self:GetSequence() != self:LookupSequence("shove_forward_01") && self:GetSequence() != self:LookupSequence("infectionrise") && self:GetSequence() != self:LookupSequence("infectionrise2") && self:GetSequence() != self:LookupSequence("slumprise_a") && self:GetSequence() != self:LookupSequence("slumprise_a2") -- If we are stumbling or rising out of the ground or other specific activities then DO NOT flinch!	
+    self:SetCollisionBounds(Vector(13,13,20),Vector(-13,-13,0))
+	self.VJC_Data = {
+	CameraMode = 1, 
+	ThirdP_Offset = Vector(30, 25, -20), 
+	FirstP_Bone = "ValveBiped.Bip01_Head1", 
+	FirstP_Offset = Vector(5, 0, -1), 
+}	
+    self:CapabilitiesRemove(bit.bor(CAP_MOVE_JUMP))
+	self:CapabilitiesRemove(bit.bor(CAP_MOVE_CLIMB))
 end
-*/
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:CustomOnPriorToKilled(dmginfo, hitgroup)
 	if dmginfo:IsDamageType(DMG_BURN) or dmginfo:IsDamageType(DMG_SLOWBURN) or dmginfo:IsDamageType(DMG_ENERGYBEAM) or dmginfo:IsDamageType(DMG_DISSOLVE) or dmginfo:IsDamageType (DMG_PLASMA) or dmginfo:IsDamageType(DMG_SHOCK) then
