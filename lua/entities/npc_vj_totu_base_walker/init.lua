@@ -40,7 +40,7 @@ ENT.HitGroupFlinching_Values = {
 }
 ---------------------------------------------------------------------------------------------------------------------------------------------
 ENT.HasDeathAnimation = true
-ENT.DeathAnimationTime = 1.0
+ENT.DeathAnimationTime = false
 ENT.DeathAnimationChance = 2
 ENT.AnimTbl_Death = {"vjseq_nz_death_1","vjseq_nz_death_2","vjseq_nz_death_3"}
 ---------------------------------------------------------------------------------------------------------------------------------------------
@@ -770,7 +770,11 @@ function ENT:CustomOnTakeDamage_AfterDamage(dmginfo,hitgroup)
 -- end
 	if dmginfo:IsExplosionDamage() then
 		if self.NextSplodeStumbleT < CurTime() then
+		if math.random(1,2) == 1 then
+		self:VJ_ACT_PLAYACTIVITY("vjseq_shove_forward_01",true,false,false)
+		else
 		self:VJ_ACT_PLAYACTIVITY(ACT_BIG_FLINCH,true,false,false)
+		end
 		self.NextSplodeStumbleT = CurTime() + 5
 		end
 	end
@@ -835,7 +839,7 @@ function ENT:CustomDeathAnimationCode(dmginfo,hitgroup)
 		"vjseq_nz_death_f_11",
 		"vjseq_nz_death_f_12",
 		"vjseq_nz_death_f_13"}	
-		self.DeathAnimationTime = 1
+		-- self.DeathAnimationTime = 1
 	end
 
 	if dmginfo:IsDamageType(DMG_BURN) or dmginfo:IsDamageType(DMG_SLOWBURN) then
@@ -844,11 +848,12 @@ function ENT:CustomDeathAnimationCode(dmginfo,hitgroup)
 			self.AnimTbl_Death = {"vjges_nz_death_fire_3",
 			"vjges_nz_death_fire_4",
 			"vjges_nz_death_fire_5"}
+		-- self.DeathAnimationTime = 1.6
 		else
 			self.AnimTbl_Death = {"vjseq_nz_death_fire_1",
 			"vjseq_nz_death_fire_2"}
 		end
-		self.DeathAnimationTime = 1.6
+		-- self.DeathAnimationTime = 1.6
 		if GetConVarNumber("vj_npc_noidleparticle") == 0 then
 			ParticleEffectAttach("embers_small_01",PATTACH_POINT_FOLLOW,self,self:LookupAttachment("origin"))
 			ParticleEffectAttach("env_fire_small_base",PATTACH_POINT_FOLLOW,self,self:LookupAttachment("origin"))
@@ -897,7 +902,7 @@ function ENT:CustomDeathAnimationCode(dmginfo,hitgroup)
 		"vjseq_nz_death_elec_2",
 		"vjseq_nz_death_elec_3",
 		"vjseq_nz_death_elec_4"}
-		self.DeathAnimationTime = math.random(1, 4.25)
+		-- self.DeathAnimationTime = math.random(1, 4.25)
 		if GetConVarNumber("vj_npc_noidleparticle") == 0 then
 			local Zappy = math.random(1,2)
 			if Zappy == 1 then
