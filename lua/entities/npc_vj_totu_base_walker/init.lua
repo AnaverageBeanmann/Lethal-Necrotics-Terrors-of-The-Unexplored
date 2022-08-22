@@ -26,7 +26,7 @@ ENT.CanFlinch = 1
 ENT.FlinchChance = 10
 -- ENT.FlinchChance = 1
 ENT.NextFlinchTime = 3
-ENT.AnimTbl_Flinch = {ACT_BIG_FLINCH}
+-- ENT.AnimTbl_Flinch = {ACT_BIG_FLINCH}
 ENT.HasHitGroupFlinching = true 
 ENT.HitGroupFlinching_DefaultWhenNotHit = true
 ENT.HitGroupFlinching_Values = {
@@ -67,12 +67,13 @@ ENT.LNR_AllowedToStumble = true
 ENT.LNR_NextStumbleT = 0
 ENT.LNR_NextShoveT = 0
 ENT.LNR_UsingRelaxedIdle = false
-ENT.ZappyDeath = false
-ENT.CanDoTheFunny = true
 ENT.LNR_Crippled = false
 ENT.LNR_LegHP = 25
 ENT.LNR_CanBreakDoors = false
 ENT.LNR_DoorToBreak = NULL
+ENT.ZappyDeath = false
+ENT.CanDoTheFunny = true
+ENT.CanDoBigFlinchy = true
 	-- ====== Sound File Paths ====== --
 -- Leave blank if you don't want any sounds to play
 ENT.FootSteps = {
@@ -243,7 +244,15 @@ ENT.SoundTbl_Pain = {"npc/zombie/zombie_pain1.wav",
 ENT.SoundTbl_Death = {"npc/zombie/zombie_die1.wav",
 	"npc/zombie/zombie_die2.wav",
 	"npc/zombie/zombie_die3.wav"}
-ENT.SoundTbl_MeleeAttack = {"vj_lnrhl2/claw_strike1.mp3","vj_lnrhl2/claw_strike2.mp3","vj_lnrhl2/claw_strike3.mp3"}
+ENT.SoundTbl_MeleeAttack = {
+        "vj_lnrhl2/shared/melee/hit_punch_01.wav",
+        "vj_lnrhl2/shared/melee/hit_punch_02.wav",
+        "vj_lnrhl2/shared/melee/hit_punch_03.wav",
+        "vj_lnrhl2/shared/melee/hit_punch_04.wav",
+        "vj_lnrhl2/shared/melee/hit_punch_05.wav",
+        "vj_lnrhl2/shared/melee/hit_punch_06.wav",
+        "vj_lnrhl2/shared/melee/hit_punch_07.wav",
+        "vj_lnrhl2/shared/melee/hit_punch_08.wav"}
 ENT.SoundTbl_BeforeMeleeAttack = {"npc/zombie/zo_attack1.wav",
 	"npc/zombie/zo_attack2.wav"}
 ENT.SoundTbl_MeleeAttackMiss = {"npc/zombie/claw_miss2.wav","npc/zombie/claw_miss1.wav"}
@@ -288,45 +297,82 @@ end
 --]]
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:CustomOnPreInitialize()	
-	if GetConVarNumber("VJ_LNR_DeathAnimations"):GetInt() == 0 then 
+	if GetConVarNumber("VJ_LNR_DeathAnimations") == 0 then 
 		self.HasDeathAnimation = false	
 	end
-	if GetConVarNumber("vj_LNR_Alert"):GetInt() == 0 then 
+	if GetConVarNumber("vj_LNR_Alert") == 0 then 
 		self.CallForHelp = false
 	end
 	
-	if GetConVar("VJ_LNR_BreakDoors"):GetInt() == 1 then
+	if GetConVar("VJ_LNR_BreakDoors") == 1 then
         self.LNR_CanBreakDoors = true	 
 		self.CanOpenDoors = false
 	end
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:CustomOnInitialize()
-    if self:IsDirt(self:GetPos()) then
-        self:SetNoDraw(true)
-		timer.Simple(0.1,function() if IsValid(self) then
-			self:VJ_ACT_PLAYACTIVITY("nz_spawn_climbout_fast",true,4.35,false,0,{SequenceDuration=4.35})
-			self:SetNoDraw(false)
-			ParticleEffect("strider_impale_ground",self:GetPos(),self:GetAngles(),self)
-			ParticleEffect("strider_cannon_impact",self:GetPos(),self:GetAngles(),self)
-			local DiggyDiggyHole = math.random(1,2)
-			if DiggyDiggyHole == 1 then
-				self:EmitSound(Sound("vj_manhunt/vocals/zmb_vocals/spawn_dirt_00.wav", 100, math.random(100,95)))
-			elseif DiggyDiggyHole == 2 then
-				self:EmitSound(Sound("vj_manhunt/vocals/zmb_vocals/spawn_dirt_01.wav", 100, math.random(100,95)))
-			end
-		end end)
-		timer.Simple(1.1,function() if IsValid(self) then
-			ParticleEffect("strider_headbeating_01b",self:GetPos(),self:GetAngles(),self)
-		end end)
-		timer.Simple(2.1,function() if IsValid(self) then
-			ParticleEffect("strider_headbeating_01b",self:GetPos(),self:GetAngles(),self)
-		end end)
-		timer.Simple(3.1,function() if IsValid(self) then
-			ParticleEffect("strider_headbeating_01b",self:GetPos(),self:GetAngles(),self)
-		end end)
-	end
+  if GetConVar("VJ_LNR_GroundRise"):GetInt() == 1 && self:IsDirtGround(self:GetPos()) then
+     if math.random(1,5) == 1 && !self.LNR_Crawler && self:GetClass() != "npc_vj_lnr_wal_pm" && self:GetClass() != "npc_vj_lnr_wal" && self:GetClass() != "npc_vj_lnr_wal_ply" && self:GetClass() != "npc_vj_lnr_corpse_zombie" && self:GetClass() != "npc_vj_lnr_cris" then
+        self:RiseFromGround()
+    end		
 end
+	-- [[
+    -- if self:IsDirt(self:GetPos()) then
+        -- self:SetNoDraw(true)
+		-- timer.Simple(0.1,function() if IsValid(self) then
+			-- self:VJ_ACT_PLAYACTIVITY("nz_spawn_climbout_fast",true,4.35,false,0,{SequenceDuration=4.35})
+			-- self:SetNoDraw(false)
+			-- ParticleEffect("strider_impale_ground",self:GetPos(),self:GetAngles(),self)
+			-- ParticleEffect("strider_cannon_impact",self:GetPos(),self:GetAngles(),self)
+			-- local DiggyDiggyHole = math.random(1,2)
+			-- if DiggyDiggyHole == 1 then
+				-- self:EmitSound(Sound("vj_manhunt/vocals/zmb_vocals/spawn_dirt_00.wav", 100, math.random(100,95)))
+			-- elseif DiggyDiggyHole == 2 then
+				-- self:EmitSound(Sound("vj_manhunt/vocals/zmb_vocals/spawn_dirt_01.wav", 100, math.random(100,95)))
+			-- end
+		-- end end)
+		-- timer.Simple(1.1,function() if IsValid(self) then
+			-- ParticleEffect("strider_headbeating_01b",self:GetPos(),self:GetAngles(),self)
+		-- end end)
+		-- timer.Simple(2.1,function() if IsValid(self) then
+			-- ParticleEffect("strider_headbeating_01b",self:GetPos(),self:GetAngles(),self)
+		-- end end)
+		-- timer.Simple(3.1,function() if IsValid(self) then
+			-- ParticleEffect("strider_headbeating_01b",self:GetPos(),self:GetAngles(),self)
+		-- end end)
+	-- end
+	-- ]]
+	 self:Zombie_Difficulty()	
+end
+---------------------------------------------------------------------------------------------------------------------------------------------
+function ENT:Zombie_Difficulty()
+     if GetConVar("VJ_LNR_Difficulty"):GetInt() == 1 then // Easy
+        self.StartHealth = 50
+	    self.MeleeAttackDamage = math.Rand(5,10)		
+     if self.LNR_CanUseWeapon then self.MeleeAttackDamage = math.Rand(10,15) end		
+end
+     if GetConVar("VJ_LNR_Difficulty"):GetInt() == 2 then // Normal
+        self.StartHealth = 100		
+	    self.MeleeAttackDamage = math.Rand(10,15)
+     if self.LNR_CanUseWeapon then self.MeleeAttackDamage = math.Rand(15,20) end
+end		
+     if GetConVar("VJ_LNR_Difficulty"):GetInt() == 3 then // Hard
+        self.StartHealth = 150	
+	    self.MeleeAttackDamage = math.Rand(15,20)
+     if self.LNR_CanUseWeapon then self.MeleeAttackDamage = math.Rand(20,25) end
+end
+     if GetConVar("VJ_LNR_Difficulty"):GetInt() == 4 then // Nightmare
+        self.StartHealth = 200
+	    self.MeleeAttackDamage = math.Rand(20,25)
+     if self.LNR_CanUseWeapon then self.MeleeAttackDamage = math.Rand(25,30) end
+end
+     if GetConVar("VJ_LNR_Difficulty"):GetInt() == 5 then // Apocalypse
+        self.StartHealth = 250
+	    self.MeleeAttackDamage = math.Rand(25,30) 
+     if self.LNR_CanUseWeapon then self.MeleeAttackDamage = math.Rand(30,35) end		
+end	
+        self:SetHealth(self.StartHealth)	
+end 
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:CustomOnAcceptInput(key,activator,caller,data)
 	if key == "step" then
@@ -394,7 +440,6 @@ end
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:CustomOnThink()
- self:Zombie_CustomOnThink()
  if GetConVar("VJ_LNR_BreakDoors"):GetInt() == 0 or self.LNR_Crawler or self.LNR_Crippled or self.Dead or self.DeathAnimationCodeRan or self.Flinching or self:GetSequence() == self:LookupSequence("nz_spawn_climbout_fast") or self:GetSequence() == self:LookupSequence("nz_spawn_jump") or self:GetSequence() == self:LookupSequence("shove_forward_01") or self:GetSequence() == self:LookupSequence("infectionrise") or self:GetSequence() == self:LookupSequence("infectionrise2") or self:GetSequence() == self:LookupSequence("slumprise_a") or self:GetSequence() == self:LookupSequence("slumprise_a2") then self.LNR_DoorToBreak = NULL return end
 	if VJ_AnimationExists(self,ACT_OPEN_DOOR) then
 		if !IsValid(self.LNR_DoorToBreak) then
@@ -437,6 +482,38 @@ function ENT:IsDirtGround(pos)
 	return tr.HitWorld && (mat == MAT_SAND || mat == MAT_DIRT || mat == MAT_FOLIAGE || mat == MAT_SLOSH || mat == MAT_GRASS)
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
+function ENT:RiseFromGround() 
+		self:SetMaterial("lnr/bonemerge")
+	 if IsValid(self.WeaponModel) then self.WeaponModel:SetMaterial("lnr/bonemerge") self.WeaponModel:DrawShadow(false) end
+		self:DrawShadow(false)
+		self:AddFlags(FL_NOTARGET)
+		self.GodMode = true
+		self.MovementType = VJ_MOVETYPE_STATIONARY
+		self.CanTurnWhileStationary = false
+		self.HasSounds = false
+		self.HasPoseParameterLooking = false
+        self.DisableFindEnemy = true		
+		self.CallForHelp = false
+		timer.Simple(1.3,function()
+	 if IsValid(self) then
+		self:SetMaterial()
+	 if IsValid(self.WeaponModel) then self.WeaponModel:SetMaterial() self.WeaponModel:DrawShadow(true) end
+		self:DrawShadow(true)
+		self:RemoveFlags(FL_NOTARGET)
+		self.GodMode = false
+		self:DoChangeMovementType(VJ_MOVETYPE_GROUND)
+		self.HasSounds = true
+		self.HasPoseParameterLooking = true
+        self.DisableFindEnemy = false		
+		self.CallForHelp = true
+	    self:VJ_ACT_PLAYACTIVITY({"vjseq_nz_spawn_climbout_fast","vjseq_nz_spawn_jump"},true,false,false)
+	    VJ_EmitSound(self,"vj_lnrhl2/shared/dirtintro"..math.random(1,2)..".wav",75,100)
+		ParticleEffect("advisor_plat_break",self:GetPos(),self:GetAngles(),self)
+		ParticleEffect("strider_impale_ground",self:GetPos(),self:GetAngles(),self)		
+	    end
+    end)
+end  
+---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:GetSightDirection()
 	return self:GetAttachment(self:LookupAttachment("eyes")).Ang:Forward() -- Attachment example
 end
@@ -451,104 +528,174 @@ function ENT:CustomOnMeleeAttack_AfterChecks(hitEnt, isProp)
 end	
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:MultipleMeleeAttacks()
-	local randattack_stand = math.random(9,12)
-	local randattack_moving = math.random(1,8)	
-	if randattack_moving == 1 && self:IsMoving() then
-		self.AnimTbl_MeleeAttack = {"vjges_nz_attack_walk_ad_1"}
-		self.NextAnyAttackTime_Melee = 1.0666666666667
-		self.MeleeAttackAnimationFaceEnemy = false
-
-	elseif randattack_moving == 2 && self:IsMoving() then
-		self.AnimTbl_MeleeAttack = {"vjges_nz_attack_walk_ad_2"}	
-		self.NextAnyAttackTime_Melee = 1.5666667071316
-		self.MeleeAttackAnimationFaceEnemy = false
-
-	elseif randattack_moving == 3 && self:IsMoving() then
-		self.AnimTbl_MeleeAttack = {"vjges_nz_attack_walk_ad_3"}
-		self.NextAnyAttackTime_Melee = 1.233333343135
-		self.MeleeAttackAnimationFaceEnemy = false
-
-	elseif randattack_moving == 4 && self:IsMoving() then
-		self.AnimTbl_MeleeAttack = {"vjges_nz_attack_walk_ad_4"}
-		self.NextAnyAttackTime_Melee = 1.4666666550106
-		self.MeleeAttackAnimationFaceEnemy = false
-
-	elseif randattack_moving == 5 && self:IsMoving() then
-		self.AnimTbl_MeleeAttack = {"vjges_nz_attack_walk_au_1"}
-		self.NextAnyAttackTime_Melee = 1.0666666666667		
-		self.MeleeAttackAnimationFaceEnemy = false
-
-	elseif randattack_moving == 6 && self:IsMoving() then
-		self.AnimTbl_MeleeAttack = {"vjges_nz_attack_walk_au_2"}
-		self.NextAnyAttackTime_Melee = 1.5666667071316
-		self.MeleeAttackAnimationFaceEnemy = false
-
-	elseif randattack_moving == 7 && self:IsMoving() then
-		self.AnimTbl_MeleeAttack = {"vjges_nz_attack_walk_au_3"}
-		self.NextAnyAttackTime_Melee = 1.233333343135
-		self.MeleeAttackAnimationFaceEnemy = false
-
-	elseif randattack_moving == 8 && self:IsMoving() then
-		self.AnimTbl_MeleeAttack = {"vjges_nz_attack_walk_au_4"}
-		self.NextAnyAttackTime_Melee = 1.4666666550106	
-		self.MeleeAttackAnimationFaceEnemy = false		
-
-	elseif randattack_stand == 9 then
-		self.AnimTbl_MeleeAttack = {"vjseq_nz_attack_stand_ad_1"}
-		self.NextAnyAttackTime_Melee = 1.7999999141693
-		self.MeleeAttackAnimationFaceEnemy = true
-
-	elseif randattack_stand == 10 then
-		self.AnimTbl_MeleeAttack = {"vjseq_nz_attack_stand_ad_2-2"}
-		self.NextAnyAttackTime_Melee = 1.7999999141693
-		self.MeleeAttackAnimationFaceEnemy = true
-
-	elseif randattack_stand == 11 then
-		self.AnimTbl_MeleeAttack = {"vjseq_nz_attack_stand_ad_2-3"}
-		self.NextAnyAttackTime_Melee = 1.3666666340828
-		self.MeleeAttackAnimationFaceEnemy = true
-
-    elseif randattack_stand == 12 then
-		self.AnimTbl_MeleeAttack = {"vjseq_nz_attack_stand_ad_2-4"}	
-		self.NextAnyAttackTime_Melee = 4
-		self.MeleeAttackAnimationFaceEnemy = true
-
-	end
+-- Melee Sounds	--
+	if (self.LNR_LArmDamaged && self.LNR_RArmDamaged) or self.LNR_Biter then
+        self.SoundTbl_MeleeAttackExtra = {
+        "vj_lnrhl2/shared/melee/zombie_bite1.wav",
+        "vj_lnrhl2/shared/melee/zombie_bite2.wav",
+        "vj_lnrhl2/shared/melee/zombie_bite3.wav"
+}
+    elseif IsValid(self.WeaponModel) && self.LNR_CanUseWeapon then 
+        self.SoundTbl_MeleeAttackExtra = {
+        "vj_lnrhl2/shared/melee/claw_strike1.wav",
+        "vj_lnrhl2/shared/melee/claw_strike2.wav",
+        "vj_lnrhl2/shared/melee/claw_strike3.wav"
+}
+    else
+        self.SoundTbl_MeleeAttackExtra = {
+        "vj_lnrhl2/shared/melee/hit_punch_01.wav",
+        "vj_lnrhl2/shared/melee/hit_punch_02.wav",
+        "vj_lnrhl2/shared/melee/hit_punch_03.wav",
+        "vj_lnrhl2/shared/melee/hit_punch_04.wav",
+        "vj_lnrhl2/shared/melee/hit_punch_05.wav",
+        "vj_lnrhl2/shared/melee/hit_punch_06.wav",
+        "vj_lnrhl2/shared/melee/hit_punch_07.wav",
+        "vj_lnrhl2/shared/melee/hit_punch_08.wav"
+}
+end
+    if IsValid(self.WeaponModel) && self.LNR_CanUseWeapon && self.WeaponModel:GetModel() == "models/weapons/w_stunbaton.mdl" then
+	    self.MeleeAttackDamageType = DMG_SHOCK	
+        self.SoundTbl_MeleeAttackExtra = {
+		"weapons/stunstick/stunstick_fleshhit1.wav",
+		"weapons/stunstick/stunstick_fleshhit2.wav"
+}
+        self.SoundTbl_MeleeAttackMiss = {
+		"weapons/stunstick/stunstick_swing1.wav",
+		"weapons/stunstick/stunstick_swing2.wav"
+}
+end  
+-- If the SNPC loses the weapon via arm dismembered then make sure it retains the original damage instead of the weapon damage --
+     if GetConVar("VJ_LNR_Difficulty"):GetInt() == 1 then // Easy	
+     if IsValid(self.WeaponModel) && self.LNR_RArmDamaged && !self.LNR_CanUseWeapon then self.MeleeAttackDamage = math.Rand(5,10) end		
+end
+     if GetConVar("VJ_LNR_Difficulty"):GetInt() == 2 then // Normal		
+     if IsValid(self.WeaponModel) && self.LNR_RArmDamaged && !self.LNR_CanUseWeapon then self.MeleeAttackDamage = math.Rand(10,15) end
+end		
+     if GetConVar("VJ_LNR_Difficulty"):GetInt() == 3 then // Hard
+     if IsValid(self.WeaponModel) && self.LNR_RArmDamaged && !self.LNR_CanUseWeapon then self.MeleeAttackDamage = math.Rand(15,20) end
+end
+     if GetConVar("VJ_LNR_Difficulty"):GetInt() == 4 then // Nightmare
+     if IsValid(self.WeaponModel) && self.LNR_RArmDamaged && !self.LNR_CanUseWeapon then self.MeleeAttackDamage = math.Rand(20,25) end
+end
+     if GetConVar("VJ_LNR_Difficulty"):GetInt() == 5 then // Apocalypse 
+     if IsValid(self.WeaponModel) && self.LNR_RArmDamaged && !self.LNR_CanUseWeapon then self.MeleeAttackDamage = math.Rand(25,30) end		
+end	
+-- When Crawling or Crippled --
+    if !self.LNR_LArmDamaged && !self.LNR_RArmDamaged && !self.LNR_Biter && (self.LNR_Crawler or self.LNR_Crippled) then
+	if self.LNR_Walker then
+	    self.AnimTbl_MeleeAttack = {"vjseq_crawl_attack"}	
+	elseif self.LNR_Infected then
+	    self.AnimTbl_MeleeAttack = {"vjseq_crawl_attack2"}
+end
+		self.MeleeAttackAnimationAllowOtherTasks = false	
+        self.MeleeAttackDistance = 15
+        self.MeleeAttackDamageDistance = 45			
+end	
+-- When Dismembered or for Biters --
+    if (self.LNR_LArmDamaged && self.LNR_RArmDamaged) or self.LNR_Biter then
+	if self:IsMoving() or self.LNR_Crippled or self.LNR_Crawler then
+	    self.MeleeAttackAnimationAllowOtherTasks = true
+		self.AnimTbl_MeleeAttack = {"vjges_Choke_Eat"}		
+		self.HasMeleeAttackMissSounds = true
+        self.HasMeleeAttackKnockBack = false 	
+	    self.SlowPlayerOnMeleeAttack = false		
+		
+	elseif !self:IsMoving() && !self.LNR_Crippled && !self.LNR_Crawler then
+	    self.MeleeAttackAnimationAllowOtherTasks = false
+        self.AnimTbl_MeleeAttack = {"vjseq_Choke_Eating"}	
+	    self.MeleeAttackAnimationDecreaseLengthAmount = 1.45
+	    self.NextAnyAttackTime_Melee = 1.5
+        self.HasMeleeAttackMissSounds = false
+        self.HasMeleeAttackKnockBack = true 	
+	    self.SlowPlayerOnMeleeAttack = true	
+end
+        self.MeleeAttackDistance = 15
+        self.MeleeAttackDamageDistance = 45	
+        self.MeleeAttackDamageType = DMG_NERVEGAS	
+end		
+-- When Standing --
+    if (self.LNR_LArmDamaged && self.LNR_RArmDamaged) or self.LNR_Crawler or self.LNR_Crippled or self.LNR_Biter then return end
+    if !self:IsMoving() then
+	    self.MeleeAttackAnimationAllowOtherTasks = false
+		self.AnimTbl_MeleeAttack = {
+		"vjseq_nz_attack_stand_ad_1",
+		"vjseq_nz_attack_stand_ad_2-2",
+		"vjseq_nz_attack_stand_ad_2-3",
+		"vjseq_nz_attack_stand_ad_2-4",
+		"vjseq_nz_attack_stand_au_1",
+		"vjseq_nz_attack_stand_au_2-2",
+		"vjseq_nz_attack_stand_au_2-3",
+		"vjseq_nz_attack_stand_au_2-4"		
+}	
+end	
+-- When Walking --
+	if self:IsMoving() then
+    if self:GetActivity() == ACT_WALK or self:GetActivity() == ACT_WALK_AIM	then
+		self.AnimTbl_MeleeAttack = {
+		"vjges_nz_attack_walk_ad_1",
+		"vjges_nz_attack_walk_ad_2",
+		"vjges_nz_attack_walk_ad_3",
+		"vjges_nz_attack_walk_ad_4",
+		"vjges_nz_attack_walk_au_1",
+		"vjges_nz_attack_walk_au_2",
+		"vjges_nz_attack_walk_au_3",
+		"vjges_nz_attack_walk_au_4"
+}	
+end		
+-- When Running/Sprinting --		
+    if self:GetActivity() == ACT_RUN or self:GetActivity() == ACT_RUN_AIM or self:GetActivity() == ACT_SPRINT then
+		self.AnimTbl_MeleeAttack = {
+		"vjges_nz_attack_run_ad_1",
+		"vjges_nz_attack_run_ad_2",
+		"vjges_nz_attack_run_ad_3",
+		"vjges_nz_attack_run_ad_4",
+		"vjges_nz_attack_run_au_1",
+		"vjges_nz_attack_run_au_2",
+		"vjges_nz_attack_run_au_3",
+		"vjges_nz_attack_run_au_4"
+}	
+end
+		self.MeleeAttackAnimationAllowOtherTasks = true
+    end		
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:CustomOnTakeDamage_AfterDamage(dmginfo,hitgroup)
-	if self.CanDoTheFunny == false then return end
-	if math.random (1,16) == 1 then
+	if self.CanDoTheFunny == false or self.LNR_Crawler or self.LNR_Crippled then return end
+	if math.random (1,1) == 1 then
+	-- if math.random (1,16) == 1 then
 		if dmginfo:IsBulletDamage() or dmginfo:IsDamageType(DMG_BUCKSHOT) or dmginfo:IsDamageType(DMG_SNIPER) then
 			if hitgroup == HITGROUP_HEAD or hitgroup == HITGROUP_CHEST or hitgroup == HITGROUP_STOMACH then
-				if self.LNR_NextStumble < CurTime() then
-					self:VJ_ACT_PLAYACTIVITY("ShoveReact",true,1.6)
+				if self.LNR_NextStumbleT < CurTime() then
+					self:VJ_ACT_PLAYACTIVITY(ACT_STEP_BACK,true,1.6)
 				end
-				self.LNR_NextStumble = CurTime() + 10
+				self.LNR_NextStumbleT = CurTime() + 10
 			elseif hitgroup == HITGROUP_LEFTLEG or hitgroup == HITGROUP_RIGHTLEG then		 
-				if self.LNR_NextStumble < CurTime() then
-					self:VJ_ACT_PLAYACTIVITY("ShoveReactBehind",true,1.6)
-					self.LNR_NextStumble = CurTime() + 10
+				if self.LNR_NextStumbleT < CurTime() then
+					self:VJ_ACT_PLAYACTIVITY(ACT_STEP_FORE,true,1.6)
+					self.LNR_NextStumbleT = CurTime() + 10
 				end
 			end
-		end
+		-- end
 	elseif dmginfo:IsDamageType(DMG_CLUB) or dmginfo:IsDamageType(DMG_SLASH) or dmginfo:IsDamageType(DMG_GENERIC) or dmginfo:IsExplosionDamage() then
-			if self.LNR_NextShove < CurTime() then
-				self:VJ_ACT_PLAYACTIVITY("ShoveReact",true,1.6,false)
-				self.LNR_NextShove = CurTime() + math.random(5,8)
+			if self.LNR_NextShoveT < CurTime() then
+				self:VJ_ACT_PLAYACTIVITY(ACT_BIG_FLINCH,true,false,false)
+				self.LNR_NextShoveT = CurTime() + math.random(5,8)
 			end
 		end
+    return !self.LNR_Crawler && !self.LNR_Crippled && self:GetSequence() != self:LookupSequence("nz_spawn_climbout_fast") && self:GetSequence() != self:LookupSequence("nz_spawn_jump") && self:GetSequence() != self:LookupSequence("shove_forward_01") && self:GetSequence() != self:LookupSequence("infectionrise") && self:GetSequence() != self:LookupSequence("infectionrise2") && self:GetSequence() != self:LookupSequence("slumprise_a") && self:GetSequence() != self:LookupSequence("slumprise_a2") -- If we are stumbling or rising out of the ground or other specific activities then DO NOT flinch!	
 	end
--- end
+end
 ---------------------------------------------------------------------------------------------------------------------------------------------
+/*
 function ENT:CustomOnFlinch_BeforeFlinch(dmginfo,hitgroup)
-	if dmginfo:GetDamage() > 30 or dmginfo:GetDamageForce():Length() > 10000 or bit.band(dmginfo:GetDamageType(), DMG_BUCKSHOT) != 0 or dmginfo:IsDamageType(DMG_CLUB) or dmginfo:IsDamageType(DMG_SLASH) or dmginfo:IsDamageType(DMG_GENERIC) or dmginfo:IsExplosionDamage() then
+	if dmginfo:GetDamage() > 50 or dmginfo:GetDamageForce():Length() > 10000 or bit.band(dmginfo:GetDamageType(), DMG_BUCKSHOT) != 0 or dmginfo:IsDamageType(DMG_CLUB) or dmginfo:IsDamageType(DMG_SLASH) or dmginfo:IsDamageType(DMG_GENERIC) or dmginfo:IsExplosionDamage() then
 		self.AnimTbl_Flinch = {"vjseq_shove_backwards_07","vjseq_shove_backwards_08","vjseq_shove_backwards_09","vjseq_shove_backwards_10"} 
 	else
 		self.AnimTbl_Flinch = {"vjseq_shove_backwards_01","vjseq_shove_backwards_02","vjseq_shove_backwards_03","vjseq_shove_backwards_04","vjseq_shove_backwards_05","vjseq_shove_backwards_06"} 
 end
     return !self.LNR_Crawler && !self.LNR_Crippled && self:GetSequence() != self:LookupSequence("nz_spawn_climbout_fast") && self:GetSequence() != self:LookupSequence("nz_spawn_jump") && self:GetSequence() != self:LookupSequence("shove_forward_01") && self:GetSequence() != self:LookupSequence("infectionrise") && self:GetSequence() != self:LookupSequence("infectionrise2") && self:GetSequence() != self:LookupSequence("slumprise_a") && self:GetSequence() != self:LookupSequence("slumprise_a2") -- If we are stumbling or rising out of the ground or other specific activities then DO NOT flinch!	
 end
+*/
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:CustomOnPriorToKilled(dmginfo, hitgroup)
 	if dmginfo:IsDamageType(DMG_BURN) or dmginfo:IsDamageType(DMG_SLOWBURN) or dmginfo:IsDamageType(DMG_ENERGYBEAM) or dmginfo:IsDamageType(DMG_DISSOLVE) or dmginfo:IsDamageType (DMG_PLASMA) or dmginfo:IsDamageType(DMG_SHOCK) then
