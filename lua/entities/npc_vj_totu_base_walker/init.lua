@@ -206,46 +206,103 @@ ENT.FootSteps = {
 	}
 }
 
-ENT.SoundTbl_Idle = {"npc/zombie/zombie_voice_idle1.wav",
-	"npc/zombie/zombie_voice_idle2.wav",
-	"npc/zombie/zombie_voice_idle3.wav",
-	"npc/zombie/zombie_voice_idle4.wav",
-	"npc/zombie/zombie_voice_idle5.wav",
-	"npc/zombie/zombie_voice_idle6.wav",
-	"npc/zombie/zombie_voice_idle7.wav",
-	"npc/zombie/zombie_voice_idle8.wav",
-	"npc/zombie/zombie_voice_idle9.wav",
-	"npc/zombie/zombie_voice_idle10.wav",
-	"npc/zombie/zombie_voice_idle11.wav",
-	"npc/zombie/zombie_voice_idle12.wav",
-	"npc/zombie/zombie_voice_idle13.wav",
-	"npc/zombie/zombie_voice_idle14.wav"}
-ENT.SoundTbl_Alert = {"npc/zombie/zombie_alert1.wav",
-	"npc/zombie/zombie_alert2.wav",
-	"npc/zombie/zombie_alert3.wav"}
-ENT.SoundTbl_CombatIdle = {"npc/zombie/zombie_voice_idle1.wav",
-	"npc/zombie/zombie_voice_idle2.wav",
-	"npc/zombie/zombie_voice_idle3.wav",
-	"npc/zombie/zombie_voice_idle4.wav",
-	"npc/zombie/zombie_voice_idle5.wav",
-	"npc/zombie/zombie_voice_idle6.wav",
-	"npc/zombie/zombie_voice_idle7.wav",
-	"npc/zombie/zombie_voice_idle8.wav",
-	"npc/zombie/zombie_voice_idle9.wav",
-	"npc/zombie/zombie_voice_idle10.wav",
-	"npc/zombie/zombie_voice_idle11.wav",
-	"npc/zombie/zombie_voice_idle12.wav",
-	"npc/zombie/zombie_voice_idle13.wav",
-	"npc/zombie/zombie_voice_idle14.wav"}
-ENT.SoundTbl_Pain = {"npc/zombie/zombie_pain1.wav",
-	"npc/zombie/zombie_pain2.wav",
-	"npc/zombie/zombie_pain3.wav",
-	"npc/zombie/zombie_pain4.wav",
-	"npc/zombie/zombie_pain5.wav",
-	"npc/zombie/zombie_pain6.wav"}
-ENT.SoundTbl_Death = {"npc/zombie/zombie_die1.wav",
-	"npc/zombie/zombie_die2.wav",
-	"npc/zombie/zombie_die3.wav"}
+ENT.SoundTbl_Idle = {"vo/ravenholm/firetrap_vigil.wav",
+	"vo/ravenholm/monk_rant01.wav",
+	"vo/ravenholm/monk_rant02.wav",
+	"vo/ravenholm/monk_rant03.wav",
+	"vo/ravenholm/monk_rant04.wav",
+	"vo/ravenholm/monk_rant05.wav",
+	"vo/ravenholm/monk_rant06.wav",
+	"vo/ravenholm/monk_rant07.wav",
+	"vo/ravenholm/monk_rant08.wav",
+	"vo/ravenholm/monk_rant09.wav",
+	"vo/ravenholm/monk_rant10.wav",
+	"vo/ravenholm/monk_rant11.wav",
+	"vo/ravenholm/monk_rant12.wav",
+	"vo/ravenholm/monk_rant13.wav",
+	"vo/ravenholm/monk_rant14.wav",
+	"vo/ravenholm/monk_rant15.wav",
+	"vo/ravenholm/monk_rant16.wav",
+	"vo/ravenholm/monk_rant17.wav",
+	"vo/ravenholm/monk_rant18.wav",
+	"vo/ravenholm/monk_rant19.wav",
+	"vo/ravenholm/monk_rant20.wav",
+	"vo/ravenholm/monk_rant21.wav",
+	"vo/ravenholm/monk_rant22.wav"}
+ENT.SoundTbl_Alert = {"vo/ravenholm/bucket_thereyouare.wav",
+	"vo/ravenholm/cartrap_iamgrig.wav",
+	"vo/ravenholm/engage01.wav",
+	"vo/ravenholm/engage02.wav",
+	"vo/ravenholm/engage03.wav",
+	"vo/ravenholm/engage04.wav",
+	"vo/ravenholm/engage05.wav",
+	"vo/ravenholm/engage06.wav",
+	"vo/ravenholm/engage07.wav",
+	"vo/ravenholm/engage08.wav",
+	"vo/ravenholm/engage09.wav",
+	"vo/ravenholm/grave_stayclose.wav",
+	"vo/ravenholm/monk_coverme04.wav",
+	"vo/ravenholm/monk_kill01.wav",
+	"vo/ravenholm/monk_kill02.wav",
+	"vo/ravenholm/monk_kill03.wav",
+	"vo/ravenholm/monk_kill04.wav",
+	"vo/ravenholm/monk_kill05.wav",
+	"vo/ravenholm/monk_kill06.wav",
+	"vo/ravenholm/monk_kill07.wav",
+	"vo/ravenholm/monk_kill08.wav",
+	"vo/ravenholm/monk_kill09.wav",
+	"vo/ravenholm/monk_kill10.wav",
+	"vo/ravenholm/monk_kill11.wav",
+	"vo/ravenholm/pyre_anotherlife.wav",
+	"vo/ravenholm/shotgun_closer.wav",
+	"vo/ravenholm/shotgun_overhere.wav",
+	"vo/ravenholm/shotgun_theycome.wav",
+	"vo/ravenholm/yard_greetings.wav"}
+ENT.SoundTbl_CombatIdle = {"vo/ravenholm/engage01.wav",
+	"vo/ravenholm/grave_stayclose.wav",
+	"vo/ravenholm/madlaugh01.wav",
+	"vo/ravenholm/madlaugh02.wav",
+	"vo/ravenholm/madlaugh03.wav",
+	"vo/ravenholm/madlaugh04.wav",
+	"vo/ravenholm/monk_rant01.wav",
+	"vo/ravenholm/monk_rant02.wav",
+	"vo/ravenholm/monk_rant03.wav",
+	"vo/ravenholm/monk_rant04.wav",
+	"vo/ravenholm/monk_rant05.wav",
+	"vo/ravenholm/monk_rant06.wav",
+	"vo/ravenholm/monk_rant07.wav",
+	"vo/ravenholm/monk_rant08.wav",
+	"vo/ravenholm/monk_rant09.wav",
+	"vo/ravenholm/monk_rant10.wav",
+	"vo/ravenholm/monk_rant11.wav",
+	"vo/ravenholm/monk_rant12.wav",
+	"vo/ravenholm/monk_rant13.wav",
+	"vo/ravenholm/monk_rant14.wav",
+	"vo/ravenholm/monk_rant15.wav",
+	"vo/ravenholm/monk_rant16.wav",
+	"vo/ravenholm/monk_rant17.wav",
+	"vo/ravenholm/monk_rant18.wav",
+	"vo/ravenholm/monk_rant19.wav",
+	"vo/ravenholm/monk_rant20.wav",
+	"vo/ravenholm/monk_rant21.wav",
+	"vo/ravenholm/monk_rant22.wav"}
+ENT.SoundTbl_Pain = {"vo/ravenholm/monk_pain01.wav",
+	"vo/ravenholm/monk_pain02.wav",
+	"vo/ravenholm/monk_pain03.wav",
+	"vo/ravenholm/monk_pain04.wav",
+	"vo/ravenholm/monk_pain05.wav",
+	"vo/ravenholm/monk_pain06.wav",
+	"vo/ravenholm/monk_pain07.wav",
+	"vo/ravenholm/monk_pain08.wav",
+	"vo/ravenholm/monk_pain09.wav",
+	"vo/ravenholm/monk_pain10.wav",
+	"vo/ravenholm/monk_pain12.wav"}
+ENT.SoundTbl_Death = {"test/MR_WHITR_NOOOO.mp3",
+	"vo/ravenholm/exit_darkroad.wav",
+	"vo/ravenholm/exit_salvation.wav",
+	"vo/ravenholm/firetrap_welldone.wav",
+	"vo/ravenholm/monk_death07.wav",
+	"vo/ravenholm/monk_helpme03.wav"}
 ENT.SoundTbl_MeleeAttack = {
         "vj_lnrhl2/shared/melee/hit_punch_01.wav",
         "vj_lnrhl2/shared/melee/hit_punch_02.wav",
@@ -255,8 +312,12 @@ ENT.SoundTbl_MeleeAttack = {
         "vj_lnrhl2/shared/melee/hit_punch_06.wav",
         "vj_lnrhl2/shared/melee/hit_punch_07.wav",
         "vj_lnrhl2/shared/melee/hit_punch_08.wav"}
-ENT.SoundTbl_BeforeMeleeAttack = {"npc/zombie/zo_attack1.wav",
-	"npc/zombie/zo_attack2.wav"}
+ENT.SoundTbl_BeforeMeleeAttack = {"vo/ravenholm/engage02.wav",
+	"vo/ravenholm/engage03.wav",
+	"vo/ravenholm/monk_givehealth01.wav",
+	"vo/ravenholm/monk_stayclosebro.wav",
+	"vo/ravenholm/shotgun_closer.wav",
+	"vo/ravenholm/shotgun_hush.wav"}
 ENT.SoundTbl_MeleeAttackMiss = {"npc/zombie/claw_miss2.wav","npc/zombie/claw_miss1.wav"}
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:CustomOnFootStepSound()
@@ -714,6 +775,7 @@ function ENT:CustomOnFlinch_BeforeFlinch(dmginfo,hitgroup)
 			self:VJ_ACT_PLAYACTIVITY("vjseq_flinch_rightleg",true,false)
 	end
 
+    return !self.LNR_Crawler && !self.LNR_Crippled && self:GetSequence() != self:LookupSequence(ACT_BIG_FLINCH) && self:GetSequence() != self:LookupSequence(ACT_SMALL_FLINCH) -- If we are stumbling or rising out of the ground or other specific activities then DO NOT flinch!	
 end
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
@@ -765,7 +827,7 @@ function ENT:CustomOnTakeDamage_AfterDamage(dmginfo,hitgroup)
 				-- self.LNR_NextShoveT = CurTime() + 1
 			end
 		end
-    return !self.LNR_Crawler && !self.LNR_Crippled && self:GetSequence() != self:LookupSequence("nz_spawn_climbout_fast") && self:GetSequence() != self:LookupSequence("nz_spawn_jump") && self:GetSequence() != self:LookupSequence("shove_forward_01") && self:GetSequence() != self:LookupSequence("infectionrise") && self:GetSequence() != self:LookupSequence("infectionrise2") && self:GetSequence() != self:LookupSequence("slumprise_a") && self:GetSequence() != self:LookupSequence("slumprise_a2") -- If we are stumbling or rising out of the ground or other specific activities then DO NOT flinch!	
+    return !self.LNR_Crawler && !self.LNR_Crippled && self:GetSequence() != self:LookupSequence(ACT_BIG_FLINCH) && self:GetSequence() != self:LookupSequence(ACT_SMALL_FLINCH)
 	end
 -- end
 	if dmginfo:IsExplosionDamage() then
@@ -777,8 +839,9 @@ function ENT:CustomOnTakeDamage_AfterDamage(dmginfo,hitgroup)
 		end
 		self.NextSplodeStumbleT = CurTime() + 5
 		end
+		    return !self.LNR_Crawler && !self.LNR_Crippled && self:GetSequence() != self:LookupSequence(ACT_BIG_FLINCH) && self:GetSequence() != self:LookupSequence(ACT_SMALL_FLINCH)
 	end
-			if hitgroup == HITGROUP_LEFTLEG or hitgroup == HITGROUP_RIGHTLEG then
+			if GetConVar("VJ_LNR_Cripple") == 1 && hitgroup == HITGROUP_LEFTLEG or hitgroup == HITGROUP_RIGHTLEG then
 			self.LNR_LegHP = self.LNR_LegHP -dmginfo:GetDamage()
 			end
 			if self.LNR_LegHP <= 0 then
@@ -844,15 +907,15 @@ function ENT:CustomDeathAnimationCode(dmginfo,hitgroup)
 
 	if dmginfo:IsDamageType(DMG_BURN) or dmginfo:IsDamageType(DMG_SLOWBURN) then
 		self:Ignite(60)
-		if self:IsMoving() then
-			self.AnimTbl_Death = {"vjges_nz_death_fire_3",
-			"vjges_nz_death_fire_4",
-			"vjges_nz_death_fire_5"}
+		-- if self:IsMoving() then
+			-- self.AnimTbl_Death = {"vjges_nz_death_fire_3",
+			-- "vjges_nz_death_fire_4",
+			-- "vjges_nz_death_fire_5"}
 		-- self.DeathAnimationTime = 1.6
-		else
+		-- else
 			self.AnimTbl_Death = {"vjseq_nz_death_fire_1",
 			"vjseq_nz_death_fire_2"}
-		end
+		-- end
 		-- self.DeathAnimationTime = 1.6
 		if GetConVarNumber("vj_npc_noidleparticle") == 0 then
 			ParticleEffectAttach("embers_small_01",PATTACH_POINT_FOLLOW,self,self:LookupAttachment("origin"))
