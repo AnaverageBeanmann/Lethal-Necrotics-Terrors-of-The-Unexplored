@@ -391,7 +391,7 @@ function ENT:CustomOnAcceptInput(key,activator,caller,data)
 	end
 	
 	if key == "slide" then
-		VJ_EmitSound(self,"vj_lnrhl2/shared/foot_slide"..math.random(1,3)..".wav",self.FootStepSoundLevel,self:VJ_DecideSoundPitch(self.FootStepPitch.a,self.FootStepPitch.b))
+		VJ_EmitSound(self,"npc/zombie/foot_slide"..math.random(1,3)..".wav",self.FootStepSoundLevel,self:VJ_DecideSoundPitch(self.FootStepPitch.a,self.FootStepPitch.b))
 	end
 	
 	if key == "crawl" then
