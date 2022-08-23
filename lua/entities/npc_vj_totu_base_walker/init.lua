@@ -866,8 +866,10 @@ function ENT:CustomOnTakeDamage_AfterDamage(dmginfo,hitgroup)
 		end
 		    return !self.LNR_Crawler && !self.LNR_Crippled && self:GetSequence() != self:LookupSequence(ACT_BIG_FLINCH) && self:GetSequence() != self:LookupSequence(ACT_SMALL_FLINCH)
 	end
-			if GetConVar("VJ_LNR_Cripple") == 1 && hitgroup == HITGROUP_LEFTLEG or hitgroup == HITGROUP_RIGHTLEG then
+			if GetConVar("VJ_LNR_Cripple") == 1 then
+			if hitgroup == HITGROUP_LEFTLEG or hitgroup == HITGROUP_RIGHTLEG then
 			self.LNR_LegHP = self.LNR_LegHP -dmginfo:GetDamage()
+			end
 			end
 			if self.LNR_LegHP <= 0 then
 				self.LNR_Crippled = true
