@@ -71,6 +71,7 @@ ENT.LNR_UsingRelaxedIdle = false
 ENT.LNR_Crippled = false
 ENT.LNR_LegHP = 25
 ENT.LNR_CanBreakDoors = false
+ENT.LNR_CanBeHeadshot = true 
 ENT.LNR_DoorToBreak = NULL
 ENT.ZappyDeath = false
 ENT.CanDoTheFunny = true
@@ -298,6 +299,9 @@ ENT.SoundTbl_Pain = {"vo/ravenholm/monk_pain01.wav",
 	"vo/ravenholm/monk_pain10.wav",
 	"vo/ravenholm/monk_pain12.wav"}
 ENT.SoundTbl_Death = {"test/MR_WHITR_NOOOO.mp3",
+	"test/anime_walt_1.mp3",
+	"test/anime_walt_2.mp3",
+	"test/anime_walt_3.mp3",
 	"vo/ravenholm/exit_darkroad.wav",
 	"vo/ravenholm/exit_salvation.wav",
 	"vo/ravenholm/firetrap_welldone.wav",
@@ -622,6 +626,21 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:CustomOnMeleeAttack_AfterChecks(hitEnt, isProp)
 	if self:IsOnFire() then hitEnt:Ignite(4) end
+    if (self.LNR_RArmDamaged && self.LNR_LArmDamaged or self.LNR_Biter) && !isProp then	
+	if hitEnt.IsVJBaseSNPC && VJ_PICK(hitEnt.CustomBlood_Particle) then ParticleEffectAttach(VJ_PICK(hitEnt.CustomBlood_Particle),PATTACH_POINT_FOLLOW,self,self:LookupAttachment("mouth")) 
+	elseif (hitEnt:IsPlayer() or hitEnt:IsNPC() or hitEnt:IsNextBot()) then ParticleEffectAttach("blood_impact_red_01",PATTACH_POINT_FOLLOW,self,self:LookupAttachment("mouth")) 
+    end 
+end	
+    if hitEnt:IsPlayer() && hitEnt:Health() < self.MeleeAttackDamage + 1 then
+       VJ_LNR_SetPlayerZombie(hitEnt,self,self)	
+end
+	if math.random(1,GetConVar("VJ_LNR_InfectionChance"):GetInt()) == 1 && (hitEnt:LookupBone("ValveBiped.Bip01_Pelvis") != nil) && !hitEnt.LNR_InfectedVictim then
+	if (hitEnt:IsPlayer() && hitEnt:Armor() < 25 && GetConVar("sbox_godmode"):GetInt() == 0) or hitEnt:IsNPC() then 
+    if hitEnt.LNR_InfectedVictim then return end
+        hitEnt.LNR_InfectedVictim = true
+        VJ_LNR_InfectionApply(hitEnt,self)
+	end
+end		
 	return false
 end	
 ---------------------------------------------------------------------------------------------------------------------------------------------
@@ -759,8 +778,8 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:CustomOnFlinch_BeforeFlinch(dmginfo,hitgroup)
    if self.LNR_Crawler or self.LNR_Crippled then return end	
-	-- if dmginfo:GetDamage() > 24 or dmginfo:GetDamageForce():Length() > 5000 then
-	if dmginfo:GetDamage() > 1 or dmginfo:GetDamageForce():Length() > 1 then
+	if dmginfo:GetDamage() > 24 or dmginfo:GetDamageForce():Length() > 5000 then
+	-- if dmginfo:GetDamage() > 1 or dmginfo:GetDamageForce():Length() > 1 then
 		if hitgroup == HITGROUP_HEAD then
 			self:VJ_ACT_PLAYACTIVITY("vjges_ep_flinch_head",true,false)
 		elseif hitgroup == HITGROUP_CHEST then
@@ -776,6 +795,12 @@ function ENT:CustomOnFlinch_BeforeFlinch(dmginfo,hitgroup)
 	end
 
     return !self.LNR_Crawler && !self.LNR_Crippled && self:GetSequence() != self:LookupSequence(ACT_BIG_FLINCH) && self:GetSequence() != self:LookupSequence(ACT_SMALL_FLINCH) -- If we are stumbling or rising out of the ground or other specific activities then DO NOT flinch!	
+end
+end
+---------------------------------------------------------------------------------------------------------------------------------------------
+function ENT:CustomOnTakeDamage_BeforeDamage(dmginfo,hitgroup)
+	if GetConVar("VJ_LNR_Headshot") == 1 && self.LNR_CanBeHeadshot && hitgroup == HITGROUP_HEAD then
+		dmginfo:SetDamage(self:Health())
 end
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
