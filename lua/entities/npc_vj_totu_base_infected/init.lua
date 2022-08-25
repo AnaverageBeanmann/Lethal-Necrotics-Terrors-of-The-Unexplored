@@ -834,16 +834,20 @@ function ENT:CustomOnTakeDamage_AfterDamage(dmginfo,hitgroup)
 				-- self.LNR_NextStumbleT = CurTime() + 1
 			elseif hitgroup == HITGROUP_LEFTLEG or hitgroup == HITGROUP_RIGHTLEG then	
 				if self.LNR_NextStumbleT < CurTime() then
-				-- if self:GetSequence() == self:LookupSequence(ACT_SPRINT) or self:GetSequence() == self:LookupSequence(ACT_RUN_AIM) then
-			-- self:VJ_ACT_PLAYACTIVITY("vjseq_shove_forward_01",true,false,false)
-					-- self.LNR_NextStumbleT = CurTime() + 10
-			-- else
+				if self:GetActivity() == ACT_SPRINT or self:GetActivity() == ACT_RUN_AIM then
+					if math.random (1,2) == 1 then
+			self:VJ_ACT_PLAYACTIVITY("vjseq_shove_forward_01",true,false,false)
+					self.LNR_NextStumbleT = CurTime() + 10
+					end
+			else
+					if math.random (1,5) == 1 then
 					self:VJ_ACT_PLAYACTIVITY(ACT_STEP_FORE,true,1.6)
 					self.LNR_NextStumbleT = CurTime() + 10
 					-- self.LNR_NextStumbleT = CurTime() + 1
 				end
 				end
-			-- end
+				end
+			end
 		end
 	if dmginfo:IsDamageType(DMG_CLUB) or dmginfo:IsDamageType(DMG_SLASH) or dmginfo:IsDamageType(DMG_GENERIC) then
 		if dmginfo:GetDamage() > 49 or dmginfo:GetDamageForce():Length() > 10000 then

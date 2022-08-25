@@ -832,9 +832,11 @@ function ENT:CustomOnTakeDamage_AfterDamage(dmginfo,hitgroup)
 				-- self.LNR_NextStumbleT = CurTime() + 1
 			elseif hitgroup == HITGROUP_LEFTLEG or hitgroup == HITGROUP_RIGHTLEG then		 
 				if self.LNR_NextStumbleT < CurTime() then
+					if math.random (1,5) == 1 then
 					self:VJ_ACT_PLAYACTIVITY(ACT_STEP_FORE,true,1.6)
 					self.LNR_NextStumbleT = CurTime() + 10
 					-- self.LNR_NextStumbleT = CurTime() + 1
+				end
 				end
 			end
 		end
