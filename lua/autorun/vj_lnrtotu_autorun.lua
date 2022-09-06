@@ -14,12 +14,34 @@ local VJExists = file.Exists("lua/autorun/vj_base_autorun.lua","GAME")
 if VJExists == true then
 	include('autorun/vj_controls.lua')
 	local vCat = "Lethal Necrotics: Terrors of The Unexplored"
-	VJ.AddCategoryInfo("Lethal Necrotics: Terrors of The Unexplored", {Icon = "icons/totu_icon.png"})
-	local vCat2 = "Lethal Necrotics: Terrors of The Unexplored - Misc & Spawners"
-	VJ.AddCategoryInfo("Lethal Necrotics: Terrors of The Unexplored - Misc & Spawners", {Icon = "icons/totu_icon.png"})
+	-- VJ.AddCategoryInfo("Lethal Necrotics: Terrors of The Unexplored", {Icon = "icons/totu_icon.png"})
+	-- VJ.AddCategoryInfo("Lethal Necrotics: Terrors of The Unexplored", {Icon = "icons/icon_new_16.png"})
+	-- VJ.AddCategoryInfo("Lethal Necrotics: Terrors of The Unexplored", {Icon = "icons/icon_new_32.png"})
+	-- VJ.AddCategoryInfo("Lethal Necrotics: Terrors of The Unexplored", {Icon = "icons/icon_new_64.png"})
+	-- VJ.AddCategoryInfo("Lethal Necrotics: Terrors of The Unexplored", {Icon = "icons/icon_new_128.png"})
+	-- VJ.AddCategoryInfo("Lethal Necrotics: Terrors of The Unexplored", {Icon = "icons/icon_new_256.png"})
+	VJ.AddCategoryInfo("Lethal Necrotics: Terrors of The Unexplored", {Icon = "icons/icon_new_512.png"})
+	-- local vCat2 = "Lethal Necrotics: Terrors of The Unexplored - Misc & Spawners"
+	-- VJ.AddCategoryInfo("Lethal Necrotics: Terrors of The Unexplored - Misc & Spawners", {Icon = "icons/totu_icon.png"})
 	
 	VJ.AddNPC("Base Walker","npc_vj_totu_base_walker",vCat)
 	VJ.AddNPC("Base Infected","npc_vj_totu_base_infected",vCat)
+	
+	-- add Idle_Alert_Injured_Straight_02
+	
+	--Add these
+	--Morti Scientist
+	--Morti Test Subject
+	--Morti Rogue Test Subject
+	--Morti Security
+	--Morti Hazmat Agent (Specials Hazmat, Light Teal Suit)
+	--Morti Necrotic Outbreak Response Unit / Morti N.O.R.U. (CS:S Gasmask CT)
+	
+	--Morti Zombie (HL2 Civvie Zombs, Scientists/Security/Test Subjects)
+	--Morti Hazmat Zombie
+	--Morti N.O.R.U. Zombie
+	
+	--Rename Revenant to Metastasis?
 	
 	-- Definitely Keeping
 		-- Bubbler/Chelonioidea/Shellback
@@ -166,6 +188,12 @@ if VJExists == true then
 			
 		-- VJ.AddNPCWeapon("vj_LN_TOTU_LMG","weapon_vj_ln_totu_lmg")
 		-- VJ.AddNPCWeapon("vj_LN_TOTU_KNIFE","weapon_vj_ln_totu_knife")
+	
+	-- add these convars
+	-- leg hp scales with difficulty
+	-- zombies can mutate at all
+	-- zombies can mutate when not possessed
+	
 	
 	-- local AddConvars = {}
 	-- AddConvars["vj_LN_TOTU_RealismMode"] = 0
