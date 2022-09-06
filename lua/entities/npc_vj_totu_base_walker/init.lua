@@ -8,7 +8,6 @@ include('shared.lua')
 ENT.Model = {"models/totu/testmonk.mdl"}
 ENT.StartHealth = 150
 ENT.TurningSpeed = 15
-ENT.MaxJumpLegalDistance = VJ_Set(50, 150)
 ENT.VJC_Data = {
 	CameraMode = 1,
 	ThirdP_Offset = Vector(40, 20, -50),
@@ -17,26 +16,25 @@ ENT.VJC_Data = {
 }
 ---------------------------------------------------------------------------------------------------------------------------------------------
 ENT.VJ_NPC_Class = {"CLASS_ZOMBIE"}
--- ENT.AnimTbl_IdleStand = {ACT_IDLE_HURT}
+-- ENT.AnimTbl_IdleStand = {ACT_IDLE_AIM_RELAXED} -- make the stalker idles this
+-- ENT.AnimTbl_IdleStand = {ACT_BUSY_SIT_GROUND} -- sitting
+-- ENT.AnimTbl_Walk = {ACT_WALK_ON_FIRE}
 ENT.AnimTbl_Run = {ACT_WALK}
+-- ENT.AnimTbl_Run = {ACT_RUN_AGITATED}
 ---------------------------------------------------------------------------------------------------------------------------------------------
 ENT.CustomBlood_Particle = {"lnr_bullet_impact_01","lnr_bullet_impact_02","lnr_bullet_impact_03","lnr_bullet_impact_04"}
 ENT.ImmuneDamagesTable = {DMG_RADIATION}
 ENT.CanFlinch = 1
 ENT.FlinchChance = 10
--- ENT.FlinchChance = 1
 ENT.NextFlinchTime = 3
--- ENT.AnimTbl_Flinch = {ACT_BIG_FLINCH}
-ENT.HasHitGroupFlinching = true 
+ENT.HasHitGroupFlinching = true
 ENT.HitGroupFlinching_DefaultWhenNotHit = true
 ENT.HitGroupFlinching_Values = {
 {HitGroup = {HITGROUP_HEAD}, Animation = {"vjges_flinch_head_1","vjges_flinch_head_2","vjges_flinch_head_3"}}, 
 {HitGroup = {HITGROUP_STOMACH}, Animation = {"vjges_flinch_stomach_01","vjges_flinch_stomach_02","vjges_ep_flinch_chest"}}, 
 {HitGroup = {HITGROUP_CHEST}, Animation = {"vjges_flinch_chest_1","vjges_flinch_chest_2","vjges_flinch_chest_3"}}, 
 {HitGroup = {HITGROUP_LEFTARM}, Animation = {"vjges_flinch_leftarm_1","vjges_flinch_leftarm_2","vjges_flinch_leftarm_3"}}, 
-{HitGroup = {HITGROUP_RIGHTARM}, Animation = {"vjges_flinch_rightarm_1","vjges_flinch_rightarm_2","vjges_flinch_rightarm_3"}}, 
--- {HitGroup = {HITGROUP_LEFTLEG}, Animation = {"vjseq_ep_flinch_leftLeg"}}, 
--- {HitGroup = {HITGROUP_RIGHTLEG}, Animation = {"vjseq_ep_flinch_rightLeg"}}
+{HitGroup = {HITGROUP_RIGHTARM}, Animation = {"vjges_flinch_rightarm_1","vjges_flinch_rightarm_2","vjges_flinch_rightarm_3"}}
 }
 ---------------------------------------------------------------------------------------------------------------------------------------------
 ENT.HasDeathAnimation = true
@@ -77,6 +75,12 @@ ENT.ZappyDeath = false
 ENT.CanDoTheFunny = true
 ENT.CanDoBigFlinchy = true
 ENT.NextSplodeStumbleT = 0
+ENT.CanSwapBetweenFloorAndFeet = true
+ENT.Crawling = false
+ENT.CanMutate = false
+ENT.Mutated = false
+ENT.CanBurntate = false
+ENT.Burntated = false
 	-- ====== Sound File Paths ====== --
 -- Leave blank if you don't want any sounds to play
 ENT.FootSteps = {
@@ -308,14 +312,14 @@ ENT.SoundTbl_Death = {"test/MR_WHITR_NOOOO.mp3",
 	"vo/ravenholm/monk_death07.wav",
 	"vo/ravenholm/monk_helpme03.wav"}
 ENT.SoundTbl_MeleeAttack = {
-        "vj_lnrhl2/shared/melee/hit_punch_01.wav",
-        "vj_lnrhl2/shared/melee/hit_punch_02.wav",
-        "vj_lnrhl2/shared/melee/hit_punch_03.wav",
-        "vj_lnrhl2/shared/melee/hit_punch_04.wav",
-        "vj_lnrhl2/shared/melee/hit_punch_05.wav",
-        "vj_lnrhl2/shared/melee/hit_punch_06.wav",
-        "vj_lnrhl2/shared/melee/hit_punch_07.wav",
-        "vj_lnrhl2/shared/melee/hit_punch_08.wav"}
+	"vj_lnrhl2/shared/melee/hit_punch_01.wav",
+	"vj_lnrhl2/shared/melee/hit_punch_02.wav",
+	"vj_lnrhl2/shared/melee/hit_punch_03.wav",
+	"vj_lnrhl2/shared/melee/hit_punch_04.wav",
+	"vj_lnrhl2/shared/melee/hit_punch_05.wav",
+	"vj_lnrhl2/shared/melee/hit_punch_06.wav",
+	"vj_lnrhl2/shared/melee/hit_punch_07.wav",
+	"vj_lnrhl2/shared/melee/hit_punch_08.wav"}
 ENT.SoundTbl_BeforeMeleeAttack = {"vo/ravenholm/engage02.wav",
 	"vo/ravenholm/engage03.wav",
 	"vo/ravenholm/monk_givehealth01.wav",
@@ -339,93 +343,42 @@ function ENT:CustomOnFootStepSound()
 	end
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
---[[
-function ENT:FootStepSoundCode(CustomTbl)
-	if self.HasSounds == false or self.HasFootStepSound == false or self.MovementType == VJ_MOVETYPE_STATIONARY then return end
-	if self:IsOnGround() && self:GetGroundEntity() != NULL then
-		if self.DisableFootStepSoundTimer == true then
-			self:CustomOnFootStepSound()
-			return
-		elseif self:IsMoving() && CurTime() > self.FootStepT then
-			self:CustomOnFootStepSound()
-			local CurSched = self.CurrentSchedule
-			if self.DisableFootStepOnRun == false && ((VJ_HasValue(self.AnimTbl_Run,self:GetMovementActivity())) or (CurSched != nil  && CurSched.IsMovingTask_Run == true)) /*(VJ_HasValue(VJ_RunActivites,self:GetMovementActivity()) or VJ_HasValue(self.CustomRunActivites,self:GetMovementActivity()))*/ then
-				self:CustomOnFootStepSound_Run()
-				self.FootStepT = CurTime() + self.FootStepTimeRun
-				return
-			elseif self.DisableFootStepOnWalk == false && (VJ_HasValue(self.AnimTbl_Walk,self:GetMovementActivity()) or (CurSched != nil  && CurSched.IsMovingTask_Walk == true)) /*(VJ_HasValue(VJ_WalkActivites,self:GetMovementActivity()) or VJ_HasValue(self.CustomWalkActivites,self:GetMovementActivity()))*/ then
-				self:CustomOnFootStepSound_Walk()
-				self.FootStepT = CurTime() + self.FootStepTimeWalk
-				return
-			end
-		end
+function ENT:CustomOnPreInitialize()
+	if GetConVar("VJ_LNR_DeathAnimations"):GetInt() == 0 then
+		self.HasDeathAnimation = false
 	end
-end
---]]
----------------------------------------------------------------------------------------------------------------------------------------------
-function ENT:CustomOnPreInitialize()	
-	if GetConVarNumber("VJ_LNR_DeathAnimations") == 0 then 
-		self.HasDeathAnimation = false	
-	end
-	if GetConVarNumber("vj_LNR_Alert") == 0 then 
+	if GetConVar("vj_LNR_Alert"):GetInt() == 0 then
 		self.CallForHelp = false
 	end
-	
-	if GetConVar("VJ_LNR_BreakDoors") == 1 then
-        self.LNR_CanBreakDoors = true	 
+	if GetConVar("VJ_LNR_BreakDoors"):GetInt() == 1 then
+        self.LNR_CanBreakDoors = true
 		self.CanOpenDoors = false
 	end
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:CustomOnInitialize()
-     if math.random(1,3) == 1 && !self.LNR_Crawler then 
-        self.LNR_UsingRelaxedIdle = true
+	if math.random(1,3) == 1 && !self.LNR_Crawler then
+		self.LNR_UsingRelaxedIdle = true
 		self.AnimTbl_IdleStand = {ACT_IDLE_RELAXED}
-end
-  if GetConVar("VJ_LNR_Runner"):GetInt() == 1 then
-     if math.random(1,3) == 1 && !self.LNR_Crawler && !self.LNR_Infected && self:GetClass() != "npc_vj_lnrhl2_charple" && self:GetClass() != "npc_vj_lnrhl2_corpse" && self:GetClass() != "npc_vj_lnrhl2_corpse_hev" && self:GetClass() != "npc_vj_lnr_corpse_zombie" && self:GetClass() != "npc_vj_lnr_cris" && self:GetClass() != "npc_vj_lnrhl2_combine_assn" then 
-        self.LNR_Runner = true
-		self.AnimTbl_Run = {ACT_RUN}
-	end	
-end	
-  if GetConVar("VJ_LNR_Crawl"):GetInt() == 1 then
-     if math.random(1,5) == 1 && self:GetClass() != "npc_vj_lnr_wal" && self:GetClass() != "npc_vj_lnr_wal_ply" && self:GetClass() != "npc_vj_lnr_corpse_zombie" && self:GetClass() != "npc_vj_lnr_cris" then 
-		self.LNR_Crawler = true
-		self:Cripple()	
-    end	
-end	
-  if GetConVar("VJ_LNR_GroundRise"):GetInt() == 1 && self:IsDirtGround(self:GetPos()) then
-     if math.random(1,5) == 1 && !self.LNR_Crawler && self:GetClass() != "npc_vj_lnr_wal_pm" && self:GetClass() != "npc_vj_lnr_wal" && self:GetClass() != "npc_vj_lnr_wal_ply" && self:GetClass() != "npc_vj_lnr_corpse_zombie" && self:GetClass() != "npc_vj_lnr_cris" then
-        self:RiseFromGround()
-    end		
-end
-	-- [[
-    -- if self:IsDirt(self:GetPos()) then
-        -- self:SetNoDraw(true)
-		-- timer.Simple(0.1,function() if IsValid(self) then
-			-- self:VJ_ACT_PLAYACTIVITY("nz_spawn_climbout_fast",true,4.35,false,0,{SequenceDuration=4.35})
-			-- self:SetNoDraw(false)
-			-- ParticleEffect("strider_impale_ground",self:GetPos(),self:GetAngles(),self)
-			-- ParticleEffect("strider_cannon_impact",self:GetPos(),self:GetAngles(),self)
-			-- local DiggyDiggyHole = math.random(1,2)
-			-- if DiggyDiggyHole == 1 then
-				-- self:EmitSound(Sound("vj_manhunt/vocals/zmb_vocals/spawn_dirt_00.wav", 100, math.random(100,95)))
-			-- elseif DiggyDiggyHole == 2 then
-				-- self:EmitSound(Sound("vj_manhunt/vocals/zmb_vocals/spawn_dirt_01.wav", 100, math.random(100,95)))
-			-- end
-		-- end end)
-		-- timer.Simple(1.1,function() if IsValid(self) then
-			-- ParticleEffect("strider_headbeating_01b",self:GetPos(),self:GetAngles(),self)
-		-- end end)
-		-- timer.Simple(2.1,function() if IsValid(self) then
-			-- ParticleEffect("strider_headbeating_01b",self:GetPos(),self:GetAngles(),self)
-		-- end end)
-		-- timer.Simple(3.1,function() if IsValid(self) then
-			-- ParticleEffect("strider_headbeating_01b",self:GetPos(),self:GetAngles(),self)
-		-- end end)
-	-- end
-	-- ]]
-	 self:Zombie_Difficulty()	
+	end
+	if GetConVar("VJ_LNR_Runner"):GetInt() == 1 then
+		if math.random(1,3) == 1 && !self.LNR_Crawler && !self.LNR_Infected then 
+			self.LNR_Runner = true
+			self.AnimTbl_Run = {ACT_RUN}
+		end
+	end
+	if GetConVar("VJ_LNR_Crawl"):GetInt() == 1 then
+		if math.random(1,5) == 1 then 
+			self.LNR_Crawler = true
+			self:Cripple()	
+		end
+	end
+	if GetConVar("VJ_LNR_GroundRise"):GetInt() == 1 && self:IsDirtGround(self:GetPos()) then
+		if math.random(1,5) == 1 && !self.LNR_Crawler && self:GetClass() != "npc_vj_lnr_wal_pm" then
+			self:RiseFromGround()
+		end
+	end
+	self:Zombie_Difficulty()	
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:Zombie_Difficulty()
@@ -558,6 +511,37 @@ end
 	end
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
+function ENT:CustomOnThink_AIEnabled()
+	if self.LNR_Crawler or self.LNR_Crippled then return end
+	if self.VJ_IsBeingControlled == false && self.CanSwapBetweenFloorAndFeet == true && self.Crawling == true then
+			local anim = {"infectionrise2"}				
+			self:VJ_ACT_PLAYACTIVITY(anim,true,false,false)
+            self:GetTheFuckUp()
+			self.Crawling = false
+		end
+	
+	if self.VJ_IsBeingControlled == true && self.VJ_TheController:KeyDown(IN_WALK) && self.CanSwapBetweenFloorAndFeet == true then
+		if self.Crawling == false then
+			local anim = {"vjseq_nz_death_1","vjseq_nz_death_f_7","vjseq_nz_death_f_8"}				
+			self:VJ_ACT_PLAYACTIVITY(anim,true,false,false)
+            self:Cripple()
+			self.Crawling = true
+		elseif self.Crawling == true then
+			local anim = {"infectionrise2"}				
+			self:VJ_ACT_PLAYACTIVITY(anim,true,false,false)
+            self:GetTheFuckUp()
+			self.Crawling = false
+        end			
+		self.CanSwapBetweenFloorAndFeet = false
+		timer.Simple(1,function() if IsValid(self) then
+			self.CanSwapBetweenFloorAndFeet = true
+		end end)
+	end
+	
+	
+	
+end
+---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:IsDirtGround(pos)
 	local tr = util.TraceLine({
 		start = pos,
@@ -618,6 +602,9 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:Controller_IntMsg(ply)
 	ply:ChatPrint("DUCK: Break Door (If Valid & Option Is Enabled)")
+	-- ply:ChatPrint("WALK: Break Door (If Valid & Option Is Enabled)")
+	ply:ChatPrint("WALK: Swap between Crawling and Standing (does not work if crippled)")
+	-- ply:ChatPrint("DUCK: Swap between Crawling and Standing (does not work if crippled)")
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 -- function ENT:CustomOnChangeMovementType(movType)	
@@ -698,7 +685,7 @@ end
      if IsValid(self.WeaponModel) && self.LNR_RArmDamaged && !self.LNR_CanUseWeapon then self.MeleeAttackDamage = math.Rand(25,30) end		
 end	
 -- When Crawling or Crippled --
-    if !self.LNR_LArmDamaged && !self.LNR_RArmDamaged && !self.LNR_Biter && (self.LNR_Crawler or self.LNR_Crippled) then
+    if !self.LNR_LArmDamaged && !self.LNR_RArmDamaged && !self.LNR_Biter && (self.LNR_Crawler or self.LNR_Crippled or self.Crawling) then
 	if self.LNR_Walker then
 	    self.AnimTbl_MeleeAttack = {"vjseq_crawl_attack"}	
 	elseif self.LNR_Infected then
@@ -777,7 +764,7 @@ end
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:CustomOnFlinch_BeforeFlinch(dmginfo,hitgroup)
-   if self.LNR_Crawler or self.LNR_Crippled then return end	
+   if self.LNR_Crawler or self.LNR_Crippled or self.Crawling then return end	
 	if dmginfo:GetDamage() > 24 or dmginfo:GetDamageForce():Length() > 5000 then
 	-- if dmginfo:GetDamage() > 1 or dmginfo:GetDamageForce():Length() > 1 then
 		if hitgroup == HITGROUP_HEAD then
@@ -799,7 +786,7 @@ end
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:CustomOnTakeDamage_BeforeDamage(dmginfo,hitgroup)
-	if GetConVar("VJ_LNR_Headshot") == 1 && self.LNR_CanBeHeadshot && hitgroup == HITGROUP_HEAD then
+	if GetConVar("VJ_LNR_Headshot"):GetInt() == 1 && self.LNR_CanBeHeadshot && hitgroup == HITGROUP_HEAD then
 		dmginfo:SetDamage(self:Health())
 end
 end
@@ -811,20 +798,25 @@ function ENT:CustomOnTakeDamage_AfterDamage(dmginfo,hitgroup)
 		if dmginfo:IsBulletDamage() or dmginfo:IsDamageType(DMG_BUCKSHOT) or dmginfo:IsDamageType(DMG_SNIPER) then
 			if hitgroup == HITGROUP_HEAD or hitgroup == HITGROUP_CHEST or hitgroup == HITGROUP_STOMACH then
 				if self.LNR_NextStumbleT < CurTime() then
-					if dmginfo:GetDamage() > 49 or dmginfo:GetDamageForce():Length() > 10000 then
-					if math.random (1,2) == 1 then
+					-- if dmginfo:GetDamage() > 49 or dmginfo:GetDamageForce():Length() > 10000 then
+					-- if dmginfo:GetDamage() > 74 or dmginfo:GetDamageForce():Length() > 14999 then
+					if dmginfo:GetDamage() > 84 or dmginfo:GetDamageForce():Length() > 12499 then
+					-- if math.random (1,2) == 1 then
+					if math.random (1,1) == 1 then
 					self:VJ_ACT_PLAYACTIVITY(ACT_BIG_FLINCH,true,false,false)
-					self.LNR_NextStumbleT = CurTime() + 5
+					self.LNR_NextStumbleT = CurTime() + 7
 					end
-					elseif dmginfo:GetDamage() > 24 or dmginfo:GetDamageForce():Length() > 5000 then
+					-- elseif dmginfo:GetDamage() > 24 or dmginfo:GetDamageForce():Length() > 5000 then
+					elseif dmginfo:GetDamage() > 39 or dmginfo:GetDamageForce():Length() > 7499 then
 					if math.random (1,3) == 1 then
 					self:VJ_ACT_PLAYACTIVITY(ACT_SMALL_FLINCH,true,false,false)
-					self.LNR_NextStumbleT = CurTime() + 5
+					self.LNR_NextStumbleT = CurTime() + 7
 					end
 					else
 					if math.random (1,5) == 1 then
 					self:VJ_ACT_PLAYACTIVITY(ACT_STEP_BACK,true,1.6)
-					self.LNR_NextStumbleT = CurTime() + 3
+					-- self.LNR_NextStumbleT = CurTime() + 3
+					self.LNR_NextStumbleT = CurTime() + 6
 					end
 					end
 				end
@@ -832,9 +824,11 @@ function ENT:CustomOnTakeDamage_AfterDamage(dmginfo,hitgroup)
 				-- self.LNR_NextStumbleT = CurTime() + 1
 			elseif hitgroup == HITGROUP_LEFTLEG or hitgroup == HITGROUP_RIGHTLEG then		 
 				if self.LNR_NextStumbleT < CurTime() then
-					if math.random (1,5) == 1 then
+					-- if math.random (1,5) == 1 then
+					if math.random (1,3) == 1 then
 					self:VJ_ACT_PLAYACTIVITY(ACT_STEP_FORE,true,1.6)
-					self.LNR_NextStumbleT = CurTime() + 10
+					-- self.LNR_NextStumbleT = CurTime() + 10
+					self.LNR_NextStumbleT = CurTime() + 3
 					-- self.LNR_NextStumbleT = CurTime() + 1
 				end
 				end
@@ -868,13 +862,14 @@ function ENT:CustomOnTakeDamage_AfterDamage(dmginfo,hitgroup)
 		end
 		    return !self.LNR_Crawler && !self.LNR_Crippled && self:GetSequence() != self:LookupSequence(ACT_BIG_FLINCH) && self:GetSequence() != self:LookupSequence(ACT_SMALL_FLINCH)
 	end
-			if GetConVar("VJ_LNR_Cripple") == 1 then
+			if GetConVar("VJ_LNR_Cripple"):GetInt() == 1 then 
 			if hitgroup == HITGROUP_LEFTLEG or hitgroup == HITGROUP_RIGHTLEG then
 			self.LNR_LegHP = self.LNR_LegHP -dmginfo:GetDamage()
 			end
 			end
 			if self.LNR_LegHP <= 0 then
 				self.LNR_Crippled = true
+				if self.Crawling then return end
 				local anim = {"vjseq_nz_death_1","vjseq_nz_death_f_7","vjseq_nz_death_f_8"}				
 				//if math.random(1,4) == 1 then anim = {"vjseq_nz_death_1","vjseq_nz_death_f_7","vjseq_nz_death_f_8"} end
 				self:VJ_ACT_PLAYACTIVITY(anim,true,false,false)
@@ -905,6 +900,37 @@ end
     self:CapabilitiesRemove(bit.bor(CAP_MOVE_JUMP))
 	self:CapabilitiesRemove(bit.bor(CAP_MOVE_CLIMB))
 	self.HasDeathAnimation = false
+end
+---------------------------------------------------------------------------------------------------------------------------------------------
+function ENT:GetTheFuckUp()
+ if self.LNR_Walker then	 
+	self.AnimTbl_IdleStand = {ACT_IDLE}
+	if self.LNR_UsingRelaxedIdle == true then
+		self.AnimTbl_IdleStand = {ACT_IDLE_RELAXED}
+	end
+	self.AnimTbl_Walk = {ACT_WALK}
+	self.AnimTbl_Run = {ACT_WALK}
+	if self.LNR_Runner == true then
+		self.AnimTbl_Run = {ACT_RUN}
+	end
+ elseif self.LNR_Infected then
+	self.AnimTbl_IdleStand = {ACT_IDLE}
+	self.AnimTbl_Walk = {ACT_RUN}
+	self.AnimTbl_Run = {ACT_SPRINT}
+end
+
+	self:SetCollisionBounds(Vector(13, 13, 70), Vector(-13, -13, 0))
+	self.VJC_Data = {
+	CameraMode = 1,
+	ThirdP_Offset = Vector(40, 20, -50),
+	FirstP_Bone = "ValveBiped.Bip01_Head1",
+	FirstP_Offset = Vector(0, 0, 5),
+}
+	
+	self.HasDeathAnimation = true
+	if GetConVar("VJ_LNR_JumpClimb"):GetInt() == 0 or self.LNR_Crawler or self.LNR_Crippled then return end
+    self:CapabilitiesAdd(bit.bor(CAP_MOVE_JUMP))
+	self:CapabilitiesAdd(bit.bor(CAP_MOVE_CLIMB))
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:CustomOnPriorToKilled(dmginfo, hitgroup)
