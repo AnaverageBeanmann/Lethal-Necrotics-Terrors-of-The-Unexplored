@@ -1,0 +1,17 @@
+"vertexlitgeneric"
+{
+	"$baseTexture"		"models/lns/bomber/infected/face_01_inf"
+	"$bumpmap"		"models/lns/bomber/face_01_normal"
+
+ 	"$halflambert"		"1"
+
+	"$phong"			"1"
+	"$phongboost"		"1"
+	"$phongfresnelranges"	"[0.04]"
+	"$phongexponent"		"10"
+	"$phongalbedotint"		"1"
+                  $detail models\mbczombies\detail\ci_detail_dirt
+                  $detailscale 7.74
+                  $detailblendfactor 0.8
+                  $detailblendmode 0
+}

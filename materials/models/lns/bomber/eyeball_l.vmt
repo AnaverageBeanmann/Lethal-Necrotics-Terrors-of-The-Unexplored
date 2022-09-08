@@ -1,0 +1,6 @@
+"UnlitGeneric"
+{
+	"$basetexture"		"models/lns/bomber/eyeball_l"
+	"$iris"			"models/lns/bomber/pupil_l"
+	"$selfillum" 1 
+}
