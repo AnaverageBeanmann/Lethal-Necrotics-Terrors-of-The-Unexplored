@@ -27,7 +27,9 @@ if VJExists == true then
 	VJ.AddNPC("Base Walker","npc_vj_totu_base_walker",vCat)
 	VJ.AddNPC("Base Infected","npc_vj_totu_base_infected",vCat)
 	
-	-- add Idle_Alert_Injured_Straight_02
+	-- add get existing zombies fixed first before adding new ones!
+	--ask doofus if he can tweak the stalker idles so the left arm doesn't clip through the left leg
+	-- rename scraggler to Nightkin
 	
 	--Add these
 	--Morti Scientist
@@ -40,8 +42,12 @@ if VJExists == true then
 	--Morti Zombie (HL2 Civvie Zombs, Scientists/Security/Test Subjects)
 	--Morti Hazmat Zombie
 	--Morti N.O.R.U. Zombie
+	--Filth (Cleaner Zombies)
 	
 	--Rename Revenant to Metastasis?
+	
+	-- Do these ones currently
+	-- Military Zombies
 	
 	-- Definitely Keeping
 		-- Bubbler/Chelonioidea/Shellback
@@ -115,6 +121,7 @@ if VJExists == true then
 	
 		--Military
 			-- VJ.AddNPC("Military Zombie (Walker)","npc_vj_ln_totu_military_walker",vCat)
+			VJ.AddNPC("Grunt (Walker)","npc_vj_totu_milzomb_walker",vCat)
 			-- VJ.AddNPC("Military Zombie (Infected)","npc_vj_ln_totu_military_infected",vCat)
 			-- VJ.AddNPC("Cloaker (Walker)","npc_vj_ln_totu_cloaker_walker",vCat)
 			-- VJ.AddNPC("Cloaker (Infected)","npc_vj_ln_totu_cloaker_infected",vCat)
