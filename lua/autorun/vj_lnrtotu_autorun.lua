@@ -31,6 +31,10 @@ if VJExists == true then
 	--ask doofus if he can tweak the stalker idles so the left arm doesn't clip through the left leg
 	-- rename scraggler to Nightkin
 	
+	-- make weapon dropping its own function and make it so it runs if the death key is used or it ragdoll deaths
+	-- add special animations for right-arm only moving attacks and movement anims where their right arm is always pointed at you
+	-- set up the rest of the events for the new animations!
+	
 	--Add these
 	--Morti Scientist
 	--Morti Test Subject
@@ -120,15 +124,24 @@ if VJExists == true then
 			-- VJ.AddNPC("Bubbler/Chelonioidea (Old Version)","npc_vj_ln_totu_bubbler_old",vCat2)
 	
 		--Military
-			-- VJ.AddNPC("Military Zombie (Walker)","npc_vj_ln_totu_military_walker",vCat)
 			VJ.AddNPC("Grunt (Walker)","npc_vj_totu_milzomb_walker",vCat)
-			-- VJ.AddNPC("Military Zombie (Infected)","npc_vj_ln_totu_military_infected",vCat)
+			VJ.AddNPC("Grunt (Infected)","npc_vj_totu_milzomb_infected",vCat)
+			-- set up radio sounds for these!
+			
 			-- VJ.AddNPC("Cloaker (Walker)","npc_vj_ln_totu_cloaker_walker",vCat)
 			-- VJ.AddNPC("Cloaker (Infected)","npc_vj_ln_totu_cloaker_infected",vCat)
 			-- VJ.AddNPC("Suicider","npc_vj_ln_totu_suicider",vCat)
-			-- VJ.AddNPC("Gunner","npc_vj_ln_totu_gunner",vCat)
 
-			-- VJ.AddNPC("Juggernaut","npc_vj_ln_totu_juggernaut",vCat)
+			VJ.AddNPC("Juggernaut","npc_vj_totu_milzomb_juggernaut",vCat) -- do this one
+			-- big boi
+			-- skullface
+			-- walker
+			-- can occasionally run for short periods of time
+			-- flak armor
+			-- use death_04
+			-- voiced by demolishers?
+			
+			
 			-- VJ.AddNPC("Bulldozer","npc_vj_ln_totu_bulldozer",vCat)
 	
 		--Coastline/Aquatic

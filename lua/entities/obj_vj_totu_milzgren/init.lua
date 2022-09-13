@@ -25,7 +25,7 @@ function ENT:CustomOnInitialize()
 	self.SoundTbl_Idle = {"weapons/grenade/tick1.wav"}
 	-- self.SoundTbl_Idle = {"weapons/hegrenade/beep.wav"}
 	self.IdleSoundPitch = VJ_Set(100, 100)
-	self.IdleSoundLevel = 90
+	self.IdleSoundLevel = 70
 	
 	self.NextSoundTime_Idle = VJ_Set(0.9, 0.9)
 	timer.Simple(1.5,function() if IsValid(self) then

@@ -16,11 +16,7 @@ ENT.VJC_Data = {
 }
 ---------------------------------------------------------------------------------------------------------------------------------------------
 ENT.VJ_NPC_Class = {"CLASS_ZOMBIE"}
--- ENT.AnimTbl_IdleStand = {ACT_IDLE_AIM_RELAXED} -- make the stalker idles this
--- ENT.AnimTbl_IdleStand = {ACT_BUSY_SIT_GROUND} -- sitting
--- ENT.AnimTbl_Walk = {ACT_WALK_ON_FIRE}
 ENT.AnimTbl_Run = {ACT_WALK}
--- ENT.AnimTbl_Run = {ACT_RUN_AGITATED}
 ---------------------------------------------------------------------------------------------------------------------------------------------
 ENT.CustomBlood_Particle = {"lnr_bullet_impact_01","lnr_bullet_impact_02","lnr_bullet_impact_03","lnr_bullet_impact_04"}
 ENT.ImmuneDamagesTable = {DMG_RADIATION}
@@ -85,13 +81,14 @@ ENT.CanDoTheFunny = true
 ENT.CanDoBigFlinchy = true
 ENT.NextSplodeStumbleT = 0
 ENT.CanSwapBetweenFloorAndFeet = true
-ENT.Crawling = false
+ENT.ToTU_Crawling = false
 ENT.CanMutate = false
 ENT.Mutated = false
 ENT.CanBurntate = false
 ENT.Burntated = false
 ENT.LNR_CanUseWeapon = false
 ENT.WeHaveAWeapon = false
+ENT.MilZ_IsMilZ = false
 	-- ====== Sound File Paths ====== --
 -- Leave blank if you don't want any sounds to play
 ENT.FootSteps = {
@@ -321,7 +318,9 @@ ENT.SoundTbl_Death = {"test/MR_WHITR_NOOOO.mp3",
 	"vo/ravenholm/exit_salvation.wav",
 	"vo/ravenholm/firetrap_welldone.wav",
 	"vo/ravenholm/monk_death07.wav",
-	"vo/ravenholm/monk_helpme03.wav"}
+	"vo/ravenholm/monk_helpme03.wav",
+	"test/JESSE.mp3",
+	"test/JESSE2.mp3"}
 ENT.SoundTbl_MeleeAttack = {
 	"vj_lnrhl2/shared/melee/hit_punch_01.wav",
 	"vj_lnrhl2/shared/melee/hit_punch_02.wav",
@@ -383,7 +382,7 @@ function ENT:CustomOnInitialize()
 	end
 	if GetConVar("VJ_LNR_Biter"):GetInt() == 1  && !self.LNR_Crawler then
 		if self:GetClass() == "npc_vj_totu_milzomb_walker" && !self.MilZ_HasGasmask == true then
-			if math.random(1,3) == 1 && !self.LNR_Infected && self:GetClass() != "npc_vj_lnrhl2_rebel_hvy" && self:GetClass() != "npc_vj_lnrhl2_rebel_tau" && self:GetClass() != "npc_vj_lnrhl2_combine_hvy" && self:GetClass() != "npc_vj_lnrhl2_combine" && self:GetClass() != "npc_vj_lnrhl2_combine_assn" && self:GetClass() != "npc_vj_lnrhl2_civilp" then 
+			if math.random(1,3) == 1 && !self.LNR_Infected && self:GetClass() != "npc_vj_totu_milzomb_juggernaut" then 
 			self.LNR_Biter = true
 			end
 		end
@@ -408,7 +407,7 @@ function ENT:Zombie_CustomOnInitialize() end -- For additional initialize option
 
 function ENT:ZombieWeapons()
 	self.WeHaveAWeapon = true
-	if self:GetClass() == "npc_vj_totu_milzomb_walker" then
+	if self:GetClass() == "npc_vj_totu_milzomb_walker" or self:GetClass() == "npc_vj_totu_milzomb_infected" then
 	local milzwep = math.random(1,2)
 	if milzwep == 1 then
 		self.MeleeAttackBleedEnemy = true -- Should the enemy bleed when attacked by melee?
@@ -417,6 +416,7 @@ function ENT:ZombieWeapons()
 		self.MeleeAttackBleedEnemyTime = 1 -- How much time until the next repetition?
 		self.MeleeAttackBleedEnemyReps = 4 -- How many repetitions?
 		self.MilZ_HasKnife = true
+self.MeleeAttackDamageType = DMG_SLASH
 
 			self.WeaponModel = ents.Create("prop_physics")	
 			self.WeaponModel:SetModel("models/vj_lnrhl2/weapons/w_knife_ct.mdl")
@@ -508,12 +508,28 @@ function ENT:CustomOnAcceptInput(key,activator,caller,data)
 		self:FootStepSoundCode()
 	end
 	
-	if key == "step" && self:GetClass() == "npc_vj_totu_milzomb_walker" then
-		VJ_EmitSound(self,"vj_lnrhl2/zombine/gear"..math.random(1,3)..".wav",self.FootStepSoundLevel,self:VJ_DecideSoundPitch(self.FootStepPitch.a,self.FootStepPitch.b))
+	if key == "step" then
+		if self.MilZ_IsMilZ then
+			if self:GetActivity() == ACT_RUN or self:GetActivity() == ACT_RUN_AIM or self:GetActivity() == ACT_SPRINT then
+				VJ_EmitSound(self,"npc/combine_soldier/gear"..math.random(1,6)..".wav",self.FootStepSoundLevel,self:VJ_DecideSoundPitch(self.FootStepPitch.a,self.FootStepPitch.b))
+			else
+				VJ_EmitSound(self,"vj_lnrhl2/zombine/gear"..math.random(1,3)..".wav",self.FootStepSoundLevel,self:VJ_DecideSoundPitch(self.FootStepPitch.a,self.FootStepPitch.b))
+			end
+		end
 	end
 	
-	if key == "step" && self:GetClass() == "npc_vj_totu_milzomb_walker" && self.MilZ_HasFlakSuit == true then
-		VJ_EmitSound(self,"zombies/military/suicider/step_"..math.random(1,4)..".mp3",self.FootStepSoundLevel,self:VJ_DecideSoundPitch(self.FootStepPitch.a,self.FootStepPitch.b))
+	if key == "step" then
+		if self.MilZ_IsMilZ then
+			if self.MilZ_HasFlakSuit == true then
+				VJ_EmitSound(self,"zombies/military/suicider/step_"..math.random(1,4)..".mp3",self.FootStepSoundLevel,self:VJ_DecideSoundPitch(self.FootStepPitch.a,self.FootStepPitch.b))
+			end
+		end
+	end
+	
+	if key == "step" then
+		if self:GetClass() == "npc_vj_totu_milzomb_juggernaut" then
+			VJ_EmitSound(self,"zombies/military/juggernaut/step_"..math.random(1,6)..".mp3",self.FootStepSoundLevel,self:VJ_DecideSoundPitch(self.FootStepPitch.a,self.FootStepPitch.b))
+		end
 	end
 	
 	if key == "infection_step" && self:IsOnGround() then
@@ -549,14 +565,22 @@ function ENT:CustomOnAcceptInput(key,activator,caller,data)
 end				
 	if key == "death" then
 		VJ_EmitSound(self,"physics/body/body_medium_impact_soft"..math.random(1,7)..".wav",75,100)
+		self:DropTheFuckignWeaponGoddamn()
 	end
 	
-	if key == "death" && self:GetClass() == "npc_vj_totu_milzomb_walker" then
+	if key == "death" && self.MilZ_IsMilZ then
 		VJ_EmitSound(self,"vj_lnrhl2/zombine/gear"..math.random(1,3)..".wav",self.FootStepSoundLevel,self:VJ_DecideSoundPitch(self.FootStepPitch.a,self.FootStepPitch.b))
 	end
 	
-	if key == "death" && self:GetClass() == "npc_vj_totu_milzomb_walker" && self.MilZ_HasFlakSuit == true then
-		VJ_EmitSound(self,"zombies/military/suicider/step_"..math.random(1,4)..".mp3",self.FootStepSoundLevel,self:VJ_DecideSoundPitch(self.FootStepPitch.a,self.FootStepPitch.b))
+	if key == "death" && self.MilZ_IsMilZ then
+		if self.MilZ_HasFlakSuit == true then
+			VJ_EmitSound(self,"zombies/military/suicider/step_"..math.random(1,4)..".mp3",self.FootStepSoundLevel,self:VJ_DecideSoundPitch(self.FootStepPitch.a,self.FootStepPitch.b))
+		end
+	end
+	
+	if key == "death" && self:GetClass() == "npc_vj_totu_milzomb_juggernaut" then
+		VJ_EmitSound(self,"zombies/military/juggernaut/step_"..math.random(1,6)..".mp3",self.FootStepSoundLevel,self:VJ_DecideSoundPitch(self.FootStepPitch.a,self.FootStepPitch.b))
+		util.ScreenShake(self:GetPos(), self.WorldShakeOnMoveAmplitude, self.WorldShakeOnMoveFrequency, self.WorldShakeOnMoveDuration, self.WorldShakeOnMoveRadius)
 	end
 	
 	if key == "death" && self:WaterLevel() > 0 && self:WaterLevel() < 3 then
@@ -623,25 +647,31 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:CustomOnThink_AIEnabled()
 	if self.LNR_Crawler or self.LNR_Crippled then return end
-	if self.VJ_IsBeingControlled == false && self.CanSwapBetweenFloorAndFeet == true && self.Crawling == true then
-			local anim = {"infectionrise2"}				
+	if self.VJ_IsBeingControlled == false && self.CanSwapBetweenFloorAndFeet == true && self.ToTU_Crawling == true then
+			local anim = {"vjseq_Crouch_to_stand"}				
 			self:VJ_ACT_PLAYACTIVITY(anim,true,false,false)
             self:GetTheFuckUp()
-			self.Crawling = false
+			self.ToTU_Crawling = false
 		end
+	-- if self.VJ_IsBeingControlled == false && self.CanSwapBetweenFloorAndFeet == true && self.ToTU_Crawling == false then
+			-- local anim = {"vjseq_Stand_to_crouch"}				
+			-- self:VJ_ACT_PLAYACTIVITY(anim,true,false,false)
+            -- self:StartCrawling()
+			-- self.ToTU_Crawling = true
+		-- end
 	
 	if self.VJ_IsBeingControlled == true && self.VJ_TheController:KeyDown(IN_WALK) && self.CanSwapBetweenFloorAndFeet == true then
-		if self.Crawling == false then
+		if self.ToTU_Crawling == false then
 			-- local anim = {"vjseq_nz_death_1","vjseq_nz_death_f_7","vjseq_nz_death_f_8"}				
-			local anim = {"vjseq_slumpenter_b"}				
+			local anim = {"vjseq_Stand_to_crouch"}				
 			self:VJ_ACT_PLAYACTIVITY(anim,true,false,false)
-            self:Cripple()
-			self.Crawling = true
-		elseif self.Crawling == true then
-			local anim = {"infectionrise2"}				
+            self:StartCrawling()
+			self.ToTU_Crawling = true
+		elseif self.ToTU_Crawling == true then
+			local anim = {"vjseq_Crouch_to_stand"}				
 			self:VJ_ACT_PLAYACTIVITY(anim,true,false,false)
             self:GetTheFuckUp()
-			self.Crawling = false
+			self.ToTU_Crawling = false
         end			
 		self.CanSwapBetweenFloorAndFeet = false
 		timer.Simple(1,function() if IsValid(self) then
@@ -823,7 +853,7 @@ end
      if IsValid(self.WeaponModel) && self.LNR_RArmDamaged && !self.LNR_CanUseWeapon then self.MeleeAttackDamage = math.Rand(25,30) end		
 end	
 -- When Crawling or Crippled --
-    if !self.LNR_LArmDamaged && !self.LNR_RArmDamaged && !self.LNR_Biter && (self.LNR_Crawler or self.LNR_Crippled or self.Crawling) then
+    if !self.LNR_LArmDamaged && !self.LNR_RArmDamaged && !self.LNR_Biter && (self.LNR_Crawler or self.LNR_Crippled) then
 	if self.LNR_Walker then
 	    self.AnimTbl_MeleeAttack = {"vjseq_crawl_attack"}	
 	elseif self.LNR_Infected then
@@ -833,6 +863,46 @@ end
         self.MeleeAttackDistance = 15
         self.MeleeAttackDamageDistance = 45			
 end	
+    if !self.LNR_LArmDamaged && !self.LNR_RArmDamaged && !self.LNR_Biter && self.ToTU_Crawling == true then
+		if self.WeHaveAWeapon == true then
+			if self.LNR_Walker then
+				self.AnimTbl_MeleeAttack = {"vjges_nz_attack_walk_ad_right_only_1",
+				"vjgesnz_attack_walk_au_right_only_1"}
+			elseif self.LNR_Infected then
+				self.AnimTbl_MeleeAttack = {"vjges_nz_attack_run_ad_right_only_1",
+				"vjges_nz_attack_run_ad_right_only_2",
+				"vjges_nz_attack_run_ad_right_only_4",
+				"vjges_nz_attack_run_au_right_only_1",
+				"vjges_nz_attack_run_au_right_only_2",
+				"vjges_nz_attack_run_au_right_only_4"}
+			end
+		else
+			if self.LNR_Walker then
+				self.AnimTbl_MeleeAttack = {
+		"vjges_nz_attack_walk_ad_1",
+		"vjges_nz_attack_walk_ad_2",
+		"vjges_nz_attack_walk_ad_3",
+		"vjges_nz_attack_walk_ad_4",
+		"vjges_nz_attack_walk_au_1",
+		"vjges_nz_attack_walk_au_2",
+		"vjges_nz_attack_walk_au_3",
+		"vjges_nz_attack_walk_au_4"}	
+			elseif self.LNR_Infected then
+				self.AnimTbl_MeleeAttack = {
+		"vjges_nz_attack_run_ad_1",
+		"vjges_nz_attack_run_ad_2",
+		"vjges_nz_attack_run_ad_3",
+		"vjges_nz_attack_run_ad_4",
+		"vjges_nz_attack_run_au_1",
+		"vjges_nz_attack_run_au_2",
+		"vjges_nz_attack_run_au_3",
+		"vjges_nz_attack_run_au_4"}
+			end
+		end
+		self.MeleeAttackAnimationAllowOtherTasks = false	
+        self.MeleeAttackDistance = 30
+        self.MeleeAttackDamageDistance = 50			
+	end	
 -- When Dismembered or for Biters --
     if (self.LNR_LArmDamaged && self.LNR_RArmDamaged) or self.LNR_Biter then
 	if self:IsMoving() or self.LNR_Crippled or self.LNR_Crawler then
@@ -856,7 +926,7 @@ end
         self.MeleeAttackDamageType = DMG_NERVEGAS	
 end		
 -- When Standing --
-    if (self.LNR_LArmDamaged && self.LNR_RArmDamaged) or self.LNR_Crawler or self.LNR_Crippled or self.LNR_Biter then return end
+    if (self.LNR_LArmDamaged && self.LNR_RArmDamaged) or self.LNR_Crawler or self.LNR_Crippled or self.LNR_Biter or self.ToTU_Crawling then return end
     if !self:IsMoving() then
 	    self.MeleeAttackAnimationAllowOtherTasks = false
 		if self.WeHaveAWeapon == true then
@@ -880,12 +950,20 @@ end
 -- When Walking --
 	if self:IsMoving() then
     if self:GetActivity() == ACT_WALK or self:GetActivity() == ACT_WALK_AIM	then
-		-- if self.WeHaveAWeapon == true then
-		-- self.AnimTbl_MeleeAttack = { -- add seperate right arm only attacks to animation model and rename activity to avoid conflicts
-		-- "vjges_nz_attack_walk_ad_1",
-		-- "vjges_nz_attack_walk_au_1",
-		-- }
-		-- else
+		if self.WeHaveAWeapon == true then
+		self.AnimTbl_MeleeAttack = {"vjges_nz_attack_walk_ad_right_only_1",
+				"vjgesnz_attack_walk_au_right_only_1"
+		}
+		elseif self:GetClass() == "npc_vj_totu_milzomb_juggernaut" then
+		self.AnimTbl_MeleeAttack = {
+		"vjges_CI_Melee_Moving01",
+		"vjges_CI_Melee_Moving02",
+		"vjges_CI_Melee_Moving03",
+		"vjges_CI_Melee_Moving04",
+		"vjges_CI_Melee_Moving05",
+		"vjges_CI_Melee_Moving06"
+		}
+	else
 		self.AnimTbl_MeleeAttack = {
 		"vjges_nz_attack_walk_ad_1",
 		"vjges_nz_attack_walk_ad_2",
@@ -897,9 +975,26 @@ end
 		"vjges_nz_attack_walk_au_4"
 }	
 end		
--- end		
+end		
 -- When Running/Sprinting --		
     if self:GetActivity() == ACT_RUN or self:GetActivity() == ACT_RUN_AIM or self:GetActivity() == ACT_SPRINT then
+		if self.WeHaveAWeapon == true then
+		self.AnimTbl_MeleeAttack = {"vjges_nz_attack_run_ad_right_only_1",
+				"vjges_nz_attack_run_ad_right_only_2",
+				"vjges_nz_attack_run_ad_right_only_4",
+				"vjges_nz_attack_run_au_right_only_1",
+				"vjges_nz_attack_run_au_right_only_2",
+				"vjges_nz_attack_run_au_right_only_4"}
+		elseif self:GetClass() == "npc_vj_totu_milzomb_juggernaut" then
+		self.AnimTbl_MeleeAttack = {
+		"vjges_CI_Melee_Moving01",
+		"vjges_CI_Melee_Moving02",
+		"vjges_CI_Melee_Moving03",
+		"vjges_CI_Melee_Moving04",
+		"vjges_CI_Melee_Moving05",
+		"vjges_CI_Melee_Moving06"
+		}
+	else
 		self.AnimTbl_MeleeAttack = {
 		"vjges_nz_attack_run_ad_1",
 		"vjges_nz_attack_run_ad_2",
@@ -911,12 +1006,13 @@ end
 		"vjges_nz_attack_run_au_4"
 }	
 end
+end
 		self.MeleeAttackAnimationAllowOtherTasks = true
     end		
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:CustomOnFlinch_BeforeFlinch(dmginfo,hitgroup)
-   if self.LNR_Crawler or self.LNR_Crippled or self.Crawling then return end	
+   if self.LNR_Crawler or self.LNR_Crippled or self.ToTU_Crawling then return end	
 	-- if dmginfo:GetDamage() > 24 or dmginfo:GetDamageForce():Length() > 5000 then
 	if dmginfo:GetDamage() > 19 or dmginfo:GetDamageForce():Length() > 5000 then
 	-- if dmginfo:GetDamage() > 1 or dmginfo:GetDamageForce():Length() > 1 then
@@ -928,17 +1024,9 @@ function ENT:CustomOnFlinch_BeforeFlinch(dmginfo,hitgroup)
 			self:VJ_ACT_PLAYACTIVITY("vjges_ep_flinch_leftArm",true,false)
 		elseif hitgroup == HITGROUP_RIGHTARM then
 			self:VJ_ACT_PLAYACTIVITY("vjges_ep_flinch_rightArm",true,false)
-			if IsValid(self.WeaponModel) && self.WeHaveAWeapon then
-				self:CreateGibEntity("prop_physics",self.WeaponModel:GetModel(),{Pos=self:GetAttachment(self:LookupAttachment("anim_attachment_RH")).Pos,Ang=self:GetAngles(),Vel="UseDamageForce"}) self.WeaponModel:SetMaterial("lnr/bonemerge") self.WeaponModel:DrawShadow(false) self.WeHaveAWeapon = false
-				self.WeaponModel:Remove()	
-				self.SoundTbl_MeleeAttackMiss = {"npc/zombie/claw_miss2.wav","npc/zombie/claw_miss1.wav"}
-				if self.MilZ_HasKnife == true then
-					self.MeleeAttackBleedEnemy = false -- Should the enemy bleed when attacked by melee?
-				end
-				if self.MilZ_HasGun == true then
-					self.MilZ_HasGun = false
-				end
-			end
+			
+			self:DropTheFuckignWeaponGoddamn()
+			
 		elseif hitgroup == HITGROUP_LEFTLEG then
 			self:VJ_ACT_PLAYACTIVITY("vjseq_flinch_leftleg",true,false)
 		elseif hitgroup == HITGROUP_RIGHTLEG then
@@ -958,25 +1046,44 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:ArmorDamage(dmginfo,hitgroup) end -- For SNPCs that have armor
 ---------------------------------------------------------------------------------------------------------------------------------------------
+function ENT:DropTheFuckignWeaponGoddamn()
+	if IsValid(self.WeaponModel) && self.WeHaveAWeapon then
+	
+self.MeleeAttackDamageType = DMG_CLUB
+		-- self:CreateGibEntity("prop_physics",self.WeaponModel:GetModel(),{Pos=self:GetAttachment(self:LookupAttachment("anim_attachment_RH")).Pos,Ang=self:GetAngles(),Vel="UseDamageForce"}) self.WeaponModel:SetMaterial("lnr/bonemerge") self.WeaponModel:DrawShadow(false) self.WeHaveAWeapon = false
+		self:CreateGibEntity("prop_physics",self.WeaponModel:GetModel(),{Pos=self:GetAttachment(self:LookupAttachment("anim_attachment_RH")).Pos,Ang=self:GetAngles()}) self.WeaponModel:SetMaterial("lnr/bonemerge") self.WeaponModel:DrawShadow(false) self.WeHaveAWeapon = false
+		self.WeaponModel:Remove()	
+		self.SoundTbl_MeleeAttackMiss = {"npc/zombie/claw_miss2.wav","npc/zombie/claw_miss1.wav"}
+		if self.MilZ_HasKnife == true then
+			self.MeleeAttackBleedEnemy = false -- Should the enemy bleed when attacked by melee?
+		end
+		if self.MilZ_HasGun == true then	
+			self.MilZ_HasGun = false
+		end
+	end
+end
+---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:CustomOnTakeDamage_AfterDamage(dmginfo,hitgroup)
 	if self.CanDoTheFunny == false or self.LNR_Crawler or self.LNR_Crippled then return end
 	-- if math.random (1,1) == 1 then
 	-- if math.random (1,16) == 1 then
 		if dmginfo:IsBulletDamage() or dmginfo:IsDamageType(DMG_BUCKSHOT) or dmginfo:IsDamageType(DMG_SNIPER) then
 			if hitgroup == HITGROUP_HEAD or hitgroup == HITGROUP_CHEST or hitgroup == HITGROUP_STOMACH then
-				if self.LNR_NextStumbleT < CurTime() then
+				if self.LNR_NextStumbleT < CurTime() && self:GetSequence() != self:LookupSequence(ACT_BIG_FLINCH) && self:GetSequence() != self:LookupSequence(ACT_SMALL_FLINCH) then
 					-- if dmginfo:GetDamage() > 49 or dmginfo:GetDamageForce():Length() > 10000 then
 					-- if dmginfo:GetDamage() > 74 or dmginfo:GetDamageForce():Length() > 14999 then
 					if dmginfo:GetDamage() > 84 or dmginfo:GetDamageForce():Length() > 12499 then
 					-- if math.random (1,2) == 1 then
 					if math.random (1,1) == 1 then
 					self:VJ_ACT_PLAYACTIVITY(ACT_BIG_FLINCH,true,false,false)
+				self:SetState(VJ_STATE_ONLY_ANIMATION)
 					self.LNR_NextStumbleT = CurTime() + 7
 					end
 					-- elseif dmginfo:GetDamage() > 24 or dmginfo:GetDamageForce():Length() > 5000 then
 					elseif dmginfo:GetDamage() > 39 or dmginfo:GetDamageForce():Length() > 7499 then
 					if math.random (1,3) == 1 then
 					self:VJ_ACT_PLAYACTIVITY(ACT_SMALL_FLINCH,true,false,false)
+				self:SetState(VJ_STATE_ONLY_ANIMATION)
 					self.LNR_NextStumbleT = CurTime() + 7
 					end
 					else
@@ -990,27 +1097,43 @@ function ENT:CustomOnTakeDamage_AfterDamage(dmginfo,hitgroup)
 				-- self.LNR_NextStumbleT = CurTime() + 10
 				-- self.LNR_NextStumbleT = CurTime() + 1
 			elseif hitgroup == HITGROUP_LEFTLEG or hitgroup == HITGROUP_RIGHTLEG then		 
-				if self.LNR_NextStumbleT < CurTime() then
-					-- if math.random (1,5) == 1 then
-					if math.random (1,3) == 1 then
+				if self.LNR_NextStumbleT < CurTime() && self:GetSequence() != self:LookupSequence(ACT_BIG_FLINCH) && self:GetSequence() != self:LookupSequence(ACT_SMALL_FLINCH) then
+					if self:GetActivity() == ACT_SPRINT or self:GetActivity() == ACT_RUN_AIM then
+						if dmginfo:GetDamage() > 19 or dmginfo:GetDamageForce():Length() > 2499 then
+							self:VJ_ACT_PLAYACTIVITY("vjseq_Run_Stumble_01",true,false,false)
+				self:SetState(VJ_STATE_ONLY_ANIMATION)
+							self.LNR_NextStumbleT = CurTime() + 7
+					elseif dmginfo:GetDamage() < 19 or dmginfo:GetDamageForce():Length() < 2499 then
+						if math.random (1,2) == 1 then
+							self:VJ_ACT_PLAYACTIVITY("vjseq_shove_forward_01",true,false,false)
+				self:SetState(VJ_STATE_ONLY_ANIMATION)
+							self.LNR_NextStumbleT = CurTime() + 7
+						end
+					end
+			else
+					if math.random (1,5) == 1 then
 					self:VJ_ACT_PLAYACTIVITY(ACT_STEP_FORE,true,1.6)
 					-- self.LNR_NextStumbleT = CurTime() + 10
 					self.LNR_NextStumbleT = CurTime() + 3
 					-- self.LNR_NextStumbleT = CurTime() + 1
 				end
 				end
+				end
 			end
 		end
-	if dmginfo:IsDamageType(DMG_CLUB) or dmginfo:IsDamageType(DMG_SLASH) or dmginfo:IsDamageType(DMG_GENERIC) or dmginfo:IsDamageType(DMG_SONIC) then
+	if dmginfo:IsDamageType(DMG_CLUB) or dmginfo:IsDamageType(DMG_SLASH) or dmginfo:IsDamageType(DMG_GENERIC) or dmginfo:IsDamageType(DMG_SONIC) or dmginfo:IsDamageType(DMG_CRUSH) then
+		if self:GetSequence() != self:LookupSequence(ACT_BIG_FLINCH) && self:GetSequence() != self:LookupSequence(ACT_SMALL_FLINCH) then
 		if dmginfo:GetDamage() > 49 or dmginfo:GetDamageForce():Length() > 10000 then
 			if self.LNR_NextShoveT < CurTime() then
 				self:VJ_ACT_PLAYACTIVITY(ACT_BIG_FLINCH,true,false,false)
+				self:SetState(VJ_STATE_ONLY_ANIMATION)
 				self.LNR_NextShoveT = CurTime() + math.random(5,8)
 				-- self.LNR_NextShoveT = CurTime() + 1
 			end
 		elseif dmginfo:GetDamage() > 24 or dmginfo:GetDamageForce():Length() > 5000 then
 			if self.LNR_NextShoveT < CurTime() then
 				self:VJ_ACT_PLAYACTIVITY(ACT_SMALL_FLINCH,true,false,false)
+				self:SetState(VJ_STATE_ONLY_ANIMATION)
 				self.LNR_NextShoveT = CurTime() + math.random(5,8)
 				-- self.LNR_NextShoveT = CurTime() + 1
 			end
@@ -1020,6 +1143,7 @@ function ENT:CustomOnTakeDamage_AfterDamage(dmginfo,hitgroup)
 			self.LNR_NextShoveT = CurTime() + math.random(5,8)
 			end
 		end
+		end
     return !self.LNR_Crawler && !self.LNR_Crippled && self:GetSequence() != self:LookupSequence(ACT_BIG_FLINCH) && self:GetSequence() != self:LookupSequence(ACT_SMALL_FLINCH)
 	end
 -- end
@@ -1027,8 +1151,10 @@ function ENT:CustomOnTakeDamage_AfterDamage(dmginfo,hitgroup)
 		if self.NextSplodeStumbleT < CurTime() then
 		if math.random(1,2) == 1 then
 		self:VJ_ACT_PLAYACTIVITY("vjseq_shove_forward_01",true,false,false)
+				self:SetState(VJ_STATE_ONLY_ANIMATION)
 		else
 		self:VJ_ACT_PLAYACTIVITY(ACT_BIG_FLINCH,true,false,false)
+				self:SetState(VJ_STATE_ONLY_ANIMATION)
 		end
 		self.NextSplodeStumbleT = CurTime() + 5
 		end
@@ -1041,7 +1167,7 @@ function ENT:CustomOnTakeDamage_AfterDamage(dmginfo,hitgroup)
 			end
 			if self.LNR_LegHP <= 0 then
 				self.LNR_Crippled = true
-				if self.Crawling then return end
+				if self.ToTU_Crawling then return end
 				local anim = {"vjseq_nz_death_1","vjseq_nz_death_f_7","vjseq_nz_death_f_8"}				
 				//if math.random(1,4) == 1 then anim = {"vjseq_nz_death_1","vjseq_nz_death_f_7","vjseq_nz_death_f_8"} end
 				self:VJ_ACT_PLAYACTIVITY(anim,true,false,false)
@@ -1053,16 +1179,10 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:Cripple()
+	self.CanTurnWhileStationary = false
+	self:DropTheFuckignWeaponGoddamn()
+	self.HasRangeAttack = false
 	
-    if IsValid(self.WeaponModel) && self.WeHaveAWeapon then 
-		self:CreateGibEntity("prop_physics",self.WeaponModel:GetModel(),{Pos=self:GetAttachment(self:LookupAttachment("anim_attachment_RH")).Pos,Ang=self:GetAngles(),Vel="UseDamageForce"}) self.WeaponModel:SetMaterial("lnr/bonemerge") self.WeaponModel:DrawShadow(false) self.WeHaveAWeapon = false
-		self.WeaponModel:Remove()	
-		self.SoundTbl_MeleeAttackMiss = {"npc/zombie/claw_miss2.wav","npc/zombie/claw_miss1.wav"}
-		if self.MilZ_HasKnife == true then
-			self.MeleeAttackBleedEnemy = false -- Should the enemy bleed when attacked by melee?
-		end
-			
-	end	
  if self.LNR_Walker then	 
 	self.AnimTbl_IdleStand = {ACT_IDLE_STIMULATED}
 	self.AnimTbl_Walk = {ACT_WALK_STIMULATED}
@@ -1084,7 +1204,32 @@ end
 	self.HasDeathAnimation = false
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
+function ENT:StartCrawling()
+	self.CanTurnWhileStationary = false
+	
+ if self.LNR_Walker then	 
+	self.AnimTbl_IdleStand = {ACT_CROUCHIDLE}
+	self.AnimTbl_Walk = {ACT_WALK_CROUCH_AIM}
+	self.AnimTbl_Run = {ACT_WALK_CROUCH_AIM}
+ elseif self.LNR_Infected then
+	self.AnimTbl_IdleStand = {ACT_CROUCHIDLE}
+	self.AnimTbl_Walk = {ACT_WALK_CROUCH_AIM}
+	self.AnimTbl_Run = {ACT_RUN_STEALTH}
+end
+    self:SetCollisionBounds(Vector(13,13,26),Vector(-13,-11,0))
+	self.VJC_Data = {
+	CameraMode = 1, 
+	ThirdP_Offset = Vector(30, 25, -20), 
+	FirstP_Bone = "ValveBiped.Bip01_Head1", 
+	FirstP_Offset = Vector(5, 0, -1), 
+}	
+    self:CapabilitiesRemove(bit.bor(CAP_MOVE_JUMP))
+	self:CapabilitiesRemove(bit.bor(CAP_MOVE_CLIMB))
+	self.HasDeathAnimation = false
+end
+---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:GetTheFuckUp()
+	self.CanTurnWhileStationary = true
  if self.LNR_Walker then	 
 	self.AnimTbl_IdleStand = {ACT_IDLE}
 	if self.LNR_UsingRelaxedIdle == true then
@@ -1121,6 +1266,7 @@ function ENT:CustomOnPriorToKilled(dmginfo, hitgroup)
 	end
 	self.CanDoTheFunny = false
 	self.CanFlinch = 0
+	self:DropTheFuckignWeaponGoddamn()
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:CustomDeathAnimationCode(dmginfo,hitgroup)
