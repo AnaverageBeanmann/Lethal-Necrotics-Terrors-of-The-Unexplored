@@ -1,0 +1,17 @@
+"vertexlitgeneric"
+{
+	"$baseTexture"		"models/lns/bomber/helmet_06_skull"
+	"$bumpmap"		"models/lns/bomber/helmet_06_skull_normal"
+
+ 	"$halflambert"		"1"
+
+	"$phong"			"1"
+	"$phongboost"		"1"
+	"$phongfresnelranges"	"[0.02]"
+	"$phongexponent"		"2"
+	"$phongalbedotint"		"1"
+                  $detail models\mbczombies\detail\ci_detail_dirt
+                  $detailscale 7.74
+                  $detailblendfactor 0.8
+                  $detailblendmode 0
+}
