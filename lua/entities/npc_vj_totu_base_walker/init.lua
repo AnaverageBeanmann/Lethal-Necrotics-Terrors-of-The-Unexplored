@@ -219,108 +219,6 @@ ENT.FootSteps = {
 	}
 }
 
-ENT.SoundTbl_Idle = {"vo/ravenholm/firetrap_vigil.wav",
-	"vo/ravenholm/monk_rant01.wav",
-	"vo/ravenholm/monk_rant02.wav",
-	"vo/ravenholm/monk_rant03.wav",
-	"vo/ravenholm/monk_rant04.wav",
-	"vo/ravenholm/monk_rant05.wav",
-	"vo/ravenholm/monk_rant06.wav",
-	"vo/ravenholm/monk_rant07.wav",
-	"vo/ravenholm/monk_rant08.wav",
-	"vo/ravenholm/monk_rant09.wav",
-	"vo/ravenholm/monk_rant10.wav",
-	"vo/ravenholm/monk_rant11.wav",
-	"vo/ravenholm/monk_rant12.wav",
-	"vo/ravenholm/monk_rant13.wav",
-	"vo/ravenholm/monk_rant14.wav",
-	"vo/ravenholm/monk_rant15.wav",
-	"vo/ravenholm/monk_rant16.wav",
-	"vo/ravenholm/monk_rant17.wav",
-	"vo/ravenholm/monk_rant18.wav",
-	"vo/ravenholm/monk_rant19.wav",
-	"vo/ravenholm/monk_rant20.wav",
-	"vo/ravenholm/monk_rant21.wav",
-	"vo/ravenholm/monk_rant22.wav"}
-ENT.SoundTbl_Alert = {"vo/ravenholm/bucket_thereyouare.wav",
-	"vo/ravenholm/cartrap_iamgrig.wav",
-	"vo/ravenholm/engage01.wav",
-	"vo/ravenholm/engage02.wav",
-	"vo/ravenholm/engage03.wav",
-	"vo/ravenholm/engage04.wav",
-	"vo/ravenholm/engage05.wav",
-	"vo/ravenholm/engage06.wav",
-	"vo/ravenholm/engage07.wav",
-	"vo/ravenholm/engage08.wav",
-	"vo/ravenholm/engage09.wav",
-	"vo/ravenholm/grave_stayclose.wav",
-	"vo/ravenholm/monk_coverme04.wav",
-	"vo/ravenholm/monk_kill01.wav",
-	"vo/ravenholm/monk_kill02.wav",
-	"vo/ravenholm/monk_kill03.wav",
-	"vo/ravenholm/monk_kill04.wav",
-	"vo/ravenholm/monk_kill05.wav",
-	"vo/ravenholm/monk_kill06.wav",
-	"vo/ravenholm/monk_kill07.wav",
-	"vo/ravenholm/monk_kill08.wav",
-	"vo/ravenholm/monk_kill09.wav",
-	"vo/ravenholm/monk_kill10.wav",
-	"vo/ravenholm/monk_kill11.wav",
-	"vo/ravenholm/pyre_anotherlife.wav",
-	"vo/ravenholm/shotgun_closer.wav",
-	"vo/ravenholm/shotgun_overhere.wav",
-	"vo/ravenholm/shotgun_theycome.wav",
-	"vo/ravenholm/yard_greetings.wav"}
-ENT.SoundTbl_CombatIdle = {"vo/ravenholm/engage01.wav",
-	"vo/ravenholm/grave_stayclose.wav",
-	"vo/ravenholm/madlaugh01.wav",
-	"vo/ravenholm/madlaugh02.wav",
-	"vo/ravenholm/madlaugh03.wav",
-	"vo/ravenholm/madlaugh04.wav",
-	"vo/ravenholm/monk_rant01.wav",
-	"vo/ravenholm/monk_rant02.wav",
-	"vo/ravenholm/monk_rant03.wav",
-	"vo/ravenholm/monk_rant04.wav",
-	"vo/ravenholm/monk_rant05.wav",
-	"vo/ravenholm/monk_rant06.wav",
-	"vo/ravenholm/monk_rant07.wav",
-	"vo/ravenholm/monk_rant08.wav",
-	"vo/ravenholm/monk_rant09.wav",
-	"vo/ravenholm/monk_rant10.wav",
-	"vo/ravenholm/monk_rant11.wav",
-	"vo/ravenholm/monk_rant12.wav",
-	"vo/ravenholm/monk_rant13.wav",
-	"vo/ravenholm/monk_rant14.wav",
-	"vo/ravenholm/monk_rant15.wav",
-	"vo/ravenholm/monk_rant16.wav",
-	"vo/ravenholm/monk_rant17.wav",
-	"vo/ravenholm/monk_rant18.wav",
-	"vo/ravenholm/monk_rant19.wav",
-	"vo/ravenholm/monk_rant20.wav",
-	"vo/ravenholm/monk_rant21.wav",
-	"vo/ravenholm/monk_rant22.wav"}
-ENT.SoundTbl_Pain = {"vo/ravenholm/monk_pain01.wav",
-	"vo/ravenholm/monk_pain02.wav",
-	"vo/ravenholm/monk_pain03.wav",
-	"vo/ravenholm/monk_pain04.wav",
-	"vo/ravenholm/monk_pain05.wav",
-	"vo/ravenholm/monk_pain06.wav",
-	"vo/ravenholm/monk_pain07.wav",
-	"vo/ravenholm/monk_pain08.wav",
-	"vo/ravenholm/monk_pain09.wav",
-	"vo/ravenholm/monk_pain10.wav",
-	"vo/ravenholm/monk_pain12.wav"}
-ENT.SoundTbl_Death = {"test/MR_WHITR_NOOOO.mp3",
-	"test/anime_walt_1.mp3",
-	"test/anime_walt_2.mp3",
-	"test/anime_walt_3.mp3",
-	"vo/ravenholm/exit_darkroad.wav",
-	"vo/ravenholm/exit_salvation.wav",
-	"vo/ravenholm/firetrap_welldone.wav",
-	"vo/ravenholm/monk_death07.wav",
-	"vo/ravenholm/monk_helpme03.wav",
-	"test/JESSE.mp3",
-	"test/JESSE2.mp3"}
 ENT.SoundTbl_MeleeAttack = {
 	"vj_lnrhl2/shared/melee/hit_punch_01.wav",
 	"vj_lnrhl2/shared/melee/hit_punch_02.wav",
@@ -330,12 +228,6 @@ ENT.SoundTbl_MeleeAttack = {
 	"vj_lnrhl2/shared/melee/hit_punch_06.wav",
 	"vj_lnrhl2/shared/melee/hit_punch_07.wav",
 	"vj_lnrhl2/shared/melee/hit_punch_08.wav"}
-ENT.SoundTbl_BeforeMeleeAttack = {"vo/ravenholm/engage02.wav",
-	"vo/ravenholm/engage03.wav",
-	"vo/ravenholm/monk_givehealth01.wav",
-	"vo/ravenholm/monk_stayclosebro.wav",
-	"vo/ravenholm/shotgun_closer.wav",
-	"vo/ravenholm/shotgun_hush.wav"}
 ENT.SoundTbl_MeleeAttackMiss = {"npc/zombie/claw_miss2.wav","npc/zombie/claw_miss1.wav"}
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:CustomOnFootStepSound()
@@ -399,10 +291,497 @@ function ENT:CustomOnInitialize()
 		end
 	end
 	self:Zombie_Difficulty()
-	self:Zombie_CustomOnInitialize()	
+	self:Zombie_CustomOnInitialize()
+    self:ZombieSounds()	
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:Zombie_CustomOnInitialize() end -- For additional initialize options
+---------------------------------------------------------------------------------------------------------------------------------------------
+function ENT:ZombieSounds()
+	if self:GetClass() == "npc_vj_totu_base_walker" then
+		self.SoundTbl_Idle = {"vo/ravenholm/firetrap_vigil.wav",
+			"vo/ravenholm/monk_rant01.wav",
+			"vo/ravenholm/monk_rant02.wav",
+			"vo/ravenholm/monk_rant03.wav",
+			"vo/ravenholm/monk_rant04.wav",
+			"vo/ravenholm/monk_rant05.wav",
+			"vo/ravenholm/monk_rant06.wav",
+			"vo/ravenholm/monk_rant07.wav",
+			"vo/ravenholm/monk_rant08.wav",
+			"vo/ravenholm/monk_rant09.wav",
+			"vo/ravenholm/monk_rant10.wav",
+			"vo/ravenholm/monk_rant11.wav",
+			"vo/ravenholm/monk_rant12.wav",
+			"vo/ravenholm/monk_rant13.wav",
+			"vo/ravenholm/monk_rant14.wav",
+			"vo/ravenholm/monk_rant15.wav",
+			"vo/ravenholm/monk_rant16.wav",
+			"vo/ravenholm/monk_rant17.wav",
+			"vo/ravenholm/monk_rant18.wav",
+			"vo/ravenholm/monk_rant19.wav",
+			"vo/ravenholm/monk_rant20.wav",
+			"vo/ravenholm/monk_rant21.wav",
+			"vo/ravenholm/monk_rant22.wav"}
+		self.SoundTbl_Alert = {"vo/ravenholm/bucket_thereyouare.wav",
+			"vo/ravenholm/cartrap_iamgrig.wav",
+			"vo/ravenholm/engage01.wav",
+			"vo/ravenholm/engage02.wav",
+			"vo/ravenholm/engage03.wav",
+			"vo/ravenholm/engage04.wav",
+			"vo/ravenholm/engage05.wav",
+			"vo/ravenholm/engage06.wav",
+			"vo/ravenholm/engage07.wav",
+			"vo/ravenholm/engage08.wav",
+			"vo/ravenholm/engage09.wav",
+			"vo/ravenholm/grave_stayclose.wav",
+			"vo/ravenholm/monk_coverme04.wav",
+			"vo/ravenholm/monk_kill01.wav",
+			"vo/ravenholm/monk_kill02.wav",
+			"vo/ravenholm/monk_kill03.wav",
+			"vo/ravenholm/monk_kill04.wav",
+			"vo/ravenholm/monk_kill05.wav",
+			"vo/ravenholm/monk_kill06.wav",
+			"vo/ravenholm/monk_kill07.wav",
+			"vo/ravenholm/monk_kill08.wav",
+			"vo/ravenholm/monk_kill09.wav",
+			"vo/ravenholm/monk_kill10.wav",
+			"vo/ravenholm/monk_kill11.wav",
+			"vo/ravenholm/pyre_anotherlife.wav",
+			"vo/ravenholm/shotgun_closer.wav",
+			"vo/ravenholm/shotgun_overhere.wav",
+			"vo/ravenholm/shotgun_theycome.wav",
+			"vo/ravenholm/yard_greetings.wav"}
+		self.SoundTbl_CombatIdle = {"vo/ravenholm/engage01.wav",
+			"vo/ravenholm/grave_stayclose.wav",
+			"vo/ravenholm/madlaugh01.wav",
+			"vo/ravenholm/madlaugh02.wav",
+			"vo/ravenholm/madlaugh03.wav",
+			"vo/ravenholm/madlaugh04.wav",
+			"vo/ravenholm/monk_rant01.wav",
+			"vo/ravenholm/monk_rant02.wav",
+			"vo/ravenholm/monk_rant03.wav",
+			"vo/ravenholm/monk_rant04.wav",
+			"vo/ravenholm/monk_rant05.wav",
+			"vo/ravenholm/monk_rant06.wav",
+			"vo/ravenholm/monk_rant07.wav",
+			"vo/ravenholm/monk_rant08.wav",
+			"vo/ravenholm/monk_rant09.wav",
+			"vo/ravenholm/monk_rant10.wav",
+			"vo/ravenholm/monk_rant11.wav",
+			"vo/ravenholm/monk_rant12.wav",
+			"vo/ravenholm/monk_rant13.wav",
+			"vo/ravenholm/monk_rant14.wav",
+			"vo/ravenholm/monk_rant15.wav",
+			"vo/ravenholm/monk_rant16.wav",
+			"vo/ravenholm/monk_rant17.wav",
+			"vo/ravenholm/monk_rant18.wav",
+			"vo/ravenholm/monk_rant19.wav",
+			"vo/ravenholm/monk_rant20.wav",
+			"vo/ravenholm/monk_rant21.wav",
+			"vo/ravenholm/monk_rant22.wav"}
+		self.SoundTbl_Pain = {"vo/ravenholm/monk_pain01.wav",
+			"vo/ravenholm/monk_pain02.wav",
+			"vo/ravenholm/monk_pain03.wav",
+			"vo/ravenholm/monk_pain04.wav",
+			"vo/ravenholm/monk_pain05.wav",
+			"vo/ravenholm/monk_pain06.wav",
+			"vo/ravenholm/monk_pain07.wav",
+			"vo/ravenholm/monk_pain08.wav",
+			"vo/ravenholm/monk_pain09.wav",
+			"vo/ravenholm/monk_pain10.wav",
+			"vo/ravenholm/monk_pain12.wav"}
+		self.SoundTbl_Death = {"test/MR_WHITR_NOOOO.mp3",
+			"test/anime_walt_1.mp3",
+			"test/anime_walt_2.mp3",
+			"test/anime_walt_3.mp3",
+			"vo/ravenholm/exit_darkroad.wav",
+			"vo/ravenholm/exit_salvation.wav",
+			"vo/ravenholm/firetrap_welldone.wav",
+			"vo/ravenholm/monk_death07.wav",
+			"vo/ravenholm/monk_helpme03.wav",
+			"test/JESSE.mp3",
+			"test/JESSE2.mp3"}
+		self.SoundTbl_MeleeAttack = {
+			"vj_lnrhl2/shared/melee/hit_punch_01.wav",
+			"vj_lnrhl2/shared/melee/hit_punch_02.wav",
+			"vj_lnrhl2/shared/melee/hit_punch_03.wav",
+			"vj_lnrhl2/shared/melee/hit_punch_04.wav",
+			"vj_lnrhl2/shared/melee/hit_punch_05.wav",
+			"vj_lnrhl2/shared/melee/hit_punch_06.wav",
+			"vj_lnrhl2/shared/melee/hit_punch_07.wav",
+			"vj_lnrhl2/shared/melee/hit_punch_08.wav"}
+		self.SoundTbl_BeforeMeleeAttack = {"vo/ravenholm/engage02.wav",
+			"vo/ravenholm/engage03.wav",
+			"vo/ravenholm/monk_givehealth01.wav",
+			"vo/ravenholm/monk_stayclosebro.wav",
+			"vo/ravenholm/shotgun_closer.wav",
+			"vo/ravenholm/shotgun_hush.wav"}
+		self.SoundTbl_MeleeAttackMiss = {"npc/zombie/claw_miss2.wav","npc/zombie/claw_miss1.wav"}
+
+	elseif self:GetClass() == "npc_vj_totu_base_infected" then
+	
+		self.SoundTbl_Idle = {""}
+		self.SoundTbl_Alert = {"test/flower_1.mp3"}
+		self.SoundTbl_CombatIdle = {""}
+		self.SoundTbl_Pain = {"test/flower_2.mp3",
+			"test/flower_4.mp3"}
+		self.SoundTbl_Death = {"test/flower_3.mp3",
+			"test/flower_5.mp3"}
+		self.SoundTbl_BeforeMeleeAttack = {""}
+	
+	elseif self:GetClass() == "npc_vj_totu_milzomb_walker" then
+	
+		self.SoundTbl_Idle = {
+			"vj_lnrhl2/walker_male/idle1.wav",
+			"vj_lnrhl2/walker_male/idle2.wav",
+			"vj_lnrhl2/walker_male/idle3.wav",
+			"vj_lnrhl2/walker_male/idle4.wav",
+			"vj_lnrhl2/walker_male/idle5.wav",
+			"vj_lnrhl2/walker_male/idle6.wav",
+			"vj_lnrhl2/walker_male/idle7.wav",
+			"vj_lnrhl2/walker_male/idle8.wav",
+			"vj_lnrhl2/walker_male/idle9.wav",
+			"vj_lnrhl2/walker_male/idle10.wav",
+			"vj_lnrhl2/walker_male/idle11.wav",
+			"vj_lnrhl2/walker_male/idle12.wav",
+			"vj_lnrhl2/walker_male/idle13.wav",
+			"vj_lnrhl2/walker_male/idle14.wav",
+			"vj_lnrhl2/walker_male/idle15.wav",	
+			"vj_lnrhl2/walker_male/idle16.wav",
+			"vj_lnrhl2/walker_male/idle17.wav",
+			"vj_lnrhl2/walker_male/idle18.wav",
+			"vj_lnrhl2/walker_male/idle19.wav",
+			"vj_lnrhl2/walker_male/idle20.wav"
+			}
+   		 self.SoundTbl_Alert = {
+			"vj_lnrhl2/walker_male/alert_sham_m_01.wav",
+			"vj_lnrhl2/walker_male/alert_sham_m_02.wav",
+			"vj_lnrhl2/walker_male/alert_sham_m_03.wav",
+			"vj_lnrhl2/walker_male/alert_sham_m_04.wav",
+			"vj_lnrhl2/walker_male/alert_sham_m_05.wav",
+			"vj_lnrhl2/walker_male/alert_sham_m_06.wav",
+			"vj_lnrhl2/walker_male/alert_sham_m_07.wav",
+			"vj_lnrhl2/walker_male/alert_sham_m_08.wav",
+			"vj_lnrhl2/walker_male/alert_sham_m_09.wav",
+			"vj_lnrhl2/walker_male/alert_sham_m_10.wav",
+			"vj_lnrhl2/walker_male/alert_sham_m_11.wav",
+			"vj_lnrhl2/walker_male/alert_sham_m_12.wav",
+			"vj_lnrhl2/walker_male/alert_sham_m_13.wav",
+			"vj_lnrhl2/walker_male/alert_sham_m_14.wav",
+			"vj_lnrhl2/walker_male/alert_sham_m_15.wav",
+			"vj_lnrhl2/walker_male/alert_sham_m_16.wav",
+			"vj_lnrhl2/walker_male/alert_sham_m_17.wav",
+			"vj_lnrhl2/walker_male/alert_sham_m_18.wav",
+			"vj_lnrhl2/walker_male/alert_sham_m_19.wav",
+			"vj_lnrhl2/walker_male/alert_sham_m_20.wav",	
+			"vj_lnrhl2/walker_male/alert_sham_m_21.wav",
+			"vj_lnrhl2/walker_male/alert1.wav",
+			"vj_lnrhl2/walker_male/alert2.wav",
+			"vj_lnrhl2/walker_male/alert3.wav",
+			"vj_lnrhl2/walker_male/alert4.wav",	
+			"vj_lnrhl2/walker_male/alert5.wav",
+			"vj_lnrhl2/walker_male/alert6.wav",
+			"vj_lnrhl2/walker_male/alert7.wav",
+			"vj_lnrhl2/walker_male/alert8.wav",
+			"vj_lnrhl2/walker_male/alert9.wav",	
+			"vj_lnrhl2/walker_male/alert10.wav"		
+			}
+ 		   self.SoundTbl_CombatIdle = {
+			"vj_lnrhl2/walker_male/pursuit_sham_m_01.wav",
+			"vj_lnrhl2/walker_male/pursuit_sham_m_02.wav",
+			"vj_lnrhl2/walker_male/pursuit_sham_m_03.wav",
+			"vj_lnrhl2/walker_male/pursuit_sham_m_04.wav",
+			"vj_lnrhl2/walker_male/pursuit_sham_m_05.wav",
+			"vj_lnrhl2/walker_male/pursuit_sham_m_06.wav",
+			"vj_lnrhl2/walker_male/pursuit_sham_m_07.wav",
+			"vj_lnrhl2/walker_male/pursuit_sham_m_08.wav",
+			"vj_lnrhl2/walker_male/pursuit_sham_m_09.wav",
+			"vj_lnrhl2/walker_male/pursuit_sham_m_10.wav",
+			"vj_lnrhl2/walker_male/pursuit_sham_m_11.wav",
+			"vj_lnrhl2/walker_male/pursuit_sham_m_12.wav",
+			"vj_lnrhl2/walker_male/pursuit_sham_m_13.wav",
+			"vj_lnrhl2/walker_male/pursuit_sham_m_14.wav",
+			"vj_lnrhl2/walker_male/pursuit_sham_m_15.wav",
+			"vj_lnrhl2/walker_male/pursuit_sham_m_16.wav",
+			"vj_lnrhl2/walker_male/pursuit_sham_m_17.wav",
+			"vj_lnrhl2/walker_male/pursuit_sham_m_18.wav"
+			}
+   		 self.SoundTbl_BeforeMeleeAttack = {
+			"vj_lnrhl2/walker_male/attack_sham_m_01.wav",
+			"vj_lnrhl2/walker_male/attack_sham_m_02.wav",
+			"vj_lnrhl2/walker_male/attack_sham_m_03.wav",
+			"vj_lnrhl2/walker_male/attack_sham_m_04.wav",
+			"vj_lnrhl2/walker_male/attack_sham_m_05.wav",
+			"vj_lnrhl2/walker_male/attack_sham_m_06.wav",
+			"vj_lnrhl2/walker_male/attack_sham_m_07.wav",
+			"vj_lnrhl2/walker_male/attack_sham_m_08.wav",
+			"vj_lnrhl2/walker_male/attack_sham_m_09.wav",
+			"vj_lnrhl2/walker_male/attack_sham_m_10.wav",
+			"vj_lnrhl2/walker_male/attack_sham_m_11.wav",
+			"vj_lnrhl2/walker_male/attack_sham_m_12.wav",
+			"vj_lnrhl2/walker_male/attack_sham_m_13.wav",
+			"vj_lnrhl2/walker_male/attack_sham_m_14.wav",
+			"vj_lnrhl2/walker_male/attack_sham_m_15.wav",
+			"vj_lnrhl2/walker_male/attack_sham_m_16.wav",
+			"vj_lnrhl2/walker_male/attack_sham_m_17.wav",
+			"vj_lnrhl2/walker_male/attack_sham_m_18.wav",
+			"vj_lnrhl2/walker_male/attack_sham_m_19.wav",
+			"vj_lnrhl2/walker_male/attack_sham_m_20.wav",	
+			"vj_lnrhl2/walker_male/attack_sham_m_21.wav",
+			"vj_lnrhl2/walker_male/attack_sham_m_22.wav"	
+			}
+  		  self.SoundTbl_LeapAttackJump = {
+			"vj_lnrhl2/walker_male/attack_sham_m_01.wav",
+			"vj_lnrhl2/walker_male/attack_sham_m_02.wav",
+			"vj_lnrhl2/walker_male/attack_sham_m_03.wav",
+			"vj_lnrhl2/walker_male/attack_sham_m_04.wav",
+			"vj_lnrhl2/walker_male/attack_sham_m_05.wav",
+			"vj_lnrhl2/walker_male/attack_sham_m_06.wav",
+			"vj_lnrhl2/walker_male/attack_sham_m_07.wav",
+			"vj_lnrhl2/walker_male/attack_sham_m_08.wav",
+			"vj_lnrhl2/walker_male/attack_sham_m_09.wav",
+			"vj_lnrhl2/walker_male/attack_sham_m_10.wav",
+			"vj_lnrhl2/walker_male/attack_sham_m_11.wav",
+			"vj_lnrhl2/walker_male/attack_sham_m_12.wav",
+			"vj_lnrhl2/walker_male/attack_sham_m_13.wav",
+			"vj_lnrhl2/walker_male/attack_sham_m_14.wav",
+			"vj_lnrhl2/walker_male/attack_sham_m_15.wav",
+			"vj_lnrhl2/walker_male/attack_sham_m_16.wav",
+			"vj_lnrhl2/walker_male/attack_sham_m_17.wav",
+			"vj_lnrhl2/walker_male/attack_sham_m_18.wav",
+			"vj_lnrhl2/walker_male/attack_sham_m_19.wav",
+			"vj_lnrhl2/walker_male/attack_sham_m_20.wav",	
+			"vj_lnrhl2/walker_male/attack_sham_m_21.wav",
+			"vj_lnrhl2/walker_male/attack_sham_m_22.wav"
+			}
+  		  self.SoundTbl_Pain = {
+			"vj_lnrhl2/walker_male/pain01.wav",
+			"vj_lnrhl2/walker_male/pain02.wav",
+			"vj_lnrhl2/walker_male/pain03.wav",
+			"vj_lnrhl2/walker_male/pain04.wav",
+			"vj_lnrhl2/walker_male/pain05.wav"
+			}
+  		  self.SoundTbl_Death = {
+			"vj_lnrhl2/walker_male/die01.wav",
+			"vj_lnrhl2/walker_male/die02.wav",
+			"vj_lnrhl2/walker_male/die03.wav",
+			"vj_lnrhl2/walker_male/die04.wav",
+			"vj_lnrhl2/walker_male/die05.wav"
+			}
+	elseif self:GetClass() == "npc_vj_totu_milzomb_infected" then
+	
+		self.SoundTbl_Idle = {
+			"vj_lnrhl2/infected/zomb_runner_male1-idle-01.wav",
+			"vj_lnrhl2/infected/zomb_runner_male1-idle-02.wav",
+			"vj_lnrhl2/infected/zomb_runner_male1-idle-03.wav",
+			"vj_lnrhl2/infected/zomb_runner_male1-idle-04.wav",
+			"vj_lnrhl2/infected/zomb_runner_male1-idle-05.wav",
+			"vj_lnrhl2/infected/zomb_runner_male1-idle-06.wav",
+			"vj_lnrhl2/infected/zomb_runner_male1-idle-07.wav",
+			"vj_lnrhl2/infected/zomb_runner_male1-idle-08.wav",
+			"vj_lnrhl2/infected/zomb_runner_male1-idle-09.wav",
+			"vj_lnrhl2/infected/zomb_runner_male1-idle-10.wav"
+		}
+    self.SoundTbl_Alert = {
+			"vj_lnrhl2/infected/zomb_runner_male1-alert-01.wav",
+			"vj_lnrhl2/infected/zomb_runner_male1-alert-02.wav",
+			"vj_lnrhl2/infected/zomb_runner_male1-alert-03.wav",
+			"vj_lnrhl2/infected/zomb_runner_male1-alert-04.wav",
+			"vj_lnrhl2/infected/zomb_runner_male1-alert-05.wav",
+			"vj_lnrhl2/infected/zomb_runner_male1-alert-06.wav",
+			"vj_lnrhl2/infected/zomb_runner_male1-alert-07.wav",
+			"vj_lnrhl2/infected/zomb_runner_male1-alert-08.wav",
+			"vj_lnrhl2/infected/zomb_runner_male1-alert-09.wav",
+			"vj_lnrhl2/infected/zomb_runner_male1-alert-10.wav",
+			"vj_lnrhl2/infected/zomb_runner_male1-alert-11.wav",
+			"vj_lnrhl2/infected/zomb_runner_male1-alert-12.wav",
+			"vj_lnrhl2/infected/zomb_runner_male1-alert-13.wav",
+			"vj_lnrhl2/infected/zomb_runner_male1-alert-14.wav",
+			"vj_lnrhl2/infected/zomb_runner_male1-alert-15.wav"
+		}
+    self.SoundTbl_CombatIdle = {
+			"vj_lnrhl2/infected/zomb_runner_male1-pursuit-01.wav",
+			"vj_lnrhl2/infected/zomb_runner_male1-pursuit-02.wav",
+			"vj_lnrhl2/infected/zomb_runner_male1-pursuit-03.wav",
+			"vj_lnrhl2/infected/zomb_runner_male1-pursuit-04.wav",
+			"vj_lnrhl2/infected/zomb_runner_male1-pursuit-05.wav",
+			"vj_lnrhl2/infected/zomb_runner_male1-pursuit-06.wav",
+			"vj_lnrhl2/infected/zomb_runner_male1-pursuit-07.wav",
+			"vj_lnrhl2/infected/zomb_runner_male1-pursuit-08.wav",
+			"vj_lnrhl2/infected/zomb_runner_male1-pursuit-09.wav",
+			"vj_lnrhl2/infected/zomb_runner_male1-pursuit-10.wav",
+			"vj_lnrhl2/infected/zomb_runner_male1-pursuit-11.wav",
+			"vj_lnrhl2/infected/zomb_runner_male1-pursuit-12.wav",
+			"vj_lnrhl2/infected/zomb_runner_male1-pursuit-13.wav"	
+		}
+    self.SoundTbl_BeforeMeleeAttack = {
+			"vj_lnrhl2/infected/zomb_runner_male1-attack01.wav",
+			"vj_lnrhl2/infected/zomb_runner_male1-attack02.wav",
+			"vj_lnrhl2/infected/zomb_runner_male1-attack03.wav",
+			"vj_lnrhl2/infected/zomb_runner_male1-attack04.wav",
+			"vj_lnrhl2/infected/zomb_runner_male1-attack05.wav",
+			"vj_lnrhl2/infected/zomb_runner_male1-attack06.wav",
+			"vj_lnrhl2/infected/zomb_runner_male1-attack07.wav",
+			"vj_lnrhl2/infected/zomb_runner_male1-attack08.wav",
+			"vj_lnrhl2/infected/zomb_runner_male1-attack09.wav",
+			"vj_lnrhl2/infected/zomb_runner_male1-attack10.wav",
+			"vj_lnrhl2/infected/zomb_runner_male1-attack11.wav",
+			"vj_lnrhl2/infected/zomb_runner_male1-attack12.wav",
+			"vj_lnrhl2/infected/zomb_runner_male1-attack13.wav",
+			"vj_lnrhl2/infected/zomb_runner_male1-attack14.wav",
+			"vj_lnrhl2/infected/zomb_runner_male1-attack15.wav",
+			"vj_lnrhl2/infected/zomb_runner_male1-attack16.wav",
+			"vj_lnrhl2/infected/zomb_runner_male1-attack17.wav",
+			"vj_lnrhl2/infected/zomb_runner_male1-attack18.wav",
+			"vj_lnrhl2/infected/zomb_runner_male1-attack19.wav",
+			"vj_lnrhl2/infected/zomb_runner_male1-attack20.wav"	
+		}
+    self.SoundTbl_Pain = {
+			"vj_lnrhl2/infected/zomb_runner_male1-pain01.wav",
+			"vj_lnrhl2/infected/zomb_runner_male1-pain02.wav",
+			"vj_lnrhl2/infected/zomb_runner_male1-pain03.wav",
+			"vj_lnrhl2/infected/zomb_runner_male1-pain04.wav",
+			"vj_lnrhl2/infected/zomb_runner_male1-pain05.wav",
+			"vj_lnrhl2/infected/zomb_runner_male1-pain06.wav",
+			"vj_lnrhl2/infected/zomb_runner_male1-pain07.wav",
+			"vj_lnrhl2/infected/zomb_runner_male1-pain08.wav",
+			"vj_lnrhl2/infected/zomb_runner_male1-pain09.wav",
+			"vj_lnrhl2/infected/zomb_runner_male1-pain10.wav",
+			"vj_lnrhl2/infected/zomb_runner_male1-pain11.wav",
+			"vj_lnrhl2/infected/zomb_runner_male1-pain12.wav",
+			"vj_lnrhl2/infected/zomb_runner_male1-pain13.wav",
+			"vj_lnrhl2/infected/zomb_runner_male1-pain14.wav",
+			"vj_lnrhl2/infected/zomb_runner_male1-pain15.wav",
+			"vj_lnrhl2/infected/zomb_runner_male1-pain16.wav",
+			"vj_lnrhl2/infected/zomb_runner_male1-pain17.wav",
+			"vj_lnrhl2/infected/zomb_runner_male1-pain18.wav"
+		}
+    self.SoundTbl_Death = {
+			"vj_lnrhl2/infected/zomb_runner_male1-death-01.wav",
+			"vj_lnrhl2/infected/zomb_runner_male1-death-02.wav",
+			"vj_lnrhl2/infected/zomb_runner_male1-death-03.wav",
+			"vj_lnrhl2/infected/zomb_runner_male1-death-04.wav",
+			"vj_lnrhl2/infected/zomb_runner_male1-death-05.wav",
+			"vj_lnrhl2/infected/zomb_runner_male1-death-06.wav",
+			"vj_lnrhl2/infected/zomb_runner_male1-death-07.wav",
+			"vj_lnrhl2/infected/zomb_runner_male1-death-08.wav",
+			"vj_lnrhl2/infected/zomb_runner_male1-death-09.wav",
+			"vj_lnrhl2/infected/zomb_runner_male1-death-10.wav",
+			"vj_lnrhl2/infected/zomb_runner_male1-death-11.wav",
+			"vj_lnrhl2/infected/zomb_runner_male1-death-12.wav",
+			"vj_lnrhl2/infected/zomb_runner_male1-death-13.wav",
+			"vj_lnrhl2/infected/zomb_runner_male1-death-14.wav",
+			"vj_lnrhl2/infected/zomb_runner_male1-death-15.wav",
+			"vj_lnrhl2/infected/zomb_runner_male1-death-16.wav",
+			"vj_lnrhl2/infected/zomb_runner_male1-death-17.wav",
+			"vj_lnrhl2/infected/zomb_runner_male1-death-18.wav",
+			"vj_lnrhl2/infected/zomb_runner_male1-death-19.wav",
+			"vj_lnrhl2/infected/zomb_runner_male1-death-20.wav"
+		}
+	elseif self:GetClass() == "npc_vj_totu_milzomb_juggernaut" then
+	
+		self.SoundTbl_Idle = {
+			"voices/mil_jugg/idle_1.mp3",
+			"voices/mil_jugg/idle_2.mp3",
+			"voices/mil_jugg/idle_3.mp3",
+			"voices/mil_jugg/idle_4.mp3",
+			"voices/mil_jugg/idle_5.mp3",
+			"voices/mil_jugg/idle_6.mp3",
+			"voices/mil_jugg/idle_7.mp3",
+			"voices/mil_jugg/idle_8.mp3"
+		}
+		self.SoundTbl_Alert = {
+			"voices/mil_jugg/alert_1.mp3",
+			"voices/mil_jugg/alert_2.mp3"
+		}
+   		-- self.SoundTbl_CombatIdle = {
+			-- "voices/mil_jugg/cidle_1.mp3",
+			-- "voices/mil_jugg/cidle_2.mp3"
+		-- }
+		self.SoundTbl_CombatIdle = {
+			"voices/mil_jugg/idle_1.mp3",
+			"voices/mil_jugg/idle_2.mp3",
+			"voices/mil_jugg/idle_3.mp3",
+			"voices/mil_jugg/idle_4.mp3",
+			"voices/mil_jugg/idle_5.mp3",
+			"voices/mil_jugg/idle_6.mp3",
+			"voices/mil_jugg/idle_7.mp3",
+			"voices/mil_jugg/idle_8.mp3"
+		}
+		self.SoundTbl_BeforeMeleeAttack = {
+			"voices/mil_jugg/attack_1.mp3",
+			"voices/mil_jugg/attack_2.mp3",
+			"voices/mil_jugg/attack_3.mp3",
+			"voices/mil_jugg/attack_4.mp3",
+			"voices/mil_jugg/attack_5.mp3",
+			"voices/mil_jugg/attack_6.mp3",
+			"voices/mil_jugg/attack_7.mp3"
+		}
+		self.SoundTbl_Pain = {
+			"voices/mil_jugg/pain_1.mp3",
+			"voices/mil_jugg/pain_2.mp3",
+			"voices/mil_jugg/pain_3.mp3",
+			"voices/mil_jugg/pain_4.mp3",
+			"voices/mil_jugg/pain_5.mp3"
+		}
+    	self.SoundTbl_Death = {
+			"voices/mil_jugg/death.mp3"
+		}
+		self.DeathSoundPitch = VJ_Set(100, 90)	
+	end
+	
+	if self.MilZ_HasGasmask then
+	
+		self.SoundTbl_Idle = {
+			"voices/mil_gasmask/idle_1.wav",
+			"voices/mil_gasmask/idle_2.wav",
+			"voices/mil_gasmask/idle_3.wav",
+			"voices/mil_gasmask/idle_4.wav"
+		}
+		self.SoundTbl_Alert = {
+			"voices/mil_gasmask/alert_1.wav",
+			"voices/mil_gasmask/alert_2.wav",
+			"voices/mil_gasmask/alert_3.wav",
+			"voices/mil_gasmask/alert_4.wav",
+			"voices/mil_gasmask/alert_5.wav",
+			"voices/mil_gasmask/alert_6.wav",
+			"voices/mil_gasmask/alert_7.wav"
+		}
+   		self.SoundTbl_CombatIdle = {
+			"voices/mil_gasmask/cidle_1.wav",
+			"voices/mil_gasmask/cidle_2.wav"
+		}
+		self.SoundTbl_BeforeMeleeAttack = {
+			"voices/mil_gasmask/alert_1.wav",
+			"voices/mil_gasmask/alert_2.wav",
+			"voices/mil_gasmask/alert_3.wav",
+			"voices/mil_gasmask/alert_4.wav",
+			"voices/mil_gasmask/alert_5.wav",
+			"voices/mil_gasmask/alert_6.wav",
+			"voices/mil_gasmask/alert_7.wav"
+		}
+		self.SoundTbl_Pain = {
+			"voices/mil_gasmask/pain_1.wav",
+			"voices/mil_gasmask/pain_2.wav",
+			"voices/mil_gasmask/pain_3.wav",
+			"voices/mil_gasmask/pain_4.wav"
+		}
+    	self.SoundTbl_Death = {
+			"voices/mil_gasmask/death_1.wav",
+			"voices/mil_gasmask/death_2.wav"
+		}
+		
+		if self:GetClass() == "npc_vj_totu_milzomb_juggernaut" then
+			self.IdleSoundPitch = VJ_Set(80, 70)
+			self.AlertSoundPitch = VJ_Set(80, 70)
+			self.CombatIdleSoundPitch = VJ_Set(80, 70)
+			self.BeforeMeleeAttackSoundPitch = VJ_Set(80, 70)
+			self.LeapAttackJumpSoundPitch = VJ_Set(80, 70)
+			self.PainSoundPitch = VJ_Set(80, 70)
+			self.DeathSoundPitch = VJ_Set(80, 70)	
+		end
+	end
+end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 
 function ENT:ZombieWeapons()
@@ -521,14 +900,14 @@ function ENT:CustomOnAcceptInput(key,activator,caller,data)
 	if key == "step" then
 		if self.MilZ_IsMilZ then
 			if self.MilZ_HasFlakSuit == true then
-				VJ_EmitSound(self,"zombies/military/suicider/step_"..math.random(1,4)..".mp3",self.FootStepSoundLevel,self:VJ_DecideSoundPitch(self.FootStepPitch.a,self.FootStepPitch.b))
+				VJ_EmitSound(self,"fx/footsteps/mil_flak/step_"..math.random(1,4)..".mp3",self.FootStepSoundLevel,self:VJ_DecideSoundPitch(self.FootStepPitch.a,self.FootStepPitch.b))
 			end
 		end
 	end
 	
 	if key == "step" then
 		if self:GetClass() == "npc_vj_totu_milzomb_juggernaut" then
-			VJ_EmitSound(self,"zombies/military/juggernaut/step_"..math.random(1,6)..".mp3",self.FootStepSoundLevel,self:VJ_DecideSoundPitch(self.FootStepPitch.a,self.FootStepPitch.b))
+			VJ_EmitSound(self,"fx/footsteps/mil_big/step_"..math.random(1,4)..".mp3",self.FootStepSoundLevel,self:VJ_DecideSoundPitch(self.FootStepPitch.a,self.FootStepPitch.b))
 		end
 	end
 	
@@ -579,7 +958,7 @@ end
 	end
 	
 	if key == "death" && self:GetClass() == "npc_vj_totu_milzomb_juggernaut" then
-		VJ_EmitSound(self,"zombies/military/juggernaut/step_"..math.random(1,6)..".mp3",self.FootStepSoundLevel,self:VJ_DecideSoundPitch(self.FootStepPitch.a,self.FootStepPitch.b))
+		VJ_EmitSound(self,"fx/footsteps/mil_big/step_"..math.random(1,4)..".mp3",self.FootStepSoundLevel,self:VJ_DecideSoundPitch(self.FootStepPitch.a,self.FootStepPitch.b))
 		util.ScreenShake(self:GetPos(), self.WorldShakeOnMoveAmplitude, self.WorldShakeOnMoveFrequency, self.WorldShakeOnMoveDuration, self.WorldShakeOnMoveRadius)
 	end
 	

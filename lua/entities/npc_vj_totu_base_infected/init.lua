@@ -14,15 +14,6 @@ ENT.LNR_Infected = true
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:Zombie_CustomOnPreInitialize()
 	self.Model = {"models/totu/testmonkinf.mdl"}
-	
-	self.SoundTbl_Idle = {""}
-	self.SoundTbl_Alert = {"test/flower_1.mp3"}
-	self.SoundTbl_CombatIdle = {""}
-	self.SoundTbl_Pain = {"test/flower_2.mp3",
-		"test/flower_4.mp3"}
-	self.SoundTbl_Death = {"test/flower_3.mp3",
-		"test/flower_5.mp3"}
-	self.SoundTbl_BeforeMeleeAttack = {""}
 end -- Mainly used for setting up models etc
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:CustomOnInitialize()
@@ -50,6 +41,7 @@ end
 end
 	 self:Zombie_Difficulty()	
 	self:Zombie_CustomOnInitialize()	
+	self:ZombieSounds()
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:Zombie_CustomOnInitialize() end -- For additional initialize options
