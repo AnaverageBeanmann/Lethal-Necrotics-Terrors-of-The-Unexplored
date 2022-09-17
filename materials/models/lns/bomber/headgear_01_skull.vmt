@@ -1,7 +1,7 @@
 "vertexlitgeneric"
 {
-	"$baseTexture"		"models/lns/bomber/gear_03"
-	"$bumpmap"		"models/lns/bomber/gear_03_normal"
+	"$baseTexture"		"models/lns/bomber/headgear_01_skull"
+	"$bumpmap"		"models/lns/bomber/headgear_01_skull_normal"
 
  	"$halflambert"		"1"
 
