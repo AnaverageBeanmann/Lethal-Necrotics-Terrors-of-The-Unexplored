@@ -93,7 +93,7 @@ function ENT:Zombie_CustomOnPreInitialize()
 		"zombies/military/radio/2/radio_28.mp3"}
 	end	
 	
-	if self:GetClass() == "npc_vj_totu_milzomb_walker" or self:GetClass() == "npc_vj_totu_milzomb_juggernaut" then
+	if self:GetClass() == "npc_vj_totu_milzomb_walker" then
 	
 		self.Model = {"models/totu/milzomb_walker.mdl"}
 		
@@ -103,11 +103,14 @@ function ENT:Zombie_CustomOnPreInitialize()
 		self:SetSkin(1)
 		
 	end
-	if self:GetClass() == "npc_vj_totu_milzomb_juggernaut" then
-		
-		self:SetSkin(math.random(1,2))
+	if self:GetClass() == "npc_vj_totu_milzomb_juggernaut" or self:GetClass() == "npc_vj_totu_milzomb_bulldozer" then
+		if self:GetClass() == "npc_vj_totu_milzomb_juggernaut" then
 		self.Model = {"models/totu/juggernaut.mdl"}
-self.ToTU_ZombSize = 1
+		elseif self:GetClass() == "npc_vj_totu_milzomb_bulldozer" then
+		self.Model = {"models/totu/bulldozer.mdl"}
+		end
+		self:SetSkin(math.random(0,2))
+		
 self.AnimTbl_Death = {"vjseq_death_04"}
 self.DeathAnimationChance = 1
 
@@ -137,7 +140,7 @@ self.VJ_IsHugeMonster = true
 	end
 	
 	
-	if math.random(1,3) == 1 then
+	if math.random(1,3) == 1 && self:GetClass() != "npc_vj_totu_milzomb_bulldozer" then
 		self.MilZ_HasGasmask = true
 	
 
@@ -148,37 +151,55 @@ end -- Mainly used for setting up models etc
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:Zombie_CustomOnInitialize()
 	local gear = math.random(1,2)
+	if self:GetClass() == "npc_vj_totu_milzomb_bulldozer" then
+	if gear == 1 then
+		self:SetBodygroup(1,math.random(0,2))
+	else
+		self:SetBodygroup(1,math.random(4,6))
+	end
+	else
 	if gear == 1 then
 		self:SetBodygroup(2,math.random(0,2))
 	else
 		self:SetBodygroup(2,math.random(4,6))
 	end
+	end
 	
 	if math.random(1,4) == 1 then
+	if self:GetClass() == "npc_vj_totu_milzomb_bulldozer" then
+		self:SetBodygroup(2,1)
+	else
 		self:SetBodygroup(3,1)
+	end
 	end
 	
 	if self.MilZ_HasFlakSuit == true then
+	if self:GetClass() == "npc_vj_totu_milzomb_bulldozer" then
+		self:SetBodygroup(1,3)
+	else
 		self:SetBodygroup(2,3)
 		-- self:SetMaterial( "models/vj_lnrspecials/lnr/bomber/eyeball_l" ) -- test
+		end
 	end
 	
 	if self.MilZ_HasGasmask == true then
 		self:SetBodygroup(4,0)
 	end
 	
-	if self.MilZ_HasGasmask == false then
+	if self.MilZ_HasGasmask == false && self:GetClass() != "npc_vj_totu_milzomb_bulldozer" then
 		self:SetBodygroup(4,math.random(1,6))
 		if !self.LNR_Biter then
 			self:SetBodygroup(1,math.random(0,1))
 		end
 	end
 	
-	if self:GetClass() == "npc_vj_totu_milzomb_juggernaut" then
+	if self:GetClass() == "npc_vj_totu_milzomb_juggernaut" or self:GetClass() == "npc_vj_totu_milzomb_bulldozer" then
 	self:SetCollisionBounds(Vector(13, 13, 70), Vector(-13, -13, 0))
 	end
 	
-	if math.random(1,4) == 1 && !self.LNR_Crawler && !self.LNR_Biter && !self:GetClass() == "npc_vj_totu_milzomb_juggernaut" then
+	if self:GetClass() == "npc_vj_totu_milzomb_juggernaut" or self:GetClass() == "npc_vj_totu_milzomb_bulldozer" then return end
+	
+	if math.random(1,4) == 1 && !self.LNR_Crawler && !self.LNR_Biter then
 	-- if math.random(1,1) == 1 && !self.LNR_Crawler && !self.LNR_Biter then
 		-- self.MilZ_HasKnife = true
 		self:ZombieWeapons()
@@ -196,7 +217,7 @@ function ENT:Zombie_CustomOnInitialize()
 	-- end
 	-- end)
 	
-	if math.random(1,10) == 1 && !self.LNR_Crawler && !self.MilZ_HasGun && !self:GetClass() == "npc_vj_totu_milzomb_juggernaut" then
+	if math.random(1,10) == 1 && !self.LNR_Crawler && !self.MilZ_HasGun then
 		self.HasRangeAttack = true
 		self.RangeAttackEntityToSpawn = "obj_vj_totu_milzgren"
 		-- self.RangeAttackEntityToSpawn = "obj_vj_grenade"
@@ -230,7 +251,7 @@ end -- For additional initialize options
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:Zombie_Difficulty()
      if GetConVar("VJ_LNR_Difficulty"):GetInt() == 1 then // Easy
-		if self:GetClass() == "npc_vj_totu_milzomb_juggernaut" then
+		if self:GetClass() == "npc_vj_totu_milzomb_juggernaut" or self:GetClass() == "npc_vj_totu_milzomb_bulldozer" then
 			self.StartHealth = 250
 			self.MeleeAttackDamage = math.Rand(20,25)	
 			self.LNR_LegHP = 125	
@@ -242,7 +263,7 @@ function ENT:Zombie_Difficulty()
      -- if self.LNR_CanUseWeapon then self.MeleeAttackDamage = math.Rand(10,15) end		
 end
      if GetConVar("VJ_LNR_Difficulty"):GetInt() == 2 then // Normal
-		if self:GetClass() == "npc_vj_totu_milzomb_juggernaut" then
+		if self:GetClass() == "npc_vj_totu_milzomb_juggernaut" or self:GetClass() == "npc_vj_totu_milzomb_bulldozer" then
 			self.StartHealth = 750
 			self.MeleeAttackDamage = math.Rand(25,30)	
 			self.LNR_LegHP = 150	
@@ -253,7 +274,7 @@ end
      -- if self.LNR_CanUseWeapon then self.MeleeAttackDamage = math.Rand(15,20) end
 end		
      if GetConVar("VJ_LNR_Difficulty"):GetInt() == 3 then // Hard
-		if self:GetClass() == "npc_vj_totu_milzomb_juggernaut" then
+		if self:GetClass() == "npc_vj_totu_milzomb_juggernaut" or self:GetClass() == "npc_vj_totu_milzomb_bulldozer" then
 			self.StartHealth = 1250
 			self.MeleeAttackDamage = math.Rand(30,35)	
 			self.LNR_LegHP = 175	
@@ -265,7 +286,7 @@ end
      -- if self.LNR_CanUseWeapon then self.MeleeAttackDamage = math.Rand(20,25) end
 end
      if GetConVar("VJ_LNR_Difficulty"):GetInt() == 4 then // Nightmare
-		if self:GetClass() == "npc_vj_totu_milzomb_juggernaut" then
+		if self:GetClass() == "npc_vj_totu_milzomb_juggernaut" or self:GetClass() == "npc_vj_totu_milzomb_bulldozer" then
 			self.StartHealth = 1750
 			self.MeleeAttackDamage = math.Rand(35,40)	
 			self.LNR_LegHP = 200	
@@ -277,7 +298,7 @@ end
      -- if self.LNR_CanUseWeapon then self.MeleeAttackDamage = math.Rand(25,30) end
 end
      if GetConVar("VJ_LNR_Difficulty"):GetInt() == 5 then // Apocalypse
-		if self:GetClass() == "npc_vj_totu_milzomb_juggernaut" then
+		if self:GetClass() == "npc_vj_totu_milzomb_juggernaut" or self:GetClass() == "npc_vj_totu_milzomb_bulldozer" then
 			self.StartHealth = 2250
 			self.MeleeAttackDamage = math.Rand(40,45)	
 			self.LNR_LegHP = 250	
@@ -308,7 +329,7 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:CustomRangeAttackCode()
 	if self.MilZ_HasGun == false or self.MilZ_CanShuutDeGun == false then return end
-    if self:GetActivity() == ACT_WALK or self:GetActivity() == ACT_RUN then
+    if self:GetActivity() == ACT_WALK_PISTOL or self:GetActivity() == ACT_RUN_PISTOL or self:GetActivity() == ACT_RUN_AIM_PISTOL then
 	
 	if self.MilZ_GunAmmo == 18 or self.MilZ_GunAmmo > 18 then
 		VJ_EmitSound(self, "vj_weapons/dryfire_pistol.wav", 70, 100)
@@ -365,7 +386,7 @@ function ENT:ArmorDamage(dmginfo,hitgroup)
 		end
 	end
 	
-	if hitgroup == HITGROUP_HEAD then
+	if hitgroup == HITGROUP_HEAD && self:GetClass() != "npc_vj_totu_milzomb_bulldozer" then
 		if self.HasSounds && self.HasImpactSounds then VJ_EmitSound(self,"player/bhit_helmet-1.wav",70) end
 		self.Bleeds = false
 		if dmginfo:IsBulletDamage() or dmginfo:IsDamageType(DMG_BUCKSHOT) or dmginfo:IsDamageType(DMG_SNIPER) or dmginfo:IsDamageType(DMG_SLASH) or dmginfo:IsDamageType(DMG_CLUB) then

@@ -19,6 +19,7 @@ ENT.VJ_NPC_Class = {"CLASS_ZOMBIE"}
 ENT.AnimTbl_Run = {ACT_WALK}
 ---------------------------------------------------------------------------------------------------------------------------------------------
 ENT.CustomBlood_Particle = {"lnr_bullet_impact_01","lnr_bullet_impact_02","lnr_bullet_impact_03","lnr_bullet_impact_04"}
+ENT.CustomBlood_Decal = {"VJ_LNR_Blood_Red"}
 ENT.ImmuneDamagesTable = {DMG_RADIATION}
 ENT.CanFlinch = 1
 -- ENT.FlinchChance = 10
@@ -89,6 +90,11 @@ ENT.Burntated = false
 ENT.LNR_CanUseWeapon = false
 ENT.WeHaveAWeapon = false
 ENT.MilZ_IsMilZ = false
+ENT.LNR_SuperSprinter = false
+ENT.MilZ_Jugg_NextRunT = 0
+ENT.MilZ_Bulldozer_NextSprintT = 0
+ENT.MilZ_Jugg_RunTime = 0
+ENT.MilZ_Bulldozer_RunTime = 0
 	-- ====== Sound File Paths ====== --
 -- Leave blank if you don't want any sounds to play
 ENT.FootSteps = {
@@ -272,6 +278,14 @@ function ENT:CustomOnInitialize()
 			self.AnimTbl_Run = {ACT_RUN}
 		end
 	end
+	
+  if GetConVar("VJ_LNR_SuperSprinter"):GetInt() == 1 then 
+     if math.random(1,3) == 1 && !self.LNR_Crawler && !self.LNR_Walker then 
+        self.LNR_SuperSprinter = true
+		self.AnimTbl_Walk = {ACT_RUN_AIM}
+		self.AnimTbl_Run = {ACT_RUN_AIM}
+	end
+end
 	if GetConVar("VJ_LNR_Biter"):GetInt() == 1  && !self.LNR_Crawler then
 		if self:GetClass() == "npc_vj_totu_milzomb_walker" && !self.MilZ_HasGasmask == true then
 			if math.random(1,3) == 1 && !self.LNR_Infected && self:GetClass() != "npc_vj_totu_milzomb_juggernaut" then 
@@ -286,7 +300,7 @@ function ENT:CustomOnInitialize()
 		end
 	end
 	if GetConVar("VJ_LNR_GroundRise"):GetInt() == 1 && self:IsDirtGround(self:GetPos()) then
-		if math.random(1,5) == 1 && !self.LNR_Crawler && self:GetClass() != "npc_vj_lnr_wal_pm" then
+		if math.random(1,GetConVar("VJ_ToTU_Spawn_DigChance"):GetInt()) == 1 && !self.LNR_Crawler then
 			self:RiseFromGround()
 		end
 	end
@@ -725,9 +739,110 @@ function ENT:ZombieSounds()
 			"voices/mil_jugg/pain_5.mp3"
 		}
     	self.SoundTbl_Death = {
-			"voices/mil_jugg/death.mp3"
+			"voices/mil_jugg/death_cutoff.mp3"
 		}
-		self.DeathSoundPitch = VJ_Set(100, 90)	
+		
+		self.MeleeAttackSoundPitch = VJ_Set(80, 75)
+		self.DeathSoundPitch = VJ_Set(100, 90)
+	elseif self:GetClass() == "npc_vj_totu_milzomb_bulldozer" then
+	
+		self.SoundTbl_Idle = {
+			"player/tank/voice/idle/tank_breathe_01.wav",
+			"player/tank/voice/idle/tank_breathe_02.wav",
+			"player/tank/voice/idle/tank_breathe_03.wav",
+			"player/tank/voice/idle/tank_breathe_04.wav",
+			"player/tank/voice/idle/tank_breathe_05.wav",
+			"player/tank/voice/idle/tank_breathe_06.wav",
+			"player/tank/voice/idle/tank_breathe_07.wav",
+			"player/tank/voice/idle/tank_breathe_08.wav",
+			
+			"player/tank/voice/idle/tank_growl_01.wav",
+			"player/tank/voice/idle/tank_growl_02.wav",
+			"player/tank/voice/idle/tank_growl_03.wav",
+			"player/tank/voice/idle/tank_growl_09.wav",
+			"player/tank/voice/idle/tank_growl_10.wav",
+			"player/tank/voice/idle/tank_growl_11.wav",
+			"player/tank/voice/idle/tank_growl_12.wav",
+			
+			"player/tank/voice/idle/tank_voice_01.wav",
+			"player/tank/voice/idle/tank_voice_02.wav",
+			"player/tank/voice/idle/tank_voice_03.wav",
+			"player/tank/voice/idle/tank_voice_04.wav",
+			"player/tank/voice/idle/tank_voice_05.wav",
+			"player/tank/voice/idle/tank_voice_06.wav",
+			"player/tank/voice/idle/tank_voice_07.wav",
+			"player/tank/voice/idle/tank_voice_08.wav",
+			"player/tank/voice/idle/tank_voice_09.wav"
+			}
+		self.SoundTbl_Alert = {
+			"player/tank/voice/yell/tank_yell_01.wav",
+			"player/tank/voice/yell/tank_yell_02.wav",
+			"player/tank/voice/yell/tank_yell_03.wav",
+			"player/tank/voice/yell/tank_yell_04.wav",
+			"player/tank/voice/yell/tank_yell_05.wav",
+			"player/tank/voice/yell/tank_yell_06.wav",
+			"player/tank/voice/yell/tank_yell_07.wav",
+			"player/tank/voice/yell/tank_yell_08.wav",
+			"player/tank/voice/yell/tank_yell_09.wav",
+			"player/tank/voice/yell/tank_yell_10.wav",
+			"player/tank/voice/yell/tank_yell_12.wav",
+			"player/tank/voice/yell/tank_yell_16.wav"
+		}
+		self.SoundTbl_CombatIdle = {
+			"player/tank/voice/yell/tank_yell_01.wav",
+			"player/tank/voice/yell/tank_yell_02.wav",
+			"player/tank/voice/yell/tank_yell_03.wav",
+			"player/tank/voice/yell/tank_yell_04.wav",
+			"player/tank/voice/yell/tank_yell_05.wav",
+			"player/tank/voice/yell/tank_yell_06.wav",
+			"player/tank/voice/yell/tank_yell_07.wav",
+			"player/tank/voice/yell/tank_yell_08.wav",
+			"player/tank/voice/yell/tank_yell_09.wav",
+			"player/tank/voice/yell/tank_yell_10.wav",
+			"player/tank/voice/yell/tank_yell_12.wav",
+			"player/tank/voice/yell/tank_yell_16.wav"
+		}
+		self.SoundTbl_BeforeMeleeAttack = {
+			"player/tank/voice/attack/tank_attack_01.wav",
+			"player/tank/voice/attack/tank_attack_02.wav",
+			"player/tank/voice/attack/tank_attack_03.wav",
+			"player/tank/voice/attack/tank_attack_04.wav",
+			"player/tank/voice/attack/tank_attack_05.wav",
+			"player/tank/voice/attack/tank_attack_06.wav",
+			"player/tank/voice/attack/tank_attack_07.wav",
+			"player/tank/voice/attack/tank_attack_08.wav",
+			"player/tank/voice/attack/tank_attack_09.wav",
+			"player/tank/voice/attack/tank_attack_10.wav"
+		}
+		self.SoundTbl_Pain = {
+			"player/tank/voice/pain/tank_pain_01.wav",
+			"player/tank/voice/pain/tank_pain_02.wav",
+			"player/tank/voice/pain/tank_pain_03.wav",
+			"player/tank/voice/pain/tank_pain_04.wav",
+			"player/tank/voice/pain/tank_pain_05.wav",
+			"player/tank/voice/pain/tank_pain_06.wav",
+			"player/tank/voice/pain/tank_pain_07.wav",
+			"player/tank/voice/pain/tank_pain_08.wav",
+			"player/tank/voice/pain/tank_pain_09.wav",
+			"player/tank/voice/pain/tank_pain_10.wav"
+		}
+    	self.SoundTbl_Death = {
+			"player/tank/voice/die/tank_death_01.wav",
+			"player/tank/voice/die/tank_death_02.wav",
+			"player/tank/voice/die/tank_death_03.wav",
+			"player/tank/voice/die/tank_death_04.wav",
+			"player/tank/voice/die/tank_death_05.wav",
+			"player/tank/voice/die/tank_death_06.wav",
+			"player/tank/voice/die/tank_death_07.wav"
+		}
+	
+			self.IdleSoundPitch = VJ_Set(80, 70)
+			self.AlertSoundPitch = VJ_Set(75, 65)
+			self.CombatIdleSoundPitch = VJ_Set(75, 65)
+			self.BeforeMeleeAttackSoundPitch = VJ_Set(80, 70)
+			self.PainSoundPitch = VJ_Set(75, 65)
+			self.DeathSoundPitch = VJ_Set(75, 65)	
+	
 	end
 	
 	if self.MilZ_HasGasmask then
@@ -796,6 +911,8 @@ function ENT:ZombieWeapons()
 		self.MeleeAttackBleedEnemyReps = 4 -- How many repetitions?
 		self.MilZ_HasKnife = true
 self.MeleeAttackDamageType = DMG_SLASH
+self.SoundTbl_MeleeAttack = {
+	""}
 
 			self.WeaponModel = ents.Create("prop_physics")	
 			self.WeaponModel:SetModel("models/vj_lnrhl2/weapons/w_knife_ct.mdl")
@@ -842,9 +959,31 @@ self.RangeToMeleeDistance = 1
 self.TimeUntilRangeAttackProjectileRelease = 0.1
 self.NextRangeAttackTime = 1
 self.NextRangeAttackTime_DoRand = 0.1
+
+	if self.LNR_Walker and !self.LNR_Infected then
+		self.AnimTbl_Walk = {ACT_WALK_PISTOL}
+		self.AnimTbl_Run = {ACT_WALK_PISTOL}
+		if self.LNR_Runner then
+			self.AnimTbl_Run = {ACT_RUN_PISTOL}
+		end
+	elseif !self.LNR_Walker and self.LNR_Infected then
+		if !self.LNR_SuperSprinter then
+			self.AnimTbl_Run = {ACT_RUN_AIM_PISTOL}
+		end
+	end
 			
 			end
     end	
+    end	
+	
+	if        self.DisableFindEnemy == true then		
+	
+	 if IsValid(self.WeaponModel) then self.WeaponModel:SetMaterial("lnr/bonemerge") self.WeaponModel:DrawShadow(false) end
+	 
+		timer.Simple(1.3,function()
+	 if IsValid(self) then
+	 if IsValid(self.WeaponModel) then self.WeaponModel:SetMaterial() self.WeaponModel:DrawShadow(true) end
+	end end)
     end	
     end	
 
@@ -906,7 +1045,7 @@ function ENT:CustomOnAcceptInput(key,activator,caller,data)
 	end
 	
 	if key == "step" then
-		if self:GetClass() == "npc_vj_totu_milzomb_juggernaut" then
+		if self:GetClass() == "npc_vj_totu_milzomb_juggernaut" or self:GetClass() == "npc_vj_totu_milzomb_bulldozer" then
 			VJ_EmitSound(self,"fx/footsteps/mil_big/step_"..math.random(1,4)..".mp3",self.FootStepSoundLevel,self:VJ_DecideSoundPitch(self.FootStepPitch.a,self.FootStepPitch.b))
 		end
 	end
@@ -957,9 +1096,11 @@ end
 		end
 	end
 	
-	if key == "death" && self:GetClass() == "npc_vj_totu_milzomb_juggernaut" then
+	if key == "death" then 
+		if self:GetClass() == "npc_vj_totu_milzomb_juggernaut" or self:GetClass() == "npc_vj_totu_milzomb_bulldozer" then
 		VJ_EmitSound(self,"fx/footsteps/mil_big/step_"..math.random(1,4)..".mp3",self.FootStepSoundLevel,self:VJ_DecideSoundPitch(self.FootStepPitch.a,self.FootStepPitch.b))
 		util.ScreenShake(self:GetPos(), self.WorldShakeOnMoveAmplitude, self.WorldShakeOnMoveFrequency, self.WorldShakeOnMoveDuration, self.WorldShakeOnMoveRadius)
+		end
 	end
 	
 	if key == "death" && self:WaterLevel() > 0 && self:WaterLevel() < 3 then
@@ -1015,12 +1156,12 @@ end
 				local ang = self:GetAngles()
 				self:SetAngles(Angle(ang.x,(self.LNR_DoorToBreak:GetPos() -self:GetPos()):Angle().y,ang.z))
 				self:VJ_ACT_PLAYACTIVITY(ACT_OPEN_DOOR,true,false,false)
-				self:SetState(VJ_STATE_ONLY_ANIMATION)
+				-- self:SetState(VJ_STATE_ONLY_ANIMATION)
 		end
 	end
 end
 		if !IsValid(self.LNR_DoorToBreak) then
-			self:SetState()
+			-- self:SetState()
 	end
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
@@ -1058,8 +1199,18 @@ function ENT:CustomOnThink_AIEnabled()
 		end end)
 	end
 	
+	-- if self:GetClass() == "npc_vj_totu_milzomb_juggernaut" then
+		-- if self.MilZ_Jugg_NextRunT < CurTime() && self.MilZ_Jugg_RunTime !< 0 self:GetSequence() != self:LookupSequence(ACT_BIG_FLINCH) && self:GetSequence() != self:LookupSequence(ACT_SMALL_FLINCH) && self:GetSequence() != self:LookupSequence(ACT_STEP_BACK) && self:GetSequence() != self:LookupSequence(ACT_STEP_FORE) && self:GetSequence() != self:LookupSequence(ACT_SMALL_FLINCH) && self:GetSequence() != self:LookupSequence(ACT_FLINCH_STOMACH) && self:GetSequence() != self:LookupSequence(ACT_GMOD_TAUNT_PERSISTENCE) then
+			-- self.AnimTbl_Run = {ACT_RUN}
+			-- self.MilZ_Jugg_RunTime = CurTime() + math.random(30,50)
+			
 	
-	
+					-- self.LNR_NextStumbleT = CurTime() + 7
+					
+-- ENT.MilZ_Jugg_NextRunT = 0
+-- ENT.MilZ_Bulldozer_NextSprintT = 0
+-- ENT.MilZ_Jugg_RunTime = 0
+-- ENT.MilZ_Bulldozer_RunTime = 0
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:IsDirtGround(pos)
@@ -1087,6 +1238,7 @@ function ENT:RiseFromGround()
 		self.CallForHelp = false
 		timer.Simple(1.3,function()
 	 if IsValid(self) then
+	 VJ_CreateSound(self,self.SoundTbl_Alert,self.AlertSoundLevel,self:VJ_DecideSoundPitch(self.AlertSoundPitch.a, self.AlertSoundPitch.b))
 		self:SetMaterial()
 	 if IsValid(self.WeaponModel) then self.WeaponModel:SetMaterial() self.WeaponModel:DrawShadow(true) end
 		self:DrawShadow(true)
@@ -1127,34 +1279,67 @@ function ENT:Controller_IntMsg(ply)
 	-- ply:ChatPrint("DUCK: Swap between Crawling and Standing (does not work if crippled)")
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
+function ENT:CustomOnAlert(ent)
+     if self.VJ_IsBeingControlled or self.LNR_Crawler or self.LNR_Crippled then return end
+	    -- elseif self.LNR_UsingRelaxedIdle then
+	if self.LNR_Infected then
+		self.AnimTbl_IdleStand = {ACT_IDLE_ANGRY}
+	end
+end
+---------------------------------------------------------------------------------------------------------------------------------------------
+function ENT:CustomOnResetEnemy()
+	if self.VJ_IsBeingControlled or self.LNR_Crawler or self.LNR_Crippled then return end
+	if self.LNR_Infected then
+		if self.LNR_UsingRelaxedIdle then
+			self.AnimTbl_IdleStand = {ACT_IDLE_RELAXED}
+		else
+			self.AnimTbl_IdleStand = {ACT_IDLE}
+		end
+	end
+end
+---------------------------------------------------------------------------------------------------------------------------------------------
 -- function ENT:CustomOnChangeMovementType(movType)	
 	-- if VJ_AnimationExists(self,ACT_CLIMB_UP) == true then self:CapabilitiesRemove(bit.bor(CAP_MOVE_CLIMB)) end
 -- end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:CustomOnMeleeAttack_AfterChecks(hitEnt, isProp)
 	if self:IsOnFire() then hitEnt:Ignite(4) end
-    if (self.LNR_RArmDamaged && self.LNR_LArmDamaged or self.LNR_Biter) && !isProp then	
-	if hitEnt.IsVJBaseSNPC && VJ_PICK(hitEnt.CustomBlood_Particle) then ParticleEffectAttach(VJ_PICK(hitEnt.CustomBlood_Particle),PATTACH_POINT_FOLLOW,self,self:LookupAttachment("mouth")) 
-	elseif (hitEnt:IsPlayer() or hitEnt:IsNPC() or hitEnt:IsNextBot()) then ParticleEffectAttach("blood_impact_red_01",PATTACH_POINT_FOLLOW,self,self:LookupAttachment("mouth")) 
-    end 
-end	
+	
+    if self.LNR_Biter && !isProp then	
+		if hitEnt.IsVJBaseSNPC && VJ_PICK(hitEnt.CustomBlood_Particle) 
+			then ParticleEffectAttach(VJ_PICK(hitEnt.CustomBlood_Particle),PATTACH_POINT_FOLLOW,self,self:LookupAttachment("mouth")) 
+		elseif (hitEnt:IsPlayer() or hitEnt:IsNPC() or hitEnt:IsNextBot()) 
+			then ParticleEffectAttach("blood_impact_red_01",PATTACH_POINT_FOLLOW,self,self:LookupAttachment("mouth")) 
+		end 
+	end	
+	
+    if IsValid(self.WeaponModel) && self.WeaponModel:GetModel() == "models/vj_lnrhl2/weapons/w_knife_ct.mdl" then	
+		if hitEnt.IsVJBaseSNPC && VJ_PICK(hitEnt.CustomBlood_Particle) 
+			then ParticleEffectAttach(VJ_PICK(hitEnt.CustomBlood_Particle),PATTACH_POINT_FOLLOW,self,self:LookupAttachment("anim_attachment_RH")) 
+		elseif (hitEnt:IsPlayer() or hitEnt:IsNPC() or hitEnt:IsNextBot()) 
+			then ParticleEffectAttach("blood_impact_red_01",PATTACH_POINT_FOLLOW,self,self:LookupAttachment("anim_attachment_RH")) 
+		end 
+	end	
+	
     if hitEnt:IsPlayer() && hitEnt:Health() < self.MeleeAttackDamage + 1 then
        VJ_LNR_SetPlayerZombie(hitEnt,self,self)	
-end
-	if math.random(1,GetConVar("VJ_LNR_InfectionChance"):GetInt()) == 1 && (hitEnt:LookupBone("ValveBiped.Bip01_Pelvis") != nil) && !hitEnt.LNR_InfectedVictim then
-	if (hitEnt:IsPlayer() && hitEnt:Armor() < 25 && GetConVar("sbox_godmode"):GetInt() == 0) or hitEnt:IsNPC() then 
-    if hitEnt.LNR_InfectedVictim then return end
-        hitEnt.LNR_InfectedVictim = true
-        VJ_LNR_InfectionApply(hitEnt,self)
 	end
-end		
+	
+	if math.random(1,GetConVar("VJ_LNR_InfectionChance"):GetInt()) == 1 && (hitEnt:LookupBone("ValveBiped.Bip01_Pelvis") != nil) && !hitEnt.LNR_InfectedVictim then
+		if (hitEnt:IsPlayer() && hitEnt:Armor() < 25 && GetConVar("sbox_godmode"):GetInt() == 0) or hitEnt:IsNPC() then 
+			if hitEnt.LNR_InfectedVictim then return end
+			hitEnt.LNR_InfectedVictim = true
+			VJ_LNR_InfectionApply(hitEnt,self)
+		end
+	end		
+	
 	return false
 end	
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:CustomOnMeleeAttack_Miss()
   if self.LNR_Crawler or self.LNR_Crippled or !self.LNR_Biter then return end
     if self.MeleeAttacking && !self:IsMoving() && self:GetSequence() != self:LookupSequence("choke_eat") then
-      if (self.LNR_LArmDamaged && self.LNR_RArmDamaged) or self.LNR_Biter then	
+      if self.LNR_Biter then	
 	       self.PlayingAttackAnimation = false
 	       self:StopAttacks(false)
 	       self.vACT_StopAttacks = false	
@@ -1165,7 +1350,7 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:MultipleMeleeAttacks()
 -- Melee Sounds	--
-	if (self.LNR_LArmDamaged && self.LNR_RArmDamaged) or self.LNR_Biter then
+	if self.LNR_Biter then
         self.SoundTbl_MeleeAttackExtra = {
         "vj_lnrhl2/shared/melee/zombie_bite1.wav",
         "vj_lnrhl2/shared/melee/zombie_bite2.wav",
@@ -1215,24 +1400,8 @@ end
 		"weapons/stunstick/stunstick_swing2.wav"
 }
 end  
--- If the SNPC loses the weapon via arm dismembered then make sure it retains the original damage instead of the weapon damage --
-     if GetConVar("VJ_LNR_Difficulty"):GetInt() == 1 then // Easy	
-     if IsValid(self.WeaponModel) && self.LNR_RArmDamaged && !self.LNR_CanUseWeapon then self.MeleeAttackDamage = math.Rand(5,10) end		
-end
-     if GetConVar("VJ_LNR_Difficulty"):GetInt() == 2 then // Normal		
-     if IsValid(self.WeaponModel) && self.LNR_RArmDamaged && !self.LNR_CanUseWeapon then self.MeleeAttackDamage = math.Rand(10,15) end
-end		
-     if GetConVar("VJ_LNR_Difficulty"):GetInt() == 3 then // Hard
-     if IsValid(self.WeaponModel) && self.LNR_RArmDamaged && !self.LNR_CanUseWeapon then self.MeleeAttackDamage = math.Rand(15,20) end
-end
-     if GetConVar("VJ_LNR_Difficulty"):GetInt() == 4 then // Nightmare
-     if IsValid(self.WeaponModel) && self.LNR_RArmDamaged && !self.LNR_CanUseWeapon then self.MeleeAttackDamage = math.Rand(20,25) end
-end
-     if GetConVar("VJ_LNR_Difficulty"):GetInt() == 5 then // Apocalypse 
-     if IsValid(self.WeaponModel) && self.LNR_RArmDamaged && !self.LNR_CanUseWeapon then self.MeleeAttackDamage = math.Rand(25,30) end		
-end	
 -- When Crawling or Crippled --
-    if !self.LNR_LArmDamaged && !self.LNR_RArmDamaged && !self.LNR_Biter && (self.LNR_Crawler or self.LNR_Crippled) then
+    if !self.LNR_Biter && (self.LNR_Crawler or self.LNR_Crippled) then
 	if self.LNR_Walker then
 	    self.AnimTbl_MeleeAttack = {"vjseq_crawl_attack"}	
 	elseif self.LNR_Infected then
@@ -1242,7 +1411,7 @@ end
         self.MeleeAttackDistance = 15
         self.MeleeAttackDamageDistance = 45			
 end	
-    if !self.LNR_LArmDamaged && !self.LNR_RArmDamaged && !self.LNR_Biter && self.ToTU_Crawling == true then
+    if !self.LNR_Biter && self.ToTU_Crawling == true then
 		if self.WeHaveAWeapon == true then
 			if self.LNR_Walker then
 				self.AnimTbl_MeleeAttack = {"vjges_nz_attack_walk_ad_right_only_1",
@@ -1283,7 +1452,7 @@ end
         self.MeleeAttackDamageDistance = 50			
 	end	
 -- When Dismembered or for Biters --
-    if (self.LNR_LArmDamaged && self.LNR_RArmDamaged) or self.LNR_Biter then
+    if self.LNR_Biter then
 	if self:IsMoving() or self.LNR_Crippled or self.LNR_Crawler then
 	    self.MeleeAttackAnimationAllowOtherTasks = true
 		self.AnimTbl_MeleeAttack = {"vjges_Choke_Eat"}		
@@ -1305,9 +1474,11 @@ end
         self.MeleeAttackDamageType = DMG_NERVEGAS	
 end		
 -- When Standing --
-    if (self.LNR_LArmDamaged && self.LNR_RArmDamaged) or self.LNR_Crawler or self.LNR_Crippled or self.LNR_Biter or self.ToTU_Crawling then return end
+    if self.LNR_Crawler or self.LNR_Crippled or self.LNR_Biter or self.ToTU_Crawling then return end
     if !self:IsMoving() then
 	    self.MeleeAttackAnimationAllowOtherTasks = false
+		-- local theenemya = self:GetEnemy()
+		
 		if self.WeHaveAWeapon == true then
 		self.AnimTbl_MeleeAttack = {
 		"vjseq_nz_attack_stand_ad_2-2",
@@ -1325,6 +1496,13 @@ end
 		"vjseq_nz_attack_stand_au_2-4"		
 }
 end	
+		-- if self:GetEnemy() == "npc_vj_hlr1_houndeye" then
+		
+		-- self.AnimTbl_MeleeAttack = {
+		-- "vjseq_AttackIncap_01",
+		-- "vjseq_AttackIncap_03"
+		-- }
+		-- end
 end	
 -- When Walking --
 	if self:IsMoving() then
@@ -1333,7 +1511,7 @@ end
 		self.AnimTbl_MeleeAttack = {"vjges_nz_attack_walk_ad_right_only_1",
 				"vjgesnz_attack_walk_au_right_only_1"
 		}
-		elseif self:GetClass() == "npc_vj_totu_milzomb_juggernaut" then
+		elseif self:GetClass() == "npc_vj_totu_milzomb_juggernaut" or self:GetClass() == "npc_vj_totu_milzomb_bulldozer" then
 		self.AnimTbl_MeleeAttack = {
 		"vjges_CI_Melee_Moving01",
 		"vjges_CI_Melee_Moving02",
@@ -1364,7 +1542,7 @@ end
 				"vjges_nz_attack_run_au_right_only_1",
 				"vjges_nz_attack_run_au_right_only_2",
 				"vjges_nz_attack_run_au_right_only_4"}
-		elseif self:GetClass() == "npc_vj_totu_milzomb_juggernaut" then
+		elseif self:GetClass() == "npc_vj_totu_milzomb_juggernaut" or self:GetClass() == "npc_vj_totu_milzomb_bulldozer" then
 		self.AnimTbl_MeleeAttack = {
 		"vjges_CI_Melee_Moving01",
 		"vjges_CI_Melee_Moving02",
@@ -1434,6 +1612,16 @@ self.MeleeAttackDamageType = DMG_CLUB
 		self.WeaponModel:Remove()	
 		self.SoundTbl_MeleeAttackMiss = {"npc/zombie/claw_miss2.wav","npc/zombie/claw_miss1.wav"}
 		if self.MilZ_HasKnife == true then
+		
+self.SoundTbl_MeleeAttack = {
+	"vj_lnrhl2/shared/melee/hit_punch_01.wav",
+	"vj_lnrhl2/shared/melee/hit_punch_02.wav",
+	"vj_lnrhl2/shared/melee/hit_punch_03.wav",
+	"vj_lnrhl2/shared/melee/hit_punch_04.wav",
+	"vj_lnrhl2/shared/melee/hit_punch_05.wav",
+	"vj_lnrhl2/shared/melee/hit_punch_06.wav",
+	"vj_lnrhl2/shared/melee/hit_punch_07.wav",
+	"vj_lnrhl2/shared/melee/hit_punch_08.wav"}
 			self.MeleeAttackBleedEnemy = false -- Should the enemy bleed when attacked by melee?
 		end
 		if self.MilZ_HasGun == true then	
@@ -1455,14 +1643,14 @@ function ENT:CustomOnTakeDamage_AfterDamage(dmginfo,hitgroup)
 					-- if math.random (1,2) == 1 then
 					if math.random (1,1) == 1 then
 					self:VJ_ACT_PLAYACTIVITY(ACT_BIG_FLINCH,true,false,false)
-				self:SetState(VJ_STATE_ONLY_ANIMATION)
+				-- self:SetState(VJ_STATE_ONLY_ANIMATION)
 					self.LNR_NextStumbleT = CurTime() + 7
 					end
 					-- elseif dmginfo:GetDamage() > 24 or dmginfo:GetDamageForce():Length() > 5000 then
 					elseif dmginfo:GetDamage() > 39 or dmginfo:GetDamageForce():Length() > 7499 then
 					if math.random (1,3) == 1 then
 					self:VJ_ACT_PLAYACTIVITY(ACT_SMALL_FLINCH,true,false,false)
-				self:SetState(VJ_STATE_ONLY_ANIMATION)
+				-- self:SetState(VJ_STATE_ONLY_ANIMATION)
 					self.LNR_NextStumbleT = CurTime() + 7
 					end
 					else
@@ -1480,12 +1668,12 @@ function ENT:CustomOnTakeDamage_AfterDamage(dmginfo,hitgroup)
 					if self:GetActivity() == ACT_SPRINT or self:GetActivity() == ACT_RUN_AIM then
 						if dmginfo:GetDamage() > 19 or dmginfo:GetDamageForce():Length() > 2499 then
 							self:VJ_ACT_PLAYACTIVITY("vjseq_Run_Stumble_01",true,false,false)
-				self:SetState(VJ_STATE_ONLY_ANIMATION)
+				-- self:SetState(VJ_STATE_ONLY_ANIMATION)
 							self.LNR_NextStumbleT = CurTime() + 7
 					elseif dmginfo:GetDamage() < 19 or dmginfo:GetDamageForce():Length() < 2499 then
 						if math.random (1,2) == 1 then
 							self:VJ_ACT_PLAYACTIVITY("vjseq_shove_forward_01",true,false,false)
-				self:SetState(VJ_STATE_ONLY_ANIMATION)
+				-- self:SetState(VJ_STATE_ONLY_ANIMATION)
 							self.LNR_NextStumbleT = CurTime() + 7
 						end
 					end
@@ -1505,14 +1693,14 @@ function ENT:CustomOnTakeDamage_AfterDamage(dmginfo,hitgroup)
 		if dmginfo:GetDamage() > 49 or dmginfo:GetDamageForce():Length() > 10000 then
 			if self.LNR_NextShoveT < CurTime() then
 				self:VJ_ACT_PLAYACTIVITY(ACT_BIG_FLINCH,true,false,false)
-				self:SetState(VJ_STATE_ONLY_ANIMATION)
+				-- self:SetState(VJ_STATE_ONLY_ANIMATION)
 				self.LNR_NextShoveT = CurTime() + math.random(5,8)
 				-- self.LNR_NextShoveT = CurTime() + 1
 			end
 		elseif dmginfo:GetDamage() > 24 or dmginfo:GetDamageForce():Length() > 5000 then
 			if self.LNR_NextShoveT < CurTime() then
 				self:VJ_ACT_PLAYACTIVITY(ACT_SMALL_FLINCH,true,false,false)
-				self:SetState(VJ_STATE_ONLY_ANIMATION)
+				-- self:SetState(VJ_STATE_ONLY_ANIMATION)
 				self.LNR_NextShoveT = CurTime() + math.random(5,8)
 				-- self.LNR_NextShoveT = CurTime() + 1
 			end
@@ -1529,28 +1717,32 @@ function ENT:CustomOnTakeDamage_AfterDamage(dmginfo,hitgroup)
 	if dmginfo:IsExplosionDamage() then
 		if self.NextSplodeStumbleT < CurTime() then
 		if math.random(1,2) == 1 then
-		self:VJ_ACT_PLAYACTIVITY("vjseq_shove_forward_01",true,false,false)
-				self:SetState(VJ_STATE_ONLY_ANIMATION)
+			if math.random(1,2) == 1 then
+				self:VJ_ACT_PLAYACTIVITY("vjseq_Run_Stumble_01",true,false,false)
+				-- self:SetState(VJ_STATE_ONLY_ANIMATION)
+			else
+				self:VJ_ACT_PLAYACTIVITY("vjseq_shove_forward_01",true,false,false)
+				-- self:SetState(VJ_STATE_ONLY_ANIMATION)
+			end
 		else
 		self:VJ_ACT_PLAYACTIVITY(ACT_BIG_FLINCH,true,false,false)
-				self:SetState(VJ_STATE_ONLY_ANIMATION)
+				-- self:SetState(VJ_STATE_ONLY_ANIMATION)
 		end
 		self.NextSplodeStumbleT = CurTime() + 5
 		end
 		    return !self.LNR_Crawler && !self.LNR_Crippled && self:GetSequence() != self:LookupSequence(ACT_BIG_FLINCH) && self:GetSequence() != self:LookupSequence(ACT_SMALL_FLINCH)
 	end
 			if GetConVar("VJ_LNR_Cripple"):GetInt() == 1 then 
-			if hitgroup == HITGROUP_LEFTLEG or hitgroup == HITGROUP_RIGHTLEG then
-			self.LNR_LegHP = self.LNR_LegHP -dmginfo:GetDamage()
-			end
+				if hitgroup == HITGROUP_LEFTLEG or hitgroup == HITGROUP_RIGHTLEG then
+					self.LNR_LegHP = self.LNR_LegHP -dmginfo:GetDamage()
+				end
 			end
 			if self.LNR_LegHP <= 0 then
 				self.LNR_Crippled = true
-				if self.ToTU_Crawling then return end
-				local anim = {"vjseq_nz_death_1","vjseq_nz_death_f_7","vjseq_nz_death_f_8"}				
-				//if math.random(1,4) == 1 then anim = {"vjseq_nz_death_1","vjseq_nz_death_f_7","vjseq_nz_death_f_8"} end
-				self:VJ_ACT_PLAYACTIVITY(anim,true,false,false)
                 self:Cripple()
+				if self.ToTU_Crawling then return end
+				local anim = {"vjseq_nz_death_1","vjseq_nz_death_f_7","vjseq_nz_death_f_8"}
+				self:VJ_ACT_PLAYACTIVITY(anim,true,false,false)
             end				
 end
 -- end
