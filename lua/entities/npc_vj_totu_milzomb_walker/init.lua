@@ -17,9 +17,17 @@ ENT.MilZ_GunAmmo = 0
 ENT.MilZ_HasGrenades = false
 ENT.MilZ_Grenades = 0
 ENT.MilZ_IsMilZ = true
+ENT.MilZ_HelmetHealth = 1
+ENT.MilZ_HelmetBroken = false
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:Zombie_CustomOnPreInitialize()
 
+	self.MilZ_HelmetHealth = GetConVar("VJ_ToTU_MilZ_Helmet_Health"):GetInt()
+	
+	if self:GetClass() == "npc_vj_totu_milzomb_juggernaut" then
+		self.MilZ_HelmetHealth = GetConVar("VJ_ToTU_MilZ_Helmet_Health"):GetInt() * 3
+	end
+	
 	self.ItemDropsOnDeath_EntityList = {"item_ammo_pistol",
 		"item_ammo_pistol",
 		"item_ammo_357",
@@ -135,12 +143,12 @@ self.VJ_IsHugeMonster = true
 	end
 	
 	-- if math.random(1,4) == 1 then
-	if math.random(1,4) == 1 then
+	if math.random(1,GetConVar("VJ_ToTU_MilZ_FlakArmor_Chance"):GetInt()) == 1 && GetConVar("VJ_ToTU_MilZ_FlakArmor_Allow"):GetInt() == 1 then
 		self.MilZ_HasFlakSuit = true
 	end
 	
 	
-	if math.random(1,3) == 1 && self:GetClass() != "npc_vj_totu_milzomb_bulldozer" then
+	if math.random(1,GetConVar("VJ_ToTU_MilZ_Gasmasks_Chance"):GetInt()) == 1 && self:GetClass() != "npc_vj_totu_milzomb_bulldozer" && GetConVar("VJ_ToTU_MilZ_Gasmasks_Allow"):GetInt() == 1 then
 		self.MilZ_HasGasmask = true
 	
 
@@ -199,7 +207,7 @@ function ENT:Zombie_CustomOnInitialize()
 	
 	if self:GetClass() == "npc_vj_totu_milzomb_juggernaut" or self:GetClass() == "npc_vj_totu_milzomb_bulldozer" then return end
 	
-	if math.random(1,4) == 1 && !self.LNR_Crawler && !self.LNR_Biter then
+	if math.random(1,GetConVar("VJ_ToTU_MilZ_Weapons_Chance"):GetInt()) == 1 && !self.LNR_Crawler && !self.LNR_Biter then
 	-- if math.random(1,1) == 1 && !self.LNR_Crawler && !self.LNR_Biter then
 		-- self.MilZ_HasKnife = true
 		self:ZombieWeapons()
@@ -217,7 +225,9 @@ function ENT:Zombie_CustomOnInitialize()
 	-- end
 	-- end)
 	
-	if math.random(1,10) == 1 && !self.LNR_Crawler && !self.MilZ_HasGun then
+	if GetConVar("VJ_ToTU_MilZ_Grenades"):GetInt() == 1 then
+	
+	if math.random(1,GetConVar("VJ_ToTU_MilZ_Grenades_Chance"):GetInt()) == 1 && !self.LNR_Crawler && !self.MilZ_CanShuutDeGun then
 		self.HasRangeAttack = true
 		self.RangeAttackEntityToSpawn = "obj_vj_totu_milzgren"
 		-- self.RangeAttackEntityToSpawn = "obj_vj_grenade"
@@ -232,10 +242,21 @@ function ENT:Zombie_CustomOnInitialize()
 		self.RangeUseAttachmentForPosID = "anim_attachment_RH"
 		self.RangeAttackPos_Forward = 20
 		self.RangeAttackPos_Up = 20
-		self.MilZ_Grenades = math.random(1,3)
-		if self.MilZ_HasKnife then
+		
+		if GetConVar("VJ_ToTU_MilZ_Grenades_Ammount"):GetInt() == -1 then
+			self.MilZ_Grenades = math.random(1,3)
+		elseif GetConVar("VJ_ToTU_MilZ_Grenades_Ammount"):GetInt() == 0 then
+			-- i mean what did you expect?
+			self.MilZ_Grenades = 0
+			self.HasRangeAttack = false
+		elseif GetConVar("VJ_ToTU_MilZ_Grenades_Ammount"):GetInt() != -1 then
+			self.MilZ_Grenades = GetConVar("VJ_ToTU_MilZ_Grenades_Ammount"):GetInt()
+		end
+		
+		if self.MilZ_HasKnife or self.MilZ_HasGun then
 		self.AnimTbl_RangeAttack = {"vjseq_throw_left"}
 		self.RangeUseAttachmentForPosID = "anim_attachment_LH"
+		end
 		end
 		
 		
@@ -254,11 +275,15 @@ function ENT:Zombie_Difficulty()
 		if self:GetClass() == "npc_vj_totu_milzomb_juggernaut" or self:GetClass() == "npc_vj_totu_milzomb_bulldozer" then
 			self.StartHealth = 250
 			self.MeleeAttackDamage = math.Rand(20,25)	
+		if GetConVar("VJ_ToTU_General_LegHealthScalesWithDifficulty"):GetInt() == 1 then
 			self.LNR_LegHP = 125	
+		end
 		else
 			self.StartHealth = 65
 			self.MeleeAttackDamage = math.Rand(5,10)	
+		if GetConVar("VJ_ToTU_General_LegHealthScalesWithDifficulty"):GetInt() == 1 then
 			self.LNR_LegHP = 15	
+		end
 		end
      -- if self.LNR_CanUseWeapon then self.MeleeAttackDamage = math.Rand(10,15) end		
 end
@@ -266,7 +291,9 @@ end
 		if self:GetClass() == "npc_vj_totu_milzomb_juggernaut" or self:GetClass() == "npc_vj_totu_milzomb_bulldozer" then
 			self.StartHealth = 750
 			self.MeleeAttackDamage = math.Rand(25,30)	
+		if GetConVar("VJ_ToTU_General_LegHealthScalesWithDifficulty"):GetInt() == 1 then
 			self.LNR_LegHP = 150	
+		end
 		else
         self.StartHealth = 125		
 	    self.MeleeAttackDamage = math.Rand(10,15)
@@ -277,11 +304,15 @@ end
 		if self:GetClass() == "npc_vj_totu_milzomb_juggernaut" or self:GetClass() == "npc_vj_totu_milzomb_bulldozer" then
 			self.StartHealth = 1250
 			self.MeleeAttackDamage = math.Rand(30,35)	
-			self.LNR_LegHP = 175	
+		if GetConVar("VJ_ToTU_General_LegHealthScalesWithDifficulty"):GetInt() == 1 then
+			self.LNR_LegHP = 175
+		end	
 		else
         self.StartHealth = 175	
 	    self.MeleeAttackDamage = math.Rand(15,20)
+		if GetConVar("VJ_ToTU_General_LegHealthScalesWithDifficulty"):GetInt() == 1 then
 		self.LNR_LegHP = 35
+		end
 		end
      -- if self.LNR_CanUseWeapon then self.MeleeAttackDamage = math.Rand(20,25) end
 end
@@ -289,23 +320,31 @@ end
 		if self:GetClass() == "npc_vj_totu_milzomb_juggernaut" or self:GetClass() == "npc_vj_totu_milzomb_bulldozer" then
 			self.StartHealth = 1750
 			self.MeleeAttackDamage = math.Rand(35,40)	
-			self.LNR_LegHP = 200	
+		if GetConVar("VJ_ToTU_General_LegHealthScalesWithDifficulty"):GetInt() == 1 then
+			self.LNR_LegHP = 200
+		end	
 		else
         self.StartHealth = 225
 	    self.MeleeAttackDamage = math.Rand(20,25)
+		if GetConVar("VJ_ToTU_General_LegHealthScalesWithDifficulty"):GetInt() == 1 then
 		self.LNR_LegHP = 45
+		end
 		end
      -- if self.LNR_CanUseWeapon then self.MeleeAttackDamage = math.Rand(25,30) end
 end
      if GetConVar("VJ_LNR_Difficulty"):GetInt() == 5 then // Apocalypse
 		if self:GetClass() == "npc_vj_totu_milzomb_juggernaut" or self:GetClass() == "npc_vj_totu_milzomb_bulldozer" then
 			self.StartHealth = 2250
-			self.MeleeAttackDamage = math.Rand(40,45)	
+			self.MeleeAttackDamage = math.Rand(40,45)
+		if GetConVar("VJ_ToTU_General_LegHealthScalesWithDifficulty"):GetInt() == 1 then	
 			self.LNR_LegHP = 250	
+		end
 		else
         self.StartHealth = 275
 	    self.MeleeAttackDamage = math.Rand(25,30) 
+		if GetConVar("VJ_ToTU_General_LegHealthScalesWithDifficulty"):GetInt() == 1 then
 		self.LNR_LegHP = 55
+		end
 		end
      -- if self.LNR_CanUseWeapon then self.MeleeAttackDamage = math.Rand(30,35) end		
 end	
@@ -373,12 +412,15 @@ function ENT:CustomRangeAttackCode()
 		effectData:SetOrigin(self:GetPos())
 		-- effectData:SetScale(500)
 		util.Effect("ShellEject", effectData)
-	self.MilZ_GunAmmo = self.MilZ_GunAmmo + 1
+		if GetConVar("VJ_ToTU_MilZ_ShootableGun_Bullets_Infinite"):GetInt() == 0 then
+		self.MilZ_GunAmmo = self.MilZ_GunAmmo + 1
+		end
 	end
 	end
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:ArmorDamage(dmginfo,hitgroup)
+	if GetConVar("VJ_ToTU_General_Armor_Allow"):GetInt() == 0 then	return end
 
 	if self.MilZ_HasFlakSuit == true then
 		if dmginfo:IsExplosionDamage() then
@@ -386,7 +428,50 @@ function ENT:ArmorDamage(dmginfo,hitgroup)
 		end
 	end
 	
-	if hitgroup == HITGROUP_HEAD && self:GetClass() != "npc_vj_totu_milzomb_bulldozer" then
+	if hitgroup == HITGROUP_GENERIC && !dmginfo:IsDamageType(DMG_SONIC) then
+		-- didn't hit a bodygroup, assume they sometimes hit the armor
+		-- don't run this for houndeyes and stuff
+		if math.random(1,3) != 1 then
+		dmginfo:ScaleDamage(0.30)
+		if self.HasSounds && self.HasImpactSounds then VJ_EmitSound(self,"player/bhit_helmet-1.wav",70) end
+		end
+	end
+	
+	if hitgroup == HITGROUP_HEAD && self:GetClass() != "npc_vj_totu_milzomb_bulldozer" && !self.MilZ_HelmetBroken then
+	
+	if GetConVar("VJ_ToTU_MilZ_Helmet_Breakable"):GetInt() == 1 then
+		self.MilZ_HelmetHealth = self.MilZ_HelmetHealth -dmginfo:GetDamage()
+	
+	if self.MilZ_HelmetHealth <= 0 && !self.MilZ_HelmetBroken then
+		self.MilZ_HelmetBroken = true
+		-- VJ_EmitSound(self,{"physics/metal/metal_box_break1.wav","physics/metal/metal_box_break2.wav"},70)
+		if self.HasSounds && self.HasImpactSounds then VJ_EmitSound(self,{"physics/wood/wood_box_break1.wav","physics/wood/wood_box_break2.wav"},70) end
+		if self.HasSounds && self.HasImpactSounds then VJ_EmitSound(self,{"physics/plastic/plastic_box_break1.wav","physics/plastic/plastic_box_break2.wav"},70) end
+		if self.HasSounds && self.HasImpactSounds then VJ_EmitSound(self,{"physics/wood/wood_strain2.wav","physics/wood/wood_strain3.wav","physics/wood/wood_strain4.wav"},70) end
+		self:RemoveAllDecals()
+		
+			local spark = ents.Create("env_spark")
+			spark:SetKeyValue("Magnitude","1")
+			spark:SetKeyValue("Spark Trail Length","1")
+			spark:SetPos(dmginfo:GetDamagePosition())
+			spark:SetAngles(self:GetAngles())
+			spark:SetParent(self)
+			spark:Spawn()
+			spark:Activate()
+			spark:Fire("StartSpark","",0)
+			spark:Fire("StopSpark","",0.001)
+			self:DeleteOnRemove(spark)
+			
+		if self.MilZ_HasGasmask then
+			self:SetBodygroup(4,8)
+		else
+			self:SetBodygroup(4,7)
+		end
+			self.Bleeds = true
+		return
+	end
+	end
+	
 		if self.HasSounds && self.HasImpactSounds then VJ_EmitSound(self,"player/bhit_helmet-1.wav",70) end
 		self.Bleeds = false
 		if dmginfo:IsBulletDamage() or dmginfo:IsDamageType(DMG_BUCKSHOT) or dmginfo:IsDamageType(DMG_SNIPER) or dmginfo:IsDamageType(DMG_SLASH) or dmginfo:IsDamageType(DMG_CLUB) then
@@ -439,7 +524,7 @@ function ENT:ArmorDamage(dmginfo,hitgroup)
 		
 		if self.MilZ_HasFlakSuit == false then return end
 		
-		if hitgroup == HITGROUP_LEFTARM or hitgroup == HITGROUP_RIGHTARM then
+		if hitgroup == HITGROUP_LEFTARM or hitgroup == HITGROUP_RIGHTARM or hitgroup == HITGROUP_LEFTLEG or hitgroup == HITGROUP_RIGHTLEG then
 			if self.HasSounds && self.HasImpactSounds then VJ_EmitSound(self,"player/kevlar"..math.random(1,5)..".wav",70) end
 			self.Bleeds = true
 			if dmginfo:IsBulletDamage() or dmginfo:IsDamageType(DMG_BUCKSHOT) or dmginfo:IsDamageType(DMG_SNIPER) or dmginfo:IsDamageType(DMG_SLASH) then

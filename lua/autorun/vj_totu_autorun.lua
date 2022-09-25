@@ -74,6 +74,7 @@ if LNRSpecialsExists == false then
 	
 	-- C-Strain?
 	-- more agressive + smarter but can't infect
+	-- pale skin + cyan eyes
 	
 	-- Sentinel (big boi with lmg)
 	-- Razor (ghille suit sniper)
@@ -90,7 +91,70 @@ if LNRSpecialsExists == false then
 	
 	-- try adding thing for having zombs use incap attack animations against small enemies
 	
+	-- l4d1 smoker for fumigator
 	
+	-- convar for only being able to jump down
+	
+	-- teasers planned
+	--   zombie teased     motd jingle used
+	-- suicider/detonater 	  phd flopper
+	--      razor		   deadshot daquiri
+	--   cloaker/ghost        speed cola
+	--     sentinal           juggernog
+	-- 		drone            double tap
+	--   peacekeeper          mule kick
+	-- give these bitches l4d2 weapons
+	
+	-- teaser scripts
+	
+	-- cloaker/ghost
+	-- fade into corpse on ground with mysterious blood appearing out of nowhere
+	-- reveal glitchy cloak tech oh shit it's a mothefucking cloaker wULLULULU (he is eating the corpses flesh)
+	-- it gets up and fucks off back to england or something after idk
+	-- speed cola speeds up your life
+	
+	-- drone
+	-- show some peeps in a building fighting zobers
+	-- my man walks in and fucking annihilates them with lead physicals (5.56mm)
+	-- the zobers commit consume
+	-- he walks to the middle of the screen and then fucks off
+	
+	-- sentinal
+	-- show elevator
+	-- man walks out of it
+	-- floor of elevator is completely covered in corpses good god
+	
+	-- detonator
+	-- security camera footage
+	-- show him running at something and blowing it up
+	
+	-- razor
+	-- open field with a dead guy
+	-- man runs up to dead guy
+	-- man gets fucking sniped outta nowhere
+	-- zoom into where the razor is
+	
+	-- peacekeeper
+	-- empty streets
+	-- this man just standing there menacingly (you see him from the back)
+	
+	
+	--       different voice pack options
+	--       walker             infected           both
+	--  dying light biters  l4d common infected    nmrih
+	--                                          hl2 zombies
+	--                                          they hunger
+	--                                       black mesa zombies
+	--                                           cod zombies
+	--                                           contagion
+	--                                          doom 3 zombies
+	
+	-- different gasmask sound options
+	--  nightmare house 2 security
+	--	   dying light gas tank
+	--	   doom 3 hazmat zombie
+	
+	-- some sortof teaser that looks like starved eggman
 	
 	--Add these
 	--Morti Scientist
@@ -105,10 +169,29 @@ if LNRSpecialsExists == false then
 	--Morti N.O.R.U. Zombie
 	--Filth (Cleaner Zombies)
 	
+	-- some sort of military police zombie called Peacekeeper
+	
 	--Rename Revenant to Metastasis?
 	
 	-- Do these ones currently
 	-- Military Zombies
+	
+	
+	-- freaks of nature?
+	-- like dying light
+	-- zobe but tougher and more bosslike
+	
+	-- original zombie      freak of nature name
+	
+	-- base walker                 gregory
+	--  juggernaut				 skullcrusher
+	--  bulldozer					wrath
+	--   squaller				shriek/sorrow
+	--   sentinal				  apollyon
+	--    razor						echo
+	--  peacekeeper				   brutus
+	--  gargantuar				   goliath
+	
 	
 	-- Definitely Keeping
 		-- Bubbler/Chelonioidea/Shellback
@@ -255,6 +338,8 @@ if LNRSpecialsExists == false then
 			-- VJ.AddNPC("Random TOTU Boss","sent_vj_ln_totu_random_boss",vCat2)
 			-- VJ.AddNPC("Random TOTU Boss (Fun Sized)","sent_vj_ln_totu_random_boss_funsized",vCat2)
 			
+		VJ.AddNPC("Spawner","sent_vj_totu_spawner",vCat)	
+			
 		-- VJ.AddNPCWeapon("vj_LN_TOTU_LMG","weapon_vj_ln_totu_lmg")
 		-- VJ.AddNPCWeapon("vj_LN_TOTU_KNIFE","weapon_vj_ln_totu_knife")
 	
@@ -265,9 +350,40 @@ if LNRSpecialsExists == false then
 	
 	
 	local AddConvars = {}
+	AddConvars["VJ_ToTU_Spawn_UniversalDig"] = 0
 	AddConvars["VJ_ToTU_Spawn_DigChance"] = 5
+	AddConvars["VJ_ToTU_Spawn_AlertSound"] = 1
+	AddConvars["VJ_ToTU_General_MovingDeathAnimations"] = 1
+	AddConvars["VJ_ToTU_General_LegHealthScalesWithDifficulty"] = 1
+	AddConvars["VJ_ToTU_General_RealismMode"] = 0
+	AddConvars["VJ_ToTU_General_Runners_Chance"] = 3
+	AddConvars["VJ_ToTU_General_SuperSprinters_Chance"] = 3
+	AddConvars["VJ_ToTU_General_Rushers_Allow"] = 0
+	AddConvars["VJ_ToTU_General_Rushers_Chance"] = 5
+	AddConvars["VJ_ToTU_General_Armor_Allow"] = 1
+	AddConvars["VJ_ToTU_General_Jump_DownOnly"] = 0
+	AddConvars["VJ_ToTU_MilZ_Weapons"] = 1
+	AddConvars["VJ_ToTU_MilZ_Weapons_Chance"] = 4
+	AddConvars["VJ_ToTU_MilZ_Grenades"] = 1
+	AddConvars["VJ_ToTU_MilZ_Grenades_Chance"] = 10
+	AddConvars["VJ_ToTU_MilZ_Grenades_Ammount"] = -1
+	AddConvars["VJ_ToTU_MilZ_ShootableGun"] = 1
+	AddConvars["VJ_ToTU_MilZ_ShootableGun_Chance"] = 3
+	AddConvars["VJ_ToTU_MilZ_ShootableGun_Bullets_Infinite"] = 0
+	AddConvars["VJ_ToTU_MilZ_Helmet_Breakable"] = 1
+	AddConvars["VJ_ToTU_MilZ_Helmet_Health"] = 100
+	AddConvars["VJ_ToTU_MilZ_Gasmasks_Allow"] = 1
+	AddConvars["VJ_ToTU_MilZ_Gasmasks_Chance"] = 3
+	AddConvars["VJ_ToTU_MilZ_FlakArmor_Allow"] = 1
+	AddConvars["VJ_ToTU_MilZ_FlakArmor_Chance"] = 4
+	AddConvars["VJ_ToTU_MilZ_Jugg_NapalmWalk"] = 0
+	AddConvars["VJ_ToTU_MilZ_Jugg_ChargeBehavior"] = 1
+	AddConvars["VJ_ToTU_MilZ_Jugg_ChargeAnimation"] = 0
+	AddConvars["VJ_ToTU_MilZ_Bull_ChargeBehavior"] = 1
+	AddConvars["VJ_ToTU_MilZ_Bull_ChargeAnimation"] = 0
+	AddConvars["VJ_ToTU_General_CanEat"] = 1
+	AddConvars["VJ_ToTU_General_CanEat_Gibs"] = 1
 	
-	-- AddConvars["vj_LN_TOTU_RealismMode"] = 0
 	-- AddConvars["vj_LN_TOTU_HostileSquallers"] = 1
 	-- AddConvars["vj_LN_TOTU_HostileScragglers"] = 1
 	-- AddConvars["vj_LN_TOTU_HostileDegenerates"] = 1
@@ -310,7 +426,41 @@ if LNRSpecialsExists == false then
 		Panel:AddControl( "Label", {Text = "Note: Only admins can change these settings!"})
 	local vj_resetbutton = {Options = {}, CVars = {}, Label = "Reset Everything:", MenuButton = "0"}
 		vj_resetbutton.Options["#vjbase.menugeneral.default"] = { 
+			VJ_ToTU_Spawn_UniversalDig = "0",
 			VJ_ToTU_Spawn_DigChance = "5",
+			VJ_ToTU_Spawn_AlertSound = "1",
+			VJ_ToTU_General_MovingDeathAnimations = "1",
+			VJ_ToTU_General_LegHealthScalesWithDifficulty = "1",
+			VJ_ToTU_General_RealismMode = "0",
+			VJ_ToTU_General_Runners_Chance = "3",
+			VJ_ToTU_General_SuperSprinters_Chance = "3",
+			VJ_ToTU_General_Rushers_Allow = "0",
+			VJ_ToTU_General_Rushers_Chance = "5",
+			VJ_ToTU_General_Jump_DownOnly = "0",
+			VJ_ToTU_General_Armor_Allow = "1",
+			VJ_ToTU_MilZ_Weapons = "1",
+			VJ_ToTU_MilZ_Weapons_Chance = "4",
+			VJ_ToTU_MilZ_Grenades = "1",
+			VJ_ToTU_MilZ_Grenades_Chance = "10",
+			VJ_ToTU_MilZ_Grenades_Ammount = "-1",
+			VJ_ToTU_MilZ_ShootableGun = "1",
+			VJ_ToTU_MilZ_ShootableGun_Chance = "3",
+			VJ_ToTU_MilZ_ShootableGun_Bullets_Infinite = "0",
+			VJ_ToTU_MilZ_Helmet_Breakable = "1",
+			VJ_ToTU_MilZ_Helmet_Health = "100",
+			VJ_ToTU_MilZ_Gasmasks_Allow = "1",
+			VJ_ToTU_MilZ_Gasmasks_Chance = "3",
+			VJ_ToTU_MilZ_FlakArmor_Allow = "1",
+			VJ_ToTU_MilZ_FlakArmor_Chance = "4",
+			VJ_ToTU_MilZ_Jugg_NapalmWalk = "0",
+			VJ_ToTU_MilZ_Jugg_ChargeBehavior = "1",
+			VJ_ToTU_MilZ_Jugg_ChargeAnimation = "0",
+			VJ_ToTU_MilZ_Bull_ChargeBehavior = "1",
+			VJ_ToTU_MilZ_Bull_ChargeAnimation = "0",
+			VJ_ToTU_General_CanEat = "1",
+			VJ_ToTU_General_CanEat_Gibs = "1",
+			
+			
 			-- vj_LN_TOTU_RealismMode = "0",
 			-- vj_LN_TOTU_HostileSquallers = "1",
 			-- vj_LN_TOTU_HostileScragglers = "1",
@@ -338,11 +488,163 @@ if LNRSpecialsExists == false then
 			-- vj_LN_TOTU_ArmorConvarName = "0",
 			-- vj_LN_TOTU_FeedbackShutUp = "0",
 }
+
+
+
+	/*
+	examples
+	
+	Panel:AddControl("Checkbox", {Label = "", Command = ""})
+	
+	Panel:AddControl("Slider", {Label = "", Command = "", Min = 0, Max = 100})
+
+	local example_combobox = {Options = {}, CVars = {}, Label = "", MenuButton = "0"}
+	example_combobox.Options["Default"] = {convar_name = 1}
+	example_combobox.Options["Option 1"] = {convar_name = 2}
+	example_combobox.Options["Option 2"] = {convar_name = 3}
+	Panel:AddControl("ComboBox", example_combobox)
+	
+	Panel:ControlHelp("")
+	
+	*/
+	
 	Panel:AddControl("ComboBox", vj_resetbutton)
+	
+	Panel:AddControl("Checkbox", {Label = "Allow Dig-Outs Everywhere?", Command = "VJ_ToTU_Spawn_UniversalDig"})
+	Panel:ControlHelp("If enabled, zombies can do dig-out animations no matter what the ground type is.")
+	Panel:ControlHelp("If disabled, zombies can only do dig-out animations on 'soft' ground like dirt and sand.")
+	
 	Panel:AddControl("Slider", {Label = "Dig-Out Chance?", Command = "VJ_ToTU_Spawn_DigChance", Min = 1, Max = 100})
 	Panel:ControlHelp("Chance that a zombie will dig out of the ground when spawned.")
-	Panel:ControlHelp("The ground needs to be something like dirt or sand for it to work.")
-	-- Panel:ControlHelp("0 - HL2 Ammo.")
+	Panel:ControlHelp("Default chance is 5.")
+	
+	Panel:AddControl("Checkbox", {Label = "Alert Sound On Dig-Out?", Command = "VJ_ToTU_Spawn_AlertSound"})
+	Panel:ControlHelp("If enabled, zombies will play an alert sound when they dig out, regardless if they have a target or not.")
+	
+	Panel:AddControl("Checkbox", {Label = "Allow Moving Death Animations?", Command = "VJ_ToTU_General_MovingDeathAnimations"})
+	Panel:ControlHelp("If disabled, zombies can only use stationary death animations.")
+	Panel:ControlHelp("Added because of a strange issue I experienced in the Horde gamemode.")
+	
+	Panel:AddControl("Checkbox", {Label = "Leg Health Scales With Difficulty?", Command = "VJ_ToTU_General_LegHealthScalesWithDifficulty"})
+	Panel:ControlHelp("If enabled, zombie leg health will change depending on LNR Difficulty.")
+	
+	Panel:AddControl("Checkbox", {Label = "Enable Realism Mode?", Command = "VJ_ToTU_General_RealismMode"})
+	Panel:ControlHelp("Realism Mode changes things with zombies in an attempt to make things more realistic.")
+	Panel:ControlHelp("Realism Mode changes the following:")
+	Panel:ControlHelp("- All Military Zombies will have their armor tweaked to act more realistically (based on discussion with friends who know things about military armor)")
+	
+	Panel:AddControl("Slider", {Label = "Runner Spawn Chance?", Command = "VJ_ToTU_General_Runners_Chance", Min = 1, Max = 100})
+	Panel:ControlHelp("Chance that a walker will spawn as a runner.")
+	Panel:ControlHelp("Default chance is 3.")
+	
+	Panel:AddControl("Slider", {Label = "Super Sprinter Spawn Chance?", Command = "VJ_ToTU_General_SuperSprinters_Chance", Min = 1, Max = 100})
+	Panel:ControlHelp("Chance that an infected will spawn as a super sprinter.")
+	Panel:ControlHelp("Default chance is 3.")
+	
+	Panel:AddControl("Checkbox", {Label = "Allow Rushers?", Command = "VJ_ToTU_General_Rushers_Allow"})
+	Panel:ControlHelp("If enabled, infected have a chance to spawn as a rusher.")
+	Panel:ControlHelp("That basically means they will use L4D common infected running animations.")
+	Panel:ControlHelp("They are quite fast.")
+	Panel:ControlHelp("This convar idea was brought to you by Lacrinimo.")
+	
+	Panel:AddControl("Slider", {Label = "Rusher Spawn Chance?", Command = "VJ_ToTU_General_Rushers_Chance", Min = 1, Max = 100})
+	Panel:ControlHelp("Chance that an infected will spawn as a rusher.")
+	Panel:ControlHelp("Default chance is 5.")
+	
+	Panel:AddControl("Checkbox", {Label = "Zombies Can Only Jump Down?", Command = "VJ_ToTU_General_Jump_DownOnly"})
+	Panel:ControlHelp("If enabled, zombies cannot jump upwards, but can still jump downwards.")
+	
+	Panel:AddControl("Checkbox", {Label = "Allow Armor?", Command = "VJ_ToTU_General_Armor_Allow"})
+	Panel:ControlHelp("If enabled, certain zombies will have working armor.")
+	
+	Panel:AddControl("Checkbox", {Label = "Zombies Can Eat?", Command = "VJ_ToTU_General_CanEat"})
+	Panel:ControlHelp("If enabled, zombies will sometimes chew on corpses.")
+	
+	Panel:AddControl("Checkbox", {Label = "Zombies Can Eat Gibs?", Command = "VJ_ToTU_General_CanEat_Gibs"})
+	Panel:ControlHelp("If enabled, zombies will also be allowed to eat gibs.")
+	
+	Panel:AddControl("Checkbox", {Label = "Military Zombies Can Have Gasmasks?", Command = "VJ_ToTU_MilZ_Gasmasks_Allow"})
+	Panel:ControlHelp("If enabled, Grunts can sometimes spawn with grenades.")
+	
+	Panel:AddControl("Slider", {Label = "Gasmask Spawn Chance?", Command = "VJ_ToTU_MilZ_Gasmasks_Chance", Min = 1, Max = 100})
+	Panel:ControlHelp("Chance that a Military Zombie will spawn with a gasmask.")
+	Panel:ControlHelp("Default chance is 3.")
+	
+	Panel:AddControl("Checkbox", {Label = "Military Zombies Can Have Flak Armor?", Command = "VJ_ToTU_MilZ_FlakArmor_Allow"})
+	Panel:ControlHelp("If enabled, Grunts can sometimes spawn with flak armor.")
+	Panel:ControlHelp("Flak armor provides protection against explosive damage, aswell as a small bit of limb protection.")
+	
+	Panel:AddControl("Slider", {Label = "Flak Armor Spawn Chance?", Command = "VJ_ToTU_MilZ_FlakArmor_Chance", Min = 1, Max = 100})
+	Panel:ControlHelp("Chance that a Military Zombie will spawn with flak armor.")
+	Panel:ControlHelp("Default chance is 4.")
+	
+	local combobox_milzweps = {Options = {}, CVars = {}, Label = "Grunt Weaponry?", MenuButton = "0"}
+	combobox_milzweps.Options["Nothing"] = {VJ_ToTU_MilZ_Weapons = 0}
+	combobox_milzweps.Options["Knives and Guns"] = {VJ_ToTU_MilZ_Weapons = 1}
+	combobox_milzweps.Options["Knives only"] = {VJ_ToTU_MilZ_Weapons = 2}
+	combobox_milzweps.Options["Guns only"] = {VJ_ToTU_MilZ_Weapons = 3}
+	Panel:AddControl("ComboBox", combobox_milzweps)
+	
+	Panel:AddControl("Slider", {Label = "Grunt Weapon Spawn Chance?", Command = "VJ_ToTU_MilZ_Weapons_Chance", Min = 1, Max = 100})
+	Panel:ControlHelp("Chance that a Grunt will spawn with a weapon, assuming they can.")
+	Panel:ControlHelp("Default chance is 4.")
+	
+	Panel:AddControl("Checkbox", {Label = "Grunts Can Have Grenades?", Command = "VJ_ToTU_MilZ_Grenades"})
+	Panel:ControlHelp("If enabled, Grunts can sometimes spawn with grenades.")
+	
+	Panel:AddControl("Slider", {Label = "Grunt Grenade Spawn Chance?", Command = "VJ_ToTU_MilZ_Grenades_Chance", Min = 1, Max = 100})
+	Panel:ControlHelp("Chance that a Grunt will spawn with grenades, assuming they can.")
+	Panel:ControlHelp("Default chance is 10.")
+	
+	Panel:AddControl("Slider", {Label = "Grunt Grenade Ammout?", Command = "VJ_ToTU_MilZ_Grenades_Ammount", Min = -1, Max = 100})
+	Panel:ControlHelp("Ammount of grenades a Grunt will have if they spawn with them.")
+	Panel:ControlHelp("Set to -1 for default values.")
+	
+	Panel:AddControl("Checkbox", {Label = "Grunts Can Have Shootable Guns?", Command = "VJ_ToTU_MilZ_ShootableGun"})
+	Panel:ControlHelp("If enabled, Grunts that spawn with guns can sometimes shoot them.")
+	
+	Panel:AddControl("Slider", {Label = "Grunt Shootable Gun Chance?", Command = "VJ_ToTU_MilZ_ShootableGun_Chance", Min = 0, Max = 100})
+	Panel:ControlHelp("Chance a Grunt with a gun is able to shoot it.")
+	Panel:ControlHelp("Default chance is 3.")
+	
+	Panel:AddControl("Checkbox", {Label = "Grunts Have Infinite Bullets?", Command = "VJ_ToTU_MilZ_ShootableGun_Bullets_Infinite"})
+	Panel:ControlHelp("If enabled, Grunts that spawn with shootable guns have infinite ammo.")
+	
+	Panel:AddControl("Checkbox", {Label = "Grunts Have Breakable Helmets?", Command = "VJ_ToTU_MilZ_Helmet_Breakable"})
+	Panel:ControlHelp("If enabled, Grunt helmets can be broken if damaged enough.")
+	
+	Panel:AddControl("Slider", {Label = "Military Zombie Helmet Health?", Command = "VJ_ToTU_MilZ_Helmet_Health", Min = 1, Max = 10000})
+	Panel:ControlHelp("Health Grunt helmets will have.")
+	Panel:ControlHelp("Juggernaut helmets will have this value times 3.")
+	Panel:ControlHelp("Default ammount is 100.")
+	
+	Panel:AddControl("Checkbox", {Label = "Juggernaut Napalm Walks?", Command = "VJ_ToTU_MilZ_Jugg_NapalmWalk"})
+	Panel:ControlHelp("If enabled, Juggernauts will use the napalm walking animations.")
+	
+	Panel:AddControl("Checkbox", {Label = "Juggernauts Can Charge?", Command = "VJ_ToTU_MilZ_Jugg_ChargeBehavior"})
+	Panel:ControlHelp("If enabled, Juggernauts can occasionally start running at their target.")
+	Panel:ControlHelp("They will stop running if they hit an enemy or if they run for long enough.")
+	Panel:ControlHelp("They cannot spawn as runners if this is enabled.")
+	
+	local combobox_juggchargeanim = {Options = {}, CVars = {}, Label = "Juggernaut Charging Animations?", MenuButton = "0"}
+	combobox_juggchargeanim.Options["Running"] = {VJ_ToTU_MilZ_Jugg_ChargeAnimation = 0}
+	combobox_juggchargeanim.Options["Sprinting"] = {VJ_ToTU_MilZ_Jugg_ChargeAnimation = 1}
+	combobox_juggchargeanim.Options["Sprint if close, otherwise Run"] = {VJ_ToTU_MilZ_Jugg_ChargeAnimation = 2}
+	Panel:AddControl("ComboBox", combobox_juggchargeanim)
+	
+	Panel:AddControl("Checkbox", {Label = "Juggernauts Can Charge?", Command = "VJ_ToTU_MilZ_Bull_ChargeBehavior"})
+	Panel:ControlHelp("If enabled, Bulldozers can occasionally start sprinting real fast at their target.")
+	Panel:ControlHelp("They will stop that if they hit an enemy or if they sprint for long enough.")
+	Panel:ControlHelp("They cannot spawn as super sprinters or rushers if this is enabled.")
+	
+	local combobox_bullchargeanim = {Options = {}, CVars = {}, Label = "Bulldozer Charging Animations?", MenuButton = "0"}
+	combobox_bullchargeanim.Options["Rushing"] = {VJ_ToTU_MilZ_Bull_ChargeAnimation = 0}
+	combobox_bullchargeanim.Options["Super Sprinting"] = {VJ_ToTU_MilZ_Bull_ChargeAnimation = 1}
+	combobox_bullchargeanim.Options["Rush if close, otherwise Super Sprint"] = {VJ_ToTU_MilZ_Bull_ChargeAnimation = 2}
+	Panel:AddControl("ComboBox", combobox_bullchargeanim)
+	
+	
+	
 	
 	
 	-- Panel:AddControl("Checkbox", {Label ="Enable Realism Mode?", Command ="vj_LN_TOTU_RealismMode"})
@@ -448,6 +750,44 @@ if LNRSpecialsExists == false then
 	end
 		hook.Add("PopulateToolMenu","VJ_AddToMenu_ToTU", VJ_AddToMenu_ToTU )
 	end
+	
+	-- thank you to darkborn for this bit
+	if CLIENT then
+		net.Receive("VJ_ToTU_Squaller_Hud",function(len,pl)
+		local delete = net.ReadBool()
+		local ent = net.ReadEntity()
+		
+		if !IsValid(ent) then delete = true end
+
+		if GetConVar("VJ_LNR_ZombieOverlay"):GetInt() == 1 then
+			hook.Add("RenderScreenspaceEffects","VJ_LNR_InfectedHUD_Overlay",function(zom)
+            local threshold = 0.30
+            DrawMaterialOverlay("lnr/overlay/infected_vision",threshold)
+			
+			
+			hook.Add("RenderScreenspaceEffects", "VJ_ToTU_SquallerHud_Colors", function(zom)
+			local tab = {
+			["$pp_colour_addr"] = 0,
+			["$pp_colour_addg"] = 0,
+			["$pp_colour_addb"] = 0,
+			["$pp_colour_brightness"] = -0.10,
+			["$pp_colour_contrast"] = 1,
+			["$pp_colour_colour"] = 0.05,
+			["$pp_colour_mulr"] = 0.1,
+			["$pp_colour_mulg"] = 0,
+			["$pp_colour_mulb"] = 0
+			}
+			DrawColorModify( tab )
+				end )	
+			end)
+		end
+		if delete then 
+			hook.Remove("RenderScreenspaceEffects","VJ_LNR_InfectedHUD_Overlay") 
+			hook.Remove("RenderScreenspaceEffects", "VJ_ToTU_SquallerHud_Colors")
+		end
+		end)
+	end
+	
 	
 	else
 		if CLIENT then
