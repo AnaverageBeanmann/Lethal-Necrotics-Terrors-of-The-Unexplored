@@ -24,8 +24,9 @@ local entsList = {
 	"npc_vj_totu_base_infected:2",
 	"npc_vj_totu_milzomb_walker:2",
 	"npc_vj_totu_milzomb_infected:3",
-	"npc_vj_totu_milzomb_juggernaut:6",
-	"npc_vj_totu_milzomb_bulldozer:8",
+	"npc_vj_totu_milzomb_juggernaut:5",
+	"npc_vj_totu_milzomb_bulldozer:9",
+	"npc_vj_totu_milzomb_detonator:5",
 }
 ENT.EntitiesToSpawn = {
 	{SpawnPosition = {vForward=20, vRight=0, vUp=0}, Entities = entsList},

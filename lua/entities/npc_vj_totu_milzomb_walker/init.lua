@@ -19,10 +19,19 @@ ENT.MilZ_Grenades = 0
 ENT.MilZ_IsMilZ = true
 ENT.MilZ_HelmetHealth = 1
 ENT.MilZ_HelmetBroken = false
+ENT.MilZ_Det_Faceplate_Health = 1
+ENT.MilZ_Det_Faceplate_Broken = false
+ENT.MilZ_Det_DeathExplosionAllowed = false
+ENT.MilZ_Det_Beep_BeepT = 0
+ENT.MilZ_Det_Beep_CanBeep = true
+ENT.MilZ_Det_Faceplate_StartingHP = 1
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:Zombie_CustomOnPreInitialize()
 
 	self.MilZ_HelmetHealth = GetConVar("VJ_ToTU_MilZ_Helmet_Health"):GetInt()
+	
+	self.MilZ_Det_Faceplate_Health = GetConVar("VJ_ToTU_MilZ_Det_Faceplate_Health"):GetInt()
+	self.MilZ_Det_Faceplate_StartingHP = GetConVar("VJ_ToTU_MilZ_Det_Faceplate_Health"):GetInt()
 	
 	if self:GetClass() == "npc_vj_totu_milzomb_juggernaut" then
 		self.MilZ_HelmetHealth = GetConVar("VJ_ToTU_MilZ_Helmet_Health"):GetInt() * 3
@@ -142,22 +151,64 @@ self.VJ_IsHugeMonster = true
 		
 	end
 	
+	if self:GetClass() == "npc_vj_totu_milzomb_detonator" then
+		self.Model = {"models/totu/detonator.mdl"}
+	end
+	
 	-- if math.random(1,4) == 1 then
-	if math.random(1,GetConVar("VJ_ToTU_MilZ_FlakArmor_Chance"):GetInt()) == 1 && GetConVar("VJ_ToTU_MilZ_FlakArmor_Allow"):GetInt() == 1 then
+	if math.random(1,GetConVar("VJ_ToTU_MilZ_FlakArmor_Chance"):GetInt()) == 1 && GetConVar("VJ_ToTU_MilZ_FlakArmor_Allow"):GetInt() == 1 && self:GetClass() != "npc_vj_totu_milzomb_detonator" then
 		self.MilZ_HasFlakSuit = true
 	end
 	
 	
-	if math.random(1,GetConVar("VJ_ToTU_MilZ_Gasmasks_Chance"):GetInt()) == 1 && self:GetClass() != "npc_vj_totu_milzomb_bulldozer" && GetConVar("VJ_ToTU_MilZ_Gasmasks_Allow"):GetInt() == 1 then
+	if math.random(1,GetConVar("VJ_ToTU_MilZ_Gasmasks_Chance"):GetInt()) == 1 && self:GetClass() != "npc_vj_totu_milzomb_bulldozer" && GetConVar("VJ_ToTU_MilZ_Gasmasks_Allow"):GetInt() == 1  && self:GetClass() != "npc_vj_totu_milzomb_detonator" then
 		self.MilZ_HasGasmask = true
 	
 
 	end
 	
+	if self:GetClass() == "npc_vj_totu_milzomb_detonator" then
+	-- test
+		-- VJ_EmitSound(self,{"fx/detonator_preexplode.mp3"},100,math.random(100,100))
+	
+			-- self.bobbomb = ents.Create("prop_physics")	
+			-- self.bobbomb:SetModel("models/totu/detonator_bomb.mdl")
+			-- self.bobbomb:SetLocalPos(self:GetPos())
+			-- self.bobbomb:SetLocalAngles(self:GetAngles())			
+			-- self.bobbomb:SetOwner(self)
+			-- self.bobbomb:SetParent(self)
+			-- self.bobbomb:Fire("SetParentAttachmentMaintainOffset","legs_gib")
+			-- self.bobbomb:Fire("SetParentAttachment","bobomb")
+			-- self.bobbomb:SetCollisionGroup(COLLISION_GROUP_IN_VEHICLE)
+			-- self.bobbomb:Spawn()
+			-- self.bobbomb:Activate()
+			-- self.bobbomb:SetSolid(SOLID_NONE)
+			-- self.bobbomb:AddEffects(EF_BONEMERGE)	
+			
+			-- /*
+			
+			self.bobm = ents.Create("prop_physics")	
+			self.bobm:SetModel("models/totu/detonator_bomb.mdl")
+			self.bobm:SetLocalPos(self:GetPos())
+			self.bobm:SetLocalAngles(self:GetAngles())			
+			self.bobm:SetOwner(self)
+			self.bobm:SetParent(self)
+			self.bobm:Fire("SetParentAttachmentMaintainOffset","bofuckingbombfuckyou")
+			self.bobm:Fire("SetParentAttachment","bobomb")
+			self.bobm:SetCollisionGroup(COLLISION_GROUP_IN_VEHICLE)
+			self.bobm:Spawn()
+			self.bobm:Activate()
+			self.bobm:SetSolid(SOLID_NONE)
+			-- self.bobm:AddEffects(EF_BONEMERGE)	
+
+			-- */
+
+	end
 	
 end -- Mainly used for setting up models etc
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:Zombie_CustomOnInitialize()
+	if self:GetClass() == "npc_vj_totu_milzomb_detonator" then return end
 	local gear = math.random(1,2)
 	if self:GetClass() == "npc_vj_totu_milzomb_bulldozer" then
 	if gear == 1 then
@@ -267,6 +318,7 @@ function ENT:Zombie_CustomOnInitialize()
 			-- self.AnimTbl_RangeAttack = {"vjseq_crawl_attack2"}
 		-- end
 	end
+	
 	
 end -- For additional initialize options
 ---------------------------------------------------------------------------------------------------------------------------------------------
@@ -428,7 +480,7 @@ function ENT:ArmorDamage(dmginfo,hitgroup)
 		end
 	end
 	
-	if hitgroup == HITGROUP_GENERIC && !dmginfo:IsDamageType(DMG_SONIC) then
+	if hitgroup == HITGROUP_GENERIC && (dmginfo:IsDamageType(DMG_CLUB) or dmginfo:IsDamageType(DMG_SLASH) or dmginfo:IsDamageType(DMG_GENERIC)) then
 		-- didn't hit a bodygroup, assume they sometimes hit the armor
 		-- don't run this for houndeyes and stuff
 		if math.random(1,3) != 1 then

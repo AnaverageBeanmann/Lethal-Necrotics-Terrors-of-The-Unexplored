@@ -58,196 +58,236 @@ if LNRSpecialsExists == false then
 	
 	VJ.AddNPC("Base Walker","npc_vj_totu_base_walker",vCat)
 	VJ.AddNPC("Base Infected","npc_vj_totu_base_infected",vCat)
+	/*
+	add get existing zombies fixed first before adding new ones!
+	ask doofus if he can tweak the stalker idles so the left arm doesn't clip through the left leg
+	rename scraggler to Nightkin
 	
-	-- add get existing zombies fixed first before adding new ones!
-	--ask doofus if he can tweak the stalker idles so the left arm doesn't clip through the left leg
-	-- rename scraggler to Nightkin
+	make weapon dropping its own function and make it so it runs if the death key is used or it ragdoll deaths
+	add special animations for right-arm only moving attacks and movement anims where their right arm is always pointed at you
+	set up the rest of the events for the new animations!
 	
-	-- make weapon dropping its own function and make it so it runs if the death key is used or it ragdoll deaths
-	-- add special animations for right-arm only moving attacks and movement anims where their right arm is always pointed at you
-	-- set up the rest of the events for the new animations!
+	give the juggernaut a skullface balaclava
+	something like modern warfare ghost
 	
-	-- give the juggernaut a skullface balaclava
-	-- something like modern warfare ghost
+	give squaller blood tears
+	"The color red doesn't exist in my world. These must be.. my tears."
 	
-	-- give squaller blood tears
+	sounds to add into the pack
+	- css knife slash/stab
+	- l4d shove sounds
+	- l4d tank sounds
+	- csgo bomb beep
 	
-	-- C-Strain?
-	-- more agressive + smarter but can't infect
-	-- pale skin + cyan eyes
+	C-Strain?
+	more agressive + smarter but can't infect
+	pale skin + cyan eyes
 	
-	-- Sentinel (big boi with lmg)
-	-- Razor (ghille suit sniper)
-	-- Cloaker/Ghost
-	-- MilZomb But has GUN (find better name)/Echo/Drone
+	Sentinel (big boi with lmg)
+	Razor (ghille suit sniper)
+	Cloaker/Ghost
+	MilZomb But has GUN (find better name)/Echo/Drone
 	
-	-- add black mesa zombie eating animations for nightstalkres
-	-- nightstalker bait?
+	nightstalker bait?
 	
+		try to do these october/this month!
 	
-	-- get base walker to have support for jugg and dozer in CustomOnTakeDamage_AfterDamage
+			
+			VJ.AddNPC("Ghost","npc_vj_totu_milzomb_ghost",vCat)
+			VJ.AddNPC("Drone","npc_vj_totu_milzomb_drone",vCat)
+			VJ.AddNPC("Razor","npc_vj_totu_milzomb_razor",vCat)
+			VJ.AddNPC("Sentinel","npc_vj_totu_milzomb_sentinel",vCat)
+			VJ.AddNPC("Peacekeeper","npc_vj_totu_milzomb_peacekeeper",vCat)
+			
+			VJ.AddNPC("Nightkin","npc_vj_totu_nightkin_base",vCat)
+			VJ.AddNPC("Hunter","npc_vj_totu_nightkin_hunter",vCat)
+			VJ.AddNPC("Squaller","npc_vj_totu_nightkin_squaller",vCat)
+			
+			Gameplay first, realism second!
+			
+	add browncoat zombies
+	- use modified male_04 model
+	- can randomly spawn with a cone or bucket on their heads (gives extra hp)
+	- walker only, cannot spawn as runners
+	- biters only
+	- pvz zombie sounds
 	
-	-- rename suicider to detonator?
+	have meathead use tank as new model?
+	- give it a ground slam attack?
 	
-	-- try adding thing for having zombs use incap attack animations against small enemies
+	remake cod black ops poster w/ drone
 	
-	-- l4d1 smoker for fumigator
+	add hl2 zombs as a bonus
+	- use original anims and not lnr zomb anims
 	
-	-- convar for only being able to jump down
+	get base walker to have support for jugg and dozer in CustomOnTakeDamage_AfterDamage
 	
-	-- teasers planned
-	--   zombie teased     motd jingle used
-	-- suicider/detonater 	  phd flopper
-	--      razor		   deadshot daquiri
-	--   cloaker/ghost        speed cola
-	--     sentinal           juggernog
-	-- 		drone            double tap
-	--   peacekeeper          mule kick
-	-- give these bitches l4d2 weapons
+	rename suicider to detonator
 	
-	-- teaser scripts
+	try adding thing for having zombs use incap attack animations against small enemies
 	
-	-- cloaker/ghost
-	-- fade into corpse on ground with mysterious blood appearing out of nowhere
-	-- reveal glitchy cloak tech oh shit it's a mothefucking cloaker wULLULULU (he is eating the corpses flesh)
-	-- it gets up and fucks off back to england or something after idk
-	-- speed cola speeds up your life
+	l4d1 smoker for fumigator
 	
-	-- drone
-	-- show some peeps in a building fighting zobers
-	-- my man walks in and fucking annihilates them with lead physicals (5.56mm)
-	-- the zobers commit consume
-	-- he walks to the middle of the screen and then fucks off
+	convar for only being able to jump down
 	
-	-- sentinal
-	-- show elevator
-	-- man walks out of it
-	-- floor of elevator is completely covered in corpses good god
+	use this for peacekeeper shield
+	https://steamcommunity.com/sharedfiles/filedetails/?id=2329408464&searchtext=shield
 	
-	-- detonator
-	-- security camera footage
-	-- show him running at something and blowing it up
+	edit it to say MP on it instead of POLICE
 	
-	-- razor
-	-- open field with a dead guy
-	-- man runs up to dead guy
-	-- man gets fucking sniped outta nowhere
-	-- zoom into where the razor is
+	teasers planned
+	  zombie teased     motd jingle used
+	suicider/detonater 	  phd flopper
+	     razor		   deadshot daquiri
+	  cloaker/ghost        speed cola
+	    sentinal           juggernog
+			drone            double tap
+	  peacekeeper          mule kick
+	give these bitches l4d2 weapons
 	
-	-- peacekeeper
-	-- empty streets
-	-- this man just standing there menacingly (you see him from the back)
+	teaser scripts
 	
+	cloaker/ghost
+	fade into corpse on ground with mysterious blood appearing out of nowhere
+	reveal glitchy cloak tech oh shit it's a mothefucking cloaker wULLULULU (he is eating the corpses flesh)
+	it gets up and fucks off back to england or something after idk
+	speed cola speeds up your life
 	
-	--       different voice pack options
-	--       walker             infected           both
-	--  dying light biters  l4d common infected    nmrih
-	--                                          hl2 zombies
-	--                                          they hunger
-	--                                       black mesa zombies
-	--                                           cod zombies
-	--                                           contagion
-	--                                          doom 3 zombies
+	drone
+	show some peeps in a building fighting zobers
+	my man walks in and fucking annihilates them with lead physicals (5.56mm)
+	the zobers commit consume
+	he walks to the middle of the screen and then fucks off
 	
-	-- different gasmask sound options
-	--  nightmare house 2 security
-	--	   dying light gas tank
-	--	   doom 3 hazmat zombie
+	sentinal
+	show elevator
+	man walks out of it
+	floor of elevator is completely covered in corpses good god
 	
-	-- some sortof teaser that looks like starved eggman
+	detonator
+	security camera footage
+	show him running at something and blowing it up
 	
-	--Add these
-	--Morti Scientist
-	--Morti Test Subject
-	--Morti Rogue Test Subject
-	--Morti Security
-	--Morti Hazmat Agent (Specials Hazmat, Light Teal Suit)
-	--Morti Necrotic Outbreak Response Unit / Morti N.O.R.U. (CS:S Gasmask CT)
+	razor
+	open field with a dead guy
+	man runs up to dead guy
+	man gets fucking sniped outta nowhere
+	zoom into where the razor is
 	
-	--Morti Zombie (HL2 Civvie Zombs, Scientists/Security/Test Subjects)
-	--Morti Hazmat Zombie
-	--Morti N.O.R.U. Zombie
-	--Filth (Cleaner Zombies)
-	
-	-- some sort of military police zombie called Peacekeeper
-	
-	--Rename Revenant to Metastasis?
-	
-	-- Do these ones currently
-	-- Military Zombies
-	
-	
-	-- freaks of nature?
-	-- like dying light
-	-- zobe but tougher and more bosslike
-	
-	-- original zombie      freak of nature name
-	
-	-- base walker                 gregory
-	--  juggernaut				 skullcrusher
-	--  bulldozer					wrath
-	--   squaller				shriek/sorrow
-	--   sentinal				  apollyon
-	--    razor						echo
-	--  peacekeeper				   brutus
-	--  gargantuar				   goliath
+	peacekeeper
+	empty streets
+	this man just standing there menacingly (you see him from the back)
 	
 	
-	-- Definitely Keeping
-		-- Bubbler/Chelonioidea/Shellback
-		-- Cloaker (Infected)
-		-- Feedback
-		-- Hive
-		-- Military Zombie (Infected)
-		-- Military Zombie (Walker)
-		-- Pest
-		-- Squaller
-	-- Likely Keeping
-		-- Exploder (Walker)
-		-- Goliath
-		-- Juggernaut
-		-- Smog
-		-- Suicider -- maybe rename?
-		-- Laticauda
-		-- Stalker
-	-- Unsure
-		-- Meathead
-		-- Cloaker (Walker)
-		-- Degenerate
-		-- Exploder (Infected)
-		-- Fiend
-		-- Bulldozer
-		-- Whale
-		-- Gavialidae
-		-- Fleshpound
-		-- Verdugo
-		-- Fumigator -- merge aoe damage with hive if not kept
-		-- Regenerator
-		-- Revenant
-		-- Carcass
-		-- Carcass Torso
-		-- Cazador
-		-- Praetorian
-		-- Novistador
-		-- Apollyon
-	-- Likely Not Keeping
-		-- Alternate
-		-- Ghoul
-		-- Flounder
-		-- Megalodon
-		-- Swarm -- probably gonna just turn into a projectile instead of an npc
-		-- Behemoth
-		-- Screecher -- gonna merge with stalkers if not kept
-		-- PvZ Zombie
-		-- Scraggler
-		-- Inanimatum Vas
-		-- Preserved Walker
-		-- Gunner -- probably just gonna merge with mil. zomb walkers
-	-- Definately Not Keeping
-		-- Old Bubbler
-		-- Siren -- forgot what this even was supposed to do
-		-- Spamtong
+	      different voice pack options
+	      walker             infected           both
+	 dying light biters  l4d common infected    nmrih
+	                                         hl2 zombies
+	                                         they hunger
+	                                      black mesa zombies
+	                                          cod zombies
+	                                          contagion
+	                                         doom 3 zombies
 	
+	different gasmask sound options
+	 nightmare house 2 security
+		   dying light gas tank
+		   doom 3 hazmat zombie
+	
+	some sortof teaser that looks like starved eggman
+	
+	Add these
+	Morti Scientist
+	Morti Test Subject
+	Morti Rogue Test Subject
+	Morti Security
+	Morti Hazmat Agent (Specials Hazmat, Light Teal Suit)
+	Morti Necrotic Outbreak Response Unit / Morti N.O.R.U. (CS:S Gasmask CT)
+	
+	Morti Zombie (HL2 Civvie Zombs, Scientists/Security/Test Subjects)
+	Morti Hazmat Zombie
+	Morti N.O.R.U. Zombie
+	Filth (Cleaner Zombies)
+	
+	some sort of military police zombie called Peacekeeper
+	
+	Rename Revenant to Metastasis?
+	
+	Do these ones currently
+	Military Zombies
+	
+	
+	freaks of nature?
+	like dying light
+	zobe but tougher and more bosslike
+	
+	original zombie      freak of nature name
+	
+	base walker                 gregory
+	 juggernaut				 skullcrusher
+	 bulldozer					wrath
+	  squaller				shriek/sorrow
+	  sentinal				  apollyon
+	   razor						echo
+	 peacekeeper				   brutus
+	 gargantuar				   goliath
+	
+	
+	Definitely Keeping
+		Bubbler/Chelonioidea/Shellback
+		Cloaker (Infected)
+		Feedback
+		Hive
+		Military Zombie (Infected)
+		Military Zombie (Walker)
+		Pest
+		Squaller
+	Likely Keeping
+		Exploder (Walker)
+		Goliath
+		Juggernaut
+		Smog
+		Suicider -- maybe rename?
+		Laticauda
+		Stalker
+	Unsure
+		Meathead
+		Cloaker (Walker)
+		Degenerate
+		Exploder (Infected)
+		Fiend
+		Bulldozer
+		Whale
+		Gavialidae
+		Fleshpound
+		Verdugo
+		Fumigator -- merge aoe damage with hive if not kept
+		Regenerator
+		Revenant
+		Carcass
+		Carcass Torso
+		Cazador
+		Praetorian
+		Novistador
+		Apollyon
+	Likely Not Keeping
+		Alternate
+		Ghoul
+		Flounder
+		Megalodon
+		Swarm -- probably gonna just turn into a projectile instead of an npc
+		Behemoth
+		Screecher -- gonna merge with stalkers if not kept
+		PvZ Zombie
+		Scraggler
+		Inanimatum Vas
+		Preserved Walker
+		Gunner -- probably just gonna merge with mil. zomb walkers
+	Definately Not Keeping
+		Old Bubbler
+		Siren -- forgot what this even was supposed to do
+		Spamtong
+	*/
 	
 	--Zombies
 		--No Specific Area
@@ -269,7 +309,14 @@ if LNRSpecialsExists == false then
 			
 			-- VJ.AddNPC("Cloaker (Walker)","npc_vj_ln_totu_cloaker_walker",vCat)
 			-- VJ.AddNPC("Cloaker (Infected)","npc_vj_ln_totu_cloaker_infected",vCat)
-			-- VJ.AddNPC("Suicider","npc_vj_ln_totu_suicider",vCat)
+			VJ.AddNPC("Detonator","npc_vj_totu_milzomb_detonator",vCat)
+			/*
+			- use E.O.D. suit?
+			- has visible bomb on it w/ glowing light
+			- shooting the bomb has a chance to cause it to explode
+			- drop active bomb if killed before detonation?
+			- protect against explosions
+			*/
 
 			VJ.AddNPC("Juggernaut","npc_vj_totu_milzomb_juggernaut",vCat) -- do this one
 			-- can occasionally run for short periods of time
@@ -381,8 +428,10 @@ if LNRSpecialsExists == false then
 	AddConvars["VJ_ToTU_MilZ_Jugg_ChargeAnimation"] = 0
 	AddConvars["VJ_ToTU_MilZ_Bull_ChargeBehavior"] = 1
 	AddConvars["VJ_ToTU_MilZ_Bull_ChargeAnimation"] = 0
-	AddConvars["VJ_ToTU_General_CanEat"] = 1
-	AddConvars["VJ_ToTU_General_CanEat_Gibs"] = 1
+	-- AddConvars["VJ_ToTU_General_CanEat"] = 1
+	-- AddConvars["VJ_ToTU_General_CanEat_Gibs"] = 1
+	AddConvars["VJ_ToTU_MilZ_Det_Faceplate_Breakable"] = 1
+	AddConvars["VJ_ToTU_MilZ_Det_Faceplate_Health"] = 50
 	
 	-- AddConvars["vj_LN_TOTU_HostileSquallers"] = 1
 	-- AddConvars["vj_LN_TOTU_HostileScragglers"] = 1
@@ -457,8 +506,11 @@ if LNRSpecialsExists == false then
 			VJ_ToTU_MilZ_Jugg_ChargeAnimation = "0",
 			VJ_ToTU_MilZ_Bull_ChargeBehavior = "1",
 			VJ_ToTU_MilZ_Bull_ChargeAnimation = "0",
-			VJ_ToTU_General_CanEat = "1",
-			VJ_ToTU_General_CanEat_Gibs = "1",
+			-- VJ_ToTU_General_CanEat = "1",
+			-- VJ_ToTU_General_CanEat_Gibs = "1",
+			VJ_ToTU_MilZ_Det_Faceplate_Breakable = "1",
+			VJ_ToTU_MilZ_Det_Faceplate_Health = "50",
+			-- VJ_ToTU_MilZ_Det_ = "",
 			
 			
 			-- vj_LN_TOTU_RealismMode = "0",
@@ -524,6 +576,7 @@ if LNRSpecialsExists == false then
 	Panel:AddControl("Checkbox", {Label = "Allow Moving Death Animations?", Command = "VJ_ToTU_General_MovingDeathAnimations"})
 	Panel:ControlHelp("If disabled, zombies can only use stationary death animations.")
 	Panel:ControlHelp("Added because of a strange issue I experienced in the Horde gamemode.")
+	Panel:ControlHelp("It didn't fix it, but I thought I might as well keep this since it was already set up.")
 	
 	Panel:AddControl("Checkbox", {Label = "Leg Health Scales With Difficulty?", Command = "VJ_ToTU_General_LegHealthScalesWithDifficulty"})
 	Panel:ControlHelp("If enabled, zombie leg health will change depending on LNR Difficulty.")
@@ -557,11 +610,13 @@ if LNRSpecialsExists == false then
 	Panel:AddControl("Checkbox", {Label = "Allow Armor?", Command = "VJ_ToTU_General_Armor_Allow"})
 	Panel:ControlHelp("If enabled, certain zombies will have working armor.")
 	
+	/*
 	Panel:AddControl("Checkbox", {Label = "Zombies Can Eat?", Command = "VJ_ToTU_General_CanEat"})
 	Panel:ControlHelp("If enabled, zombies will sometimes chew on corpses.")
 	
 	Panel:AddControl("Checkbox", {Label = "Zombies Can Eat Gibs?", Command = "VJ_ToTU_General_CanEat_Gibs"})
 	Panel:ControlHelp("If enabled, zombies will also be allowed to eat gibs.")
+	*/
 	
 	Panel:AddControl("Checkbox", {Label = "Military Zombies Can Have Gasmasks?", Command = "VJ_ToTU_MilZ_Gasmasks_Allow"})
 	Panel:ControlHelp("If enabled, Grunts can sometimes spawn with grenades.")
@@ -603,7 +658,7 @@ if LNRSpecialsExists == false then
 	Panel:AddControl("Checkbox", {Label = "Grunts Can Have Shootable Guns?", Command = "VJ_ToTU_MilZ_ShootableGun"})
 	Panel:ControlHelp("If enabled, Grunts that spawn with guns can sometimes shoot them.")
 	
-	Panel:AddControl("Slider", {Label = "Grunt Shootable Gun Chance?", Command = "VJ_ToTU_MilZ_ShootableGun_Chance", Min = 0, Max = 100})
+	Panel:AddControl("Slider", {Label = "Grunt Shootable Gun Chance?", Command = "VJ_ToTU_MilZ_ShootableGun_Chance", Min = 1, Max = 100})
 	Panel:ControlHelp("Chance a Grunt with a gun is able to shoot it.")
 	Panel:ControlHelp("Default chance is 3.")
 	
@@ -642,8 +697,21 @@ if LNRSpecialsExists == false then
 	combobox_bullchargeanim.Options["Super Sprinting"] = {VJ_ToTU_MilZ_Bull_ChargeAnimation = 1}
 	combobox_bullchargeanim.Options["Rush if close, otherwise Super Sprint"] = {VJ_ToTU_MilZ_Bull_ChargeAnimation = 2}
 	Panel:AddControl("ComboBox", combobox_bullchargeanim)
+		
+	Panel:AddControl("Checkbox", {Label = "Detonators Have Breakable Faceplates?", Command = "VJ_ToTU_MilZ_Det_Faceplate_Breakable"})
+	Panel:ControlHelp("If enabled, Grunt helmets can be broken if damaged enough.")
+	
+	Panel:AddControl("Slider", {Label = "Detonator Faceplate Health?", Command = "VJ_ToTU_MilZ_Det_Faceplate_Health", Min = 1, Max = 10000})
+	Panel:ControlHelp("Health Detonator faceplates will have.")
+	Panel:ControlHelp("Default ammount is 50.")
+	
+	/*
+	have helmet do p2d shenanigans
+	remove the fire weakness
+	keep explosion protection obviously
 	
 	
+	*/
 	
 	
 	
