@@ -56,8 +56,6 @@ if LNRSpecialsExists == false then
 	-- local vCat2 = "Lethal Necrotics: Terrors of The Unexplored - Misc & Spawners"
 	-- VJ.AddCategoryInfo("Lethal Necrotics: Terrors of The Unexplored - Misc & Spawners", {Icon = "icons/totu_icon.png"})
 	
-	VJ.AddNPC("Base Walker","npc_vj_totu_base_walker",vCat)
-	VJ.AddNPC("Base Infected","npc_vj_totu_base_infected",vCat)
 	/*
 	add get existing zombies fixed first before adding new ones!
 	ask doofus if he can tweak the stalker idles so the left arm doesn't clip through the left leg
@@ -78,6 +76,7 @@ if LNRSpecialsExists == false then
 	- l4d shove sounds
 	- l4d tank sounds
 	- csgo bomb beep
+	- css helmet/kevlar hit sounds
 	
 	C-Strain?
 	more agressive + smarter but can't infect
@@ -94,7 +93,6 @@ if LNRSpecialsExists == false then
 	
 			
 			VJ.AddNPC("Ghost","npc_vj_totu_milzomb_ghost",vCat)
-			VJ.AddNPC("Drone","npc_vj_totu_milzomb_drone",vCat)
 			VJ.AddNPC("Razor","npc_vj_totu_milzomb_razor",vCat)
 			VJ.AddNPC("Sentinel","npc_vj_totu_milzomb_sentinel",vCat)
 			VJ.AddNPC("Peacekeeper","npc_vj_totu_milzomb_peacekeeper",vCat)
@@ -144,6 +142,12 @@ if LNRSpecialsExists == false then
 			drone            double tap
 	  peacekeeper          mule kick
 	give these bitches l4d2 weapons
+	
+	update the ci infected attacks so they don't like
+	move around weirdly
+	use weightlists that make the bottom half stay still
+	
+	add convar for helmet/faceplate hp to scale with difficulty
 	
 	teaser scripts
 	
@@ -232,22 +236,18 @@ if LNRSpecialsExists == false then
 	 peacekeeper				   brutus
 	 gargantuar				   goliath
 	
-	
+	[] = done
 	Definitely Keeping
 		Bubbler/Chelonioidea/Shellback
 		Cloaker (Infected)
 		Feedback
 		Hive
-		Military Zombie (Infected)
-		Military Zombie (Walker)
 		Pest
 		Squaller
 	Likely Keeping
 		Exploder (Walker)
 		Goliath
-		Juggernaut
 		Smog
-		Suicider -- maybe rename?
 		Laticauda
 		Stalker
 	Unsure
@@ -256,7 +256,6 @@ if LNRSpecialsExists == false then
 		Degenerate
 		Exploder (Infected)
 		Fiend
-		Bulldozer
 		Whale
 		Gavialidae
 		Fleshpound
@@ -282,12 +281,71 @@ if LNRSpecialsExists == false then
 		Scraggler
 		Inanimatum Vas
 		Preserved Walker
-		Gunner -- probably just gonna merge with mil. zomb walkers
 	Definately Not Keeping
 		Old Bubbler
 		Siren -- forgot what this even was supposed to do
 		Spamtong
+		
+		incendiary detonator?
+		leaves fire behind apon exploding
+		
+		bring back zombie dog idea?
+		model ideas:
+		re2make dog
+		re outbreak dog
+		https://steamcommunity.com/sharedfiles/filedetails/?l=german&id=2009216124
+		cod zombies hellhound
+		
+		spooky month update?
+		
+		give this to squaller as a funny
+		https://youtu.be/GdHLtbo80dk
+		
+		zombie categories
+		
+		Commons   - Zombies that do the standard zombie business.
+		Uncommons - Zombies that have some extra features, but still generally do standard zombie business.
+		Specials - Zombies that have some sort of gimmick or act different enough from Commons/Uncommons.
+		
+		
+		
+		
+		Todo:
+		- Clean up base walker/infected and grunts for oversights and stuff
+		- Make sure all convars work
+		- Add cripple support for all current zombies
+		- Get non-working convars working
+		- Add convar for detonator behavior (detonate on attack or attack normally + explode on death)
+		- add tf2 headshot + fire death animations?
+		- scientist carcass can do a zombine and pull out a virus vile?
+		- give carcass zombine run animations
+		- add convar for crawler chance
+		- update convar descriptions if needed
+		- add convar for original gasmask grunt sounds
+		- add convar for bulldozer voice options
+		- make it so detonators don't have itemdrops
+		- add convar that toggles detonator bomb light
+		- add convar for having detonators infect
 	*/
+	
+	
+	VJ.AddNPC("Base Walker","npc_vj_totu_base_walker",vCat)
+	VJ.AddNPC("Base Infected","npc_vj_totu_base_infected",vCat)
+	-- VJ.AddNPC("Base C-Strain Gunner Zombie Guy Dude Thing","npc_vj_totu_base_cstrain",vCat)
+	
+	-- Commons
+		VJ.AddNPC("Grunt (Walker)","npc_vj_totu_milzomb_walker",vCat)
+		VJ.AddNPC("Grunt (Infected)","npc_vj_totu_milzomb_infected",vCat)
+		
+	-- Uncommons
+		VJ.AddNPC("Juggernaut","npc_vj_totu_milzomb_juggernaut",vCat)
+		VJ.AddNPC("Bulldozer","npc_vj_totu_milzomb_bulldozer",vCat)
+		
+	-- Specials
+		VJ.AddNPC("Detonator","npc_vj_totu_milzomb_detonator",vCat)
+		VJ.AddNPC("Bulk Detonator","npc_vj_totu_milzomb_detonator_bulk",vCat)
+		-- VJ.AddNPC("Drone","npc_vj_totu_weaponized_drone",vCat) -- stinky
+		
 	
 	--Zombies
 		--No Specific Area
@@ -304,24 +362,11 @@ if LNRSpecialsExists == false then
 			-- VJ.AddNPC("Bubbler/Chelonioidea (Old Version)","npc_vj_ln_totu_bubbler_old",vCat2)
 	
 		--Military
-			VJ.AddNPC("Grunt (Walker)","npc_vj_totu_milzomb_walker",vCat)
-			VJ.AddNPC("Grunt (Infected)","npc_vj_totu_milzomb_infected",vCat)
 			
 			-- VJ.AddNPC("Cloaker (Walker)","npc_vj_ln_totu_cloaker_walker",vCat)
 			-- VJ.AddNPC("Cloaker (Infected)","npc_vj_ln_totu_cloaker_infected",vCat)
-			VJ.AddNPC("Detonator","npc_vj_totu_milzomb_detonator",vCat)
-			/*
-			- use E.O.D. suit?
-			- has visible bomb on it w/ glowing light
-			- shooting the bomb has a chance to cause it to explode
-			- drop active bomb if killed before detonation?
-			- protect against explosions
-			*/
 
-			VJ.AddNPC("Juggernaut","npc_vj_totu_milzomb_juggernaut",vCat) -- do this one
-			-- can occasionally run for short periods of time
 						
-			VJ.AddNPC("Bulldozer","npc_vj_totu_milzomb_bulldozer",vCat)
 			
 		--Coastline/Aquatic
 			-- VJ.AddNPC("Chelonioidea","npc_vj_ln_totu_chelonioidea",vCat)
@@ -363,7 +408,6 @@ if LNRSpecialsExists == false then
 			-- VJ.AddNPC("Carcass","npc_vj_ln_totu_carcass",vCat)
 			-- VJ.AddNPC("Carcass Torso","npc_vj_ln_totu_carcass_torso",vCat)
 			-- VJ.AddNPC("Cazador","npc_vj_ln_totu_cazador",vCat)
-			-- VJ.AddNPC("Praetorian","npc_vj_ln_totu_praetorian",vCat)
 			-- VJ.AddNPC("Novistador","npc_vj_ln_totu_novistador",vCat)
 
 			-- VJ.AddNPC("Smog","npc_vj_ln_totu_smog",vCat)
@@ -699,7 +743,7 @@ if LNRSpecialsExists == false then
 	Panel:AddControl("ComboBox", combobox_bullchargeanim)
 		
 	Panel:AddControl("Checkbox", {Label = "Detonators Have Breakable Faceplates?", Command = "VJ_ToTU_MilZ_Det_Faceplate_Breakable"})
-	Panel:ControlHelp("If enabled, Grunt helmets can be broken if damaged enough.")
+	Panel:ControlHelp("If enabled, Detonator faceplates can be broken if damaged enough.")
 	
 	Panel:AddControl("Slider", {Label = "Detonator Faceplate Health?", Command = "VJ_ToTU_MilZ_Det_Faceplate_Health", Min = 1, Max = 10000})
 	Panel:ControlHelp("Health Detonator faceplates will have.")
