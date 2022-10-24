@@ -15,9 +15,4 @@
 	"$detailscale"          "24"
 	"$detailblendfactor"    "1"
 	"$detailblendmode"      "0"
-
-	$detail models\mbczombies\detail\ci_detail_dirt
-	$detailscale 7.74
-	$detailblendfactor 0.8
-	$detailblendmode 0
 }
