@@ -1,6 +1,0 @@
-"UnlitGeneric"
-{
-	"$basetexture"		"models/lns/bomber/infected/eyeball_l_inf"
-	"$iris"			"models/lns/bomber/infected/pupil_l_inf"
-	"$selfillum" 1 
-}
