@@ -1,0 +1,13 @@
+"vertexlitgeneric"
+{
+	"$baseTexture"		"models/totu/milz/helmet_04"
+	"$bumpmap"		"models/totu/milz/helmet_04_normal"
+
+ 	"$halflambert"		"1"
+
+	"$phong"			"1"
+	"$phongboost"		"1"
+	"$phongfresnelranges"	"[0.02]"
+	"$phongexponent"		"2"
+	"$phongalbedotint"		"1"
+}

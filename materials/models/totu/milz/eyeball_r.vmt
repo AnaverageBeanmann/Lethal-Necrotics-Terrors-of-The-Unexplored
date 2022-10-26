@@ -1,0 +1,6 @@
+"UnlitGeneric"
+{
+	"$basetexture" "models/lnrzombies/gman/eyeball_l"
+	"$model" 1
+	"$halflambert" 1
+}
