@@ -61,13 +61,6 @@ if LNRSpecialsExists == false then
 	ask doofus if he can tweak the stalker idles so the left arm doesn't clip through the left leg
 	rename scraggler to Nightkin
 	
-	make weapon dropping its own function and make it so it runs if the death key is used or it ragdoll deaths
-	add special animations for right-arm only moving attacks and movement anims where their right arm is always pointed at you
-	set up the rest of the events for the new animations!
-	
-	give the juggernaut a skullface balaclava
-	something like modern warfare ghost
-	
 	give squaller blood tears
 	"The color red doesn't exist in my world. These must be.. my tears."
 	
@@ -118,15 +111,7 @@ if LNRSpecialsExists == false then
 	add hl2 zombs as a bonus
 	- use original anims and not lnr zomb anims
 	
-	get base walker to have support for jugg and dozer in CustomOnTakeDamage_AfterDamage
-	
-	rename suicider to detonator
-	
-	try adding thing for having zombs use incap attack animations against small enemies
-	
 	l4d1 smoker for fumigator
-	
-	convar for only being able to jump down
 	
 	use this for peacekeeper shield
 	https://steamcommunity.com/sharedfiles/filedetails/?id=2329408464&searchtext=shield
@@ -147,7 +132,6 @@ if LNRSpecialsExists == false then
 	move around weirdly
 	use weightlists that make the bottom half stay still
 	
-	add convar for helmet/faceplate hp to scale with difficulty
 	
 	teaser scripts
 	
@@ -311,21 +295,29 @@ if LNRSpecialsExists == false then
 		
 		
 		Todo:
-		- Clean up base walker/infected and grunts for oversights and stuff
+		- add ghost leap attack fnaf jumpscare egg
+		- update github animation model
+		- add detonator serious sam kamikaze sound easter egg
 		- Make sure all convars work
 		- Add cripple support for all current zombies
 		- Get non-working convars working
-		- Add convar for detonator behavior (detonate on attack or attack normally + explode on death)
 		- add tf2 headshot + fire death animations?
 		- scientist carcass can do a zombine and pull out a virus vile?
 		- give carcass zombine run animations
+		- proofread convar descriptions, update if needed
+		- make it so detonators don't have itemdrops
+		- make it so emp's and shit can short cirquit detonator bombs and ghost cloak devices
+		- make it so bulk detonator is considered a big zombie
+		- make it so ghosts cloak device is only broken if you hit the chest
+		- add convar that toggles detonator bomb light
+		- Add convar for detonator behavior (detonate on attack or attack normally + explode on death)
 		- add convar for crawler chance
-		- update convar descriptions if needed
 		- add convar for original gasmask grunt sounds
 		- add convar for bulldozer voice options
-		- make it so detonators don't have itemdrops
-		- add convar that toggles detonator bomb light
 		- add convar for having detonators infect
+		- add convar for helmet/faceplate hp to scale with difficulty
+		- add convar for disabling easter eggs
+		- add convar for ghost cloak stuff
 	*/
 	
 	
@@ -334,10 +326,10 @@ if LNRSpecialsExists == false then
 	-- VJ.AddNPC("Base C-Strain Gunner Zombie Guy Dude Thing","npc_vj_totu_base_cstrain",vCat)
 	
 	-- Commons
-		VJ.AddNPC("Grunt (Walker)","npc_vj_totu_milzomb_walker",vCat)
-		VJ.AddNPC("Grunt (Infected)","npc_vj_totu_milzomb_infected",vCat)
 		
 	-- Uncommons
+		VJ.AddNPC("Grunt (Walker)","npc_vj_totu_milzomb_walker",vCat)
+		VJ.AddNPC("Grunt (Infected)","npc_vj_totu_milzomb_infected",vCat)
 		VJ.AddNPC("Juggernaut","npc_vj_totu_milzomb_juggernaut",vCat)
 		VJ.AddNPC("Bulldozer","npc_vj_totu_milzomb_bulldozer",vCat)
 		
@@ -345,8 +337,13 @@ if LNRSpecialsExists == false then
 		VJ.AddNPC("Detonator","npc_vj_totu_milzomb_detonator",vCat)
 		VJ.AddNPC("Bulk Detonator","npc_vj_totu_milzomb_detonator_bulk",vCat)
 		-- VJ.AddNPC("Drone","npc_vj_totu_weaponized_drone",vCat) -- stinky
+		VJ.AddNPC("Ghost","npc_vj_totu_milzomb_ghost",vCat)
 		
 	
+		--Military
+			
+			-- VJ.AddNPC("Cloaker (Walker)","npc_vj_ln_totu_cloaker_walker",vCat)
+			-- VJ.AddNPC("Cloaker (Infected)","npc_vj_ln_totu_cloaker_infected",vCat)
 	--Zombies
 		--No Specific Area
 			-- VJ.AddNPC("Degenerate","npc_vj_ln_totu_degenerate",vCat)
@@ -361,10 +358,6 @@ if LNRSpecialsExists == false then
 			-- VJ.AddNPC("[[Number 1 Rated Salesman1997]]","npc_vj_ln_totu_kromer",vCat2)
 			-- VJ.AddNPC("Bubbler/Chelonioidea (Old Version)","npc_vj_ln_totu_bubbler_old",vCat2)
 	
-		--Military
-			
-			-- VJ.AddNPC("Cloaker (Walker)","npc_vj_ln_totu_cloaker_walker",vCat)
-			-- VJ.AddNPC("Cloaker (Infected)","npc_vj_ln_totu_cloaker_infected",vCat)
 
 						
 			
