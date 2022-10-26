@@ -1,0 +1,19 @@
+"VertexLitGeneric"
+{
+	// Original shader: VertexLitTexture
+	"$basetexture" "models/totu/milz/eric_facemap"
+	"$bumpmap" "models/totu/milz/eric_facemap_n"
+                 $phong 1
+                 $phongfresnelranges    "[0.5 1.2 1.5]"
+                 $phongboost  0.01
+                 $phongexponent 30
+	"$phongexponenttexture" "models/humans/facemap_phong"
+	"$halflambert" 1
+	    "$rimlight" "1"
+	    "$rimlightexponent" "5"
+                   "$rimlightboost" "0.01"
+                  $detail models\totu\detail\ci_detail_dirt
+                  $detailscale 7.74
+                  $detailblendfactor 0.8
+                  $detailblendmode 0
+}

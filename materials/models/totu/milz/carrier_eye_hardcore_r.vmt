@@ -1,0 +1,13 @@
+"VertexlitGeneric"
+{
+	"$basetexture" "models/totu/milz/carrier_eye_hardcore_r"
+	"$bumpmap" "models/totu/milz/flat"
+	"$selfillum" 1 
+	"$phong" 1
+	"$phongexponent" 400
+	"$phongboost" 2
+	"$phongfresnelranges"   "[0.5 0.5 0.5]"
+	 "$rimlight" "1"
+	"$rimlightexponent" "5"
+	"$rimlightboost" "0.01"
+}
