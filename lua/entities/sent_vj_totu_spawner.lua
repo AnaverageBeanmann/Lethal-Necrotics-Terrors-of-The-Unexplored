@@ -28,6 +28,8 @@ local entsList = {
 	"npc_vj_totu_milzomb_bulldozer:8",
 	"npc_vj_totu_milzomb_detonator:5",
 	-- "npc_vj_totu_base_cstrain:8",
+	"npc_vj_totu_milzomb_detonator_bulk:8",
+	"npc_vj_totu_milzomb_ghost:6",
 }
 ENT.EntitiesToSpawn = {
 	{SpawnPosition = {vForward=20, vRight=0, vUp=0}, Entities = entsList},

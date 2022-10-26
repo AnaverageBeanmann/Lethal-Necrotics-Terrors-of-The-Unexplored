@@ -26,6 +26,11 @@ ENT.MilZ_Det_DeathExplosionAllowed = false
 ENT.MilZ_Det_Beep_BeepT = 0
 ENT.MilZ_Det_Beep_CanBeep = true
 ENT.MilZ_Det_Faceplate_StartingHP = 1
+
+ENT.MilZ_Ghost_CloakBroke = false
+ENT.MilZ_Ghost_CloakHP = 1
+ENT.MilZ_Ghost_Cloaked = true
+ENT.MilZ_Ghost_CloakT = 0
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:Zombie_CustomOnPreInitialize()
 
@@ -36,6 +41,16 @@ function ENT:Zombie_CustomOnPreInitialize()
 	
 	if self:GetClass() == "npc_vj_totu_milzomb_juggernaut" then
 		self.MilZ_HelmetHealth = GetConVar("VJ_ToTU_MilZ_Helmet_Health"):GetInt() * 3
+	end
+	
+	if self:GetClass() == "npc_vj_totu_milzomb_detonator_bulk" then
+		self.MilZ_Det_Faceplate_Health = GetConVar("VJ_ToTU_MilZ_Det_Faceplate_Health"):GetInt() * 3
+		self.MilZ_Det_Faceplate_StartingHP = GetConVar("VJ_ToTU_MilZ_Det_Faceplate_Health"):GetInt() * 3
+	end
+	
+	if self:GetClass() == "npc_vj_totu_milzomb_ghost" then
+		self.MilZ_Ghost_CloakHP = GetConVar("VJ_ToTU_MilZ_Helmet_Health"):GetInt() * 1.5 -- temp
+		-- self.MilZ_Ghost_CloakHP = GetConVar("MilZ_Ghost_CloakHP"):GetInt()
 	end
 	
 	self.ItemDropsOnDeath_EntityList = {"item_ammo_pistol",
@@ -49,6 +64,7 @@ function ENT:Zombie_CustomOnPreInitialize()
 		"item_healthvial",
 		"item_battery"}
 		
+	if self:GetClass() != "npc_vj_totu_milzomb_ghost" then
 	self.SoundTbl_Breath = {"ambient/levels/prison/radio_random1.wav",
 		"ambient/levels/prison/radio_random2.wav",
 		"ambient/levels/prison/radio_random3.wav",
@@ -110,6 +126,7 @@ function ENT:Zombie_CustomOnPreInitialize()
 		"zombies/military/radio/2/radio_27.mp3",
 		"zombies/military/radio/2/radio_28.mp3"}
 	end	
+	end	
 	
 	if self:GetClass() == "npc_vj_totu_milzomb_walker" then
 	
@@ -118,7 +135,6 @@ function ENT:Zombie_CustomOnPreInitialize()
 	elseif self:GetClass() == "npc_vj_totu_milzomb_infected" then
 	
 		self.Model = {"models/totu/milzomb_infected.mdl"}
-		self:SetSkin(1)
 		
 	elseif self:GetClass() == "npc_vj_totu_milzomb_juggernaut" then
 	
@@ -135,6 +151,10 @@ function ENT:Zombie_CustomOnPreInitialize()
 	elseif self:GetClass() == "npc_vj_totu_milzomb_detonator_bulk" then
 	
 		self.Model = {"models/totu/detonator_bulk.mdl"}
+		
+	elseif self:GetClass() == "npc_vj_totu_milzomb_ghost" then
+	
+		self.Model = {"models/totu/ghost.mdl"}
 		
 	end
 	
@@ -160,6 +180,8 @@ function ENT:Zombie_CustomOnPreInitialize()
 		self.MeleeAttackKnockBack_Up2 = 100
 		
 	end
+	
+	if self:GetClass() == "npc_vj_totu_milzomb_ghost" then return end
 	
 	if 
 		GetConVar("VJ_ToTU_MilZ_FlakArmor_Allow"):GetInt() == 1 &&
@@ -285,7 +307,12 @@ function ENT:Zombie_CustomOnInitialize()
 		
 	end
 	
-	if self:GetClass() == "npc_vj_totu_milzomb_juggernaut" or self:GetClass() == "npc_vj_totu_milzomb_bulldozer" then return end
+	if self:GetClass() == "npc_vj_totu_milzomb_ghost" then 
+		self:SetBodygroup(4,5)
+		self:SetBodygroup(1,1)
+	end
+	
+	if self:GetClass() == "npc_vj_totu_milzomb_juggernaut" or self:GetClass() == "npc_vj_totu_milzomb_bulldozer" or "npc_vj_totu_milzomb_ghost" then return end
 	
 	if math.random(1,GetConVar("VJ_ToTU_MilZ_Weapons_Chance"):GetInt()) == 1 && !self.LNR_Crawler && !self.LNR_Biter then
 	
@@ -486,6 +513,19 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:ArmorDamage(dmginfo,hitgroup)
 
+	if self:GetClass() == "npc_vj_totu_milzomb_ghost" && !self.MilZ_Ghost_CloakBroke then
+	
+		self.MilZ_Ghost_CloakHP = self.MilZ_Ghost_CloakHP -dmginfo:GetDamage()
+	
+		if self.MilZ_Ghost_CloakHP <= 0 && !self.MilZ_Ghost_CloakBroke then
+			self:ToTU_Ghost_BreakCloak()
+		end
+			
+	end
+	
+	
+	
+	
 	if GetConVar("VJ_ToTU_General_Armor_Allow"):GetInt() == 0 then	return end
 
 	if self.MilZ_HasFlakSuit == true then

@@ -5,8 +5,6 @@ include('shared.lua')
 	No parts of this code or any of its contents may be reproduced, copied, modified or adapted,
 	without the prior written consent of the author, unless otherwise indicated for stand-alone materials.
 -----------------------------------------------*/
-ENT.AnimTbl_MeleeAttack = {"vjseq_nz_sonic_attack_2"}
----------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:Zombie_CustomOnThink_AIEnabled()
 
 	if self.MilZ_Det_Beep_BeepT < CurTime() && self.MilZ_Det_Beep_CanBeep && !self.Dead then
@@ -180,6 +178,7 @@ function ENT:ArmorDamage(dmginfo,hitgroup)
 			if self.MilZ_Det_Faceplate_Health <= 0 && !self.MilZ_Det_Faceplate_Broken then
 				
 				self.MilZ_Det_Faceplate_Broken = true
+	self:StopAllCommonSounds()
 				
 				if self.HasSounds && self.HasImpactSounds then VJ_EmitSound(self,{"physics/glass/glass_sheet_break"..math.random(1,3)..".wav"},70) end
 				if self.HasSounds && self.HasImpactSounds then VJ_EmitSound(self,{"physics/glass/glass_pottery_break"..math.random(1,3)..".wav"},70) end
@@ -435,8 +434,13 @@ function ENT:CustomOnKilled(dmginfo,hitgroup)
 			VJ_EmitSound(self,"fx/funny.mp3",180)
 			VJ_EmitSound(self,"fx/funny.mp3",0)
 			VJ_EmitSound(self,"fx/funny.mp3",180)
-			VJ_EmitSound(self,"ambient/explosions/citadel_end_explosion1.wav",0)
+			-- VJ_EmitSound(self,"ambient/explosions/citadel_end_explosion1.wav",0)
 			VJ_EmitSound(self,"ambient/explosions/explode_"..math.random(1,9)..".wav",180)
+			
+			-- update this when the easter egg convar is added
+			if math.random(1,100) == 1 then
+				VJ_EmitSound(self,"fx/egg/pie.mp3",0)
+			end
 			
 		else
 		

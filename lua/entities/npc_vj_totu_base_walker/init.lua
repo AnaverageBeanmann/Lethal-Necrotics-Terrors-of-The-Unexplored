@@ -284,7 +284,8 @@ function ENT:CustomOnPreInitialize()
 		self:GetClass() == "npc_vj_totu_base_infected" or
 		self:GetClass() == "npc_vj_totu_milzomb_infected" or
 		self:GetClass() == "npc_vj_totu_milzomb_bulldozer" or
-		self:GetClass() == "npc_vj_totu_milzomb_detonator"
+		self:GetClass() == "npc_vj_totu_milzomb_detonator" or
+		self:GetClass() == "npc_vj_totu_milzomb_ghost"
 	then
 		self.AnimTbl_Walk = {ACT_RUN}
 		self.AnimTbl_Run = {ACT_SPRINT}
@@ -292,14 +293,35 @@ function ENT:CustomOnPreInitialize()
 		self.LNR_Infected = true
 	end
 	
+	if self:GetClass() == "npc_vj_totu_milzomb_detonator" then
+	
+		self.AnimTbl_MeleeAttack = {
+		"vjseq_nz_sonic_attack_2",
+		"vjseq_nz_death_microwave_2",
+		"vjseq_nz_death_microwave_3",
+		}
+		
+	end
+	
 	if
 		self:GetClass() == "npc_vj_totu_milzomb_detonator_bulk"
 	then
-		self.AnimTbl_MeleeAttack = {"vjseq_nz_napalm_explode_1"}
+		self.AnimTbl_MeleeAttack = {
+		"vjseq_nz_napalm_explode_1",
+		"vjseq_nz_taunt_2",
+		"vjseq_nz_taunt_7",
+		}
 		self.AnimTbl_Walk = {ACT_WALK}
 		self.AnimTbl_Run = {ACT_WALK}
 		self.LNR_Walker = true
 		self.LNR_Infected = false
+	end
+	
+	
+	if self:GetClass() == "npc_vj_totu_base_infected" then
+	
+		self.Model = {"models/totu/testmonkinf.mdl"}
+		
 	end
 	
 end
@@ -322,7 +344,7 @@ function ENT:CustomOnInitialize()
 			self.AnimTbl_IdleStand = {ACT_IDLE_RELAXED}
 		end
 		
-		if GetConVar("VJ_LNR_Runner"):GetInt() == 1 then
+		if GetConVar("VJ_LNR_Runner"):GetInt() == 1 && self:GetClass() != "npc_vj_totu_milzomb_detonator_bulk" then
 			if math.random(1,GetConVar("VJ_ToTU_General_Runners_Chance"):GetInt()) == 1 && !self.LNR_Infected then 
 				self.LNR_Runner = true
 				self.AnimTbl_Run = {ACT_RUN}
@@ -377,7 +399,7 @@ function ENT:CustomOnInitialize()
 		
 	end
 	
-	if self:GetClass() == "npc_vj_totu_milzomb_juggernaut" or self:GetClass() == "npc_vj_totu_milzomb_bulldozer" then
+	if self:GetClass() == "npc_vj_totu_milzomb_juggernaut" or self:GetClass() == "npc_vj_totu_milzomb_bulldozer" or self:GetClass() == "npc_vj_totu_milzomb_detonator_bulk" then
 	
 		self.ToTU_BigZombie = true
 		self.ToTU_UseCIAttacks = true
@@ -1055,10 +1077,96 @@ function ENT:ZombieSounds()
 			self.PainSoundPitch = VJ_Set(95, 85)
 			self.DeathSoundPitch = VJ_Set(95, 85)	
 		*/
+	/*
+	elseif self:GetClass() == "npc_vj_totu_milzomb_ghost" then
 	
+		self.SoundTbl_Idle = {
+			"zombies/military/cloaker/idle_ (1).wav",
+			"zombies/military/cloaker/idle_ (2).wav",
+			"zombies/military/cloaker/idle_ (3).wav",
+			"zombies/military/cloaker/idle_ (4).wav",
+			"zombies/military/cloaker/idle_ (5).wav",
+			"zombies/military/cloaker/idle_ (6).wav",
+			"zombies/military/cloaker/idle_ (7).wav"
+		}
+		
+		self.SoundTbl_Alert = {
+			"zombies/military/cloaker/callforhelp_ (1).wav",
+			"zombies/military/cloaker/callforhelp_ (2).wav",
+			"zombies/military/cloaker/callforhelp_ (3).wav",
+			"zombies/military/cloaker/callforhelp_ (4).wav",
+			"zombies/military/cloaker/callforhelp_ (5).wav"
+		}
+		
+		self.SoundTbl_CombatIdle = {
+			"zombies/military/cloaker/idle_ (1).wav",
+			"zombies/military/cloaker/idle_ (2).wav",
+			"zombies/military/cloaker/idle_ (3).wav",
+			"zombies/military/cloaker/idle_ (4).wav",
+			"zombies/military/cloaker/idle_ (5).wav",
+			"zombies/military/cloaker/idle_ (6).wav",
+			"zombies/military/cloaker/idle_ (7).wav"
+		}
+
+		self.SoundTbl_BeforeMeleeAttack = {
+			"zombies/military/cloaker/attack_ (1).wav",
+			"zombies/military/cloaker/attack_ (2).wav",
+			"zombies/military/cloaker/attack_ (3).wav",
+			"zombies/military/cloaker/attack_ (4).wav",
+			"zombies/military/cloaker/attack_ (5).wav",
+			"zombies/military/cloaker/attack_ (6).wav",
+			"zombies/military/cloaker/attack_ (7).wav",
+			"zombies/military/cloaker/attack_ (8).wav",
+			"zombies/military/cloaker/attack_ (9).wav",
+			"zombies/military/cloaker/attack_ (10).wav",
+			"zombies/military/cloaker/attack_ (11).wav",
+			"zombies/military/cloaker/attack_ (12).wav"
+		}
+
+		self.SoundTbl_Pain = {
+			"zombies/military/cloaker/pain_ (1).wav",
+			"zombies/military/cloaker/pain_ (2).wav",
+			"zombies/military/cloaker/pain_ (3).wav",
+			"zombies/military/cloaker/pain_ (4).wav",
+			"zombies/military/cloaker/pain_ (5).wav",
+			"zombies/military/cloaker/pain_ (6).wav",
+			"zombies/military/cloaker/pain_ (7).wav"
+		}
+
+		self.SoundTbl_Death = {
+			"zombies/military/cloaker/death_ (1).wav",
+			"zombies/military/cloaker/death_ (2).wav",
+			"zombies/military/cloaker/death_ (3).wav",
+			"zombies/military/cloaker/death_ (4).wav",
+			"zombies/military/cloaker/death_ (5).wav"
+		}
+		
+		-- self.SoundTbl_BeforeLeapAttack = {
+		-- "zombies/military/cloaker/leap_attack_ (1).wav",
+		-- "zombies/military/cloaker/leap_attack_ (2).wav",
+		-- "zombies/military/cloaker/leap_attack_ (3).wav",
+		-- }
+		
+		self.SoundTbl_LeapAttackJump = {
+		"zombies/military/cloaker/leap_attack_ (1).wav",
+		"zombies/military/cloaker/leap_attack_ (2).wav",
+		"zombies/military/cloaker/leap_attack_ (3).wav",
+		}
+		self.SoundTbl_LeapAttackDamage = {
+			"vj_lnrhl2/shared/melee/hit_punch_01.wav",
+			"vj_lnrhl2/shared/melee/hit_punch_02.wav",
+			"vj_lnrhl2/shared/melee/hit_punch_03.wav",
+			"vj_lnrhl2/shared/melee/hit_punch_04.wav",
+			"vj_lnrhl2/shared/melee/hit_punch_05.wav",
+			"vj_lnrhl2/shared/melee/hit_punch_06.wav",
+			"vj_lnrhl2/shared/melee/hit_punch_07.wav",
+			"vj_lnrhl2/shared/melee/hit_punch_08.wav"
+		}
+		self.SoundTbl_LeapAttackDamageMiss = {"npc/zombie/claw_miss2.wav","npc/zombie/claw_miss1.wav"}
+		*/
 	end
 	
-	if self.MilZ_HasGasmask or self:GetClass() == "npc_vj_totu_milzomb_detonator" or self:GetClass() == "npc_vj_totu_milzomb_detonator_bulk" then
+	if self.MilZ_HasGasmask or self:GetClass() == "npc_vj_totu_milzomb_detonator" or self:GetClass() == "npc_vj_totu_milzomb_detonator_bulk" or self:GetClass() == "npc_vj_totu_milzomb_ghost" then
 		
 		/*
 		if GetConVar("VJ_ToTU_MilZ_Gasmasks_OriginalSounds"):GetInt() == 1 then
@@ -1175,6 +1283,22 @@ function ENT:ZombieSounds()
 			"voices/mil_gasmask/death_1.wav",
 			"voices/mil_gasmask/death_2.wav"
 		}
+		
+		if self:GetClass() == "npc_vj_totu_milzomb_ghost" then
+		
+		self.SoundTbl_LeapAttackJump = {self.SoundTbl_BeforeMeleeAttack}
+		self.SoundTbl_LeapAttackDamage = {
+			"vj_lnrhl2/shared/melee/hit_punch_01.wav",
+			"vj_lnrhl2/shared/melee/hit_punch_02.wav",
+			"vj_lnrhl2/shared/melee/hit_punch_03.wav",
+			"vj_lnrhl2/shared/melee/hit_punch_04.wav",
+			"vj_lnrhl2/shared/melee/hit_punch_05.wav",
+			"vj_lnrhl2/shared/melee/hit_punch_06.wav",
+			"vj_lnrhl2/shared/melee/hit_punch_07.wav",
+			"vj_lnrhl2/shared/melee/hit_punch_08.wav"
+		}
+		self.SoundTbl_LeapAttackDamageMiss = {"npc/zombie/claw_miss2.wav","npc/zombie/claw_miss1.wav"}
+		end
 		-- end
 		if self:GetClass() == "npc_vj_totu_milzomb_juggernaut" or self:GetClass() == "npc_vj_totu_milzomb_detonator_bulk" then
 			self.IdleSoundPitch = VJ_Set(80, 70)
@@ -2036,7 +2160,17 @@ function ENT:CustomOnAlert(ent)
 	self.ToTU_NextDodgeT = CurTime() + math.random(5,10)
 
 	if self.LNR_Infected then
-		self.AnimTbl_IdleStand = {ACT_IDLE_ANGRY}
+	
+		if self:GetClass() == "npc_vj_totu_milzomb_ghost"then
+		
+			self.AnimTbl_IdleStand = {ACT_IDLE_AIM_STEALTH}
+			
+		else
+		
+			self.AnimTbl_IdleStand = {ACT_IDLE_ANGRY}
+			
+		end
+		
 	end
 	
 	/*
@@ -2398,13 +2532,14 @@ function ENT:CustomOnFlinch_BeforeFlinch(dmginfo,hitgroup)
 		self:GetActivity() == ACT_BIG_FLINCH or
 		self:GetActivity() == ACT_FLINCH_STOMACH or
 		self:GetActivity() == ACT_GMOD_SHOWOFF_STAND_01 or
+		self:GetSequence() == self:LookupSequence("jump_attack") or
 		self:GetSequence() == self:LookupSequence("Run_Stumble_01") 
 	then 
 						self:ToTU_ResetFlinchHitgroups()
 	return end
 	
 	if dmginfo:GetDamage() >= 20 or dmginfo:GetDamageForce():Length() >= 5000 or bit.band(dmginfo:GetDamageType(), DMG_BUCKSHOT) != 0 then
-		VJ_EmitSound(self,{"player/survivor/voice/gambler/reactionnegative31.wav"},90,math.random(100,95))
+		-- VJ_EmitSound(self,{"player/survivor/voice/gambler/reactionnegative31.wav"},90,math.random(100,95))
 		self.HitGroupFlinching_Values = {
 		{HitGroup = {HITGROUP_HEAD}, Animation = {"vjges_ep_flinch_head"}}, 
 		{HitGroup = {HITGROUP_STOMACH}, Animation = {"vjges_ep_flinch_chest"}}, 
@@ -2415,7 +2550,7 @@ function ENT:CustomOnFlinch_BeforeFlinch(dmginfo,hitgroup)
 		{HitGroup = {HITGROUP_LEFTLEG}, Animation = {"vjseq_flinch_leftleg"}}
 		}
 	else
-		VJ_EmitSound(self,{"player/survivor/voice/mechanic/reactionnegative02.wav"},90,math.random(100,95))
+		-- VJ_EmitSound(self,{"player/survivor/voice/mechanic/reactionnegative02.wav"},90,math.random(100,95))
 		self.HitGroupFlinching_Values = {
 		{HitGroup = {HITGROUP_HEAD}, Animation = {"vjges_flinch_head_1","vjges_flinch_head_2","vjges_flinch_head_3"}}, 
 		{HitGroup = {HITGROUP_STOMACH}, Animation = {"vjges_flinch_chest_1","vjges_flinch_chest_2","vjges_flinch_chest_3"}}, 
@@ -2556,7 +2691,7 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:ToTU_ResetFlinchHitgroups()
 
-		VJ_EmitSound(self,{"player/survivor/voice/coach/reactionnegative07.wav"},90,math.random(100,95))
+		-- VJ_EmitSound(self,{"player/survivor/voice/coach/reactionnegative07.wav"},90,math.random(100,95))
 	self.HitGroupFlinching_Values = {
 		{HitGroup = {HITGROUP_HEAD}, Animation = {""}}, 
 		{HitGroup = {HITGROUP_STOMACH}, Animation = {""}}, 
@@ -2625,6 +2760,12 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:CustomOnTakeDamage_AfterDamage(dmginfo,hitgroup)
 
+	if self:GetClass() == "npc_vj_totu_milzomb_ghost" && !self.MilZ_Ghost_CloakBroke then
+		timer.Simple(0.00001,function() if IsValid(self) then
+			self:RemoveAllDecals()
+		end end)
+	end
+	
 	if dmginfo:IsExplosionDamage() then
 	
 		if
@@ -2801,6 +2942,10 @@ function ENT:CustomOnPriorToKilled(dmginfo, hitgroup)
 			self.bobm:Remove()	
 		end
 	end
+	
+	-- if self:GetClass() == "npc_vj_totu_milzomb_ghost" then
+		-- self.MilZ_Ghost_CloakBroke = false
+	-- end
 	
     self:SetSolid(SOLID_NONE)
     self:AddFlags(FL_NOTARGET) -- So normal NPCs can stop shooting at the corpse.
