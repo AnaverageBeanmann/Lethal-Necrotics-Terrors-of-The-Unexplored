@@ -5,21 +5,64 @@ include('shared.lua')
 	No parts of this code or any of its contents may be reproduced, copied, modified or adapted,
 	without the prior written consent of the author, unless otherwise indicated for stand-alone materials.
 -----------------------------------------------*/
-ENT.HasLeapAttack = true 
-ENT.LeapAttackDamage = 15
-ENT.LeapAttackDamageType = DMG_CLUB
-ENT.LeapAttackAnimationFaceEnemy = false
-ENT.AnimTbl_LeapAttack = {"vjseq_jump_attack"} 
-ENT.LeapDistance = 350 
-ENT.LeapToMeleeDistance = 250
-ENT.LeapAttackDamageDistance = 50 
-ENT.LeapAttackExtraTimers = {0.6, 0.8, 1, 1.2, 1.4} 
-ENT.StopLeapAttackAfterFirstHit = true
-ENT.TimeUntilLeapAttackVelocity = 0.1 
-ENT.NextLeapAttackTime = 8
-ENT.NextAnyAttackTime_Leap = 2
-ENT.LeapAttackVelocityForward = 100
-ENT.LeapAttackVelocityUp = 250
+---------------------------------------------------------------------------------------------------------------------------------------------
+function ENT:Zombie_Difficulty()
+
+	if GetConVar("VJ_LNR_Difficulty"):GetInt() == 1 then
+	
+		self.StartHealth = 200
+		self.MeleeAttackDamage = math.Rand(5,10)
+		
+	elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 2 then
+	
+		self.StartHealth = 250
+		self.MeleeAttackDamage = math.Rand(10,15)
+		
+	elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 3 then
+	
+		self.StartHealth = 300
+		self.MeleeAttackDamage = math.Rand(15,20)
+		
+	elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 4 then
+	
+		self.StartHealth = 350
+		self.MeleeAttackDamage = math.Rand(20,25)
+		
+	elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 5 then
+	
+		self.StartHealth = 400
+		self.MeleeAttackDamage = math.Rand(25,30)
+		
+	end
+			
+        self:SetHealth(self.StartHealth)	
+		
+		if GetConVar("VJ_ToTU_General_LegHealthScalesWithDifficulty"):GetInt() == 1 then
+		
+			if GetConVar("VJ_LNR_Difficulty"):GetInt() == 1 then
+			
+				self.LNR_LegHP = 10
+				
+			elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 2 then
+			
+				self.LNR_LegHP = 25
+				
+			elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 3 then
+			
+				self.LNR_LegHP = 40
+				
+			elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 4 then
+			
+				self.LNR_LegHP = 55
+				
+			elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 5 then
+			
+				self.LNR_LegHP = 60
+				
+			end
+			
+		end
+end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:ToTU_Ghost_CloakFlicker()
 	
@@ -32,15 +75,15 @@ function ENT:ToTU_Ghost_CloakFlicker()
 	self.VJ_NoTarget = false
 	self:RemoveFlags(FL_NOTARGET)
 	
-	VJ_EmitSound(self,{
-		"ambient/energy/spark1.wav",
-		"ambient/energy/spark2.wav",
-		"ambient/energy/spark3.wav",
-		"ambient/energy/spark4.wav",
-		"ambient/energy/spark5.wav",
-		"ambient/energy/spark6.wav"
-		}
-	,100,math.random(100,95))
+	-- VJ_EmitSound(self,{
+		-- "ambient/energy/spark1.wav",
+		-- "ambient/energy/spark2.wav",
+		-- "ambient/energy/spark3.wav",
+		-- "ambient/energy/spark4.wav",
+		-- "ambient/energy/spark5.wav",
+		-- "ambient/energy/spark6.wav"
+		-- }
+	-- ,100,math.random(100,95))
 		
 	local spark = ents.Create("env_spark")
 	spark:SetKeyValue("Magnitude","1")
@@ -96,8 +139,29 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:ToTU_Ghost_BreakCloak()
 
+	self.MilZ_Ghost_CloakT = 3
+	self.MilZ_Ghost_CloakT = CurTime() + math.random(1,10)	
+	-- self:VJ_TASK_COVER_FROM_ENEMY("TASK_RUN_PATH")
+	self.NextChaseTime = 1
+	self.DisableFindEnemy = true		
+	
+	if !self.LNR_Crawler && !self.LNR_Crippled then
+	self.AnimTbl_Run = {ACT_RUN_RELAXED}
+	end
+	
+	/*
+	if self.Dead == false && self:GetEnemy() != nil && self.VJ_IsBeingControlled == false then
+		local enemydist = self:GetPos():Distance(self:GetEnemy():GetPos())
+		if enemydist >= 450 then
+			-- self.Behavior = VJ_BEHAVIOR_PASSIVE
+		-- VJ_EmitSound(self,{"zombies/military/cloaker/invisiblereveal.wav"},100,math.random(100,100))
+		else
+		end
+	end
+	*/
+	
 	-- update this when the easter egg convar gets added
-	if math.random(1,100) == 1 then
+	if math.random(1,100) == 1 && GetConVar("VJ_ToTU_General_EasterEggs"):GetInt() == 1 then
 	
 		VJ_EmitSound(self,{"zombies/military/cloaker/invisiblereveal.wav"},100,math.random(100,100))
 		
@@ -245,19 +309,152 @@ function ENT:ToTU_Ghost_BreakCloak()
 
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
+function ENT:ToTU_Ghost_FixCloak()
+
+	VJ_EmitSound(self,{"fx/cloak_charge.mp3"},70,math.random(100,100))
+	
+	self.MilZ_Ghost_CloakT = 4
+	self.MilZ_Ghost_CloakDamageable = false
+	
+	timer.Simple(4,function() if IsValid(self) && !self.Dead then
+	
+		self.MilZ_Ghost_CloakBroke = false
+				self.Behavior = VJ_BEHAVIOR_AGGRESIVE
+	
+		timer.Simple(1,function() if IsValid(self) && !self.Dead then
+		
+			self.MilZ_Ghost_CloakDamageable = true
+			
+		end end)
+	
+		self.NextChaseTime = 1
+		-- self.Behavior = VJ_BEHAVIOR_AGGRESIVE
+		self.DisableFindEnemy = false
+	
+		if self.LNR_SuperSprinter then
+		
+			self.AnimTbl_Run = {ACT_RUN_AIM}
+					
+		elseif self.ToTU_Rusher then
+	
+			self.AnimTbl_Run = {ACT_RUN_RELAXED}
+					
+		else
+	
+			self.AnimTbl_Run = {ACT_SPRINT}
+	
+		end
+	
+		
+		self.MilZ_Ghost_CloakHP = GetConVar("VJ_ToTU_MilZ_Ghost_Cloak_Health"):GetInt()
+		self:ToTU_Ghost_CloakFlicker()
+		-- self.MilZ_Ghost_CloakT = CurTime() + math.random(3,30)	
+		self:StopAllCommonSounds()
+		
+		VJ_EmitSound(self,{
+			"ambient/energy/zap1.wav",
+			"ambient/energy/zap2.wav",
+			"ambient/energy/zap3.wav",
+			"ambient/energy/zap5.wav",
+			"ambient/energy/zap6.wav",
+			"ambient/energy/zap7.wav",
+			"ambient/energy/zap8.wav",
+			"ambient/energy/zap9.wav"
+			}
+		,100,math.random(100,95))
+		
+		ParticleEffectAttach("electrical_arc_01_parent",PATTACH_POINT_FOLLOW,self,self:LookupAttachment("chest"))
+	
+		self.SoundTbl_Idle = {
+			"voices/mil_gasmask/idle_1.wav",
+			"voices/mil_gasmask/idle_2.wav",
+			"voices/mil_gasmask/idle_3.wav",
+			"voices/mil_gasmask/idle_4.wav"
+		}
+		
+		self.SoundTbl_Alert = {
+			"voices/mil_gasmask/alert_1.wav",
+			"voices/mil_gasmask/alert_2.wav",
+			"voices/mil_gasmask/alert_3.wav",
+			"voices/mil_gasmask/alert_4.wav",
+			"voices/mil_gasmask/alert_5.wav",
+			"voices/mil_gasmask/alert_6.wav",
+			"voices/mil_gasmask/alert_7.wav"
+		}
+		
+   		self.SoundTbl_CombatIdle = {
+			"voices/mil_gasmask/cidle_1.wav",
+			"voices/mil_gasmask/cidle_2.wav"
+		}
+		
+		self.SoundTbl_BeforeMeleeAttack = {
+			"voices/mil_gasmask/alert_1.wav",
+			"voices/mil_gasmask/alert_2.wav",
+			"voices/mil_gasmask/alert_3.wav",
+			"voices/mil_gasmask/alert_4.wav",
+			"voices/mil_gasmask/alert_5.wav",
+			"voices/mil_gasmask/alert_6.wav",
+			"voices/mil_gasmask/alert_7.wav"
+		}
+		
+		self.SoundTbl_Pain = {
+			"voices/mil_gasmask/pain_1.wav",
+			"voices/mil_gasmask/pain_2.wav",
+			"voices/mil_gasmask/pain_3.wav",
+			"voices/mil_gasmask/pain_4.wav"
+		}
+		
+    	self.SoundTbl_Death = {
+			"voices/mil_gasmask/death_1.wav",
+			"voices/mil_gasmask/death_2.wav"
+		}
+		
+		self.SoundTbl_LeapAttackJump = {self.SoundTbl_BeforeMeleeAttack}
+		
+	end end)
+
+end
+---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:Zombie_CustomOnThink_AIEnabled()
 
-	if self.MilZ_Ghost_CloakT < CurTime() && !self.MilZ_Ghost_CloakBroke && !self.Dead then
+	if self.MilZ_Ghost_CloakT < CurTime() then
 	
-		self:ToTU_Ghost_CloakFlicker()
+		if self.MilZ_Ghost_CloakBroke && !self.Dead && self.MilZ_Ghost_CloakRechargable then
+		
+			self:ToTU_Ghost_FixCloak()
+		self.MilZ_Ghost_CloakT = CurTime() + 10	
+			
+		else
+	
+			self:ToTU_Ghost_CloakFlicker()
 		
 		self.MilZ_Ghost_CloakT = CurTime() + math.random(3,30)	
+		end
 		
 	end
 	
+	
+	-- if self.MilZ_Ghost_PussyOut == true && self.MilZ_Ghost_CloakBroke then
+	-- else
+	-- end
+	
+	if self.Dead == false && self:GetEnemy() != nil && self.VJ_IsBeingControlled == false && self.MilZ_Ghost_CloakRechargable && GetConVar("VJ_ToTU_MilZ_Ghost_Cloak_Recharge_RunWhileCharging"):GetInt() == 1 then
+		local enemydist = self:GetPos():Distance(self:GetEnemy():GetPos())
+		if self.MilZ_Ghost_CloakBroke && !self.LNR_Crippled && !self.LNR_Crawler then
+			if enemydist >= 450 then
+				self.Behavior = VJ_BEHAVIOR_PASSIVE
+				-- VJ_EmitSound(self,"vj_lnrhl2/shared/dirtintro"..math.random(1,2)..".wav",0,100)
+			else
+				self.Behavior = VJ_BEHAVIOR_AGGRESIVE
+		-- VJ_EmitSound(self,{"player/survivor/voice/coach/reactionnegative07.wav"},90,math.random(100,95))
+			end
+		end
+	end
+	
+	
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
-function ENT:CustomOnMeleeAttack_BeforeStartTimer(seed)
+function ENT:Zombie_CustomOnMeleeAttack_BeforeStartTimer(seed)
 
 	self:ToTU_Ghost_CloakFlicker()
 

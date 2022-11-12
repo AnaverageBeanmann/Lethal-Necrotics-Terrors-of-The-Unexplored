@@ -9,28 +9,28 @@ function ENT:Zombie_Difficulty()
 
 	if GetConVar("VJ_LNR_Difficulty"):GetInt() == 1 then
 	
-		self.StartHealth = 250
-		self.MeleeAttackDamage = math.Rand(20,25)
+		self.StartHealth = 75
+		self.MeleeAttackDamage = math.Rand(5,10)
 		
 	elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 2 then
 	
-		self.StartHealth = 750
-		self.MeleeAttackDamage = math.Rand(25,30)
+		self.StartHealth = 125
+		self.MeleeAttackDamage = math.Rand(10,15)
 		
 	elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 3 then
 	
-		self.StartHealth = 1250
-		self.MeleeAttackDamage = math.Rand(30,35)
+		self.StartHealth = 175
+		self.MeleeAttackDamage = math.Rand(15,20)
 		
 	elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 4 then
 	
-		self.StartHealth = 1750
-		self.MeleeAttackDamage = math.Rand(35,40)
+		self.StartHealth = 225
+		self.MeleeAttackDamage = math.Rand(20,25)
 		
 	elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 5 then
 	
-		self.StartHealth = 2250
-		self.MeleeAttackDamage = math.Rand(40,45)
+		self.StartHealth = 275
+		self.MeleeAttackDamage = math.Rand(25,30)
 		
 	end
 			
@@ -40,28 +40,41 @@ function ENT:Zombie_Difficulty()
 		
 			if GetConVar("VJ_LNR_Difficulty"):GetInt() == 1 then
 			
-				self.LNR_LegHP = 105
+				self.LNR_LegHP = 10
 				
 			elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 2 then
 			
-				self.LNR_LegHP = 150
+				self.LNR_LegHP = 25
 				
 			elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 3 then
 			
-				self.LNR_LegHP = 195
+				self.LNR_LegHP = 40
 				
 			elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 4 then
 			
-				self.LNR_LegHP = 240
+				self.LNR_LegHP = 55
 				
 			elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 5 then
 			
-				self.LNR_LegHP = 285
+				self.LNR_LegHP = 60
 				
 			end
 			
 		end
-end 
+end
+---------------------------------------------------------------------------------------------------------------------------------------------
+function ENT:Zombie_CustomOnThink_AIEnabled()
+
+	if self.Dead == false && self:GetEnemy() != nil && self.VJ_IsBeingControlled == false then
+		local enemydist = self:GetPos():Distance(self:GetEnemy():GetPos())
+		if enemydist >= 150 then
+			self.AnimTbl_Run = {ACT_RUN_STEALTH}
+		else
+			self.AnimTbl_Run = {ACT_RUN_RELAXED}
+		end
+	end
+	
+end
 /*-----------------------------------------------
 	*** Copyright (c) 2012-2019 by DrVrej, All rights reserved. ***
 	No parts of this code or any of its contents may be reproduced, copied, modified or adapted,

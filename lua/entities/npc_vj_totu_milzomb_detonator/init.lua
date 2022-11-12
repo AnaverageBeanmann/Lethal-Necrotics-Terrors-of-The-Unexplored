@@ -20,6 +20,7 @@ function ENT:Zombie_CustomOnThink_AIEnabled()
 		
 		end
 		
+		if GetConVar("VJ_ToTU_MilZ_Det_BombLights"):GetInt() == 1 or GetConVar("VJ_ToTU_MilZ_Det_BombLights"):GetInt() == 2 then
 		local bombglow = ents.Create("env_sprite")
 		bombglow:SetKeyValue("model","vj_base/sprites/vj_glow1.vmt")
 		bombglow:SetKeyValue("scale", "0.07")
@@ -32,7 +33,7 @@ function ENT:Zombie_CustomOnThink_AIEnabled()
 		bombglow:Activate()
 		bombglow:Fire("Kill", "", 0.1)
 		self:DeleteOnRemove(bombglow)
-			
+		if GetConVar("VJ_ToTU_MilZ_Det_BombLights"):GetInt() == 2 then
 		local bomblight = ents.Create("light_dynamic")
 		bomblight:SetKeyValue("brightness", "7")
 		bomblight:SetKeyValue("distance", "35")
@@ -43,6 +44,9 @@ function ENT:Zombie_CustomOnThink_AIEnabled()
 		bomblight:Activate()
 		bomblight:Fire("Kill", "", 0.07)
 		self:DeleteOnRemove(bomblight)
+		end
+		end
+			
 		
 		if self:GetClass() == "npc_vj_totu_milzomb_detonator_bulk" then
 			
@@ -88,12 +92,20 @@ function ENT:Zombie_CustomOnThink_AIEnabled()
 	
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
-function ENT:CustomOnMeleeAttack_BeforeStartTimer()
+function ENT:Zombie_CustomOnMeleeAttack_BeforeStartTimer()
 
 	if !self.MilZ_Det_DeathExplosionAllowed then
 	
 		self.HasMeleeAttack = false
 		self.MilZ_Det_Beep_CanBeep = false
+		
+		if self.LNR_Crippled or self.LNR_Crawler then
+			if self:GetClass() == "npc_vj_totu_milzomb_detonator_bulk" then
+				self.AnimTbl_MeleeAttack = {"vjseq_crawl_idle"}
+			else
+				self.AnimTbl_MeleeAttack = {"vjseq_crawl_idle2"}
+			end
+		end
 		
 		VJ_EmitSound(self,{"fx/detonator_preexplode.mp3"},100,math.random(100,100))
 				
@@ -131,7 +143,10 @@ function ENT:ToTU_Detonator_CommitDie()
 	self.HasDeathSounds = false
 	
 	-- add convar for this
-	-- self.LNR_VirusInfection = false
+	
+	if GetConVar("VJ_ToTU_MilZ_Det_Infection"):GetInt() == 0 then
+	self.LNR_VirusInfection = false
+	end
 			
 	local d = DamageInfo()
 	d:SetDamage(self:GetMaxHealth())
@@ -436,10 +451,9 @@ function ENT:CustomOnKilled(dmginfo,hitgroup)
 			VJ_EmitSound(self,"fx/funny.mp3",180)
 			-- VJ_EmitSound(self,"ambient/explosions/citadel_end_explosion1.wav",0)
 			VJ_EmitSound(self,"ambient/explosions/explode_"..math.random(1,9)..".wav",180)
-			
-			-- update this when the easter egg convar is added
-			if math.random(1,100) == 1 then
-				VJ_EmitSound(self,"fx/egg/pie.mp3",0)
+
+			if math.random(1,100) == 1 && GetConVar("VJ_ToTU_General_EasterEggs"):GetInt() == 1 then
+				VJ_EmitSound(self,"fx/egg/pie2.mp3",0)
 			end
 			
 		else

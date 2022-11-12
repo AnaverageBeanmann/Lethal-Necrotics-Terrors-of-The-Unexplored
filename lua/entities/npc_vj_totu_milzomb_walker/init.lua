@@ -31,6 +31,8 @@ ENT.MilZ_Ghost_CloakBroke = false
 ENT.MilZ_Ghost_CloakHP = 1
 ENT.MilZ_Ghost_Cloaked = true
 ENT.MilZ_Ghost_CloakT = 0
+ENT.MilZ_Ghost_CloakDamageable = true
+ENT.MilZ_Ghost_CloakRechargable = true
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:Zombie_CustomOnPreInitialize()
 
@@ -49,8 +51,15 @@ function ENT:Zombie_CustomOnPreInitialize()
 	end
 	
 	if self:GetClass() == "npc_vj_totu_milzomb_ghost" then
-		self.MilZ_Ghost_CloakHP = GetConVar("VJ_ToTU_MilZ_Helmet_Health"):GetInt() * 1.5 -- temp
-		-- self.MilZ_Ghost_CloakHP = GetConVar("MilZ_Ghost_CloakHP"):GetInt()
+
+		self.MilZ_Ghost_CloakHP = GetConVar("VJ_ToTU_MilZ_Ghost_Cloak_Health"):GetInt()
+		
+		if GetConVar("VJ_ToTU_MilZ_Ghost_Cloak_Recharge"):GetInt() == 0 then
+		
+			self.MilZ_Ghost_CloakRechargable = false
+		
+		end
+
 	end
 	
 	self.ItemDropsOnDeath_EntityList = {"item_ammo_pistol",
@@ -513,11 +522,11 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:ArmorDamage(dmginfo,hitgroup)
 
-	if self:GetClass() == "npc_vj_totu_milzomb_ghost" && !self.MilZ_Ghost_CloakBroke then
+	if self:GetClass() == "npc_vj_totu_milzomb_ghost" && !self.MilZ_Ghost_CloakBroke && self.MilZ_Ghost_CloakDamageable then
 	
 		self.MilZ_Ghost_CloakHP = self.MilZ_Ghost_CloakHP -dmginfo:GetDamage()
 	
-		if self.MilZ_Ghost_CloakHP <= 0 && !self.MilZ_Ghost_CloakBroke then
+		if self.MilZ_Ghost_CloakHP <= 0 && !self.MilZ_Ghost_CloakBroke && self.MilZ_Ghost_CloakDamageable then
 			self:ToTU_Ghost_BreakCloak()
 		end
 			
