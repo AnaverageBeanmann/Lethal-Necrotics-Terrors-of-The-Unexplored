@@ -16,6 +16,7 @@ local LNRSpecialsExists = file.Exists("lua/autorun/vj_lnrspecials_autorun.lua","
 
 if VJExists == true then
 if LNRHL2Exists == true then
+-- /*
 if LNRSpecialsExists == false then
 		if CLIENT then
 				local teal = Color(0,255,255)
@@ -37,6 +38,7 @@ if LNRSpecialsExists == false then
 				end)
 			end
 		end
+-- */
 		
 	include('autorun/vj_controls.lua')
 	
@@ -57,44 +59,15 @@ if LNRSpecialsExists == false then
 	-- VJ.AddCategoryInfo("Lethal Necrotics: Terrors of The Unexplored - Misc & Spawners", {Icon = "icons/totu_icon.png"})
 	
 	/*
-	add get existing zombies fixed first before adding new ones!
 	ask doofus if he can tweak the stalker idles so the left arm doesn't clip through the left leg
-	rename scraggler to Nightkin
-	
-	give squaller blood tears
-	"The color red doesn't exist in my world. These must be.. my tears."
 	
 	sounds to add into the pack
 	- css knife slash/stab
 	- l4d shove sounds
 	- l4d tank sounds
-	- csgo bomb beep
 	- css helmet/kevlar hit sounds
 	
-	C-Strain?
-	more agressive + smarter but can't infect
-	pale skin + cyan eyes
-	
-	Sentinel (big boi with lmg)
-	Razor (ghille suit sniper)
-	Cloaker/Ghost
-	MilZomb But has GUN (find better name)/Echo/Drone
-	
-	nightstalker bait?
-	
-		try to do these october/this month!
-	
-			
-			VJ.AddNPC("Ghost","npc_vj_totu_milzomb_ghost",vCat)
-			VJ.AddNPC("Razor","npc_vj_totu_milzomb_razor",vCat)
-			VJ.AddNPC("Sentinel","npc_vj_totu_milzomb_sentinel",vCat)
-			VJ.AddNPC("Peacekeeper","npc_vj_totu_milzomb_peacekeeper",vCat)
-			
-			VJ.AddNPC("Nightkin","npc_vj_totu_nightkin_base",vCat)
-			VJ.AddNPC("Hunter","npc_vj_totu_nightkin_hunter",vCat)
-			VJ.AddNPC("Squaller","npc_vj_totu_nightkin_squaller",vCat)
-			
-			Gameplay first, realism second!
+	Gameplay first, realism second!
 			
 	add browncoat zombies
 	- use modified male_04 model
@@ -118,73 +91,8 @@ if LNRSpecialsExists == false then
 	
 	edit it to say MP on it instead of POLICE
 	
-	teasers planned
-	  zombie teased     motd jingle used
-	suicider/detonater 	  phd flopper
-	     razor		   deadshot daquiri
-	  cloaker/ghost        speed cola
-	    sentinal           juggernog
-			drone            double tap
-	  peacekeeper          mule kick
-	give these bitches l4d2 weapons
 	
-	update the ci infected attacks so they don't like
-	move around weirdly
-	use weightlists that make the bottom half stay still
-	
-	
-	teaser scripts
-	
-	cloaker/ghost
-	fade into corpse on ground with mysterious blood appearing out of nowhere
-	reveal glitchy cloak tech oh shit it's a mothefucking cloaker wULLULULU (he is eating the corpses flesh)
-	it gets up and fucks off back to england or something after idk
-	speed cola speeds up your life
-	
-	drone
-	show some peeps in a building fighting zobers
-	my man walks in and fucking annihilates them with lead physicals (5.56mm)
-	the zobers commit consume
-	he walks to the middle of the screen and then fucks off
-	
-	sentinal
-	show elevator
-	man walks out of it
-	floor of elevator is completely covered in corpses good god
-	
-	detonator
-	security camera footage
-	show him running at something and blowing it up
-	
-	razor
-	open field with a dead guy
-	man runs up to dead guy
-	man gets fucking sniped outta nowhere
-	zoom into where the razor is
-	
-	peacekeeper
-	empty streets
-	this man just standing there menacingly (you see him from the back)
-	
-	
-	      different voice pack options
-	      walker             infected           both
-	 dying light biters  l4d common infected    nmrih
-	                                         hl2 zombies
-	                                         they hunger
-	                                      black mesa zombies
-	                                          cod zombies
-	                                          contagion
-	                                         doom 3 zombies
-	
-	different gasmask sound options
-	 nightmare house 2 security
-		   dying light gas tank
-		   doom 3 hazmat zombie
-	
-	some sortof teaser that looks like starved eggman
-	
-	Add these
+	Add these?
 	Morti Scientist
 	Morti Test Subject
 	Morti Rogue Test Subject
@@ -196,14 +104,8 @@ if LNRSpecialsExists == false then
 	Morti Hazmat Zombie
 	Morti N.O.R.U. Zombie
 	Filth (Cleaner Zombies)
-	
-	some sort of military police zombie called Peacekeeper
-	
+
 	Rename Revenant to Metastasis?
-	
-	Do these ones currently
-	Military Zombies
-	
 	
 	freaks of nature?
 	like dying light
@@ -220,20 +122,16 @@ if LNRSpecialsExists == false then
 	 peacekeeper				   brutus
 	 gargantuar				   goliath
 	
-	[] = done
 	Definitely Keeping
 		Bubbler/Chelonioidea/Shellback
-		Cloaker (Infected)
 		Feedback
 		Hive
 		Pest
-		Squaller
 	Likely Keeping
 		Exploder (Walker)
 		Goliath
 		Smog
 		Laticauda
-		Stalker
 	Unsure
 		Meathead
 		Cloaker (Walker)
@@ -260,9 +158,7 @@ if LNRSpecialsExists == false then
 		Megalodon
 		Swarm -- probably gonna just turn into a projectile instead of an npc
 		Behemoth
-		Screecher -- gonna merge with stalkers if not kept
 		PvZ Zombie
-		Scraggler
 		Inanimatum Vas
 		Preserved Walker
 	Definately Not Keeping
@@ -285,65 +181,177 @@ if LNRSpecialsExists == false then
 		give this to squaller as a funny
 		https://youtu.be/GdHLtbo80dk
 		
-		zombie categories
+		Freaks of Nature - "Boss" version of non-boss zombies
 		
-		Commons   - Zombies that do the standard zombie business.
-		Uncommons - Zombies that have some extra features, but still generally do standard zombie business.
-		Specials - Zombies that have some sort of gimmick or act different enough from Commons/Uncommons.
+		Original Zombie - FoV Name
 		
-		
+		Juggernaut - Skullcrusher
+		Bulldozer  - Wrath
+		Ghost      - Novistador
+		Squaller   - Grief
 		
 		
 		Todo:
+
+		- Add cripple support for all current zombies
+		- make it so ghosts cloak device is only broken if you hit the chest?
+		- make it so detonators don't have itemdrops
+		- add og gasmask sounds
+		
+		- add needed sounds
+		* css knife slash/stab
+		* l4d shove sounds
+		* l4d tank sounds
+		* css helmet/kevlar hit sounds
+		* nightkin sounds
+	
+		- try giving milzombs the gibbed head thing from nh2 zombs
+		- experiment with walker varient of ghost
+		- add fast zombie leap attack animations
 		- add ghost leap attack fnaf jumpscare egg
-		- update github animation model
 		- add detonator serious sam kamikaze sound easter egg
 		- Make sure all convars work
-		- Add cripple support for all current zombies
 		- Get non-working convars working
 		- add tf2 headshot + fire death animations?
 		- scientist carcass can do a zombine and pull out a virus vile?
 		- give carcass zombine run animations
 		- proofread convar descriptions, update if needed
-		- make it so detonators don't have itemdrops
 		- make it so emp's and shit can short cirquit detonator bombs and ghost cloak devices
-		- make it so bulk detonator is considered a big zombie
-		- make it so ghosts cloak device is only broken if you hit the chest
-		- add convar that toggles detonator bomb light
-		- Add convar for detonator behavior (detonate on attack or attack normally + explode on death)
-		- add convar for crawler chance
-		- add convar for original gasmask grunt sounds
-		- add convar for bulldozer voice options
-		- add convar for having detonators infect
-		- add convar for helmet/faceplate hp to scale with difficulty
-		- add convar for disabling easter eggs
-		- add convar for ghost cloak stuff
+		- make it so detonators can attack and break apart barricades
+		- experiment with removing the ci proportions thing from hunter and with animations to see if they look better
+		- for the creeper use drg creature sounds and retextured the barbed wire to be leaves and shit
+		- add void-black scragg model as Something Wicked
+		- add sitting and lying behavior to nightkin
+		- use those monster boys models for a zombie? (name it wendigo)
+		https://steamcommunity.com/sharedfiles/filedetails/?id=1720614156&searchtext=monster_boys
+		
+		- holiday skins? (atleast for halloween)
+		- for halloween/october
+		* juggernauts get skeleton suits under their armor + armor is painted black
+		* bulldozers get eye effects and pumpkin heads alongside tf2 hhh sounds
+		* nightkin are painted up as demons
+		* grigoris are vampires
+		* ghosts outfits are painted white because ghost (write "boo!" somewhere on the model)
+		* detonators are like tf2 pumpkin bombs?
+		* squaller is a mummy?
+		
+		- for chrimas/december
+		* mil zombs get ugly sweaters and santa hats(?)
+		* dozer gets reindeer horns and glowing nose (haha rudolph)
+		* nightkin get chrimas lights instead of barbwire and reindeer horns
+		* detonators are painted like santa + have a santa hat (bulk has black outfit) and have explosive presents instead of bombs,
+		  the bombs make a different sound (maybe sleighbels?) instead of beeping, and instead of the normal sound
+		  when it's about to go of, play a soundclip of santa going hohoho or something 
+		  ("merry christmas, ho ho hooo!" or just the merry christmas part for bulk)
+		  use spongebob christmas who end scene for this sound
+		
+		
+		- add some kinda in-game manual thing that tells info about zombies?
+		- horde mentality?
+		* if enough zombies are near eachother, they'll start moving faster
+		
+		nightkin
+		- add sitting/lying behavior
+		- finish cutting up howler sounds for shrieker
+		- get sounds in
+		- decomp original model for skin stuff
+		* https://steamcommunity.com/sharedfiles/filedetails/?id=257870201&searchtext=feeder
+		
+		- add warks hla zomb anims for degenerate
+		
+		- add some kind of big zombie in a juggernaut suit?
+		* lies on the floor for a sec if kicked over, then sluggishly gets back up
+		* super tanky but walker only(?) and cannot run or can run short distances then gets tired + falls over if he misses an attack
+		* name ideas: Oppressor, Shellback, Turtle
+		
+		- make sure all zombs have controller support
+		
+		- add snowy versions of milzombs
+		- names
+		* Snowgrunt
+		* Iceberg Juggernaut
+		* Snowdozer
+		
+		- worker zombs
+		* Roughneck (basic zomb)
+		* Sledgehammer (big guy)
+		* Jackhammer (big guy but runs)
+		* Foreman (summons help like shriekers)
+		give the sledgehammer a fucking brick as a weapon and also make it throw bricks
+		add seperate right hand only ci melee anims for this
+		
+		- backwoods zombies
+		* commons in stuff like overalls/flannels/generic countryside clothing
+		* monster boys (call them wendigos)
+		
+		- reconsider flora idea?
+		* ghille zombie who lays there until something gets near
+		* gets up and attacks when target's near
+		
+		convars to do
+		- squaller iron will chance
+		- squallers having iron will
+		- shrieker spawn frequency
+		
+		
+		leg hp calculation
+		zombie health divided by 5 = leg hp
+		
 	*/
 	
 	
-	VJ.AddNPC("Base Walker","npc_vj_totu_base_walker",vCat)
-	VJ.AddNPC("Base Infected","npc_vj_totu_base_infected",vCat)
-	-- VJ.AddNPC("Base C-Strain Gunner Zombie Guy Dude Thing","npc_vj_totu_base_cstrain",vCat)
 	
-	-- Commons
-		
-	-- Uncommons
+	/*
+	VJ.AddNPC("Creeper","npc_vj_totu_creeper",vCat)
+	real tall dude
+	make it look like a tree and all mossy and stuff
+	slow boi
+	*/
+	
+	-- Uncategorized
+		VJ.AddNPC("Base Walker","npc_vj_totu_base_walker",vCat)
+		VJ.AddNPC("Base Infected","npc_vj_totu_base_infected",vCat)
+		-- VJ.AddNPC("Base C-Strain Gunner Zombie Guy Dude Thing","npc_vj_totu_base_cstrain",vCat)
+	
+	-- Military
 		VJ.AddNPC("Grunt (Walker)","npc_vj_totu_milzomb_walker",vCat)
 		VJ.AddNPC("Grunt (Infected)","npc_vj_totu_milzomb_infected",vCat)
 		VJ.AddNPC("Juggernaut","npc_vj_totu_milzomb_juggernaut",vCat)
 		VJ.AddNPC("Bulldozer","npc_vj_totu_milzomb_bulldozer",vCat)
-		
-	-- Specials
+		VJ.AddNPC("Ghost","npc_vj_totu_milzomb_ghost",vCat)
 		VJ.AddNPC("Detonator","npc_vj_totu_milzomb_detonator",vCat)
 		VJ.AddNPC("Bulk Detonator","npc_vj_totu_milzomb_detonator_bulk",vCat)
-		-- VJ.AddNPC("Drone","npc_vj_totu_weaponized_drone",vCat) -- stinky
-		VJ.AddNPC("Ghost","npc_vj_totu_milzomb_ghost",vCat)
-		
 	
-		--Military
-			
-			-- VJ.AddNPC("Cloaker (Walker)","npc_vj_ln_totu_cloaker_walker",vCat)
-			-- VJ.AddNPC("Cloaker (Infected)","npc_vj_ln_totu_cloaker_infected",vCat)
+	-- Nightkin
+		VJ.AddNPC("Scragg","npc_vj_totu_nightkin_scragg",vCat)
+		VJ.AddNPC("Skitter","npc_vj_totu_nightkin_skitter",vCat)
+		
+		VJ.AddNPC("Squaller","npc_vj_totu_nightkin_squaller",vCat)
+		-- edit texture to have blood tear streaks
+		-- have them beat the shit out of corpses that arnt kin?
+		-- mourn corpses of kin
+		-- mudguy run for a bit after being crippled but then do walker cripple business afterward
+		
+		VJ.AddNPC("Shrieker","npc_vj_totu_nightkin_shrieker",vCat)
+		-- edit texture to make throat look all worn out
+		
+	-- Weaponized/Lab Specimens
+		-- VJ.AddNPC("Drone","npc_vj_totu_weaponized_drone",vCat) -- stinky
+		-- VJ.AddNPC("Razor","npc_vj_totu_weaponized_razor",vCat)
+		-- VJ.AddNPC("Sentinel","npc_vj_totu_weaponized_sentinel",vCat)
+		-- VJ.AddNPC("Peacekeeper","npc_vj_totu_weaponized_peacekeeper",vCat)
+		-- VJ.AddNPC("Carcass","npc_vj_totu_weaponized_carcass",vCat)
+		-- VJ.AddNPC("Cazador","npc_vj_totu_weaponized_cazador",vCat)
+		-- VJ.AddNPC("Cyst","npc_vj_totu_weaponized_cyst",vCat)
+		-- VJ.AddNPC("Cancer","npc_vj_totu_weaponized_cancer",vCat)
+		-- VJ.AddNPC("Revenant","npc_vj_totu_weaponized_revenant",vCat)
+		
+	-- Spawners
+		VJ.AddNPC("Spawner","sent_vj_totu_spawner",vCat)
+		VJ.AddNPC("Spawner (Nightkin)","sent_vj_totu_spawner_nightkin",vCat)
+		VJ.AddNPC("Spawner (MilZombs)","sent_vj_totu_spawner_milzombs",vCat)
+	
+	
 	--Zombies
 		--No Specific Area
 			-- VJ.AddNPC("Degenerate","npc_vj_ln_totu_degenerate",vCat)
@@ -383,13 +391,6 @@ if LNRSpecialsExists == false then
 			-- VJ.AddNPC("Goliath","npc_vj_ln_totu_goliath",vCat)
 			-- VJ.AddNPC("Behemoth","npc_vj_ln_totu_behemoth",vCat)
 	
-			--Nightstalkers
-				-- VJ.AddNPC("Scraggler","npc_vj_ln_totu_scraggler",vCat)
-				-- VJ.AddNPC("Stalker","npc_vj_ln_totu_stalker",vCat)
-				-- VJ.AddNPC("Screecher","npc_vj_ln_totu_screecher",vCat)
-				
-				-- VJ.AddNPC("Squaller","npc_vj_ln_totu_squaller",vCat)
-	
 		--Residential
 			-- VJ.AddNPC("Feedback","npc_vj_ln_totu_feedback",vCat)
 			-- VJ.AddNPC("Fumigator","npc_vj_ln_totu_fumigator",vCat)
@@ -422,7 +423,6 @@ if LNRSpecialsExists == false then
 			-- VJ.AddNPC("Random TOTU Boss","sent_vj_ln_totu_random_boss",vCat2)
 			-- VJ.AddNPC("Random TOTU Boss (Fun Sized)","sent_vj_ln_totu_random_boss_funsized",vCat2)
 			
-		VJ.AddNPC("Spawner","sent_vj_totu_spawner",vCat)	
 			
 		-- VJ.AddNPCWeapon("vj_LN_TOTU_LMG","weapon_vj_ln_totu_lmg")
 		-- VJ.AddNPCWeapon("vj_LN_TOTU_KNIFE","weapon_vj_ln_totu_knife")
@@ -439,7 +439,7 @@ if LNRSpecialsExists == false then
 	AddConvars["VJ_ToTU_Spawn_AlertSound"] = 1
 	AddConvars["VJ_ToTU_General_MovingDeathAnimations"] = 1
 	AddConvars["VJ_ToTU_General_LegHealthScalesWithDifficulty"] = 1
-	AddConvars["VJ_ToTU_General_RealismMode"] = 0
+	-- AddConvars["VJ_ToTU_General_RealismMode"] = 0
 	AddConvars["VJ_ToTU_General_Runners_Chance"] = 3
 	AddConvars["VJ_ToTU_General_SuperSprinters_Chance"] = 3
 	AddConvars["VJ_ToTU_General_Rushers_Allow"] = 0
@@ -460,15 +460,31 @@ if LNRSpecialsExists == false then
 	AddConvars["VJ_ToTU_MilZ_Gasmasks_Chance"] = 3
 	AddConvars["VJ_ToTU_MilZ_FlakArmor_Allow"] = 1
 	AddConvars["VJ_ToTU_MilZ_FlakArmor_Chance"] = 4
+	/*
 	AddConvars["VJ_ToTU_MilZ_Jugg_NapalmWalk"] = 0
 	AddConvars["VJ_ToTU_MilZ_Jugg_ChargeBehavior"] = 1
 	AddConvars["VJ_ToTU_MilZ_Jugg_ChargeAnimation"] = 0
 	AddConvars["VJ_ToTU_MilZ_Bull_ChargeBehavior"] = 1
 	AddConvars["VJ_ToTU_MilZ_Bull_ChargeAnimation"] = 0
+	*/
 	-- AddConvars["VJ_ToTU_General_CanEat"] = 1
 	-- AddConvars["VJ_ToTU_General_CanEat_Gibs"] = 1
 	AddConvars["VJ_ToTU_MilZ_Det_Faceplate_Breakable"] = 1
 	AddConvars["VJ_ToTU_MilZ_Det_Faceplate_Health"] = 50
+	
+	AddConvars["VJ_ToTU_MilZ_Det_Infection"] = 1
+	AddConvars["VJ_ToTU_MilZ_Det_BombLights"] = 2
+	AddConvars["VJ_ToTU_General_Crawler_Chance"] = 5
+	AddConvars["VJ_ToTU_MilZ_Gasmasks_OriginalSounds"] = 0
+	AddConvars["VJ_ToTU_MilZ_Det_Sounds"] = 0
+	AddConvars["VJ_ToTU_MilZ_Bull_Voice"] = 0
+	AddConvars["VJ_ToTU_General_EasterEggs"] = 1
+	AddConvars["VJ_ToTU_MilZ_Ghost_Cloak_Health"] = 100
+	AddConvars["VJ_ToTU_MilZ_Ghost_Cloak_Recharge"] = 1
+	AddConvars["VJ_ToTU_MilZ_Ghost_Cloak_Recharge_RunWhileCharging"] = 1
+	
+	-- AddConvars["VJ_ToTU_MilZ_Helmet_HealthScales"] = 1
+	-- AddConvars["VJ_ToTU_Ghost_Cloak_"] = 
 	
 	-- AddConvars["vj_LN_TOTU_HostileSquallers"] = 1
 	-- AddConvars["vj_LN_TOTU_HostileScragglers"] = 1
@@ -517,7 +533,7 @@ if LNRSpecialsExists == false then
 			VJ_ToTU_Spawn_AlertSound = "1",
 			VJ_ToTU_General_MovingDeathAnimations = "1",
 			VJ_ToTU_General_LegHealthScalesWithDifficulty = "1",
-			VJ_ToTU_General_RealismMode = "0",
+			-- VJ_ToTU_General_RealismMode = "0",
 			VJ_ToTU_General_Runners_Chance = "3",
 			VJ_ToTU_General_SuperSprinters_Chance = "3",
 			VJ_ToTU_General_Rushers_Allow = "0",
@@ -538,15 +554,27 @@ if LNRSpecialsExists == false then
 			VJ_ToTU_MilZ_Gasmasks_Chance = "3",
 			VJ_ToTU_MilZ_FlakArmor_Allow = "1",
 			VJ_ToTU_MilZ_FlakArmor_Chance = "4",
+			/*
 			VJ_ToTU_MilZ_Jugg_NapalmWalk = "0",
 			VJ_ToTU_MilZ_Jugg_ChargeBehavior = "1",
 			VJ_ToTU_MilZ_Jugg_ChargeAnimation = "0",
 			VJ_ToTU_MilZ_Bull_ChargeBehavior = "1",
 			VJ_ToTU_MilZ_Bull_ChargeAnimation = "0",
+			*/
 			-- VJ_ToTU_General_CanEat = "1",
 			-- VJ_ToTU_General_CanEat_Gibs = "1",
 			VJ_ToTU_MilZ_Det_Faceplate_Breakable = "1",
 			VJ_ToTU_MilZ_Det_Faceplate_Health = "50",
+			VJ_ToTU_MilZ_Det_Infection = "1",
+			VJ_ToTU_MilZ_Det_BombLights = "2",
+			VJ_ToTU_General_Crawler_Chance = "5",
+			VJ_ToTU_MilZ_Gasmasks_OriginalSounds = "0",
+			VJ_ToTU_MilZ_Det_Sounds = "0",
+			VJ_ToTU_MilZ_Bull_Voice = "0",
+			VJ_ToTU_General_EasterEggs = "1",
+			VJ_ToTU_MilZ_Ghost_Cloak_Health = "100",
+			VJ_ToTU_MilZ_Ghost_Cloak_Recharge = "1",
+			VJ_ToTU_MilZ_Ghost_Cloak_Recharge_RunWhileCharging = "1",
 			-- VJ_ToTU_MilZ_Det_ = "",
 			
 			
@@ -599,6 +627,8 @@ if LNRSpecialsExists == false then
 	
 	Panel:AddControl("ComboBox", vj_resetbutton)
 	
+	Panel:AddControl("Checkbox", {Label = "Enable Easter Eggs?", Command = "VJ_ToTU_General_EasterEggs"})
+	
 	Panel:AddControl("Checkbox", {Label = "Allow Dig-Outs Everywhere?", Command = "VJ_ToTU_Spawn_UniversalDig"})
 	Panel:ControlHelp("If enabled, zombies can do dig-out animations no matter what the ground type is.")
 	Panel:ControlHelp("If disabled, zombies can only do dig-out animations on 'soft' ground like dirt and sand.")
@@ -618,10 +648,16 @@ if LNRSpecialsExists == false then
 	Panel:AddControl("Checkbox", {Label = "Leg Health Scales With Difficulty?", Command = "VJ_ToTU_General_LegHealthScalesWithDifficulty"})
 	Panel:ControlHelp("If enabled, zombie leg health will change depending on LNR Difficulty.")
 	
+	/*
 	Panel:AddControl("Checkbox", {Label = "Enable Realism Mode?", Command = "VJ_ToTU_General_RealismMode"})
 	Panel:ControlHelp("Realism Mode changes things with zombies in an attempt to make things more realistic.")
 	Panel:ControlHelp("Realism Mode changes the following:")
 	Panel:ControlHelp("- All Military Zombies will have their armor tweaked to act more realistically (based on discussion with friends who know things about military armor)")
+	*/
+	
+	Panel:AddControl("Slider", {Label = "Crawler Spawn Chance?", Command = "VJ_ToTU_General_Crawler_Chance", Min = 1, Max = 100})
+	Panel:ControlHelp("Chance that a zombie will spawn as a crawler.")
+	Panel:ControlHelp("Default chance is 5.")
 	
 	Panel:AddControl("Slider", {Label = "Runner Spawn Chance?", Command = "VJ_ToTU_General_Runners_Chance", Min = 1, Max = 100})
 	Panel:ControlHelp("Chance that a walker will spawn as a runner.")
@@ -661,6 +697,12 @@ if LNRSpecialsExists == false then
 	Panel:AddControl("Slider", {Label = "Gasmask Spawn Chance?", Command = "VJ_ToTU_MilZ_Gasmasks_Chance", Min = 1, Max = 100})
 	Panel:ControlHelp("Chance that a Military Zombie will spawn with a gasmask.")
 	Panel:ControlHelp("Default chance is 3.")
+	
+	local combobox_milzgmasksounds = {Options = {}, CVars = {}, Label = "Gasmask Sounds?", MenuButton = "0"}
+	combobox_milzgmasksounds.Options["NH2 Security (New Sounds)"] = {VJ_ToTU_MilZ_Gasmasks_OriginalSounds = 0}
+	combobox_milzgmasksounds.Options["DL Gas Tanks (Original Sounds)"] = {VJ_ToTU_MilZ_Gasmasks_OriginalSounds = 1}
+	combobox_milzgmasksounds.Options["Both"] = {VJ_ToTU_MilZ_Gasmasks_OriginalSounds = 2}
+	Panel:AddControl("ComboBox", combobox_milzgmasksounds)
 	
 	Panel:AddControl("Checkbox", {Label = "Military Zombies Can Have Flak Armor?", Command = "VJ_ToTU_MilZ_FlakArmor_Allow"})
 	Panel:ControlHelp("If enabled, Grunts can sometimes spawn with flak armor.")
@@ -710,6 +752,7 @@ if LNRSpecialsExists == false then
 	Panel:ControlHelp("Juggernaut helmets will have this value times 3.")
 	Panel:ControlHelp("Default ammount is 100.")
 	
+	/*
 	Panel:AddControl("Checkbox", {Label = "Juggernaut Napalm Walks?", Command = "VJ_ToTU_MilZ_Jugg_NapalmWalk"})
 	Panel:ControlHelp("If enabled, Juggernauts will use the napalm walking animations.")
 	
@@ -734,7 +777,20 @@ if LNRSpecialsExists == false then
 	combobox_bullchargeanim.Options["Super Sprinting"] = {VJ_ToTU_MilZ_Bull_ChargeAnimation = 1}
 	combobox_bullchargeanim.Options["Rush if close, otherwise Super Sprint"] = {VJ_ToTU_MilZ_Bull_ChargeAnimation = 2}
 	Panel:AddControl("ComboBox", combobox_bullchargeanim)
-		
+	*/
+	
+	local combobox_bullvoice = {Options = {}, CVars = {}, Label = "Bulldozer Voice?", MenuButton = "0"}
+	combobox_bullvoice.Options["L4D Tank"] = {VJ_ToTU_MilZ_Bull_Voice = 0}
+	combobox_bullvoice.Options["L4D2 Charger"] = {VJ_ToTU_MilZ_Bull_Voice = 1}
+	combobox_bullvoice.Options["Both"] = {VJ_ToTU_MilZ_Bull_Voice = 2}
+	Panel:AddControl("ComboBox", combobox_bullvoice)
+	
+	local combobox_detsounds = {Options = {}, CVars = {}, Label = "Gasmask Sounds?", MenuButton = "0"}
+	combobox_detsounds.Options["NH2 Security"] = {VJ_ToTU_MilZ_Det_Sounds = 0}
+	combobox_detsounds.Options["DL Gas Tanks"] = {VJ_ToTU_MilZ_Det_Sounds = 1}
+	combobox_detsounds.Options["Both"] = {VJ_ToTU_MilZ_Det_Sounds = 2}
+	Panel:AddControl("ComboBox", combobox_detsounds)
+	
 	Panel:AddControl("Checkbox", {Label = "Detonators Have Breakable Faceplates?", Command = "VJ_ToTU_MilZ_Det_Faceplate_Breakable"})
 	Panel:ControlHelp("If enabled, Detonator faceplates can be broken if damaged enough.")
 	
@@ -742,15 +798,27 @@ if LNRSpecialsExists == false then
 	Panel:ControlHelp("Health Detonator faceplates will have.")
 	Panel:ControlHelp("Default ammount is 50.")
 	
-	/*
-	have helmet do p2d shenanigans
-	remove the fire weakness
-	keep explosion protection obviously
+	Panel:AddControl("Checkbox", {Label = "Detonators Infect Victims?", Command = "VJ_ToTU_MilZ_Det_Infection"})
+	Panel:ControlHelp("If enabled, Detonators and Bulk Detonators will infect stuff they kill.")
+
+	local combobox_detlight = {Options = {}, CVars = {}, Label = "Detonator Lights?", MenuButton = "0"}
+	combobox_detlight.Options["Disable Entirely"] = {VJ_ToTU_MilZ_Det_BombLights = 0}
+	combobox_detlight.Options["Sprite Only"] = {VJ_ToTU_MilZ_Det_BombLights = 1}
+	combobox_detlight.Options["Sprite and Light"] = {VJ_ToTU_MilZ_Det_BombLights = 2}
+	Panel:AddControl("ComboBox", combobox_detlight)
+		
+	Panel:AddControl("Slider", {Label = "Ghost Cloak Device Health?", Command = "VJ_ToTU_MilZ_Ghost_Cloak_Health", Min = 1, Max = 10000})
+	Panel:ControlHelp("Health a Ghosts' Cloak Device will have.")
+	Panel:ControlHelp("Default ammount is 100.")
 	
+	Panel:AddControl("Checkbox", {Label = "Ghosts' Cloak Recharges?", Command = "VJ_ToTU_MilZ_Ghost_Cloak_Recharge"})
+	Panel:ControlHelp("If enabled, a Ghosts' Cloak Device will recharge after a bit when it's broken.")
+	Panel:ControlHelp("If disabled, the Cloak Device will remain permanently broken when destroyed.")
 	
-	*/
-	
-	
+	Panel:AddControl("Checkbox", {Label = "Ghost Flees While Charging Cloak?", Command = "VJ_ToTU_MilZ_Ghost_Cloak_Recharge_RunWhileCharging"})
+	Panel:ControlHelp("If enabled, Ghosts will attempt to flee while their Cloak Device is recharging.")
+	Panel:ControlHelp("They will only do this is their current enemy is far enough.")
+	Panel:ControlHelp("If Cloak Recharging is disabled, then this convar doesn't do anything.")
 	
 	-- Panel:AddControl("Checkbox", {Label ="Enable Realism Mode?", Command ="vj_LN_TOTU_RealismMode"})
 	-- Panel:ControlHelp("Enabling Realism Mode will cause the following:")
