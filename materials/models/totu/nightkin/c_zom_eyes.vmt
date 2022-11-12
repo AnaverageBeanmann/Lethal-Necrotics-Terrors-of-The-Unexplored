@@ -1,0 +1,8 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models\totu\nightkin\c_zom_bruiser_alphas_c"
+        "$bumpmap" "models\totu\nightkin\c_zom_bruiser_alphas_n"
+	"$selfillum" 1
+	"$additive" 1
+}
+

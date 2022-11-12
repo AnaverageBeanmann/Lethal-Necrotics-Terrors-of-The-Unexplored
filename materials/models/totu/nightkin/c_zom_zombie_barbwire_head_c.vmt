@@ -1,0 +1,17 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models\totu\nightkin\c_zom_zombie_barbwire_head_c"
+        "$bumpmap" "models\totu\nightkin\c_zom_zombie_barbwire_head_n"
+	"$alphatest" 1
+
+	"$phong" "1"
+	"$phongexponent" "30"
+	"$phongboost" "1"
+	"$phongfresnelranges" "[0.3 1 7]"
+	"$phongalbedotint" "1"	
+                  $detail models\totu\detail\ci_detail_dirt
+                  $detailscale 7.74
+                  $detailblendfactor 0.8
+                  $detailblendmode 0	
+}
+

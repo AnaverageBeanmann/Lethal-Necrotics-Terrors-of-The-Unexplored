@@ -1,0 +1,5 @@
+"UnlitGeneric"
+{
+	"$Basetexture"               "models\totu\nightkin\eyeball_t" 		  // Iris color in RGB with cornea noise in A
+	"$selfillum" 1 
+}
