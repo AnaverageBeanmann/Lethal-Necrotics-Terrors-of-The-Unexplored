@@ -13,10 +13,11 @@ local AutorunFile = "autorun/vj_lnrhl2_autorun.lua"
 local VJExists = file.Exists("lua/autorun/vj_base_autorun.lua","GAME")
 local LNRHL2Exists = file.Exists("lua/autorun/vj_lnrhl2_autorun.lua","GAME")
 local LNRSpecialsExists = file.Exists("lua/autorun/vj_lnrspecials_autorun.lua","GAME")
+local LNRExtrasExists = file.Exists("lua/autorun/vj_lnre_autorun.lua","GAME")
 
 if VJExists == true then
 if LNRHL2Exists == true then
--- /*
+/*
 if LNRSpecialsExists == false then
 		if CLIENT then
 				local teal = Color(0,255,255)
@@ -38,8 +39,30 @@ if LNRSpecialsExists == false then
 				end)
 			end
 		end
--- */
-		
+*/
+
+if LNRSpecialsExists == false then
+		if CLIENT then
+				local teal = Color(0,255,255)
+				local yellow = Color(255,255,0)
+				local red = Color(255,0,0)
+				local white = Color(255,255,255)
+				local green = Color(33,255,0)
+				timer.Simple(10,function()
+					chat.AddText(teal,"== Terrors of The Unexplored ==")
+					chat.AddText(red,"Lethal Necrotics Reanimated: Extras is not installed!")
+					chat.AddText(red,"You will experience missing textures because of this.")
+					chat.AddText(white,"To fix this, install the Extras Pack.")
+					chat.AddText(green,"Specials Pack Download:")
+					chat.AddText(white,"https://steamcommunity.com/sharedfiles/filedetails/?id=1887964505")
+					chat.AddText(teal,"======================")
+					local fiddlesticks = CreateSound(game.GetWorld(), "vo/k_lab/kl_ohdear.wav")
+					fiddlesticks:SetSoundLevel(0)
+					fiddlesticks:Play()
+				end)
+			end
+		end
+
 	include('autorun/vj_controls.lua')
 	
 	if SERVER then
@@ -47,14 +70,32 @@ if LNRSpecialsExists == false then
 		resource.AddWorkshop("1887964505") -- Specials Pack
 	end
 	
-	local vCat = "Lethal Necrotics: Terrors of The Unexplored"
+	local vCat1 = "Lethal Necrotics: Terrors of The Unexplored - Base Zombies"
+	local vCat2 = "Lethal Necrotics: Terrors of The Unexplored - Military Zombies"
+	local vCat3 = "Lethal Necrotics: Terrors of The Unexplored - Nightkin"
+	local vCat4 = "Lethal Necrotics: Terrors of The Unexplored - Weaponized/Lab Specimens"
+	local vCat5 = "Lethal Necrotics: Terrors of The Unexplored - Backcounty"
+	local vCat6 = "Lethal Necrotics: Terrors of The Unexplored - The Rotten"
+	local vCat7 = "Lethal Necrotics: Terrors of The Unexplored - Water Critters"
+	local vCat8 = "Lethal Necrotics: Terrors of The Unexplored - Spawners/Bonus"
+	local vCat9 = "Lethal Necrotics: Terrors of The Unexplored - Tundra Wastes"
+	local vCat10 = "Lethal Necrotics: Terrors of The Unexplored - Morti Labs"
 	-- VJ.AddCategoryInfo("Lethal Necrotics: Terrors of The Unexplored", {Icon = "icons/totu_icon.png"})
 	-- VJ.AddCategoryInfo("Lethal Necrotics: Terrors of The Unexplored", {Icon = "icons/icon_new_16.png"})
 	-- VJ.AddCategoryInfo("Lethal Necrotics: Terrors of The Unexplored", {Icon = "icons/icon_new_32.png"})
 	-- VJ.AddCategoryInfo("Lethal Necrotics: Terrors of The Unexplored", {Icon = "icons/icon_new_64.png"})
 	-- VJ.AddCategoryInfo("Lethal Necrotics: Terrors of The Unexplored", {Icon = "icons/icon_new_128.png"})
 	-- VJ.AddCategoryInfo("Lethal Necrotics: Terrors of The Unexplored", {Icon = "icons/icon_new_256.png"})
-	VJ.AddCategoryInfo("Lethal Necrotics: Terrors of The Unexplored", {Icon = "icons/symbolv3.png"})
+	VJ.AddCategoryInfo("Lethal Necrotics: Terrors of The Unexplored - Base Zombies", {Icon = "icons/symbolv3.png"})
+	VJ.AddCategoryInfo("Lethal Necrotics: Terrors of The Unexplored - Military Zombies", {Icon = "icons/symbolv3.png"})
+	VJ.AddCategoryInfo("Lethal Necrotics: Terrors of The Unexplored - Nightkin", {Icon = "icons/symbolv3.png"})
+	VJ.AddCategoryInfo("Lethal Necrotics: Terrors of The Unexplored - Weaponized/Lab Specimens", {Icon = "icons/symbolv3.png"})
+	VJ.AddCategoryInfo("Lethal Necrotics: Terrors of The Unexplored - Backcounty", {Icon = "icons/symbolv3.png"})
+	VJ.AddCategoryInfo("Lethal Necrotics: Terrors of The Unexplored - The Rotten", {Icon = "icons/symbolv3.png"})
+	VJ.AddCategoryInfo("Lethal Necrotics: Terrors of The Unexplored - Water Critters", {Icon = "icons/symbolv3.png"})
+	VJ.AddCategoryInfo("Lethal Necrotics: Terrors of The Unexplored - Spawners/Bonus", {Icon = "icons/symbolv3.png"})
+	VJ.AddCategoryInfo("Lethal Necrotics: Terrors of The Unexplored - Tundra Wastes", {Icon = "icons/symbolv3.png"})
+	VJ.AddCategoryInfo("Lethal Necrotics: Terrors of The Unexplored - Morti Labs", {Icon = "icons/symbolv3.png"})
 	-- local vCat2 = "Lethal Necrotics: Terrors of The Unexplored - Misc & Spawners"
 	-- VJ.AddCategoryInfo("Lethal Necrotics: Terrors of The Unexplored - Misc & Spawners", {Icon = "icons/totu_icon.png"})
 	
@@ -280,12 +321,12 @@ if LNRSpecialsExists == false then
 		give the sledgehammer a fucking brick as a weapon and also make it throw bricks
 		add seperate right hand only ci melee anims for this
 		
-		- backwoods zombies
+		- Backcounty zombies
 		* commons in stuff like overalls/flannels/generic countryside clothing
 		* monster boys (call them wendigos)
 		
 		- reconsider flora idea?
-		* ghille zombie who lays there until something gets near
+		* Ghillie zombie who lays there until something gets near
 		* gets up and attacks when target's near
 		
 		convars to do
@@ -293,120 +334,431 @@ if LNRSpecialsExists == false then
 		- squallers having iron will
 		- shrieker spawn frequency
 		
+		- add entrenchment shovel to milzomb weapon pool?
+		
+		- more snowy zombies?
 		
 		leg hp calculation
 		zombie health divided by 5 = leg hp
 		
+		use this for the trailer
+		https://youtu.be/QEUS4uh4c4Y
+		
 	*/
-	
-	
-	
-	/*
-	VJ.AddNPC("Creeper","npc_vj_totu_creeper",vCat)
-	real tall dude
-	make it look like a tree and all mossy and stuff
-	slow boi
-	*/
+
+	-- [] = done
+	-- {} = work in progess
+	-- () = hasn't been started
 	
 	-- Uncategorized
-		VJ.AddNPC("Base Walker","npc_vj_totu_base_walker",vCat)
-		VJ.AddNPC("Base Infected","npc_vj_totu_base_infected",vCat)
-		-- VJ.AddNPC("Base C-Strain Gunner Zombie Guy Dude Thing","npc_vj_totu_base_cstrain",vCat)
+		VJ.AddNPC("Base Walker","npc_vj_totu_base_walker",vCat1)
+		-- []
+		VJ.AddNPC("Base Infected","npc_vj_totu_base_infected",vCat1)
+		-- []
+		VJ.AddNPC("Base C-Strain Gunner Zombie Guy Dude Thing","npc_vj_totu_base_cstrain",vCat1)
+		-- ()
 	
 	-- Military
-		VJ.AddNPC("Grunt (Walker)","npc_vj_totu_milzomb_walker",vCat)
-		VJ.AddNPC("Grunt (Infected)","npc_vj_totu_milzomb_infected",vCat)
-		VJ.AddNPC("Juggernaut","npc_vj_totu_milzomb_juggernaut",vCat)
-		VJ.AddNPC("Bulldozer","npc_vj_totu_milzomb_bulldozer",vCat)
-		VJ.AddNPC("Ghost","npc_vj_totu_milzomb_ghost",vCat)
-		VJ.AddNPC("Detonator","npc_vj_totu_milzomb_detonator",vCat)
-		VJ.AddNPC("Bulk Detonator","npc_vj_totu_milzomb_detonator_bulk",vCat)
-	
-	-- Nightkin
-		VJ.AddNPC("Scragg","npc_vj_totu_nightkin_scragg",vCat)
-		VJ.AddNPC("Skitter","npc_vj_totu_nightkin_skitter",vCat)
+		VJ.AddNPC("Grunt (Walker)","npc_vj_totu_milzomb_walker",vCat2)
+		-- []
+		VJ.AddNPC("Grunt (Infected)","npc_vj_totu_milzomb_infected",vCat2)
+		-- []
+		-- add corpsman varient
+		VJ.AddNPC("Juggernaut","npc_vj_totu_milzomb_juggernaut",vCat2)
+		-- []
+		VJ.AddNPC("Bulldozer","npc_vj_totu_milzomb_bulldozer",vCat2)
+		-- []
+		VJ.AddNPC("Ghost","npc_vj_totu_milzomb_ghost",vCat2)
+		-- []
+		VJ.AddNPC("Detonator","npc_vj_totu_milzomb_detonator",vCat2)
+		-- []
+		VJ.AddNPC("Bulk Detonator","npc_vj_totu_milzomb_detonator_bulk",vCat2)
+		-- []
 		
-		VJ.AddNPC("Squaller","npc_vj_totu_nightkin_squaller",vCat)
+		VJ.AddNPC("Tank","npc_vj_totu_milzomb_tank",vCat2)
+		-- ()
+		-- bulldozer suit
+		
+		VJ.AddNPC("Ghost (Walker)","npc_vj_totu_milzomb_ghost_walker",vCat2)
+		-- ()
+		VJ.AddNPC("Ghillie","npc_vj_totu_milzomb_ghillie",vCat2)
+		-- ()
+		-- dude in a Ghillie suit
+		-- lays still until you get near or crawls towards you
+		-- if crawling towards you, it gets up after taking damage
+
+		
+	-- Nightkin
+		VJ.AddNPC("Scragg","npc_vj_totu_nightkin_scragg",vCat3)
+		-- {}
+		VJ.AddNPC("Skitter","npc_vj_totu_nightkin_skitter",vCat3)
+		-- {}
+		-- fix it changing run anims while crippled
+		
+		VJ.AddNPC("Squaller","npc_vj_totu_nightkin_squaller",vCat3)
+		-- {}
 		-- edit texture to have blood tear streaks
 		-- have them beat the shit out of corpses that arnt kin?
 		-- mourn corpses of kin
 		-- mudguy run for a bit after being crippled but then do walker cripple business afterward
 		
-		VJ.AddNPC("Shrieker","npc_vj_totu_nightkin_shrieker",vCat)
+		VJ.AddNPC("Shrieker","npc_vj_totu_nightkin_shrieker",vCat3)
+		-- {}
 		-- edit texture to make throat look all worn out
 		
-	-- Weaponized/Lab Specimens
-		-- VJ.AddNPC("Drone","npc_vj_totu_weaponized_drone",vCat) -- stinky
-		-- VJ.AddNPC("Razor","npc_vj_totu_weaponized_razor",vCat)
-		-- VJ.AddNPC("Sentinel","npc_vj_totu_weaponized_sentinel",vCat)
-		-- VJ.AddNPC("Peacekeeper","npc_vj_totu_weaponized_peacekeeper",vCat)
-		-- VJ.AddNPC("Carcass","npc_vj_totu_weaponized_carcass",vCat)
-		-- VJ.AddNPC("Cazador","npc_vj_totu_weaponized_cazador",vCat)
-		-- VJ.AddNPC("Cyst","npc_vj_totu_weaponized_cyst",vCat)
-		-- VJ.AddNPC("Cancer","npc_vj_totu_weaponized_cancer",vCat)
-		-- VJ.AddNPC("Revenant","npc_vj_totu_weaponized_revenant",vCat)
+		VJ.AddNPC("Spectre","npc_vj_totu_nightkin_spectre",vCat3)
+		-- ()
+		-- basically ghost but nightkin
+		-- say it's an anomaly
 		
+		VJ.AddNPC("Scourge","npc_vj_totu_nightkin_spitballer",vCat3)
+		-- {}
+		-- spitter
+		-- use l4d2 spitter sounds
+		-- make the abdomen glow green
+		-- rename to Scourge
+		-- make eyes purple
+		-- make corpse glow
+		
+		VJ.AddNPC("Scylla","npc_vj_totu_nightkin_scylla",vCat3)
+		-- use bloodborne cleric beast sounds
+		-- make it really big
 	-- Spawners
-		VJ.AddNPC("Spawner","sent_vj_totu_spawner",vCat)
-		VJ.AddNPC("Spawner (Nightkin)","sent_vj_totu_spawner_nightkin",vCat)
-		VJ.AddNPC("Spawner (MilZombs)","sent_vj_totu_spawner_milzombs",vCat)
+		VJ.AddNPC("Spawner","sent_vj_totu_spawner",vCat8)
+		VJ.AddNPC("Spawner (Nightkin)","sent_vj_totu_spawner_nightkin",vCat8)
+		VJ.AddNPC("Spawner (MilZombs)","sent_vj_totu_spawner_milzombs",vCat8)
+		VJ.AddNPC("Spawner (Weaponized/Lab Specimens)","sent_vj_totu_spawner_weaponized",vCat8)
+		VJ.AddNPC("Spawner (Backcounty)","sent_vj_totu_spawner_backcounty",vCat8)
+		VJ.AddNPC("Spawner (Water Critters)","sent_vj_totu_spawner_watercritters",vCat8)
+		VJ.AddNPC("Spawner (The Rotten)","sent_vj_totu_spawner_rotten",vCat8)
+		-- VJ.AddNPC("Spawner (Zombified Morti Staff)","sent_vj_totu_spawner_morti_zombified",vCat)
+		-- VJ.AddNPC("Spawner (Morti Staff)","sent_vj_totu_spawner_morti",vCat)
+		
+	-- Tundra Wastes
+		-- general gimmick
+		-- slow on hit
+		-- move slower
+		-- walking - nmrih walks
+		-- running - walking
+		-- sprinting - running
+		-- super sprinting - sprinting
+		-- rushing - super sprinting
+		VJ.AddNPC("Frostbitten Grunt (Walker)","npc_vj_totu_milzomb_walker_snowy",vCat9)
+		-- ()
+		VJ.AddNPC("Frostbitten Grunt (Infected)","npc_vj_totu_milzomb_infected_snowy",vCat9)
+		-- ()
+		VJ.AddNPC("Frostbitten Juggernaut","npc_vj_totu_milzomb_juggernaut_snowy",vCat9)
+		-- ()
+		VJ.AddNPC("Frostdozer","npc_vj_totu_milzomb_bulldozer_snowy",vCat9)
+		-- ()
+		VJ.AddNPC("Frostbitten","npc_vj_totu_tundra_frostbite",vCat9)
+		-- walkers that like to bite you
+		-- frozen stiff
+		
+		VJ.AddNPC("Glacier","npc_vj_totu_tundra_glacier",vCat9)
+		-- big tanky dude
+		
+		-- zombified rioters?
+		
+		-- guys in heavy winter coats/clothing (rust model in mind)
+		
+		-- some kind of ravager copy but cold
+		-- name it scavenger?
 	
+	-- Weaponized/Lab Specimens
+		VJ.AddNPC("Drone","npc_vj_totu_weaponized_drone",vCat4) -- stinky
+		-- ()
+		VJ.AddNPC("Razor","npc_vj_totu_weaponized_razor",vCat4)
+		-- ()
+		VJ.AddNPC("Sentinel","npc_vj_totu_weaponized_sentinel",vCat4)
+		-- ()
+		VJ.AddNPC("Peacekeeper","npc_vj_totu_weaponized_peacekeeper",vCat4)
+		-- ()
+		VJ.AddNPC("Caretaker","npc_vj_totu_weaponized_caretaker",vCat4)
+		-- ()
+		-- medic npc
+		
+		VJ.AddNPC("Carcass","npc_vj_totu_weaponized_carcass",vCat4)
+		-- see if someone can get alyx_zombie_fight 1 and 2 running for shove anims
+		-- add exploding ones
+		-- add crawl idle animation with spammed keys for splitting
+		-- make it split when crippled
+		-- give it gliding animations so it doesn't t-pose
+		-- see about fixing gesture flinches
+		-- add blood clot projectile
+		
+		VJ.AddNPC("Carcass Thorax","npc_vj_totu_weaponized_carcass_torso",vCat4)
+		-- fix up eye glow attachments on both of these
+
+		VJ.AddNPC("Cazador","npc_vj_totu_weaponized_cazador",vCat4)
+		-- {}
+		VJ.AddNPC("Cazador Thorax","npc_vj_totu_weaponized_cazador_torso",vCat4)
+		-- {}
+		VJ.AddNPC("Cyst","npc_vj_totu_weaponized_cyst",vCat4)
+		-- ()
+		VJ.AddNPC("Cancer","npc_vj_totu_weaponized_cancer",vCat4)
+		-- ()
+		VJ.AddNPC("Revenant","npc_vj_totu_weaponized_revenant",vCat4)
+		-- ()
+		VJ.AddNPC("Smog","npc_vj_totu_weaponized_smog",vCat4)
+		-- ()
+		/*
+	-- Morti Research Facility
+		VJ.AddNPC("Morti Scientist (Friendly)","npc_vj_totu_morti_scientist",vCat)
+		-- ()
+		VJ.AddNPC("Morti Scientist (Hostile)","npc_vj_totu_morti_scientist_hostile",vCat)
+		-- ()
+		VJ.AddNPC("Morti Security Guard (Friendly)","npc_vj_totu_morti_secguard",vCat)
+		-- ()
+		VJ.AddNPC("Morti Security Guard (Hostile)","npc_vj_totu_morti_secguard_hostile",vCat)
+		-- ()
+		VJ.AddNPC("Morti Test Subject (Friendly)","npc_vj_totu_morti_testsub",vCat)
+		-- ()
+		VJ.AddNPC("Morti Test Subject (Hostile)","npc_vj_totu_morti_testsub_hostile",vCat)
+		-- ()
+		VJ.AddNPC("Morti Test Subject (Frenzied)","npc_vj_totu_morti_testsub_frenzied",vCat)
+		-- ()
+		VJ.AddNPC("Morti Hazmat Agent (Friendly)","npc_vj_totu_morti_hazmat",vCat)
+		-- ()
+		VJ.AddNPC("Morti Hazmat Agent (Hostile)","npc_vj_totu_morti_hazmat_hostile",vCat)
+		-- ()
+		VJ.AddNPC("Morti N.O.R.U. (Friendly)","npc_vj_totu_morti_noru",vCat)
+		-- ()
+		VJ.AddNPC("Morti N.O.R.U. (Hostile)","npc_vj_totu_morti_noru_hostile",vCat)
+		-- ()
+		VJ.AddNPC("Morti N.O.R.U. (Code 4)","npc_vj_totu_morti_noru_nosurvivors",vCat)
+		-- ()
+		-- VJ.AddNPC("","npc_vj_totu_morti_",vCat)
+		*/
+	
+	-- Zombified Morti Personnel
+		VJ.AddNPC("Morti Scientist Zombie (Walker)","npc_vj_totu_morti_zombie_scientist_walker",vCat10)
+		-- ()
+		VJ.AddNPC("Morti Scientist Zombie (infected)","npc_vj_totu_morti_zombie_scientist_infected",vCat10)
+		-- ()
+		-- use black mesa scientist
+		VJ.AddNPC("Morti Security Zombie (Walker)","npc_vj_totu_morti_zombie_secguard_walker",vCat10)
+		-- ()
+		VJ.AddNPC("Morti Security Zombie (Infected)","npc_vj_totu_morti_zombie_secguard_infected",vCat10)
+		-- ()
+		-- use black mesa guard
+		VJ.AddNPC("Morti Hazmat Zombie (Walker)","npc_vj_totu_morti_zombie_hazmat_walker",vCat10)
+		-- ()
+		VJ.AddNPC("Morti Hazmat Zombie (Infected)","npc_vj_totu_morti_zombie_hazmat_infected",vCat10)
+		-- ()
+		-- make the suit light teal
+		VJ.AddNPC("Morti Test Subject Zombie (Walker)","npc_vj_totu_morti_zombie_testsub_walker",vCat10)
+		-- ()
+		VJ.AddNPC("Morti Test Subject Zombie (Infected)","npc_vj_totu_morti_zombie_testsub_infected",vCat10)
+		-- ()
+		VJ.AddNPC("Morti N.O.R.U Zombie (Walker)","npc_vj_totu_morti_zombie_noru_walker",vCat10)
+		-- ()
+		VJ.AddNPC("Morti N.O.R.U Zombie (Infected)","npc_vj_totu_morti_zombie_noru_infected",vCat10)
+		-- ()
+		-- use edited css gasmask ct model
+		-- noru stands for necrotic outbreak response unit
+		
+	-- Backcounty
+		VJ.AddNPC("Backcounty Walker","npc_vj_totu_backcounty_walker",vCat5)
+		-- ()
+		VJ.AddNPC("Backcounty Infected","npc_vj_totu_backcounty_infected",vCat5)
+		-- ()
+		-- have them wear generic country outfits like flannels/overalls and stuff
+		
+		VJ.AddNPC("Lumberjack","npc_vj_totu_backcounty_lumberjack",vCat5)
+		-- ()
+		-- wood worker (works with trees and shit)
+		-- have axe, chainsaw, and broom in weapon pool
+		-- for the chainsaw use re5 chainsaw majiini anims
+		
+		VJ.AddNPC("Exploder","npc_vj_totu_backcounty_exploder",vCat5)
+		-- ()
+		-- fat bastard that explodes on death
+		-- shoots out hard chunks on exploding
+		-- edit texture so you can see its guts through the skin (use that see-through boomer mod as reference)
+		-- could also just call it the exploder
+		
+		VJ.AddNPC("Pusbag","npc_vj_totu_backcounty_pusbag",vCat5)
+		-- ()
+		-- spitting fatman
+		-- explodes on death
+		
+		VJ.AddNPC("Meathead","npc_vj_totu_backcounty_meathead",vCat5)
+		-- ()
+		-- l4d tank model
+		-- has a ground slam attack
+		-- can throw rocks(?)
+		
+		VJ.AddNPC("Feedback","npc_vj_totu_backcounty_feedback",vCat5)
+		-- ()
+		-- radio noises
+		-- sirens/alarms
+		-- make it look like a radio jockey or something
+		
+		VJ.AddNPC("Buck","npc_vj_totu_backcounty_buck",vCat5)
+		-- ()
+		-- fleshpound/charger
+		
+		VJ.AddNPC("Sawzall","npc_vj_totu_backcounty_sawman",vCat5)
+		-- ()
+		-- verdugo/chainsaw fatman
+		-- rename to leatherneck
+		
+		VJ.AddNPC("Goliath","npc_vj_totu_backcounty_goliath",vCat5)
+		-- ()
+		-- really big dude
+		-- set scale to 1.75
+		-- make it have no corpse on death (see if it's possible to make it fade out of reality)
+		-- easter egg: 1 in 100 chance to have corpse, play fart sound when corpse is made
+		
+		VJ.AddNPC("Filth","npc_vj_totu_backcounty_filth",vCat5)
+		-- ()
+		-- zombie cleaners
+		
+		VJ.AddNPC("Creeper","npc_vj_totu_backcounty_creeper",vCat5)
+		-- ()
+		-- real tall dude
+		-- make it look like a tree and all mossy and stuff
+		-- slow boi
+		
+		VJ.AddNPC("Wendigo","npc_vj_totu_backcounty_wendigo",vCat5)
+		-- ()
+		-- monster boys
+		-- they crawl at you
+		
+		VJ.AddNPC("Funnyman","npc_vj_totu_backcounty_clown",vCat5)
+		-- ()
+		-- is clown
+		-- shoe go honk honk haha
+		
+		VJ.AddNPC("Worker Zombie (Walker)","npc_vj_totu_backcounty_roughneck_walker",vCat5)
+		-- {}
+		VJ.AddNPC("Worker Zombie (Infected)","npc_vj_totu_backcounty_roughneck_infected",vCat5)
+		-- {}
+		-- give them weapons (took screenshot of all options)
+		-- for heavier weapons use re5 executioner anims or bogeyman anims
+		-- add hammer and sledgehammer to weapon list
+		-- brick
+		
+	-- The Rotten
+		VJ.AddNPC("Degenerate","npc_vj_totu_rotten_degenerate",vCat6)
+		-- ()
+		-- use starved model
+		-- basically just walker version of starved
+
+		VJ.AddNPC("Pest","npc_vj_totu_rotten_pest",vCat6)
+		-- ()
+		-- weak infected
+		-- crawls at you
+		-- likes to get up after dying alot
+		
+		VJ.AddNPC("Decayed","npc_vj_totu_rotten_decayed",vCat6)
+		-- ()
+		-- rotting walker
+		-- make it more likely to be a biter?
+		-- likes poisoning you
+		
+		VJ.AddNPC("Puffball","npc_vj_totu_rotten_puffball",vCat6)
+		-- ()
+		-- boomer but leaves poison gas instead of being a grenade
+		
+		VJ.AddNPC("Hive","npc_vj_totu_rotten_hive",vCat6)
+		-- ()
+		-- has a bug nest in 'em
+		-- bug swarms leave to attack
+		
+		VJ.AddNPC("Fumigator","npc_vj_totu_rotten_fumigator",vCat6)
+		-- ()
+		-- smelly
+		-- breaths gas on you
+		-- the gas hurts
+		-- has passive aoe damage
+		
+		VJ.AddNPC("Bonfire","npc_vj_totu_rotten_bonfire",vCat6)
+		-- ()
+		-- immolator/fiend
+		
+		VJ.AddNPC("Swarm","npc_vj_totu_rotten_swarm",vCat6)
+		-- ()
+		
+		
+		
+
+	-- Water Critters
+		VJ.AddNPC("Pirahna","npc_vj_totu_water_pirahna",vCat7)
+		-- ()
+		-- flounder
+		VJ.AddNPC("Laticauda","npc_vj_totu_water_laticauda",vCat7)
+		-- ()
+		
+		VJ.AddNPC("Whale","npc_vj_totu_water_whale",vCat7)
+		-- ()
+		VJ.AddNPC("Turtle","npc_vj_totu_water_turtle",vCat7)
+		-- ()
+		-- bubbler/chelonioidea
+		
+		VJ.AddNPC("Stingray","npc_vj_totu_water_stingray",vCat7)
+		-- ()
+		VJ.AddNPC("Alligator","npc_vj_totu_water_alligator",vCat7)
+		-- ()
+		VJ.AddNPC("Crocodile","npc_vj_totu_water_crocodile",vCat7)
+		-- ()
+		VJ.AddNPC("Megalodon","npc_vj_totu_water_megalodon",vCat7)
+		-- ()
+		VJ.AddNPC("Gharial","npc_vj_totu_water_gharial",vCat7)
+		-- ()
+
+	-- Bonus
+		VJ.AddNPC("Something Wicked","npc_vj_totu_bonus_wicked",vCat8)
+		-- ()
+		VJ.AddNPC("Browncoat Zombie","npc_vj_totu_bonus_browncoat",vCat8)
+		-- ()
+		-- regular garden variety zombie
+		-- can spawn with cone or bucket for protection
+		-- biter only
+		
+		VJ.AddNPC("Remnant Husk","npc_vj_totu_bonus_remnant",vCat8)
+		-- ()
+		-- michael afton moment
+		
+		VJ.AddNPC("Ambient Vessel","npc_vj_totu_bonus_ambves",vCat8)
+		-- ()
+		-- completely black skin (can still shine light off though)
+		-- bright white eyes
+		-- weak to sonic damage, highly resistant to everything else
+		
+		VJ.AddNPC("Flemming","npc_vj_totu_bonus_flemming",vCat8)
+		-- ()
+		-- hi
+		
+		VJ.AddNPC("Voodoo-Cursed Mercenary","npc_vj_totu_bonus_tf2",vCat8)
+		-- ()
+		-- skins for both teams
+		-- all 9 classes as 1 npc
+		-- each class has original in game hp
+		-- scout always spawns as atleast a runner/super sprinter/rusher
+		-- pyro is immune to afterburn
+		-- medic has hp regen
+		-- spy can cloak
+		
+		-- obese male?
+		-- https://steamcommunity.com/sharedfiles/filedetails/?id=1199974271
+		
+		-- VJ.AddNPC("","npc_vj_totu_bonus_",vCat)
+		
 	
 	--Zombies
 		--No Specific Area
-			-- VJ.AddNPC("Degenerate","npc_vj_ln_totu_degenerate",vCat)
-			-- VJ.AddNPC("Exploder (Walker)","npc_vj_ln_totu_exploder_walker",vCat)
-			-- VJ.AddNPC("Exploder (Infected)","npc_vj_ln_totu_exploder_infected",vCat)
 			-- VJ.AddNPC("Alternate","npc_vj_ln_totu_alternate",vCat)
-			-- VJ.AddNPC("Ghoul","npc_vj_ln_totu_ghoul",vCat)
 			-- VJ.AddNPC("Siren","npc_vj_ln_totu_siren",vCat)
-			-- VJ.AddNPC("Fiend","npc_vj_ln_totu_fiend",vCat) -- Rename to Demon
-			-- VJ.AddNPC("Well-Dressed Zombie","npc_vj_ln_totu_pvz",vCat2)
 			-- VJ.AddNPC("Inanimatum Vas","npc_vj_ln_totu_iv",vCat2) -- Rename to Ambient Vessel
 			-- VJ.AddNPC("[[Number 1 Rated Salesman1997]]","npc_vj_ln_totu_kromer",vCat2)
 			-- VJ.AddNPC("Bubbler/Chelonioidea (Old Version)","npc_vj_ln_totu_bubbler_old",vCat2)
-	
-
-						
-			
-		--Coastline/Aquatic
-			-- VJ.AddNPC("Chelonioidea","npc_vj_ln_totu_chelonioidea",vCat)
-			-- VJ.AddNPC("Flounder","npc_vj_ln_totu_flounder",vCat)
-			-- VJ.AddNPC("Laticauda","npc_vj_ln_totu_laticauda",vCat)
-			
-			-- VJ.AddNPC("Whale","npc_vj_ln_totu_whale",vCat)
-			
-			-- VJ.AddNPC("Megalodon","npc_vj_ln_totu_megalodon",vCat)
-			-- VJ.AddNPC("Gavialidae","npc_vj_ln_totu_gavialidae",vCat)
-
-		--Countryside
-			-- VJ.AddNPC("Pest","npc_vj_ln_totu_pest",vCat)
-			-- VJ.AddNPC("Fleshpound","npc_vj_ln_totu_fleshpound",vCat)
-			-- VJ.AddNPC("Swarm","npc_vj_ln_totu_swarm",vCat)
-			-- VJ.AddNPC("Hive","npc_vj_ln_totu_hive",vCat)
-			
-			-- VJ.AddNPC("Meathead","npc_vj_ln_totu_meathead",vCat)
-			-- VJ.AddNPC("Verdugo","npc_vj_ln_totu_verdugo",vCat)
-	
-			-- VJ.AddNPC("Goliath","npc_vj_ln_totu_goliath",vCat)
 			-- VJ.AddNPC("Behemoth","npc_vj_ln_totu_behemoth",vCat)
-	
-		--Residential
-			-- VJ.AddNPC("Feedback","npc_vj_ln_totu_feedback",vCat)
-			-- VJ.AddNPC("Fumigator","npc_vj_ln_totu_fumigator",vCat)
 	
 		--Weaponized
 			-- VJ.AddNPC("Preserved Walker","npc_vj_ln_totu_preservedwalker",vCat)
-			-- VJ.AddNPC("Regenerator","npc_vj_ln_totu_regenerator",vCat)
-			-- VJ.AddNPC("Revenant","npc_vj_ln_totu_revenant",vCat)
-			-- VJ.AddNPC("Carcass","npc_vj_ln_totu_carcass",vCat)
-			-- VJ.AddNPC("Carcass Torso","npc_vj_ln_totu_carcass_torso",vCat)
-			-- VJ.AddNPC("Cazador","npc_vj_ln_totu_cazador",vCat)
-			-- VJ.AddNPC("Novistador","npc_vj_ln_totu_novistador",vCat)
 
-			-- VJ.AddNPC("Smog","npc_vj_ln_totu_smog",vCat)
-			-- VJ.AddNPC("Smog (Allied)","npc_vj_ln_totu_smog_friendly",vCat)
-			-- VJ.AddNPC("Apollyon","npc_vj_ln_totu_apollyon",vCat)
 			
 		--Spawners and Randoms
 			-- VJ.AddNPC("TOTU Mixed Spawner","sent_vj_ln_totu_spawner",vCat2)
@@ -482,6 +834,17 @@ if LNRSpecialsExists == false then
 	AddConvars["VJ_ToTU_MilZ_Ghost_Cloak_Health"] = 100
 	AddConvars["VJ_ToTU_MilZ_Ghost_Cloak_Recharge"] = 1
 	AddConvars["VJ_ToTU_MilZ_Ghost_Cloak_Recharge_RunWhileCharging"] = 1
+	AddConvars["VJ_ToTU_Nightkin_General_Bleed"] = 1
+	AddConvars["VJ_ToTU_Nightkin_Squaller_IronWill"] = 1
+	AddConvars["VJ_ToTU_Nightkin_Squaller_IronWill_Chance"] = 3
+	AddConvars["VJ_ToTU_Weaponized_Carcass_Exploders"] = 1
+	AddConvars["VJ_ToTU_Weaponized_Carcass_Exploders_Chance"] = 4
+	AddConvars["VJ_ToTU_Weaponized_Carcass_ZombineRunning"] = 1
+	AddConvars["VJ_ToTU_Weaponized_Carcass_Torso_SuperCrawl"] = 1
+	-- AddConvars["VJ_ToTU_Weaponized_Carcass_"] = 
+	-- AddConvars[""] = 
+	-- AddConvars["VJ_ToTU_Nightkin_Shrieker_"] = 
+	-- AddConvars["VJ_ToTU_Nightkin_"] = 
 	
 	-- AddConvars["VJ_ToTU_MilZ_Helmet_HealthScales"] = 1
 	-- AddConvars["VJ_ToTU_Ghost_Cloak_"] = 
@@ -526,6 +889,7 @@ if LNRSpecialsExists == false then
 		end
 	end
 		Panel:AddControl( "Label", {Text = "Note: Only admins can change these settings!"})
+		Panel:AddControl( "Label", {Text = "Please respawn any existing zombies after changing things in here!"})
 	local vj_resetbutton = {Options = {}, CVars = {}, Label = "Reset Everything:", MenuButton = "0"}
 		vj_resetbutton.Options["#vjbase.menugeneral.default"] = { 
 			VJ_ToTU_Spawn_UniversalDig = "0",
@@ -575,6 +939,13 @@ if LNRSpecialsExists == false then
 			VJ_ToTU_MilZ_Ghost_Cloak_Health = "100",
 			VJ_ToTU_MilZ_Ghost_Cloak_Recharge = "1",
 			VJ_ToTU_MilZ_Ghost_Cloak_Recharge_RunWhileCharging = "1",
+			VJ_ToTU_Nightkin_General_Bleed = "1",
+			VJ_ToTU_Nightkin_Squaller_IronWill = "1",
+			VJ_ToTU_Nightkin_Squaller_IronWill_Chance = "3",
+			VJ_ToTU_Weaponized_Carcass_Exploders = "1",
+			VJ_ToTU_Weaponized_Carcass_Exploders_Chance = "4",
+			VJ_ToTU_Weaponized_Carcass_ZombineRunning = "1",
+			VJ_ToTU_Weaponized_Carcass_Torso_SuperCrawl = "1",
 			-- VJ_ToTU_MilZ_Det_ = "",
 			
 			
@@ -623,6 +994,7 @@ if LNRSpecialsExists == false then
 	
 	Panel:ControlHelp("")
 	
+	Panel:AddControl( "Label", {Text = "Note: Only admins can change these settings!"})
 	*/
 	
 	Panel:AddControl("ComboBox", vj_resetbutton)
@@ -819,6 +1191,39 @@ if LNRSpecialsExists == false then
 	Panel:ControlHelp("If enabled, Ghosts will attempt to flee while their Cloak Device is recharging.")
 	Panel:ControlHelp("They will only do this is their current enemy is far enough.")
 	Panel:ControlHelp("If Cloak Recharging is disabled, then this convar doesn't do anything.")
+	
+	Panel:AddControl("Checkbox", {Label = "Nightkin can cause bleeding?", Command = "VJ_ToTU_Nightkin_General_Bleed"})
+	Panel:ControlHelp("If enabled, Nightkin melee attacks can occasionally cause their target to bleed, doing damage over time.")
+	
+	Panel:AddControl("Checkbox", {Label = "Squallers can spawn with Iron Will?", Command = "VJ_ToTU_Nightkin_Squaller_IronWill"})
+	Panel:ControlHelp("If enabled, Squallers can sometimes spawn with Iron Will.")
+	Panel:ControlHelp("If they have it, it triggers a bit after death.")
+	Panel:ControlHelp("When triggered, the following will happen:")
+	Panel:ControlHelp("-The Squaller will revive itself.")
+	Panel:ControlHelp("-The Squaller will recieve half of its max hp.")
+	Panel:ControlHelp("-The Squaller will gain massive damage resistance.")
+	Panel:ControlHelp("-The Squaller will gain a glow effect.")
+	Panel:ControlHelp("-The Squaller will be redueced to Super Sprinting instead of Rushing.")
+	Panel:ControlHelp("-The Squaller will die after 12 seconds.")
+	
+	Panel:AddControl("Slider", {Label = "Squaller Iron Will Chance?", Command = "VJ_ToTU_Nightkin_Squaller_IronWill_Chance", Min = 1, Max = 10000})
+	Panel:ControlHelp("Chance that a Squaller will spawn with Iron Will.")
+	Panel:ControlHelp("Default chance is 3.")
+	
+	Panel:AddControl("Checkbox", {Label = "Enable Carcass Exploders?", Command = "VJ_ToTU_Weaponized_Carcass_Exploders"})
+	Panel:ControlHelp("If enabled, Carcass can sometimes spawn as exploders.")
+	Panel:ControlHelp("Unbelievably, they explode when they die.")
+	Panel:ControlHelp("They also shoot out projectiles because reasons.")
+	
+	Panel:AddControl("Slider", {Label = "Carcass Exploder Chance?", Command = "VJ_ToTU_Weaponized_Carcass_Exploders_Chance", Min = 1, Max = 10000})
+	Panel:ControlHelp("Chance that a Carcass will spawn as an Exploder.")
+	Panel:ControlHelp("Default chance is 4.")
+	
+	Panel:AddControl("Checkbox", {Label = "Carcasses can Zombine Run?", Command = "VJ_ToTU_Weaponized_Carcass_ZombineRunning"})
+	Panel:ControlHelp("If enabled, Carcass can run like Zombines every now and then.")
+	
+	Panel:AddControl("Checkbox", {Label = "Carcass Thoraxes can Super Crawl?", Command = "VJ_ToTU_Weaponized_Carcass_Torso_SuperCrawl"})
+	Panel:ControlHelp("If enabled, Carcass Thoraxes can crawl fast every now and then.")
 	
 	-- Panel:AddControl("Checkbox", {Label ="Enable Realism Mode?", Command ="vj_LN_TOTU_RealismMode"})
 	-- Panel:ControlHelp("Enabling Realism Mode will cause the following:")
