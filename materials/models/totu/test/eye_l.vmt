@@ -1,0 +1,6 @@
+"UnlitGeneric"
+{
+	"$basetexture" "models/totu/test/eye_l"
+	"$model" 1
+	"$halflambert" 1
+}
