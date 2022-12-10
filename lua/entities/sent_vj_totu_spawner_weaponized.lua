@@ -20,12 +20,11 @@ ENT.AdminSpawnable	= false
 if !SERVER then return end
 
 local entsList = {
-	"npc_vj_totu_nightkin_scragg:1",
-	"npc_vj_totu_nightkin_skitter:2",
-	"npc_vj_totu_nightkin_spitballer:2",
-	"npc_vj_totu_nightkin_squaller:4",
-	"npc_vj_totu_nightkin_shrieker:6",
-	"npc_vj_totu_nightkin_scylla:6",
+	"npc_vj_totu_weaponized_carcass:1",
+	"npc_vj_totu_weaponized_carcass_torso:2",
+	"npc_vj_totu_weaponized_cyst:2",
+	"npc_vj_totu_weaponized_cazador_torso:2",
+	"npc_vj_totu_weaponized_cazador:3",
 }
 ENT.EntitiesToSpawn = {
 	{SpawnPosition = {vForward=20, vRight=0, vUp=0}, Entities = entsList},

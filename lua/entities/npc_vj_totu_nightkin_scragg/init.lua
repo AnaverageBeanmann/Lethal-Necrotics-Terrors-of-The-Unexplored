@@ -16,14 +16,16 @@ ENT.ToTU_Nightkin_Squaller_UsingIronWill = false
 ENT.ToTU_Nightkin_Squaller_IronWillDamageResistance = true
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:Zombie_CustomOnPreInitialize()
+
+	if GetConVar("VJ_ToTU_Nightkin_General_Bleed"):GetInt() == 1 then
+		self.MeleeAttackBleedEnemy = true
+		self.MeleeAttackBleedEnemyChance = 3
+		self.MeleeAttackBleedEnemyDamage = 1
+		self.MeleeAttackBleedEnemyTime = 1
+		self.MeleeAttackBleedEnemyReps = 4
+		self.MeleeAttackDamageType = DMG_SLASH
+	end
 		
-	self.MeleeAttackBleedEnemy = true
-	self.MeleeAttackBleedEnemyChance = 3
-	self.MeleeAttackBleedEnemyDamage = 1
-	self.MeleeAttackBleedEnemyTime = 1
-	self.MeleeAttackBleedEnemyReps = 4
-	self.MeleeAttackDamageType = DMG_SLASH
-	
 	if self:GetClass() == "npc_vj_totu_nightkin_scragg" then
 		self.Model = {"models/totu/scragg.mdl"}
 	elseif self:GetClass() == "npc_vj_totu_nightkin_skitter" then
@@ -32,6 +34,10 @@ function ENT:Zombie_CustomOnPreInitialize()
 		self.Model = {"models/totu/screamer.mdl"}
 	elseif self:GetClass() == "npc_vj_totu_nightkin_squaller" then
 		self.Model = {"models/totu/squaller.mdl"}
+	elseif self:GetClass() == "npc_vj_totu_nightkin_spitballer" then
+		self.Model = {"models/totu/spitballer.mdl"}
+	elseif self:GetClass() == "npc_vj_totu_nightkin_scylla" then
+		self.Model = {"models/totu/screamer.mdl"}
 	end
 	
 end
@@ -79,12 +85,13 @@ function ENT:Zombie_CustomOnInitialize()
 			self.AnimTbl_Walk = {ACT_WALK_AIM}
 			self.AnimTbl_Run = {ACT_RUN_RELAXED}
 			self.ToTU_Rusher = true
-			if math.random(1,3) == 1 then
+			if GetConVar("VJ_ToTU_Nightkin_Squaller_IronWill"):GetInt() == 1 && math.random(1,GetConVar("VJ_ToTU_Nightkin_Squaller_IronWill_Chance"):GetInt()) == 1 then
 				self.ToTU_Nightkin_Squaller_HasIronWill = true
 			end
 		end
 
 		if self.ToTU_Nightkin_Squaller_UsingIronWill then
+		
 			self.SoundTbl_Breath = {"fx/ironwill_loop.mp3"}
 			self.NextSoundTime_Breath = VJ_Set(7,7)
 			self.BreathSoundLevel = 65
@@ -123,7 +130,124 @@ function ENT:Zombie_CustomOnInitialize()
 				d:SetDamageType(DMG_GENERIC) 
 				self:TakeDamageInfo(d)
 			end end)
+			
 		end
+		
+	elseif self:GetClass() == "npc_vj_totu_nightkin_spitballer" then
+	
+		-- self:SetKeyValue("rendercolor","216 255 190 255")
+		
+		-- local LightGlow = ents.Create("light_dynamic")
+		-- LightGlow:SetKeyValue("brightness", "4")
+		-- LightGlow:SetKeyValue("distance", "55")
+		-- LightGlow:SetLocalPos(self:GetPos() +self:OBBCenter())
+		-- LightGlow:SetLocalAngles(self:GetAngles())
+		-- LightGlow:Fire("Color", "33 255 0 255")
+		-- LightGlow:SetParent(self)
+		-- LightGlow:Spawn()
+		-- LightGlow:Activate()
+		-- LightGlow:Fire("SetParentAttachment","legs_gib")
+		-- LightGlow:Fire("TurnOn", "", 0)
+		-- self:DeleteOnRemove(LightGlow)
+		-- self.LightGlow = LightGlow
+	
+		-- self:SetKeyValue("rendercolor","249 255 208 255")
+		
+		-- local LightGlow = ents.Create("light_dynamic")
+		-- LightGlow:SetKeyValue("brightness", "7")
+		-- LightGlow:SetKeyValue("distance", "25")
+		-- LightGlow:SetLocalPos(self:GetPos() +self:OBBCenter())
+		-- LightGlow:SetLocalAngles(self:GetAngles())
+		-- LightGlow:Fire("Color", "255 255 0 255")
+		-- LightGlow:SetParent(self)
+		-- LightGlow:Spawn()
+		-- LightGlow:Activate()
+		-- LightGlow:Fire("SetParentAttachment","legs_gib")
+		-- LightGlow:Fire("TurnOn", "", 0)
+		-- self:DeleteOnRemove(LightGlow)
+		-- self.LightGlow = LightGlow
+		
+		self:SetKeyValue("rendercolor","129 109 171 255")
+		self:SetModelScale(1.07)
+		
+		local LightGlow = ents.Create("light_dynamic")
+		LightGlow:SetKeyValue("brightness", "10")
+		LightGlow:SetKeyValue("distance", "30")
+		LightGlow:SetLocalPos(self:GetPos() +self:OBBCenter())
+		LightGlow:SetLocalAngles(self:GetAngles())
+		LightGlow:Fire("Color", "93 0 255 255")
+		LightGlow:SetParent(self)
+		LightGlow:Spawn()
+		LightGlow:Activate()
+		LightGlow:Fire("SetParentAttachment","legs_gib")
+		LightGlow:Fire("TurnOn", "", 0)
+		self:DeleteOnRemove(LightGlow)
+		self.LightGlow = LightGlow
+		
+		local LightGlow = ents.Create("light_dynamic")
+		LightGlow:SetKeyValue("brightness", "5")
+		LightGlow:SetKeyValue("distance", "30")
+		LightGlow:SetLocalPos(self:GetPos() +self:OBBCenter())
+		LightGlow:SetLocalAngles(self:GetAngles())
+		LightGlow:Fire("Color", "93 0 255 255")
+		LightGlow:SetParent(self)
+		LightGlow:Spawn()
+		LightGlow:Activate()
+		LightGlow:Fire("SetParentAttachment","chest")
+		LightGlow:Fire("TurnOn", "", 0)
+		self:DeleteOnRemove(LightGlow)
+		self.LightGlow = LightGlow
+		
+		-- local LightGlow = ents.Create("light_dynamic")
+		-- LightGlow:SetKeyValue("brightness", "10")
+		-- LightGlow:SetKeyValue("distance", "30")
+		-- LightGlow:SetLocalPos(self:GetPos() +self:OBBCenter())
+		-- LightGlow:SetLocalAngles(self:GetAngles())
+		-- LightGlow:Fire("Color", "93 0 255 255")
+		-- LightGlow:SetParent(self)
+		-- LightGlow:Spawn()
+		-- LightGlow:Activate()
+		-- LightGlow:Fire("SetParentAttachment","mouth")
+		-- LightGlow:Fire("TurnOn", "", 0)
+		-- self:DeleteOnRemove(LightGlow)
+		-- self.LightGlow = LightGlow
+	
+		self.HasRangeAttack = true
+		self.RangeAttackEntityToSpawn = "obj_vj_totu_biolum"
+		self.AnimTbl_RangeAttack = {"vjseq_nz_taunt_7"}
+		self.RangeDistance = 1200 
+		self.RangeToMeleeDistance = 0
+		self.RangeAttackAngleRadius = 100
+		self.TimeUntilRangeAttackProjectileRelease = 0.6
+		self.NextRangeAttackTime = 6
+		self.NextAnyAttackTime_Range = 2
+		self.RangeUseAttachmentForPos = true 
+		self.RangeUseAttachmentForPosID = "mouth"
+		self.RangeAttackExtraTimers = nil
+		self.RangeAttackPos_Forward = 20
+		self.RangeAttackPos_Up = 20
+	
+	elseif self:GetClass() == "npc_vj_totu_nightkin_scylla" then
+	
+		self:SetCollisionBounds(Vector(12, 13, 68), Vector(-13, -13, 0))
+		self:SetModelScale(1.60)
+		self:SetBodygroup(6,2)
+		self.AnimTbl_Death = {"vjseq_death_04"}
+		self.DeathAnimationChance = 1
+		self:SetKeyValue("rendercolor","122 62 53 255")
+		self.DeathAnimationChance = 1
+		self.HasWorldShakeOnMove = true
+		self.WorldShakeOnMoveAmplitude = 1
+		self.MeleeAttackDistance = 50
+		self.MeleeAttackDamageDistance = 70
+		self.HasMeleeAttackKnockBack = true
+		-- self.FootStepSoundLevel = 80
+		self.MeleeAttackKnockBack_Forward1 = 300
+		self.MeleeAttackKnockBack_Forward2 = 325
+		self.MeleeAttackKnockBack_Up1 = 175
+		self.MeleeAttackKnockBack_Up2 = 200
+		
+		self.ExtraMeleeSoundPitch = VJ_Set(80, 90)
 		
 	end
 

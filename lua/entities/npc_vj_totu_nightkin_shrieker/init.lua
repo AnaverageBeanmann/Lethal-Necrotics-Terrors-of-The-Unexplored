@@ -151,13 +151,19 @@ function ENT:ToTU_Nightkin_Shrieker_SummonHelp_Spawn()
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:ToTU_Nightkin_Shrieker_SummonHelp()
-	local randnest = math.random(1,50)
+	local randnest = math.random(1,100)
 	if randnest == 1 then
 		self.KinT = "npc_vj_totu_nightkin_shrieker"
 	elseif randnest >= 2 && randnest <= 5 then
-		self.KinT = "npc_vj_totu_nightkin_squaller"
+		self.KinT = "npc_vj_totu_nightkin_scylla"
 	elseif randnest >= 6 && randnest <= 15 then
-		self.KinT = "npc_vj_totu_nightkin_skitter"
+		self.KinT = "npc_vj_totu_nightkin_squaller"
+	elseif randnest >= 16 && randnest <= 30 then
+		if math.random (1,2) == 1 then
+			self.KinT = "npc_vj_totu_nightkin_spitballer"
+		else
+			self.KinT = "npc_vj_totu_nightkin_skitter"
+		end
 	else
 		self.KinT = "npc_vj_totu_nightkin_scragg"
 	end
@@ -175,7 +181,7 @@ function ENT:ToTU_Nightkin_Shrieker_SummonHelp()
 	ally:Activate()
 	ally.VJ_NPC_Class = self.VJ_NPC_Class
 	ally:RiseFromGround_Instant()
-	self.ToTU_Nightkin_Shrieker_SpawnCoolDownT = CurTime() + 0.5	
+	self.ToTU_Nightkin_Shrieker_SpawnCoolDownT = CurTime() + 1
 	return ally
 end
 /*-----------------------------------------------

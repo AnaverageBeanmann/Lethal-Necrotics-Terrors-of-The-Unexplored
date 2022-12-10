@@ -321,7 +321,7 @@ function ENT:Zombie_CustomOnInitialize()
 		self:SetBodygroup(1,1)
 	end
 	
-	if self:GetClass() == "npc_vj_totu_milzomb_juggernaut" or self:GetClass() == "npc_vj_totu_milzomb_bulldozer" or "npc_vj_totu_milzomb_ghost" then return end
+	if self:GetClass() == "npc_vj_totu_milzomb_juggernaut" or self:GetClass() == "npc_vj_totu_milzomb_bulldozer" or self:GetClass() == "npc_vj_totu_milzomb_ghost" then return end
 	
 	if math.random(1,GetConVar("VJ_ToTU_MilZ_Weapons_Chance"):GetInt()) == 1 && !self.LNR_Crawler && !self.LNR_Biter then
 	
