@@ -1,0 +1,21 @@
+"VertexlitGeneric"
+{
+	"$basetexture" "models/totu/hazmat/hazmat_alpha_a_smog"
+	"$bumpmap" "models/vj_lnrspecials/lnr/hazmat/hazmat_alpha_a_nml"
+	"$surfaceprop" "Glass"
+	"$nocull" 1
+	"$phong" "1"
+	"ambientocclusion" 0
+	"$phongexponenttexture"  "models/vj_lnrspecials/lnr/hazmat/hazmat_alpha_a_exp"
+	"$phongboost" "1"
+	"$phongfresnelranges""[2.5 3 3]"
+	"$PhongTint" "[.75 .75 .9]"
+	"$halflambert" "1"
+	"$envmap" "env_cubemap"
+	"$envmapsaturation" "0.1"
+	"$envmaptint" "0.5 0.5 0.5"
+	"$envmapcontrast" "5"
+	    "$rimlight" "1"
+	    "$rimlightexponent" "5"
+                   "$rimlightboost" "0.01"
+}

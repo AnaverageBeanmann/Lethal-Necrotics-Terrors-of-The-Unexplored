@@ -1,0 +1,7 @@
+"UnlitGeneric"
+{
+	"$BaseTexture" "models/vj_lnrspecials/lnr/hazmat/infected/pupil" 		   
+	"$model" 1
+	"$halflambert" 1
+}
+

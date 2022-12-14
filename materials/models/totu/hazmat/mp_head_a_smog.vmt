@@ -1,0 +1,13 @@
+"VertexlitGeneric"
+{
+	"$basetexture" "models/totu/hazmat/mp_head_a_smog"
+	"$bumpmap" "models/totu/hazmat/mp_head_a_nml"
+	"$halflambert" 1
+	$phong 1
+	$phongexponent 3
+	$phongboost "0.2"
+  	$phongfresnelranges "[.5 .85 30]"
+	    "$rimlight" "1"
+	    "$rimlightexponent" "5"
+                   "$rimlightboost" "0.01"
+}

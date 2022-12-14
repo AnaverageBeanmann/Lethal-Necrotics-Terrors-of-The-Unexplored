@@ -1,0 +1,10 @@
+"VertexlitGeneric"
+{
+	"$basetexture" "models/vj_lnrspecials/lnr/hazmat/infected/mp_head_a_col"
+	"$bumpmap" "models/vj_lnrspecials/lnr/hazmat/mp_head_a_nml"
+	"$halflambert" 1
+	$phong 1
+	$phongexponent 3
+	$phongboost "0.2"
+  	$phongfresnelranges "[.5 .85 30]"
+}

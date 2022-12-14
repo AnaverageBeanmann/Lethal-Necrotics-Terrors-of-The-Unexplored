@@ -1,0 +1,8 @@
+"UnlitGeneric"
+{
+	"$BaseTexture" "models/totu/hazmat/smog_eye" 		   
+	"$model" 1
+	"$halflambert" 1
+}
+
+
