@@ -40,34 +40,35 @@ if LNRSpecialsExists == false then
 			end
 		end
 */
-
-if LNRSpecialsExists == false then
-		if CLIENT then
-				local teal = Color(0,255,255)
-				local yellow = Color(255,255,0)
-				local red = Color(255,0,0)
-				local white = Color(255,255,255)
-				local green = Color(33,255,0)
-				timer.Simple(10,function()
-					chat.AddText(teal,"== Terrors of The Unexplored ==")
-					chat.AddText(red,"Lethal Necrotics Reanimated: Extras is not installed!")
-					chat.AddText(red,"You will experience missing textures because of this.")
-					chat.AddText(white,"To fix this, install the Extras Pack.")
-					chat.AddText(green,"Specials Pack Download:")
-					chat.AddText(white,"https://steamcommunity.com/sharedfiles/filedetails/?id=1887964505")
-					chat.AddText(teal,"======================")
-					local fiddlesticks = CreateSound(game.GetWorld(), "vo/k_lab/kl_ohdear.wav")
-					fiddlesticks:SetSoundLevel(0)
-					fiddlesticks:Play()
-				end)
-			end
-		end
+/*
+if LNRExtrasExists == false then
+	if CLIENT then
+		local teal = Color(0,255,255)
+		local yellow = Color(255,255,0)
+		local red = Color(255,0,0)
+		local white = Color(255,255,255)
+		local green = Color(33,255,0)
+		timer.Simple(10,function()
+			chat.AddText(teal,"== Terrors of The Unexplored ==")
+			chat.AddText(red,"Lethal Necrotics Reanimated: Extras is not installed!")
+			chat.AddText(red,"You will experience missing textures because of this.")
+			chat.AddText(white,"To fix this, install the Extras Pack.")
+			chat.AddText(green,"Extras Pack Download:")
+			chat.AddText(white,"https://steamcommunity.com/sharedfiles/filedetails/?id=1887964505")
+			chat.AddText(teal,"======================")
+			local fiddlesticks = CreateSound(game.GetWorld(), "vo/k_lab/kl_ohdear.wav")
+			fiddlesticks:SetSoundLevel(0)
+			fiddlesticks:Play()
+		end)
+	end
+end
+*/
 
 	include('autorun/vj_controls.lua')
 	
 	if SERVER then
 		resource.AddWorkshop("1879776316") -- Base LNR addon (HL2)
-		resource.AddWorkshop("1887964505") -- Specials Pack
+		-- resource.AddWorkshop("1887964505") -- Specials Pack
 	end
 	
 	local vCat1 = "Lethal Necrotics: Terrors of The Unexplored - Base Zombies"
@@ -364,6 +365,7 @@ if LNRSpecialsExists == false then
 		VJ.AddNPC("Grunt (Infected)","npc_vj_totu_milzomb_infected",vCat2)
 		-- []
 		-- add corpsman varient
+		-- use black mesa hecu corpsman helmet texture
 		VJ.AddNPC("Juggernaut","npc_vj_totu_milzomb_juggernaut",vCat2)
 		-- []
 		VJ.AddNPC("Bulldozer","npc_vj_totu_milzomb_bulldozer",vCat2)
@@ -381,6 +383,7 @@ if LNRSpecialsExists == false then
 		
 		VJ.AddNPC("Ghost (Walker)","npc_vj_totu_milzomb_ghost_walker",vCat2)
 		-- ()
+		
 		VJ.AddNPC("Ghillie","npc_vj_totu_milzomb_ghillie",vCat2)
 		-- ()
 		-- dude in a Ghillie suit
@@ -390,10 +393,9 @@ if LNRSpecialsExists == false then
 		
 	-- Nightkin
 		VJ.AddNPC("Scragg","npc_vj_totu_nightkin_scragg",vCat3)
-		-- {}
+		-- []
 		VJ.AddNPC("Skitter","npc_vj_totu_nightkin_skitter",vCat3)
-		-- {}
-		-- fix it changing run anims while crippled
+		-- []
 		
 		VJ.AddNPC("Squaller","npc_vj_totu_nightkin_squaller",vCat3)
 		-- {}
@@ -410,19 +412,17 @@ if LNRSpecialsExists == false then
 		-- ()
 		-- basically ghost but nightkin
 		-- say it's an anomaly
+		-- base it on blackscary in c;r?
 		
 		VJ.AddNPC("Scourge","npc_vj_totu_nightkin_spitballer",vCat3)
 		-- {}
-		-- spitter
-		-- use l4d2 spitter sounds
-		-- make the abdomen glow green
-		-- rename to Scourge
 		-- make eyes purple
 		-- make corpse glow
 		
 		VJ.AddNPC("Scylla","npc_vj_totu_nightkin_scylla",vCat3)
-		-- use bloodborne cleric beast sounds
-		-- make it really big
+		-- {}
+		-- get it its own model
+		
 	-- Spawners
 		VJ.AddNPC("Spawner","sent_vj_totu_spawner",vCat8)
 		VJ.AddNPC("Spawner (Nightkin)","sent_vj_totu_spawner_nightkin",vCat8)
@@ -479,29 +479,32 @@ if LNRSpecialsExists == false then
 		-- medic npc
 		
 		VJ.AddNPC("Carcass","npc_vj_totu_weaponized_carcass",vCat4)
-		-- see if someone can get alyx_zombie_fight 1 and 2 running for shove anims
-		-- add exploding ones
-		-- add crawl idle animation with spammed keys for splitting
-		-- make it split when crippled
-		-- give it gliding animations so it doesn't t-pose
+		-- []
 		-- see about fixing gesture flinches
-		-- add blood clot projectile
+		-- add black mesa scientist and security guard zombie models
 		
 		VJ.AddNPC("Carcass Thorax","npc_vj_totu_weaponized_carcass_torso",vCat4)
-		-- fix up eye glow attachments on both of these
+		-- []
 
 		VJ.AddNPC("Cazador","npc_vj_totu_weaponized_cazador",vCat4)
-		-- {}
+		-- []
+		-- give it a climbing down animation
+		
 		VJ.AddNPC("Cazador Thorax","npc_vj_totu_weaponized_cazador_torso",vCat4)
-		-- {}
+		-- []
+		
 		VJ.AddNPC("Cyst","npc_vj_totu_weaponized_cyst",vCat4)
-		-- ()
+		-- []
+		
 		VJ.AddNPC("Cancer","npc_vj_totu_weaponized_cancer",vCat4)
 		-- ()
+		
 		VJ.AddNPC("Revenant","npc_vj_totu_weaponized_revenant",vCat4)
 		-- ()
+		
 		VJ.AddNPC("Smog","npc_vj_totu_weaponized_smog",vCat4)
-		-- ()
+		-- []
+		-- add friendly version
 		/*
 	-- Morti Research Facility
 		VJ.AddNPC("Morti Scientist (Friendly)","npc_vj_totu_morti_scientist",vCat)
@@ -841,6 +844,10 @@ if LNRSpecialsExists == false then
 	AddConvars["VJ_ToTU_Weaponized_Carcass_Exploders_Chance"] = 4
 	AddConvars["VJ_ToTU_Weaponized_Carcass_ZombineRunning"] = 1
 	AddConvars["VJ_ToTU_Weaponized_Carcass_Torso_SuperCrawl"] = 1
+	AddConvars["VJ_ToTU_Weaponized_Cyst_Exploders"] = 1
+	AddConvars["VJ_ToTU_Weaponized_Cyst_Run"] = 1
+	AddConvars["VJ_ToTU_Weaponized_Cyst_HurtOnRanged"] = 1
+	AddConvars["VJ_ToTU_Weaponized_Cyst_Exploders_Chance"] = 4
 	-- AddConvars["VJ_ToTU_Weaponized_Carcass_"] = 
 	-- AddConvars[""] = 
 	-- AddConvars["VJ_ToTU_Nightkin_Shrieker_"] = 
@@ -946,6 +953,10 @@ if LNRSpecialsExists == false then
 			VJ_ToTU_Weaponized_Carcass_Exploders_Chance = "4",
 			VJ_ToTU_Weaponized_Carcass_ZombineRunning = "1",
 			VJ_ToTU_Weaponized_Carcass_Torso_SuperCrawl = "1",
+			VJ_ToTU_Weaponized_Cyst_Exploders = "1",
+			VJ_ToTU_Weaponized_Cyst_Exploders_Chance = "4",
+			VJ_ToTU_Weaponized_Cyst_HurtOnRanged = "1",
+			VJ_ToTU_Weaponized_Cyst_Run = "1",
 			-- VJ_ToTU_MilZ_Det_ = "",
 			
 			
@@ -1225,6 +1236,18 @@ if LNRSpecialsExists == false then
 	Panel:AddControl("Checkbox", {Label = "Carcass Thoraxes can Super Crawl?", Command = "VJ_ToTU_Weaponized_Carcass_Torso_SuperCrawl"})
 	Panel:ControlHelp("If enabled, Carcass Thoraxes can crawl fast every now and then.")
 	
+	Panel:AddControl("Checkbox", {Label = "Enable Cyst Exploders?", Command = "VJ_ToTU_Weaponized_Cyst_Exploders"})
+	Panel:ControlHelp("If enabled, Cysts can sometimes spawn as exploders.")
+	
+	Panel:AddControl("Slider", {Label = "Cyst Exploder Chance?", Command = "VJ_ToTU_Weaponized_Cyst_Exploders_Chance", Min = 1, Max = 10000})
+	Panel:ControlHelp("Chance that a Cyst will spawn as an Exploder.")
+	Panel:ControlHelp("Default chance is 4.")
+	
+	Panel:AddControl("Checkbox", {Label = "Cysts can run?", Command = "VJ_ToTU_Weaponized_Cyst_Run"})
+	Panel:ControlHelp("If enabled, Cysts can run every now and then.")
+	
+	Panel:AddControl("Checkbox", {Label = "Cysts take damage when range attacking?", Command = "VJ_ToTU_Weaponized_Cyst_HurtOnRanged"})
+	Panel:ControlHelp("If enabled, Cysts will take damage when they use their ranged attack.")
 	-- Panel:AddControl("Checkbox", {Label ="Enable Realism Mode?", Command ="vj_LN_TOTU_RealismMode"})
 	-- Panel:ControlHelp("Enabling Realism Mode will cause the following:")
 	-- Panel:ControlHelp("-Chelonioidea will have their sight range and hear distance severely reduced, but breaking their faceplate will restore both.")
