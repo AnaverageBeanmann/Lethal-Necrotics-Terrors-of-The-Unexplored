@@ -13,7 +13,8 @@ ENT.ToTU_Weaponized_Smog_Tank_Health = 35
 ENT.ToTU_Weaponized_Smog_Tank_Broken = false
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:Zombie_CustomOnPreInitialize()
-	self.Model = {"models/totu/smog.mdl"}
+	-- self.Model = {"models/totu/smog.mdl"}
+	self.Model = {"models/totu/smog_bloody.mdl"}
 self.RangeAttackSoundLevel = 85
 	self:SetModelScale(1.25)
 		self.HasWorldShakeOnMove = true
@@ -48,8 +49,8 @@ end
 function ENT:Zombie_CustomOnInitialize()
 		self:SetCollisionBounds(Vector(13, 13, 65), Vector(-13, -13, 0))
 		self.AnimTbl_Walk = {ACT_WALK_AIM}
-					-- self.AnimTbl_Run = {ACT_RUN_RELAXED}
-					-- self.ToTU_Rusher = true
+					self.AnimTbl_Run = {ACT_RUN_RELAXED}
+					self.ToTU_Rusher = true
 					-- self.HasRangeAttack = false
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
@@ -57,27 +58,27 @@ function ENT:Zombie_Difficulty()
 
 	if GetConVar("VJ_LNR_Difficulty"):GetInt() == 1 then
 	
-		self.StartHealth = 250
+		self.StartHealth = 500
 		self.MeleeAttackDamage = math.Rand(20,25)
 		
 	elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 2 then
 	
-		self.StartHealth = 750
+		self.StartHealth = 1000
 		self.MeleeAttackDamage = math.Rand(25,30)
 		
 	elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 3 then
 	
-		self.StartHealth = 1250
+		self.StartHealth = 1500
 		self.MeleeAttackDamage = math.Rand(30,35)
 		
 	elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 4 then
 	
-		self.StartHealth = 1750
+		self.StartHealth = 2000
 		self.MeleeAttackDamage = math.Rand(35,40)
 		
 	elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 5 then
 	
-		self.StartHealth = 2250
+		self.StartHealth = 2500
 		self.MeleeAttackDamage = math.Rand(40,45)
 		
 	end
