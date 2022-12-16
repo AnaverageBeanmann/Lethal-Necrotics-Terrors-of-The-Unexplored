@@ -1,0 +1,18 @@
+"VertexlitGeneric"
+{
+	"$basetexture" "models/vj_lnrspecials/lnr/hazmat/hazmat_boot_a_col"
+	"$bumpmap" "models/vj_lnrspecials/lnr/hazmat/hazmat_boot_a_nml"
+                "$phong" "1"
+	"$phongboost"   "1.5"
+	"$phongfresnelranges" "[0.2 .5 1]"
+	"$halflambert" "1"
+	"$blendtintbybasealpha"	"1"
+	$phongexponenttexture "models/vj_lnrspecials/lnr/hazmat/hazmat_boot_a_exp"
+	    "$rimlight" "1"
+	    "$rimlightexponent" "5"
+                   "$rimlightboost" "0.01"
+                  $detail models\lnrhl2\hunter_01_detail
+                  $detailscale 0.13
+                  $detailblendfactor 0.55
+                  $detailblendmode 0
+}
