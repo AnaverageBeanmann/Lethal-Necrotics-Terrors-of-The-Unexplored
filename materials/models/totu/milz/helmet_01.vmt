@@ -10,4 +10,8 @@
 	"$phongfresnelranges"	"[0.04]"
 	"$phongexponent"		"20"
 	"$phongalbedotint"		"1"
+	"$detail" "models\totu\detail\ci_detail_dirt"
+	"$detailscale" 7.74
+	"$detailblendfactor" 0.8
+	"$detailblendmode" 0
 }

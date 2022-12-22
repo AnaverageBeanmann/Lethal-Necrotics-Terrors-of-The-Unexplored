@@ -7,4 +7,9 @@
 
 	"$alphatest"		"1"
 	"$nocull"			"1"
+	
+	"$detail" "models\totu\detail\ci_detail_dirt"
+	"$detailscale" 7.74
+	"$detailblendfactor" 0.8
+	"$detailblendmode" 0
 }
