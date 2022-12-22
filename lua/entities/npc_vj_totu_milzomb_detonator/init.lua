@@ -111,6 +111,22 @@ function ENT:Zombie_CustomOnMeleeAttack_BeforeStartTimer()
 				
 		if self:GetClass() == "npc_vj_totu_milzomb_detonator_bulk" then
 		
+		
+		if GetConVar("VJ_ToTU_General_EasterEggs"):GetInt() == 1 then
+			if math.random(1,100) == 1 then
+				if math.random(1,2) == 1 then
+				VJ_EmitSound(self,{"fx/egg/shitssshit.mp3"},150,math.random(100,100))
+				VJ_EmitSound(self,{"fx/egg/shitssshit.mp3"},150,math.random(100,100))
+				else
+			timer.Simple(0.2,function() if IsValid(self) && !self.Dead then
+				VJ_EmitSound(self,{"fx/egg/wa.mp3"},150,math.random(100,100))
+				VJ_EmitSound(self,{"fx/egg/wa.mp3"},150,math.random(100,100))
+				VJ_EmitSound(self,{"fx/egg/wa.mp3"},150,math.random(100,100))
+			end end)
+				end
+			end
+		end
+		
 			timer.Simple(2,function() if IsValid(self) && !self.Dead then
 			
 				self:ToTU_Detonator_CommitDie()

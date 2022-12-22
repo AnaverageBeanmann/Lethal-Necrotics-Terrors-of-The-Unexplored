@@ -5,32 +5,31 @@ include('shared.lua')
 	No parts of this code or any of its contents may be reproduced, copied, modified or adapted,
 	without the prior written consent of the author, unless otherwise indicated for stand-alone materials.
 -----------------------------------------------*/
----------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:Zombie_Difficulty()
 
-	if GetConVar("VJ_LNR_Difficulty"):GetInt() == 1 then
+if GetConVar("VJ_LNR_Difficulty"):GetInt() == 1 then
 	
-		self.StartHealth = 200
+		self.StartHealth = 100
 		self.MeleeAttackDamage = math.Rand(5,10)
 		
 	elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 2 then
 	
-		self.StartHealth = 250
+		self.StartHealth = 150
 		self.MeleeAttackDamage = math.Rand(10,15)
 		
 	elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 3 then
 	
-		self.StartHealth = 300
+		self.StartHealth = 200
 		self.MeleeAttackDamage = math.Rand(15,20)
 		
 	elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 4 then
 	
-		self.StartHealth = 350
+		self.StartHealth = 250
 		self.MeleeAttackDamage = math.Rand(20,25)
 		
 	elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 5 then
 	
-		self.StartHealth = 400
+		self.StartHealth = 300
 		self.MeleeAttackDamage = math.Rand(25,30)
 		
 	end
@@ -41,11 +40,11 @@ function ENT:Zombie_Difficulty()
 		
 			if GetConVar("VJ_LNR_Difficulty"):GetInt() == 1 then
 			
-				self.LNR_LegHP = 10
+				self.LNR_LegHP = 20
 				
 			elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 2 then
 			
-				self.LNR_LegHP = 25
+				self.LNR_LegHP = 30
 				
 			elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 3 then
 			
@@ -53,7 +52,7 @@ function ENT:Zombie_Difficulty()
 				
 			elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 4 then
 			
-				self.LNR_LegHP = 55
+				self.LNR_LegHP = 50
 				
 			elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 5 then
 			
@@ -62,7 +61,7 @@ function ENT:Zombie_Difficulty()
 			end
 			
 		end
-end
+end 
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:ToTU_Ghost_CloakFlicker()
 	
@@ -145,7 +144,7 @@ function ENT:ToTU_Ghost_BreakCloak()
 	self.NextChaseTime = 1
 	self.DisableFindEnemy = true		
 	
-	if !self.LNR_Crawler && !self.LNR_Crippled then
+	if !self.LNR_Crawler && !self.LNR_Crippled && self:GetClass() == "npc_vj_totu_milzomb_ghost" then
 	self.AnimTbl_Run = {ACT_RUN_RELAXED}
 	end
 	
@@ -190,7 +189,127 @@ function ENT:ToTU_Ghost_BreakCloak()
 	-- self.AnimTbl_Run = {ACT_RUN_STEALTH}
 	ParticleEffectAttach("electrical_arc_01_parent",PATTACH_POINT_FOLLOW,self,self:LookupAttachment("chest"))
 		
+	if self:GetClass() == "npc_vj_totu_milzomb_ghost_walker" then
+		self.SoundTbl_Idle = {
+			"vj_lnrhl2/walker_male/idle1.wav",
+			"vj_lnrhl2/walker_male/idle2.wav",
+			"vj_lnrhl2/walker_male/idle3.wav",
+			"vj_lnrhl2/walker_male/idle4.wav",
+			"vj_lnrhl2/walker_male/idle5.wav",
+			"vj_lnrhl2/walker_male/idle6.wav",
+			"vj_lnrhl2/walker_male/idle7.wav",
+			"vj_lnrhl2/walker_male/idle8.wav",
+			"vj_lnrhl2/walker_male/idle9.wav",
+			"vj_lnrhl2/walker_male/idle10.wav",
+			"vj_lnrhl2/walker_male/idle11.wav",
+			"vj_lnrhl2/walker_male/idle12.wav",
+			"vj_lnrhl2/walker_male/idle13.wav",
+			"vj_lnrhl2/walker_male/idle14.wav",
+			"vj_lnrhl2/walker_male/idle15.wav",	
+			"vj_lnrhl2/walker_male/idle16.wav",
+			"vj_lnrhl2/walker_male/idle17.wav",
+			"vj_lnrhl2/walker_male/idle18.wav",
+			"vj_lnrhl2/walker_male/idle19.wav",
+			"vj_lnrhl2/walker_male/idle20.wav"
+			}
+
+		self.SoundTbl_Alert = {
+			"vj_lnrhl2/walker_male/alert_sham_m_01.wav",
+			"vj_lnrhl2/walker_male/alert_sham_m_02.wav",
+			"vj_lnrhl2/walker_male/alert_sham_m_03.wav",
+			"vj_lnrhl2/walker_male/alert_sham_m_04.wav",
+			"vj_lnrhl2/walker_male/alert_sham_m_05.wav",
+			"vj_lnrhl2/walker_male/alert_sham_m_06.wav",
+			"vj_lnrhl2/walker_male/alert_sham_m_07.wav",
+			"vj_lnrhl2/walker_male/alert_sham_m_08.wav",
+			"vj_lnrhl2/walker_male/alert_sham_m_09.wav",
+			"vj_lnrhl2/walker_male/alert_sham_m_10.wav",
+			"vj_lnrhl2/walker_male/alert_sham_m_11.wav",
+			"vj_lnrhl2/walker_male/alert_sham_m_12.wav",
+			"vj_lnrhl2/walker_male/alert_sham_m_13.wav",
+			"vj_lnrhl2/walker_male/alert_sham_m_14.wav",
+			"vj_lnrhl2/walker_male/alert_sham_m_15.wav",
+			"vj_lnrhl2/walker_male/alert_sham_m_16.wav",
+			"vj_lnrhl2/walker_male/alert_sham_m_17.wav",
+			"vj_lnrhl2/walker_male/alert_sham_m_18.wav",
+			"vj_lnrhl2/walker_male/alert_sham_m_19.wav",
+			"vj_lnrhl2/walker_male/alert_sham_m_20.wav",	
+			"vj_lnrhl2/walker_male/alert_sham_m_21.wav",
+			"vj_lnrhl2/walker_male/alert1.wav",
+			"vj_lnrhl2/walker_male/alert2.wav",
+			"vj_lnrhl2/walker_male/alert3.wav",
+			"vj_lnrhl2/walker_male/alert4.wav",	
+			"vj_lnrhl2/walker_male/alert5.wav",
+			"vj_lnrhl2/walker_male/alert6.wav",
+			"vj_lnrhl2/walker_male/alert7.wav",
+			"vj_lnrhl2/walker_male/alert8.wav",
+			"vj_lnrhl2/walker_male/alert9.wav",	
+			"vj_lnrhl2/walker_male/alert10.wav"		
+			}
+
+		self.SoundTbl_CombatIdle = {
+			"vj_lnrhl2/walker_male/pursuit_sham_m_01.wav",
+			"vj_lnrhl2/walker_male/pursuit_sham_m_02.wav",
+			"vj_lnrhl2/walker_male/pursuit_sham_m_03.wav",
+			"vj_lnrhl2/walker_male/pursuit_sham_m_04.wav",
+			"vj_lnrhl2/walker_male/pursuit_sham_m_05.wav",
+			"vj_lnrhl2/walker_male/pursuit_sham_m_06.wav",
+			"vj_lnrhl2/walker_male/pursuit_sham_m_07.wav",
+			"vj_lnrhl2/walker_male/pursuit_sham_m_08.wav",
+			"vj_lnrhl2/walker_male/pursuit_sham_m_09.wav",
+			"vj_lnrhl2/walker_male/pursuit_sham_m_10.wav",
+			"vj_lnrhl2/walker_male/pursuit_sham_m_11.wav",
+			"vj_lnrhl2/walker_male/pursuit_sham_m_12.wav",
+			"vj_lnrhl2/walker_male/pursuit_sham_m_13.wav",
+			"vj_lnrhl2/walker_male/pursuit_sham_m_14.wav",
+			"vj_lnrhl2/walker_male/pursuit_sham_m_15.wav",
+			"vj_lnrhl2/walker_male/pursuit_sham_m_16.wav",
+			"vj_lnrhl2/walker_male/pursuit_sham_m_17.wav",
+			"vj_lnrhl2/walker_male/pursuit_sham_m_18.wav"
+			}
+
+		self.SoundTbl_BeforeMeleeAttack = {
+			"vj_lnrhl2/walker_male/attack_sham_m_01.wav",
+			"vj_lnrhl2/walker_male/attack_sham_m_02.wav",
+			"vj_lnrhl2/walker_male/attack_sham_m_03.wav",
+			"vj_lnrhl2/walker_male/attack_sham_m_04.wav",
+			"vj_lnrhl2/walker_male/attack_sham_m_05.wav",
+			"vj_lnrhl2/walker_male/attack_sham_m_06.wav",
+			"vj_lnrhl2/walker_male/attack_sham_m_07.wav",
+			"vj_lnrhl2/walker_male/attack_sham_m_08.wav",
+			"vj_lnrhl2/walker_male/attack_sham_m_09.wav",
+			"vj_lnrhl2/walker_male/attack_sham_m_10.wav",
+			"vj_lnrhl2/walker_male/attack_sham_m_11.wav",
+			"vj_lnrhl2/walker_male/attack_sham_m_12.wav",
+			"vj_lnrhl2/walker_male/attack_sham_m_13.wav",
+			"vj_lnrhl2/walker_male/attack_sham_m_14.wav",
+			"vj_lnrhl2/walker_male/attack_sham_m_15.wav",
+			"vj_lnrhl2/walker_male/attack_sham_m_16.wav",
+			"vj_lnrhl2/walker_male/attack_sham_m_17.wav",
+			"vj_lnrhl2/walker_male/attack_sham_m_18.wav",
+			"vj_lnrhl2/walker_male/attack_sham_m_19.wav",
+			"vj_lnrhl2/walker_male/attack_sham_m_20.wav",	
+			"vj_lnrhl2/walker_male/attack_sham_m_21.wav",
+			"vj_lnrhl2/walker_male/attack_sham_m_22.wav"	
+			}
 			
+		self.SoundTbl_Pain = {
+			"vj_lnrhl2/walker_male/pain01.wav",
+			"vj_lnrhl2/walker_male/pain02.wav",
+			"vj_lnrhl2/walker_male/pain03.wav",
+			"vj_lnrhl2/walker_male/pain04.wav",
+			"vj_lnrhl2/walker_male/pain05.wav"
+			}
+			
+  		  self.SoundTbl_Death = {
+			"vj_lnrhl2/walker_male/die01.wav",
+			"vj_lnrhl2/walker_male/die02.wav",
+			"vj_lnrhl2/walker_male/die03.wav",
+			"vj_lnrhl2/walker_male/die04.wav",
+			"vj_lnrhl2/walker_male/die05.wav"
+			}
+			
+	else
 	self.SoundTbl_Idle = {
 		"vj_lnrhl2/infected/zomb_runner_male1-idle-01.wav",
 		"vj_lnrhl2/infected/zomb_runner_male1-idle-02.wav",
@@ -306,6 +425,7 @@ function ENT:ToTU_Ghost_BreakCloak()
 	}
 		
 	self.SoundTbl_LeapAttackJump = {self.SoundTbl_BeforeMeleeAttack}
+	end
 
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
@@ -331,6 +451,8 @@ function ENT:ToTU_Ghost_FixCloak()
 		-- self.Behavior = VJ_BEHAVIOR_AGGRESIVE
 		self.DisableFindEnemy = false
 	
+		if self:GetClass() == "npc_vj_totu_milzomb_ghost" then
+		if !self.LNR_Crawler && !self.LNR_Crippled then
 		if self.LNR_SuperSprinter then
 		
 			self.AnimTbl_Run = {ACT_RUN_AIM}
@@ -343,6 +465,8 @@ function ENT:ToTU_Ghost_FixCloak()
 	
 			self.AnimTbl_Run = {ACT_SPRINT}
 	
+		end
+		end
 		end
 	
 		
@@ -437,6 +561,8 @@ function ENT:Zombie_CustomOnThink_AIEnabled()
 	-- if self.MilZ_Ghost_PussyOut == true && self.MilZ_Ghost_CloakBroke then
 	-- else
 	-- end
+	
+	if self:GetClass() == "npc_vj_totu_milzomb_ghost_walker" then return end
 	
 	if self.Dead == false && self:GetEnemy() != nil && self.VJ_IsBeingControlled == false && self.MilZ_Ghost_CloakRechargable && GetConVar("VJ_ToTU_MilZ_Ghost_Cloak_Recharge_RunWhileCharging"):GetInt() == 1 then
 		local enemydist = self:GetPos():Distance(self:GetEnemy():GetPos())

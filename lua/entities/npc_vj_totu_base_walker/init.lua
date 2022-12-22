@@ -92,6 +92,7 @@ ENT.ToTU_ZappyDeath = false
 ENT.ToTU_CanCrawl = false
 ENT.ToTU_CanSwapBetweenFloorAndFeet = true
 ENT.ToTU_Crawling = false
+ENT.ToTU_CanUseMovingAttacks = true
 
 ENT.ToTU_NextDodgeT = 0
 ENT.ToTU_CanDodge = false
@@ -288,6 +289,8 @@ function ENT:CustomOnPreInitialize()
 		self:GetClass() == "npc_vj_totu_milzomb_detonator" or
 		self:GetClass() == "npc_vj_totu_milzomb_ghost" or
 		self:GetClass() == "npc_vj_totu_workers_infected" or
+		self:GetClass() == "npc_vj_totu_weaponized_smog" or
+		self:GetClass() == "npc_vj_totu_milzomb_ghillie" or
 		self.ToTU_Nightkin_IsKin
 	then
 		self.AnimTbl_Walk = {ACT_RUN}
@@ -314,8 +317,8 @@ function ENT:CustomOnPreInitialize()
 		"vjseq_nz_taunt_2",
 		"vjseq_nz_taunt_7",
 		}
-		self.AnimTbl_Walk = {ACT_WALK}
-		self.AnimTbl_Run = {ACT_WALK}
+		self.AnimTbl_Walk = {ACT_WALK_RELAXED}
+		self.AnimTbl_Run = {ACT_WALK_RELAXED}
 		self.LNR_Walker = true
 		self.LNR_Infected = false
 	end
@@ -331,12 +334,12 @@ end
 function ENT:Zombie_CustomOnPreInitialize() end -- Mainly used for setting up models etc
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:CustomOnInitialize()
-
-	self:Zombie_CustomOnInitialize()
-	self:ZombieSounds()
-	self:Zombie_Difficulty()
 	
-	if self.ToTU_Weaponized_IsHL2Zomb then return end
+	if self.ToTU_Weaponized_IsHL2Zomb then
+		self:Zombie_CustomOnInitialize()
+		self:ZombieSounds()
+		self:Zombie_Difficulty()
+	return end
 	
 	if GetConVar("VJ_LNR_Crawl"):GetInt() == 1 then
 		if math.random(1,GetConVar("VJ_ToTU_General_Crawler_Chance"):GetInt()) == 1 then 
@@ -347,12 +350,18 @@ function ENT:CustomOnInitialize()
 	
 	if !self.LNR_Crawler then
 	
-		if math.random(1,3) == 1 && !self.ToTU_Nightkin_Squaller_UsingIronWill then
+		if 
+			math.random(1,3) == 1 && 
+			!self.ToTU_Nightkin_Squaller_UsingIronWill &&
+			self:GetClass() != "npc_vj_totu_milzomb_detonator" &&
+			self:GetClass() != "npc_vj_totu_milzomb_detonator_bulk" &&
+			self:GetClass() != "npc_vj_totu_milzomb_tank"
+		then
 			self.LNR_UsingRelaxedIdle = true
 			self.AnimTbl_IdleStand = {ACT_IDLE_RELAXED}
 		end
 		
-		if GetConVar("VJ_LNR_Runner"):GetInt() == 1 && self:GetClass() != "npc_vj_totu_milzomb_detonator_bulk" then
+		if GetConVar("VJ_LNR_Runner"):GetInt() == 1 && self:GetClass() != "npc_vj_totu_milzomb_detonator_bulk" && self:GetClass() != "npc_vj_totu_milzomb_tank" then
 			if math.random(1,GetConVar("VJ_ToTU_General_Runners_Chance"):GetInt()) == 1 && !self.LNR_Infected then 
 				self.LNR_Runner = true
 				self.AnimTbl_Run = {ACT_RUN}
@@ -360,7 +369,7 @@ function ENT:CustomOnInitialize()
 		end
 		
 		if GetConVar("VJ_LNR_Biter"):GetInt() == 1 then
-			if math.random(1,3) == 1 && !self.LNR_Infected && self:GetClass() != "npc_vj_totu_milzomb_juggernaut" && !self.MilZ_HasGasmask then 
+			if math.random(1,3) == 1 && !self.LNR_Infected && self:GetClass() != "npc_vj_totu_milzomb_ghost_walker" && self:GetClass() != "npc_vj_totu_milzomb_juggernaut" && self:GetClass() != "npc_vj_totu_milzomb_tank" && self:GetClass() != "npc_vj_totu_milzomb_ghillie_walker" && !self.MilZ_HasGasmask then 
 				self.LNR_Biter = true
 			end
 		end
@@ -377,19 +386,16 @@ function ENT:CustomOnInitialize()
 		
 		if self.LNR_Infected then
 		
-			if GetConVar("VJ_LNR_SuperSprinter"):GetInt() == 1 && self:GetClass() != "npc_vj_totu_milzomb_detonator" && self:GetClass() != "npc_vj_totu_nightkin_squaller" && self:GetClass() != "npc_vj_totu_nightkin_scylla" then 
+			if 
+				GetConVar("VJ_LNR_SuperSprinter"):GetInt() == 1 && 
+				self:GetClass() != "npc_vj_totu_milzomb_detonator" && 
+				self:GetClass() != "npc_vj_totu_nightkin_squaller" && 
+				self:GetClass() != "npc_vj_totu_nightkin_scylla" 
+			then 
 				if math.random(1,GetConVar("VJ_ToTU_General_SuperSprinters_Chance"):GetInt()) == 1 then
 					self.LNR_SuperSprinter = true
 					self.AnimTbl_Walk = {ACT_RUN_AIM}
 					self.AnimTbl_Run = {ACT_RUN_AIM}
-				end
-			end
-
-			if GetConVar("VJ_ToTU_General_Rushers_Allow"):GetInt() == 1 && self:GetClass() != "npc_vj_totu_milzomb_detonator" && self:GetClass() != "npc_vj_totu_nightkin_scylla" then
-				if math.random(1,GetConVar("VJ_ToTU_General_Rushers_Chance"):GetInt()) == 1 then
-					self.AnimTbl_Walk = {ACT_SPRINT}
-					self.AnimTbl_Run = {ACT_RUN_RELAXED}
-					self.ToTU_Rusher = true
 				end
 			end
 			
@@ -405,12 +411,55 @@ function ENT:CustomOnInitialize()
 
 		end
 		
+		if GetConVar("VJ_ToTU_General_Rushers_Allow"):GetInt() == 0 then
+		elseif GetConVar("VJ_ToTU_General_Rushers_Allow"):GetInt() == 1 then
+			if self.LNR_Infected then
+				if math.random(1,GetConVar("VJ_ToTU_General_Rushers_Chance"):GetInt()) == 1 && 
+					self:GetClass() != "npc_vj_totu_milzomb_detonator" && 
+					self:GetClass() != "npc_vj_totu_nightkin_scylla" 
+				then
+					self.AnimTbl_Walk = {ACT_SPRINT}
+					self.AnimTbl_Run = {ACT_RUN_RELAXED}
+					self.ToTU_Rusher = true
+				end
+			end
+		elseif GetConVar("VJ_ToTU_General_Rushers_Allow"):GetInt() == 2 then
+			if self.LNR_Walker then
+				if math.random(1,GetConVar("VJ_ToTU_General_Rushers_Chance"):GetInt()) == 1 &&
+					self:GetClass() != "npc_vj_totu_milzomb_detonator_bulk" &&
+					self:GetClass() != "npc_vj_totu_milzomb_tank"
+				then
+					self.AnimTbl_Walk = {ACT_RUN}
+					self.AnimTbl_Run = {ACT_SPRINT}
+					self.ToTU_Rusher = true
+				end
+			end
+		elseif GetConVar("VJ_ToTU_General_Rushers_Allow"):GetInt() == 3 then
+			if math.random(1,GetConVar("VJ_ToTU_General_Rushers_Chance"):GetInt()) == 1 && 
+				self:GetClass() != "npc_vj_totu_milzomb_detonator" &&
+				self:GetClass() != "npc_vj_totu_nightkin_scylla" &&
+				self:GetClass() != "npc_vj_totu_milzomb_detonator_bulk" &&
+				self:GetClass() != "npc_vj_totu_milzomb_tank"
+			then
+				if self.LNR_Infected then
+					self.AnimTbl_Walk = {ACT_SPRINT}
+					self.AnimTbl_Run = {ACT_RUN_RELAXED}
+					self.ToTU_Rusher = true
+				end
+				if self.LNR_Walker then
+					self.AnimTbl_Walk = {ACT_RUN}
+					self.AnimTbl_Run = {ACT_SPRINT}
+					self.ToTU_Rusher = true
+				end
+			end
+		end
+		
 	end
 	
 	if
 		self:GetClass() == "npc_vj_totu_milzomb_juggernaut" or
 		self:GetClass() == "npc_vj_totu_milzomb_bulldozer" or
-		self:GetClass() == "npc_vj_totu_milzomb_detonator_bulk" or
+		self:GetClass() == "npc_vj_totu_weaponized_smog" or
 		self:GetClass() == "npc_vj_totu_nightkin_squaller"
 		
 	then
@@ -427,12 +476,16 @@ function ENT:CustomOnInitialize()
 	
 	
 	if
-		self:GetClass() == "npc_vj_totu_nightkin_scylla" 
+		self:GetClass() == "npc_vj_totu_nightkin_scylla" or
+		self:GetClass() == "npc_vj_totu_milzomb_detonator_bulk" or
+		self:GetClass() == "npc_vj_totu_milzomb_tank"
 	then
 	
 		self.ToTU_GiantZombie = true
-
+		
+		if self:GetClass() != "npc_vj_totu_milzomb_detonator_bulk" && self:GetClass() != "npc_vj_totu_milzomb_tank" then
 		self.ToTU_UseCIAttacks = true
+		end
 	end
 	
 	if self:GetClass() == "npc_vj_totu_milzomb_ghost" or self:GetClass() == "npc_vj_totu_nightkin_skitter" then
@@ -468,6 +521,10 @@ self.LeapAttackVelocityUp = 250
 	
 	end
 
+
+	self:Zombie_CustomOnInitialize()
+	self:ZombieSounds()
+	self:Zombie_Difficulty()
 	
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
@@ -630,7 +687,7 @@ function ENT:ZombieSounds()
 			"test/flower_5.mp3"
 			}
 	
-	elseif self:GetClass() == "npc_vj_totu_milzomb_walker" or self:GetClass() == "npc_vj_totu_workers_walker" then
+	elseif self:GetClass() == "npc_vj_totu_milzomb_walker" or self:GetClass() == "npc_vj_totu_workers_walker" or self:GetClass() == "npc_vj_totu_milzomb_ghillie_walker" then
 			
 		self.SoundTbl_Idle = {
 			"vj_lnrhl2/walker_male/idle1.wav",
@@ -751,7 +808,7 @@ function ENT:ZombieSounds()
 			"vj_lnrhl2/walker_male/die05.wav"
 			}
 			
-	elseif self:GetClass() == "npc_vj_totu_milzomb_infected" or self:GetClass() == "npc_vj_totu_workers_infected" then
+	elseif self:GetClass() == "npc_vj_totu_milzomb_infected" or self:GetClass() == "npc_vj_totu_workers_infected" or self:GetClass() == "npc_vj_totu_milzomb_ghillie" then
 	
 		self.SoundTbl_Idle = {
 			"vj_lnrhl2/infected/zomb_runner_male1-idle-01.wav",
@@ -1923,6 +1980,76 @@ function ENT:ZombieSounds()
 		"npc/barnacle/neck_snap1.wav",
 		"npc/barnacle/neck_snap2.wav",
 		}
+		
+	elseif self:GetClass() == "npc_vj_totu_weaponized_smog" then
+	
+		self.SoundTbl_Idle = {
+		"monsters/tesla/tesla_amb_idle_01.wav",
+		"monsters/tesla/tesla_amb_idle_02.wav",
+		"monsters/tesla/tesla_amb_idle_03.wav",
+		"monsters/tesla/tesla_amb_idle_04.wav",
+		"monsters/tesla/tesla_amb_idle_05.wav",
+		"monsters/tesla/tesla_amb_idle_06.wav",
+		"monsters/tesla/tesla_idlebiped01_vo1.wav",
+		"monsters/tesla/tesla_idlebiped01_vo2.wav",
+		"monsters/tesla/tesla_idlebiped02_vo1.wav",
+		"monsters/tesla/tesla_idlebiped02_vo2.wav",
+		"monsters/tesla/tesla_idlebipedtoquadruped_vo.wav",
+		"monsters/tesla/tesla_idlequadruped01_vo1.wav",
+		"monsters/tesla/tesla_idlequadruped01_vo2.wav",
+		"monsters/tesla/tesla_idlequadruped02_vo1.wav",
+		"monsters/tesla/tesla_idlequadruped02_vo2.wav",
+		"monsters/tesla/tesla_idlequadruped03_vo1.wav",
+		"monsters/tesla/tesla_idlequadruped03_vo2.wav",
+		
+		}
+			
+		self.SoundTbl_Alert = {
+		"monsters/tesla/tesla_amb_enable_01.wav",
+		"monsters/tesla/tesla_amb_enable_02.wav",
+		"monsters/tesla/tesla_enabled_01.wav",
+		"monsters/tesla/tesla_enabled_02.wav",
+		"monsters/tesla/tesla_enabled_03.wav",
+		}
+		
+		self.SoundTbl_CombatIdle = {
+		"monsters/tesla/tesla_amb_hunt_01.wav",
+		"monsters/tesla/tesla_amb_hunt_02.wav",
+		"monsters/tesla/tesla_amb_hunt_03.wav",
+		"monsters/tesla/tesla_amb_notice_01.wav",
+		"monsters/tesla/tesla_amb_notice_02.wav",
+		"monsters/tesla/tesla_amb_notice_03.wav",
+		}
+		
+		self.SoundTbl_BeforeMeleeAttack = {
+		"monsters/tesla/tesla_amb_hunt_01.wav",
+		"monsters/tesla/tesla_amb_hunt_02.wav",
+		"monsters/tesla/tesla_amb_hunt_03.wav",
+		"monsters/tesla/tesla_amb_notice_01.wav",
+		"monsters/tesla/tesla_amb_notice_02.wav",
+		"monsters/tesla/tesla_amb_notice_03.wav",
+		}
+		
+		self.SoundTbl_BeforeRangeAttack = {
+		"zombies/weaponized/smog/fume_spray_1.mp3",
+		"zombies/weaponized/smog/fume_spray_2.mp3",
+		}
+		
+		self.SoundTbl_Pain = {
+		"monsters/tesla/tesla_amb_alert_01.wav",
+		"monsters/tesla/tesla_amb_alert_02.wav",
+		"monsters/tesla/tesla_amb_alert_03.wav",
+		"monsters/tesla/tesla_amb_alert_04.wav",
+		"monsters/tesla/tesla_amb_alert_05.wav",
+		}
+		
+    	self.SoundTbl_Death = {
+		"monsters/tesla/tesla_amb_enable_01.wav",
+		"monsters/tesla/tesla_amb_enable_02.wav",
+		"monsters/tesla/tesla_enabled_01.wav",
+		"monsters/tesla/tesla_enabled_02.wav",
+		"monsters/tesla/tesla_enabled_03.wav",
+		}
 	/*
 	elseif self:GetClass() == "npc_vj_totu_" then
 		self.SoundTbl_Idle = {
@@ -1947,7 +2074,14 @@ function ENT:ZombieSounds()
 		
 	end
 	
-	if self.MilZ_HasGasmask or self:GetClass() == "npc_vj_totu_milzomb_detonator" or self:GetClass() == "npc_vj_totu_milzomb_detonator_bulk" or self:GetClass() == "npc_vj_totu_milzomb_ghost" then		
+	if 
+		self.MilZ_HasGasmask or 
+		self:GetClass() == "npc_vj_totu_milzomb_detonator" or 
+		self:GetClass() == "npc_vj_totu_milzomb_detonator_bulk" or 
+		self:GetClass() == "npc_vj_totu_milzomb_ghost" or
+		self:GetClass() == "npc_vj_totu_milzomb_ghost_walker" or
+		self:GetClass() == "npc_vj_totu_milzomb_tank" 
+	then		
 	-- if self.MilZ_HasGasmask or self:GetClass() == "npc_vj_totu_milzomb_ghost" then		
 		
 		self.SoundTbl_Idle = {
@@ -2003,9 +2137,18 @@ function ENT:ZombieSounds()
 			self.DeathSoundPitch = VJ_Set(80, 70)	
 		end
 		
+		if self:GetClass() == "npc_vj_totu_milzomb_tank" then
+			self.IdleSoundPitch = VJ_Set(50, 60)
+			self.AlertSoundPitch = VJ_Set(50, 60)
+			self.CombatIdleSoundPitch = VJ_Set(50, 60)
+			self.BeforeMeleeAttackSoundPitch = VJ_Set(50, 60)
+			self.PainSoundPitch = VJ_Set(50, 60)
+			self.DeathSoundPitch = VJ_Set(50, 60)	
+		end
+		
 		if GetConVar("VJ_ToTU_MilZ_Gasmasks_OriginalSounds"):GetInt() != 0 then
 		
-			if self:GetClass() == "npc_vj_totu_milzomb_walker" or self:GetClass() == "npc_vj_totu_milzomb_infected" then
+			if self:GetClass() == "npc_vj_totu_milzomb_walker" or self:GetClass() == "npc_vj_totu_milzomb_infected" or self:GetClass() == "npc_vj_totu_milzomb_ghillie" then
 			
 				if GetConVar("VJ_ToTU_MilZ_Gasmasks_OriginalSounds"):GetInt() == 1 or (GetConVar("VJ_ToTU_MilZ_Gasmasks_OriginalSounds"):GetInt() == 2 && math.random(1,2) == 1) then
 			
@@ -2221,7 +2364,8 @@ function ENT:ZombieSounds()
 		self:GetClass() == "npc_vj_totu_milzomb_infected" or
 		self:GetClass() == "npc_vj_totu_milzomb_juggernaut" or
 		self:GetClass() == "npc_vj_totu_milzomb_bulldozer" or
-		self:GetClass() == "npc_vj_totu_nightkin_scragg"
+		self:GetClass() == "npc_vj_totu_nightkin_scragg" or
+		self:GetClass() == "npc_vj_totu_weaponized_smog"
 	then
 		self.ToTU_CanDodge = true
 	end
@@ -2412,19 +2556,19 @@ function ENT:Zombie_Difficulty()
 				
 			elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 2 then
 			
-				self.LNR_LegHP = 25
+				self.LNR_LegHP = 20
 				
 			elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 3 then
 			
-				self.LNR_LegHP = 40
+				self.LNR_LegHP = 30
 				
 			elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 4 then
 			
-				self.LNR_LegHP = 55
+				self.LNR_LegHP = 40
 				
 			elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 5 then
 			
-				self.LNR_LegHP = 60
+				self.LNR_LegHP = 50
 				
 			end
 			
@@ -2463,7 +2607,7 @@ function ENT:CustomOnAcceptInput(key,activator,caller,data)
 				VJ_EmitSound(self,"fx/footsteps/mil_flak/step_"..math.random(1,4)..".mp3",self.FootStepSoundLevel,self:VJ_DecideSoundPitch(self.FootStepPitch.a,self.FootStepPitch.b))
 			end
 		
-			if self:GetClass() == "npc_vj_totu_milzomb_juggernaut" or self:GetClass() == "npc_vj_totu_milzomb_bulldozer" then
+			if self:GetClass() == "npc_vj_totu_milzomb_juggernaut" or self:GetClass() == "npc_vj_totu_milzomb_bulldozer" or self:GetClass() == "npc_vj_totu_milzomb_tank" then
 				VJ_EmitSound(self,"fx/footsteps/mil_big/step_"..math.random(1,4)..".mp3",self.FootStepSoundLevel,self:VJ_DecideSoundPitch(self.FootStepPitch.a,self.FootStepPitch.b))
 			end
 		end
@@ -2472,6 +2616,9 @@ function ENT:CustomOnAcceptInput(key,activator,caller,data)
 		end
 		if self:GetClass() == "npc_vj_totu_nightkin_scylla" then
 			VJ_EmitSound(self,"zombies/countryside/goliath/step_"..math.random(1,5)..".wav",75,self:VJ_DecideSoundPitch(self.FootStepPitch.a,self.FootStepPitch.b))
+		end
+		if self:GetClass() == "npc_vj_totu_weaponized_smog" then
+			VJ_EmitSound(self,"monsters/tesla/tesla_biped_walk_0"..math.random(1,5)..".wav",75,self:VJ_DecideSoundPitch(self.FootStepPitch.a,self.FootStepPitch.b))
 		end
 	end
 	
@@ -2541,7 +2688,7 @@ function ENT:CustomOnAcceptInput(key,activator,caller,data)
 			
 		end
 		
-		if self:GetClass() == "npc_vj_totu_milzomb_juggernaut" or self:GetClass() == "npc_vj_totu_milzomb_bulldozer" then
+		if self:GetClass() == "npc_vj_totu_milzomb_juggernaut" or self:GetClass() == "npc_vj_totu_milzomb_bulldozer" or self:GetClass() == "npc_vj_totu_milzomb_tank" then
 			VJ_EmitSound(self,"fx/footsteps/mil_big/step_"..math.random(1,4)..".mp3",self.FootStepSoundLevel,self:VJ_DecideSoundPitch(self.FootStepPitch.a,self.FootStepPitch.b))
 			util.ScreenShake(self:GetPos(), self.WorldShakeOnMoveAmplitude, self.WorldShakeOnMoveFrequency, self.WorldShakeOnMoveDuration, self.WorldShakeOnMoveRadius)
 		end
@@ -2557,6 +2704,10 @@ function ENT:CustomOnAcceptInput(key,activator,caller,data)
 		if self:GetClass() == "npc_vj_totu_nightkin_scylla" then
 			VJ_EmitSound(self,"zombies/countryside/goliath/step_"..math.random(1,5)..".wav",75,self:VJ_DecideSoundPitch(self.FootStepPitch.a,self.FootStepPitch.b))
 			VJ_EmitSound(self,"zombies/weaponized/smog/step_"..math.random(1,5)..".wav",75,self:VJ_DecideSoundPitch(self.FootStepPitch.a,self.FootStepPitch.b))
+			util.ScreenShake(self:GetPos(), self.WorldShakeOnMoveAmplitude, self.WorldShakeOnMoveFrequency, self.WorldShakeOnMoveDuration, self.WorldShakeOnMoveRadius)
+		end
+		
+		if self:GetClass() == "npc_vj_totu_weaponized_smog" then
 			util.ScreenShake(self:GetPos(), self.WorldShakeOnMoveAmplitude, self.WorldShakeOnMoveFrequency, self.WorldShakeOnMoveDuration, self.WorldShakeOnMoveRadius)
 		end
 		
@@ -2576,6 +2727,9 @@ function ENT:CustomOnAcceptInput(key,activator,caller,data)
 			if 
 				self:GetClass() == "npc_vj_totu_milzomb_juggernaut" or 
 				self:GetClass() == "npc_vj_totu_milzomb_bulldozer" or 
+				self:GetClass() == "npc_vj_totu_milzomb_detonator_bulk" or 
+				self:GetClass() == "npc_vj_totu_milzomb_tank" or 
+				self:GetClass() == "npc_vj_totu_weaponized_smog" or 
 				self:GetClass() == "npc_vj_totu_nightkin_scylla" 
 			then
 				util.ScreenShake(self:GetPos(), self.WorldShakeOnMoveAmplitude, self.WorldShakeOnMoveFrequency, self.WorldShakeOnMoveDuration, self.WorldShakeOnMoveRadius)
@@ -2601,7 +2755,7 @@ function ENT:CustomOnAcceptInput(key,activator,caller,data)
 			ParticleEffect("door_explosion_chunks",door:GetPos(),door:GetAngles(),nil)
 			door:Remove()
 			
-			if self.ToTU_BigZombie then
+			if self.ToTU_BigZombie or self.ToTU_GiantZombie then
 				if math.random(1,3) == 1 then
 					self:VJ_ACT_PLAYACTIVITY("vjseq_Run_Stumble_01",true,false,false)
 				else
@@ -2609,6 +2763,10 @@ function ENT:CustomOnAcceptInput(key,activator,caller,data)
 				end
 			else
 				self:VJ_ACT_PLAYACTIVITY(ACT_STEP_FORE,true,1.6)
+			end
+			
+			if math.random(1,100) == 1 && GetConVar("VJ_ToTU_General_EasterEggs"):GetInt() == 1 then
+			VJ_EmitSound(self,"fx/egg/OHYEAH.mp3",100,100)
 			end
 			
             local doorgib = ents.Create("prop_physics")
@@ -2637,6 +2795,10 @@ function ENT:CustomOnAcceptInput(key,activator,caller,data)
 				end
 			else
 				self:VJ_ACT_PLAYACTIVITY(ACT_STEP_FORE,true,1.6)
+			end
+			
+			if math.random(1,100) == 1 && GetConVar("VJ_ToTU_General_EasterEggs"):GetInt() == 1 then
+			VJ_EmitSound(self,"fx/egg/OHYEAH.mp3",100,100)
 			end
 			
             local doorgibs = ents.Create("prop_dynamic")
@@ -2683,7 +2845,7 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:CustomOnThink()
 	
-	if self:GetClass() == "npc_vj_totu_milzomb_ghost" && !self.MilZ_Ghost_CloakBroke then
+	if (self:GetClass() == "npc_vj_totu_milzomb_ghost" or self:GetClass() == "npc_vj_totu_milzomb_ghost_walker") && !self.MilZ_Ghost_CloakBroke then
 		if IsValid(self) then
 			self:RemoveAllDecals()
 		end
@@ -2918,6 +3080,7 @@ if self.VJ_IsBeingControlled or GetConVar("VJ_ToTU_General_CanEat"):GetInt() == 
 end
 */
 
+	self:Zombie_CustomOnThink_AIEnabled()
 	if self.ToTU_CanDodge && !self.ToTU_Dodge_CloseIn && !self.LNR_Crawler && !self.LNR_Crippled then
 	
 		if 
@@ -2965,7 +3128,6 @@ end
 		end
 	end
 
-	self:Zombie_CustomOnThink_AIEnabled()
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:Zombie_CustomOnThink_AIEnabled()
@@ -3012,7 +3174,7 @@ function ENT:RiseFromGround()
 		self.MilZ_Det_Beep_CanBeep = false
 	end
 	
-	if self:GetClass() == "npc_vj_totu_milzomb_ghost" then
+	if self:GetClass() == "npc_vj_totu_milzomb_ghost" or self:GetClass() == "npc_vj_totu_milzomb_ghost_walker" then
 		self.MilZ_Ghost_CloakT = CurTime() + 1.3
 	end
 	
@@ -3171,7 +3333,7 @@ function ENT:CustomOnAlert(ent)
 
 	if self.LNR_Infected then
 	
-		if self:GetClass() == "npc_vj_totu_milzomb_ghost"then
+		if self:GetClass() == "npc_vj_totu_milzomb_ghost" then
 		
 			self.AnimTbl_IdleStand = {ACT_IDLE_AIM_STEALTH}
 			
@@ -3454,7 +3616,7 @@ function ENT:CustomOnMeleeAttack_BeforeStartTimer(seed)
 		end
 
 		-- When Walking --
-		if self:IsMoving() && !self.LNR_Crawler && !self.LNR_Crippled && !self.LNR_Biter then
+		if self:IsMoving() && !self.LNR_Crawler && !self.LNR_Crippled && !self.LNR_Biter && self.ToTU_CanUseMovingAttacks then
 		
 			if self.ToTU_WeHaveAWeapon == true then
 		
@@ -3599,13 +3761,13 @@ function ENT:CustomOnFlinch_BeforeFlinch(dmginfo,hitgroup)
 			if self.LNR_NextStumbleT < CurTime() && self:GetSequence() != self:LookupSequence(ACT_GMOD_SHOWOFF_STAND_01) && self:GetSequence() != self:LookupSequence(ACT_BIG_FLINCH) then
 				-- if self:GetClass() == "npc_vj_totu_milzomb_juggernaut" or self:GetClass() == "npc_vj_totu_milzomb_bulldozer" then
 				if self.ToTU_GiantZombie then
-					if dmginfo:GetDamage() >= 100 or dmginfo:GetDamageForce():Length() >= 19000 then
+					if dmginfo:GetDamage() >= 210 or dmginfo:GetDamageForce():Length() >= 48000 then
 						if math.random (1,1) == 1 then
 							self:VJ_ACT_PLAYACTIVITY(ACT_BIG_FLINCH,true,false,false)
 							self.LNR_NextStumbleT = CurTime() + 7			
 						self:ToTU_ResetFlinchHitgroups()
 						end
-					elseif dmginfo:GetDamage() >= 70 or dmginfo:GetDamageForce():Length() >= 15000 then
+					elseif dmginfo:GetDamage() >= 120 or dmginfo:GetDamageForce():Length() >= 33000 then
 						if math.random (1,2) == 1 then
 							self:VJ_ACT_PLAYACTIVITY(ACT_SMALL_FLINCH,true,false,false)
 							self.LNR_NextStumbleT = CurTime() + 7
@@ -3919,7 +4081,8 @@ function ENT:Cripple()
 		self.AnimTbl_Run = {ACT_IDLE_STIMULATED}
 		self.MovementType = VJ_MOVETYPE_STATIONARY
 		self.ToTU_Weaponized_Carcass_CanZombineRun = false
-		self.HasMeleeAttack = true
+		self.HasMeleeAttack = false
+		self.HasLeapAttack = false
 		self:SetCollisionBounds(Vector(13,13,20),Vector(-13,-13,0))
 	return end
 
@@ -3972,6 +4135,11 @@ self.HasLeapAttack = false
 		self.MeleeAttackKnockBack_Forward2 = 100
 		self.MeleeAttackKnockBack_Up1 = 25
 		self.MeleeAttackKnockBack_Up2 = 50
+	end
+	
+	if self:GetClass() == "npc_vj_totu_nightkin_shrieker" then
+		self.ToTU_Nightkin_Shrieker_CanSpawnHelp = false
+		self.ToTU_Nightkin_Shrieker_CanShriek = false
 	end
 	
 end
@@ -4045,6 +4213,28 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:CustomOnPriorToKilled(dmginfo, hitgroup)
 
+	if self.ToTU_Weaponized_Carcass_Exploder == true then
+		VJ_EmitSound(self,"physics/body/body_medium_break"..math.random(2,4)..".wav",100,math.random(100,95))
+		VJ_EmitSound(self,{"npc/barnacle/barnacle_tongue_pull2.wav"},100,math.random(100,95))
+		-- self:StopAllCommonSpeechSounds()
+	end
+	
+	
+	if 
+		(self:GetClass() == "npc_vj_totu_weaponized_carcass" or self:GetClass() == "npc_vj_totu_weaponized_cyst") && 
+		self.ToTU_Weaponized_Carcass_Exploder &&
+		GetConVar("VJ_ToTU_General_EasterEggs"):GetInt() == 1
+	then
+		if math.random(1,100) == 1 then
+			self.SoundTbl_Death = {"fx/egg/eminemvsibs.mp3",
+			"fx/egg/chowder/omgmiaof.mp3",
+			"fx/egg/chowder/omgmiaofvo.mp3"}
+			self.DeathSoundLevel = 90
+		end
+	end
+	
+	if self:GetClass() == "npc_vj_totu_weaponized_cyst" then return end
+
 	if (dmginfo:IsDamageType(DMG_BURN) or dmginfo:IsDamageType(DMG_SLOWBURN) or dmginfo:IsDamageType(DMG_ENERGYBEAM) or dmginfo:IsDamageType(DMG_DISSOLVE) or dmginfo:IsDamageType (DMG_PLASMA) or dmginfo:IsDamageType(DMG_SHOCK)) && self:GetSequence() != self:LookupSequence("jump_attack") then
 		self.DeathAnimationChance = 1
 	end
@@ -4077,11 +4267,6 @@ function ENT:CustomOnPriorToKilled(dmginfo, hitgroup)
 		end
 	end
 	
-	if self.ToTU_Weaponized_Carcass_Exploder == true then
-		VJ_EmitSound(self,"physics/body/body_medium_break"..math.random(2,4)..".wav",100,math.random(100,95))
-		VJ_EmitSound(self,{"npc/barnacle/barnacle_tongue_pull2.wav"},100,math.random(100,95))
-		-- self:StopAllCommonSpeechSounds()
-	end
 	-- if self:GetClass() == "npc_vj_totu_milzomb_ghost" then
 		-- self.MilZ_Ghost_CloakBroke = false
 	-- end
@@ -4093,7 +4278,8 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:CustomDeathAnimationCode(dmginfo,hitgroup)
 	if self.LNR_Crawler then return end
-	if self:IsMoving() and dmginfo:IsBulletDamage() && GetConVar("VJ_ToTU_General_MovingDeathAnimations"):GetInt() == 1 then
+	if self:GetClass() == "npc_vj_totu_weaponized_cyst" then return end
+	if self:IsMoving() and dmginfo:IsBulletDamage() && GetConVar("VJ_ToTU_General_MovingDeathAnimations"):GetInt() == 1 && !self.ToTU_GiantZombie then
 		self.AnimTbl_Death = {"vjseq_nz_death_f_1",
 		"vjseq_nz_death_f_2",
 		"vjseq_nz_death_f_3",
@@ -4317,6 +4503,10 @@ function ENT:CustomOnDeath_AfterCorpseSpawned(dmginfo,hitgroup,GetCorpse)
 			undo.ReplaceEntity(self,RevivedSquall)
 			RevivedSquall:SetHealth(RevSqSpawnH)
 			RevivedSquall:SetMaterial("lnr/bonemerge")
+			
+			if math.random(1,100) == 1 && GetConVar("VJ_ToTU_General_EasterEggs"):GetInt() == 1 then
+			VJ_EmitSound(RevivedSquall,"player/survivor/voice/biker/gettingrevived14.wav",80,100)
+			end
 				
 			timer.Simple(0.08,function() if IsValid(RevivedSquall) then
 				RevivedSquall:VJ_ACT_PLAYACTIVITY("vjseq_infectionrise2",true,false,false)

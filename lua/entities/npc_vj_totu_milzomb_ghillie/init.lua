@@ -9,28 +9,28 @@ function ENT:Zombie_Difficulty()
 
 	if GetConVar("VJ_LNR_Difficulty"):GetInt() == 1 then
 	
-		self.StartHealth = 1000
-		self.MeleeAttackDamage = math.Rand(20,25)
+		self.StartHealth = 100
+		self.MeleeAttackDamage = math.Rand(5,10)
 		
 	elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 2 then
 	
-		self.StartHealth = 1500
-		self.MeleeAttackDamage = math.Rand(25,39)
+		self.StartHealth = 150
+		self.MeleeAttackDamage = math.Rand(10,15)
 		
 	elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 3 then
 	
-		self.StartHealth = 2000
-		self.MeleeAttackDamage = math.Rand(39,35)
+		self.StartHealth = 200
+		self.MeleeAttackDamage = math.Rand(15,20)
 		
 	elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 4 then
 	
-		self.StartHealth = 2500
-		self.MeleeAttackDamage = math.Rand(35,40)
+		self.StartHealth = 250
+		self.MeleeAttackDamage = math.Rand(20,25)
 		
 	elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 5 then
 	
-		self.StartHealth = 3000
-		self.MeleeAttackDamage = math.Rand(40,45)
+		self.StartHealth = 300
+		self.MeleeAttackDamage = math.Rand(25,30)
 		
 	end
 			
@@ -40,23 +40,23 @@ function ENT:Zombie_Difficulty()
 		
 			if GetConVar("VJ_LNR_Difficulty"):GetInt() == 1 then
 			
-				self.LNR_LegHP = 200
+				self.LNR_LegHP = 20
 				
 			elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 2 then
 			
-				self.LNR_LegHP = 300
+				self.LNR_LegHP = 30
 				
 			elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 3 then
 			
-				self.LNR_LegHP = 400
+				self.LNR_LegHP = 40
 				
 			elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 4 then
 			
-				self.LNR_LegHP = 500
+				self.LNR_LegHP = 50
 				
 			elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 5 then
 			
-				self.LNR_LegHP = 600
+				self.LNR_LegHP = 60
 				
 			end
 			

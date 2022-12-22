@@ -26,7 +26,11 @@ local entsList = {
 	"npc_vj_totu_milzomb_bulldozer:5",
 	"npc_vj_totu_milzomb_detonator:4",
 	"npc_vj_totu_milzomb_detonator_bulk:6",
-	"npc_vj_totu_milzomb_ghost:3",
+	"npc_vj_totu_milzomb_ghost:4",
+	"npc_vj_totu_milzomb_ghost_walker:3",
+	"npc_vj_totu_milzomb_ghillie_walker:3",
+	"npc_vj_totu_milzomb_ghillie:4",
+	"npc_vj_totu_milzomb_tank:6",
 }
 ENT.EntitiesToSpawn = {
 	{SpawnPosition = {vForward=20, vRight=0, vUp=0}, Entities = entsList},

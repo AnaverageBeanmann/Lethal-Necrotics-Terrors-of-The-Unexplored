@@ -19,6 +19,8 @@ ENT.MilZ_Grenades = 0
 ENT.MilZ_IsMilZ = true
 ENT.MilZ_HelmetHealth = 1
 ENT.MilZ_HelmetBroken = false
+ENT.MilZ_Corpsman = false
+ENT.MilZ_Corpsman_NextHealTime = CurTime()
 
 ENT.MilZ_Det_Faceplate_Health = 1
 ENT.MilZ_Det_Faceplate_Broken = false
@@ -33,6 +35,9 @@ ENT.MilZ_Ghost_Cloaked = true
 ENT.MilZ_Ghost_CloakT = 0
 ENT.MilZ_Ghost_CloakDamageable = true
 ENT.MilZ_Ghost_CloakRechargable = true
+
+ENT.MilZ_Ghille_Walker_PlayChangeStateAnim = 1
+ENT.MilZ_Ghille_Walker_PlayChangeStateAnim_T = CurTime()
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:Zombie_CustomOnPreInitialize()
 
@@ -40,6 +45,23 @@ function ENT:Zombie_CustomOnPreInitialize()
 	
 	self.MilZ_Det_Faceplate_Health = GetConVar("VJ_ToTU_MilZ_Det_Faceplate_Health"):GetInt()
 	self.MilZ_Det_Faceplate_StartingHP = GetConVar("VJ_ToTU_MilZ_Det_Faceplate_Health"):GetInt()
+	
+	if self:GetClass() == "npc_vj_totu_milzomb_walker" or self:GetClass() == "npc_vj_totu_milzomb_infected" then
+
+		if GetConVar("VJ_ToTU_MilZ_Grunt_Corpsman_Allow"):GetInt() == 1 && math.random(1,GetConVar("VJ_ToTU_MilZ_Grunt_Corpsman_Chance"):GetInt()) == 1 then
+			self.MilZ_Corpsman = true
+			
+			self.IsMedicSNPC = true
+			self.AnimTbl_Medic_GiveHealth = {"vjseq_nz_attack_stand_ad_1"}
+			self.Medic_TimeUntilHeal = 0.9
+			self.Medic_HealthAmount = math.random(45,50)
+			self.Medic_SpawnPropOnHealModel = "models/uh_hpspray.mdl"
+			self.Medic_SpawnPropOnHealAttachment = "anim_attachment_RH"
+			
+			self.SoundTbl_MedicAfterHeal = {"uh/pickup/medspray.wav"}
+		
+		end
+	end
 	
 	if self:GetClass() == "npc_vj_totu_milzomb_juggernaut" then
 		self.MilZ_HelmetHealth = GetConVar("VJ_ToTU_MilZ_Helmet_Health"):GetInt() * 3
@@ -50,7 +72,7 @@ function ENT:Zombie_CustomOnPreInitialize()
 		self.MilZ_Det_Faceplate_StartingHP = GetConVar("VJ_ToTU_MilZ_Det_Faceplate_Health"):GetInt() * 3
 	end
 	
-	if self:GetClass() == "npc_vj_totu_milzomb_ghost" then
+	if self:GetClass() == "npc_vj_totu_milzomb_ghost" or self:GetClass() == "npc_vj_totu_milzomb_ghost_walker" then
 
 		self.MilZ_Ghost_CloakHP = GetConVar("VJ_ToTU_MilZ_Ghost_Cloak_Health"):GetInt()
 		
@@ -73,7 +95,7 @@ function ENT:Zombie_CustomOnPreInitialize()
 		"item_healthvial",
 		"item_battery"}
 		
-	if self:GetClass() != "npc_vj_totu_milzomb_ghost" then
+	if self:GetClass() != "npc_vj_totu_milzomb_ghost" && self:GetClass() != "npc_vj_totu_milzomb_ghost_walker" && self:GetClass() != "npc_vj_totu_milzomb_ghillie" && self:GetClass() != "npc_vj_totu_milzomb_ghillie_walker" then
 	self.SoundTbl_Breath = {"ambient/levels/prison/radio_random1.wav",
 		"ambient/levels/prison/radio_random2.wav",
 		"ambient/levels/prison/radio_random3.wav",
@@ -139,11 +161,19 @@ function ENT:Zombie_CustomOnPreInitialize()
 	
 	if self:GetClass() == "npc_vj_totu_milzomb_walker" then
 	
+		if self.MilZ_Corpsman then
+		self.Model = {"models/totu/milzomb_walker_corpsman.mdl"}
+		else
 		self.Model = {"models/totu/milzomb_walker.mdl"}
+		end
 		
 	elseif self:GetClass() == "npc_vj_totu_milzomb_infected" then
 	
+		if self.MilZ_Corpsman then
+		self.Model = {"models/totu/milzomb_infected_corpsman.mdl"}
+		else
 		self.Model = {"models/totu/milzomb_infected.mdl"}
+		end
 		
 	elseif self:GetClass() == "npc_vj_totu_milzomb_juggernaut" then
 	
@@ -165,11 +195,54 @@ function ENT:Zombie_CustomOnPreInitialize()
 	
 		self.Model = {"models/totu/ghost.mdl"}
 		
+	elseif self:GetClass() == "npc_vj_totu_milzomb_ghost_walker" then
+	
+		self.Model = {"models/totu/ghost_walker.mdl"}
+		
+	elseif self:GetClass() == "npc_vj_totu_milzomb_tank" then
+	
+		self.Model = {"models/totu/tank.mdl"}
+		
+	elseif self:GetClass() == "npc_vj_totu_milzomb_ghillie" then
+	
+		self.Model = {"models/totu/ghille.mdl"}
+		
+	elseif self:GetClass() == "npc_vj_totu_milzomb_ghillie_walker" then
+	
+		self.Model = {"models/totu/ghille_walker.mdl"}
+		
 	end
 	
-	if self:GetClass() == "npc_vj_totu_milzomb_juggernaut" or self:GetClass() == "npc_vj_totu_milzomb_bulldozer" or self:GetClass() == "npc_vj_totu_milzomb_detonator_bulk" then
+	if 
+		self:GetClass() == "npc_vj_totu_milzomb_juggernaut" or 
+		self:GetClass() == "npc_vj_totu_milzomb_bulldozer" or 
+		self:GetClass() == "npc_vj_totu_milzomb_detonator_bulk" or
+		self:GetClass() == "npc_vj_totu_milzomb_tank"
+	then
 
-		self:SetSkin(math.random(0,2))
+		if
+			self:GetClass() == "npc_vj_totu_milzomb_juggernaut" or 
+			self:GetClass() == "npc_vj_totu_milzomb_bulldozer"
+		then
+			self:SetSkin(math.random(0,2))
+		end
+		
+		if self:GetClass() == "npc_vj_totu_milzomb_tank" then
+			self.AnimTbl_Walk = {ACT_WALK_RELAXED}
+			self.AnimTbl_Run = {ACT_WALK_RELAXED}
+			self.ToTU_CanUseMovingAttacks = false
+			self.AnimTbl_MeleeAttack = {
+				"vjseq_nz_attack_stand_ad_1",
+				"vjseq_nz_attack_stand_ad_2-2",
+				"vjseq_nz_attack_stand_ad_2-3",
+				"vjseq_nz_attack_stand_ad_2-4",
+				"vjseq_nz_attack_stand_au_1",
+				"vjseq_nz_attack_stand_au_2-2",
+				"vjseq_nz_attack_stand_au_2-3",
+				"vjseq_nz_attack_stand_au_2-4"
+			}
+		end
+		
 		self:SetModelScale(1.25)
 
 		self.AnimTbl_Death = {"vjseq_death_04"}
@@ -178,7 +251,11 @@ function ENT:Zombie_CustomOnPreInitialize()
 		self.VJ_IsHugeMonster = true
 		
 		self.HasWorldShakeOnMove = true
+		if self:GetClass() == "npc_vj_totu_milzomb_tank" then
+		self.WorldShakeOnMoveAmplitude = 2
+		else
 		self.WorldShakeOnMoveAmplitude = 1
+		end
 		self.MeleeAttackDistance = 50
 		self.MeleeAttackDamageDistance = 70
 		self.HasMeleeAttackKnockBack = true
@@ -190,7 +267,20 @@ function ENT:Zombie_CustomOnPreInitialize()
 		
 	end
 	
-	if self:GetClass() == "npc_vj_totu_milzomb_ghost" then return end
+	if self:GetClass() == "npc_vj_totu_milzomb_ghost" or self:GetClass() == "npc_vj_totu_milzomb_ghost_walker" or self:GetClass() == "npc_vj_totu_milzomb_tank" then return end
+	
+	if self:GetClass() == "npc_vj_totu_milzomb_ghillie" or self:GetClass() == "npc_vj_totu_milzomb_ghillie_walker" then return end
+	
+	if
+		GetConVar("VJ_ToTU_MilZ_Gasmasks_Allow"):GetInt() == 1 &&
+		math.random(1,GetConVar("VJ_ToTU_MilZ_Gasmasks_Chance"):GetInt()) == 1 &&
+		self:GetClass() != "npc_vj_totu_milzomb_bulldozer" &&
+		self:GetClass() != "npc_vj_totu_milzomb_detonator" &&
+		self:GetClass() != "npc_vj_totu_milzomb_detonator_bulk"
+	then
+		self.MilZ_HasGasmask = true
+	end
+	
 	
 	if 
 		GetConVar("VJ_ToTU_MilZ_FlakArmor_Allow"):GetInt() == 1 &&
@@ -202,15 +292,6 @@ function ENT:Zombie_CustomOnPreInitialize()
 	end
 	
 	
-	if
-		GetConVar("VJ_ToTU_MilZ_Gasmasks_Allow"):GetInt() == 1 &&
-		math.random(1,GetConVar("VJ_ToTU_MilZ_Gasmasks_Chance"):GetInt()) == 1 &&
-		self:GetClass() != "npc_vj_totu_milzomb_bulldozer" &&
-		self:GetClass() != "npc_vj_totu_milzomb_detonator" &&
-		self:GetClass() != "npc_vj_totu_milzomb_detonator_bulk"
-	then
-		self.MilZ_HasGasmask = true
-	end
 	
 	if self:GetClass() == "npc_vj_totu_milzomb_detonator" or self:GetClass() == "npc_vj_totu_milzomb_detonator_bulk" then
 	
@@ -233,13 +314,19 @@ end -- Mainly used for setting up models etc
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:Zombie_CustomOnInitialize()
 
-	if self:GetClass() == "npc_vj_totu_milzomb_juggernaut" or self:GetClass() == "npc_vj_totu_milzomb_bulldozer" or self:GetClass() == "npc_vj_totu_milzomb_detonator_bulk" then
+			
+	if
+		self:GetClass() == "npc_vj_totu_milzomb_juggernaut" or 
+		self:GetClass() == "npc_vj_totu_milzomb_bulldozer" or 
+		self:GetClass() == "npc_vj_totu_milzomb_detonator_bulk" or
+		self:GetClass() == "npc_vj_totu_milzomb_tank"
+	then
 	
-		self:SetCollisionBounds(Vector(13, 13, 70), Vector(-13, -13, 0))
+		self:SetCollisionBounds(Vector(13, 13, 68), Vector(-13, -13, 0))
 		
 	end
 	
-	if self:GetClass() == "npc_vj_totu_milzomb_detonator" or self:GetClass() == "npc_vj_totu_milzomb_detonator_bulk" then return end
+	if self:GetClass() == "npc_vj_totu_milzomb_detonator" or self:GetClass() == "npc_vj_totu_milzomb_detonator_bulk" or self:GetClass() == "npc_vj_totu_milzomb_tank" then return end
 	
 	local gear = math.random(1,2)
 	
@@ -256,21 +343,32 @@ function ENT:Zombie_CustomOnInitialize()
 		end
 		
 	else
-	
+		if self:GetClass() != "npc_vj_totu_milzomb_ghillie" && self:GetClass() != "npc_vj_totu_milzomb_ghillie_walker" then
 		if gear == 1 then
 		
 			self:SetBodygroup(2,math.random(0,2))
+			
 			
 		else
 		
 			self:SetBodygroup(2,math.random(4,6))
 			
 		end
+		end
+		
+	end
+	
+	if self:GetClass() == "npc_vj_totu_milzomb_ghillie" or self:GetClass() == "npc_vj_totu_milzomb_ghillie_walker" then
+	
+		self:SetBodygroup(2,math.random(1,2))
+		self:SetBodygroup(3,math.random(0,2))
+		self:SetBodygroup(4,math.random(0,3))
+			-- self:SetMaterial("models/totu/milz/eyeball_r") 
 		
 	end
 	
 	-- Should sleeves be rolled up?
-	if math.random(1,4) == 1 then
+	if math.random(1,4) == 1 && self:GetClass() != "npc_vj_totu_milzomb_ghillie" && self:GetClass() != "npc_vj_totu_milzomb_ghillie_walker" then
 	
 		if self:GetClass() == "npc_vj_totu_milzomb_bulldozer" then
 		
@@ -298,17 +396,13 @@ function ENT:Zombie_CustomOnInitialize()
 		
 	end
 	
-	if self.MilZ_HasGasmask == true then
-	
-		self:SetBodygroup(4,0)
-		
-	end
+	if self:GetClass() == "npc_vj_totu_milzomb_ghillie" or self:GetClass() == "npc_vj_totu_milzomb_ghillie_walker" then return end
 	
 	if self.MilZ_HasGasmask == false && self:GetClass() != "npc_vj_totu_milzomb_bulldozer" then
 	
 		self:SetBodygroup(4,math.random(1,6))
 		
-		if !self.LNR_Biter then
+		if self.LNR_Biter == false then
 		
 			self:SetBodygroup(1,math.random(0,1))
 			
@@ -316,12 +410,12 @@ function ENT:Zombie_CustomOnInitialize()
 		
 	end
 	
-	if self:GetClass() == "npc_vj_totu_milzomb_ghost" then 
+	if self:GetClass() == "npc_vj_totu_milzomb_ghost" or self:GetClass() == "npc_vj_totu_milzomb_ghost_walker" then 
 		self:SetBodygroup(4,5)
 		self:SetBodygroup(1,1)
 	end
 	
-	if self:GetClass() == "npc_vj_totu_milzomb_juggernaut" or self:GetClass() == "npc_vj_totu_milzomb_bulldozer" or self:GetClass() == "npc_vj_totu_milzomb_ghost" then return end
+	if self:GetClass() == "npc_vj_totu_milzomb_juggernaut" or self:GetClass() == "npc_vj_totu_milzomb_bulldozer" or self:GetClass() == "npc_vj_totu_milzomb_ghost" or self:GetClass() == "npc_vj_totu_milzomb_ghost_walker" then return end
 	
 	if math.random(1,GetConVar("VJ_ToTU_MilZ_Weapons_Chance"):GetInt()) == 1 && !self.LNR_Crawler && !self.LNR_Biter then
 	
@@ -374,6 +468,12 @@ function ENT:Zombie_CustomOnInitialize()
 		
 	end
 	
+	if self.MilZ_Corpsman && self.ToTU_WeHaveAWeapon then
+		self.AnimTbl_Medic_GiveHealth = {"vjseq_nz_attack_stand_ad_2-3"}
+		self.Medic_TimeUntilHeal = 0.6
+		self.Medic_SpawnPropOnHealAttachment = "anim_attachment_LH"
+	end
+	
 end -- For additional initialize options
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:Zombie_Difficulty()
@@ -411,7 +511,7 @@ function ENT:Zombie_Difficulty()
 		
 			if GetConVar("VJ_LNR_Difficulty"):GetInt() == 1 then
 			
-				self.LNR_LegHP = 10
+				self.LNR_LegHP = 15
 				
 			elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 2 then
 			
@@ -419,15 +519,15 @@ function ENT:Zombie_Difficulty()
 				
 			elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 3 then
 			
-				self.LNR_LegHP = 40
+				self.LNR_LegHP = 35
 				
 			elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 4 then
 			
-				self.LNR_LegHP = 55
+				self.LNR_LegHP = 45
 				
 			elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 5 then
 			
-				self.LNR_LegHP = 60
+				self.LNR_LegHP = 55
 				
 			end
 			
@@ -450,6 +550,78 @@ function ENT:CustomOnRangeAttack_AfterStartTimer(seed)
 		
 	end
 	
+end
+---------------------------------------------------------------------------------------------------------------------------------------------
+function ENT:Zombie_CustomOnThink_AIEnabled()
+	if self:GetClass() == "npc_vj_totu_milzomb_walker" or self:GetClass() == "npc_vj_totu_milzomb_infected" then
+		if self.MilZ_Corpsman then
+	    -- VJ_EmitSound(self,"vj_lnrhl2/shared/dirtintro"..math.random(1,2)..".wav",75,100)
+			for _,v in ipairs(ents.FindInSphere(self:GetPos(),100)) do
+				if v:IsNPC() && v:Disposition(self) == D_LI then
+					if v:Health() < v:GetMaxHealth() && CurTime() > self.MilZ_Corpsman_NextHealTime then
+					for i = 0,v:GetBoneCount() -1 do
+						ParticleEffect("vortigaunt_glow_beam_cp0",v:GetBonePosition(i),Angle(0,0,0),nil)
+					end
+					for i = 0,self:GetBoneCount() -1 do
+						ParticleEffect("vortigaunt_glow_beam_cp1",self:GetBonePosition(i),Angle(0,0,0),nil)
+					end
+					effects.BeamRingPoint(self:GetPos(), 0.3, 2, 250, 16, 0, Color(33, 255, 0, 255), {material="sprites/orangelight1", framerate=20})
+					effects.BeamRingPoint(self:GetPos(), 0.3, 2, 125, 16, 0, Color(33, 255, 0, 255), {material="sprites/orangelight1", framerate=20})
+					VJ_EmitSound(self,{"items/smallmedkit1.wav"},100,math.random(100,95))
+					v:SetHealth(v:Health() +math.random(10,15))
+					if v:Health() > v:GetMaxHealth() then
+						v:SetHealth(v:GetMaxHealth())
+					end
+						self.MilZ_Corpsman_NextHealTime = CurTime() + (math.Rand(2,4))
+					end				
+				end
+			end
+		end
+	end
+	if self:GetClass() == "npc_vj_totu_milzomb_ghillie" then
+	if self.Dead == false && self:GetEnemy() != nil && self.VJ_IsBeingControlled == false && !self.LNR_Crippled then
+		local enemydist = self:GetPos():Distance(self:GetEnemy():GetPos())
+		if enemydist >= 150 then
+			self.AnimTbl_Run = {ACT_RUN_STEALTH}
+		else
+			self.AnimTbl_Run = {ACT_RUN_RELAXED}
+		end
+	end
+	end
+	if self:GetClass() == "npc_vj_totu_milzomb_ghillie_walker" then
+	if self.Dead == false && self:GetEnemy() != nil && self.VJ_IsBeingControlled == false && !self.LNR_Crippled then
+		local enemydist = self:GetPos():Distance(self:GetEnemy():GetPos())
+		
+		if
+		self.LNR_Crawler or
+		self.LNR_Crippled or
+		self.ToTU_Crawling or
+		self:GetActivity() == ACT_STEP_BACK or
+		self:GetActivity() == ACT_STEP_FORE or
+		self:GetActivity() == ACT_SMALL_FLINCH or
+		self:GetActivity() == ACT_BIG_FLINCH or
+		self:GetActivity() == ACT_FLINCH_STOMACH or
+		self:GetActivity() == ACT_GMOD_SHOWOFF_STAND_01 or
+		self:GetSequence() == self:LookupSequence("jump_attack") or
+		self:GetSequence() == self:LookupSequence("nz_spawn_jump") or
+		self:GetSequence() == self:LookupSequence("nz_spawn_climbout_fast") or
+		self:GetSequence() == self:LookupSequence("Run_Stumble_01")
+		then
+		return end
+		
+		if enemydist >= 150 && self.MilZ_Ghille_Walker_PlayChangeStateAnim == 1 && CurTime() > self.MilZ_Ghille_Walker_PlayChangeStateAnim_T then
+			self:ToTU_Ghille_Walker_StartCrawling()
+			self.MilZ_Ghille_Walker_PlayChangeStateAnim_T = CurTime() + (3)
+			local anim = {"vjseq_Stand_to_crouch"}				
+			self:VJ_ACT_PLAYACTIVITY(anim,true,false,false)
+		elseif enemydist <= 149 && self.MilZ_Ghille_Walker_PlayChangeStateAnim == 2 && CurTime() > self.MilZ_Ghille_Walker_PlayChangeStateAnim_T then
+			self:ToTU_Ghille_Walker_GetTheUp()
+			self.MilZ_Ghille_Walker_PlayChangeStateAnim_T = CurTime() + (3)
+			local anim = {"vjseq_Crouch_to_stand"}				
+			self:VJ_ACT_PLAYACTIVITY(anim,true,false,false)
+		end
+	end
+	end
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:RangeAttackCode_GetShootPos(projectile)
@@ -522,7 +694,8 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:ArmorDamage(dmginfo,hitgroup)
 
-	if self:GetClass() == "npc_vj_totu_milzomb_ghost" && !self.MilZ_Ghost_CloakBroke && self.MilZ_Ghost_CloakDamageable then
+			-- self:SetMaterial("models/totu/milz/eyeball_r") 
+	if (self:GetClass() == "npc_vj_totu_milzomb_ghost" or self:GetClass() == "npc_vj_totu_milzomb_ghost_walker") && !self.MilZ_Ghost_CloakBroke && self.MilZ_Ghost_CloakDamageable then
 	
 		self.MilZ_Ghost_CloakHP = self.MilZ_Ghost_CloakHP -dmginfo:GetDamage()
 	
@@ -562,7 +735,7 @@ function ENT:ArmorDamage(dmginfo,hitgroup)
 		
 	end
 	
-	if hitgroup == HITGROUP_HEAD && self:GetClass() != "npc_vj_totu_milzomb_bulldozer" && !self.MilZ_HelmetBroken then
+	if hitgroup == HITGROUP_HEAD && self:GetClass() != "npc_vj_totu_milzomb_bulldozer" && !self.MilZ_HelmetBroken && self:GetClass() != "npc_vj_totu_milzomb_ghillie" && self:GetClass() != "npc_vj_totu_milzomb_ghillie_walker" then
 	
 		if GetConVar("VJ_ToTU_MilZ_Helmet_Breakable"):GetInt() == 1 then
 		

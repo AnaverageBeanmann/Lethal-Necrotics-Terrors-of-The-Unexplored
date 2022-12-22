@@ -13,8 +13,18 @@ ENT.ToTU_Weaponized_Smog_Tank_Health = 35
 ENT.ToTU_Weaponized_Smog_Tank_Broken = false
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:Zombie_CustomOnPreInitialize()
+
+	self.ToTU_Weaponized_Smog_Tank_Health = GetConVar("VJ_ToTU_Weaponized_Smog_Tank_Health"):GetInt()
+	
+	self.ToTU_Weaponized_Smog_Faceplate_Health = GetConVar("VJ_ToTU_Weaponized_Smog_Faceplate_Health"):GetInt()
+	
 	-- self.Model = {"models/totu/smog.mdl"}
+	if GetConVar("VJ_ToTU_Weaponized_Smog_Bloody"):GetInt() == 1 or (GetConVar("VJ_ToTU_Weaponized_Smog_Bloody"):GetInt() == 2 && math.random(1,2) == 1) then
+	self.Model = {"models/totu/smog.mdl"}
+	else
 	self.Model = {"models/totu/smog_bloody.mdl"}
+	end
+	
 self.RangeAttackSoundLevel = 85
 	self:SetModelScale(1.25)
 		self.HasWorldShakeOnMove = true
@@ -47,7 +57,7 @@ self.RangeAttackSoundLevel = 85
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:Zombie_CustomOnInitialize()
-		self:SetCollisionBounds(Vector(13, 13, 65), Vector(-13, -13, 0))
+		self:SetCollisionBounds(Vector(13, 13, 68), Vector(-13, -13, 0))
 		self.AnimTbl_Walk = {ACT_WALK_AIM}
 					self.AnimTbl_Run = {ACT_RUN_RELAXED}
 					self.ToTU_Rusher = true
@@ -58,7 +68,7 @@ function ENT:Zombie_Difficulty()
 
 	if GetConVar("VJ_LNR_Difficulty"):GetInt() == 1 then
 	
-		self.StartHealth = 500
+		self.StartHealth = 750
 		self.MeleeAttackDamage = math.Rand(20,25)
 		
 	elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 2 then
@@ -68,17 +78,17 @@ function ENT:Zombie_Difficulty()
 		
 	elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 3 then
 	
-		self.StartHealth = 1500
+		self.StartHealth = 1250
 		self.MeleeAttackDamage = math.Rand(30,35)
 		
 	elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 4 then
 	
-		self.StartHealth = 2000
+		self.StartHealth = 1500
 		self.MeleeAttackDamage = math.Rand(35,40)
 		
 	elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 5 then
 	
-		self.StartHealth = 2500
+		self.StartHealth = 1750
 		self.MeleeAttackDamage = math.Rand(40,45)
 		
 	end
@@ -89,23 +99,23 @@ function ENT:Zombie_Difficulty()
 		
 			if GetConVar("VJ_LNR_Difficulty"):GetInt() == 1 then
 			
-				self.LNR_LegHP = 105
+				self.LNR_LegHP = 150
 				
 			elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 2 then
 			
-				self.LNR_LegHP = 150
+				self.LNR_LegHP = 200
 				
 			elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 3 then
 			
-				self.LNR_LegHP = 195
+				self.LNR_LegHP = 250
 				
 			elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 4 then
 			
-				self.LNR_LegHP = 240
+				self.LNR_LegHP = 300
 				
 			elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 5 then
 			
-				self.LNR_LegHP = 285
+				self.LNR_LegHP = 350
 				
 			end
 			
@@ -127,7 +137,8 @@ function ENT:ArmorDamage(dmginfo,hitgroup)
 		self.Bleeds = false
 		-- dmginfo:ScaleDamage(0.1)
 		if !self.ToTU_Weaponized_Smog_Tank_Broken then
-			self.ToTU_Weaponized_Smog_Tank_Health = self.ToTU_Weaponized_Smog_Tank_Health -dmginfo:GetDamage()
+			if GetConVar("VJ_ToTU_Weaponized_Smog_Tank_Breakable"):GetInt() == 1 then
+				self.ToTU_Weaponized_Smog_Tank_Health = self.ToTU_Weaponized_Smog_Tank_Health -dmginfo:GetDamage()
 			
 				local spark = ents.Create("env_spark")
 				spark:SetKeyValue("Magnitude","1")
@@ -140,34 +151,59 @@ function ENT:ArmorDamage(dmginfo,hitgroup)
 				spark:Fire("StartSpark","",0)
 				spark:Fire("StopSpark","",0.001)
 				self:DeleteOnRemove(spark)
-			if self.ToTU_Weaponized_Smog_Tank_Health <= 0 then
+				
+				if self.ToTU_Weaponized_Smog_Tank_Health <= 0 then
 				-- if self.HasSounds && self.HasImpactSounds then VJ_EmitSound(self,"test/laughnow.mp3",0) end
-			VJ_EmitSound(self,{"zombies/weaponized/smog/gas_can_explode.wav"},75,math.random(100,100))
-				ParticleEffectAttach("smoke_exhaust_01",PATTACH_POINT_FOLLOW,self,self:LookupAttachment("smog_gasleak"))
-				ParticleEffectAttach("smoke_exhaust_01",PATTACH_POINT_FOLLOW,self,self:LookupAttachment("smog_gasleak"))
-				ParticleEffectAttach("smoke_exhaust_01",PATTACH_POINT_FOLLOW,self,self:LookupAttachment("smog_gasleak"))
-				self.ToTU_Weaponized_Smog_Tank_Broken = true
-				self.HasRangeAttack = false
+					VJ_EmitSound(self,{"zombies/weaponized/smog/gas_can_explode.wav"},75,math.random(100,100))
+					ParticleEffectAttach("smoke_exhaust_01",PATTACH_POINT_FOLLOW,self,self:LookupAttachment("smog_gasleak"))
+					ParticleEffectAttach("smoke_exhaust_01",PATTACH_POINT_FOLLOW,self,self:LookupAttachment("smog_gasleak"))
+					ParticleEffectAttach("smoke_exhaust_01",PATTACH_POINT_FOLLOW,self,self:LookupAttachment("smog_gasleak"))
+					self.ToTU_Weaponized_Smog_Tank_Broken = true
+					self.HasRangeAttack = false
+				end
+			else
+			
+				local spark = ents.Create("env_spark")
+				spark:SetKeyValue("Magnitude","1")
+				spark:SetKeyValue("Spark Trail Length","1")
+				spark:SetPos(dmginfo:GetDamagePosition())
+				spark:SetAngles(self:GetAngles())
+				spark:SetParent(self)
+				spark:Spawn()
+				spark:Activate()
+				spark:Fire("StartSpark","",0)
+				spark:Fire("StopSpark","",0.001)
+				self:DeleteOnRemove(spark)
 			end
 		end
-	elseif hitgroup == HITGROUP_HEAD then
-		if !self.ToTU_Weaponized_Smog_Faceplate_Broken then
-			self.ToTU_Weaponized_Smog_Faceplate_Health = self.ToTU_Weaponized_Smog_Faceplate_Health -dmginfo:GetDamage()
-			if self.ToTU_Weaponized_Smog_Faceplate_Health <= 0 then
-				if self.HasSounds && self.HasImpactSounds then VJ_EmitSound(self,{"physics/glass/glass_sheet_break"..math.random(1,3)..".wav"},70) end
-				if self.HasSounds && self.HasImpactSounds then VJ_EmitSound(self,{"physics/glass/glass_pottery_break"..math.random(1,3)..".wav"},70) end
-				local effectData = EffectData()
-				effectData:SetOrigin(dmginfo:GetDamagePosition())
-				effectData:SetScale(1)
-				util.Effect("GlassImpact", effectData)
-				self:SetSkin(1)
-				self.ToTU_Weaponized_Smog_Faceplate_Broken = true
-				self.Bleeds = false
-			else
-				dmginfo:ScaleDamage(0)
-				self.Bleeds = false
-				if self.HasSounds && self.HasImpactSounds then VJ_EmitSound(self,"physics/glass/glass_impact_bullet"..math.random(1,4)..".wav",70) end
+	end
+	
+	if hitgroup == HITGROUP_HEAD && GetConVar("VJ_ToTU_General_Armor_Allow"):GetInt() == 1 then
+		if GetConVar("VJ_ToTU_Weaponized_Smog_Faceplate_Breakable"):GetInt() == 1 then
+			if !self.ToTU_Weaponized_Smog_Faceplate_Broken then
+				self.ToTU_Weaponized_Smog_Faceplate_Health = self.ToTU_Weaponized_Smog_Faceplate_Health -dmginfo:GetDamage()
+				if self.ToTU_Weaponized_Smog_Faceplate_Health <= 0 then
+					if self.HasSounds && self.HasImpactSounds then VJ_EmitSound(self,{"physics/glass/glass_sheet_break"..math.random(1,3)..".wav"},70) end
+					if self.HasSounds && self.HasImpactSounds then VJ_EmitSound(self,{"physics/glass/glass_pottery_break"..math.random(1,3)..".wav"},70) end
+					local effectData = EffectData()
+					effectData:SetOrigin(dmginfo:GetDamagePosition())
+					effectData:SetScale(1)
+					util.Effect("GlassImpact", effectData)
+					self:SetSkin(1)
+					self.ToTU_Weaponized_Smog_Faceplate_Broken = true
+					self.Bleeds = false
+				else
+					dmginfo:ScaleDamage(0)
+					self.Bleeds = false
+					if self.HasSounds && self.HasImpactSounds then VJ_EmitSound(self,"physics/glass/glass_impact_bullet"..math.random(1,4)..".wav",70) end
+				end
 			end
+		else
+			if !self.ToTU_Weaponized_Smog_Faceplate_Broken then
+					dmginfo:ScaleDamage(0)
+					self.Bleeds = false
+					if self.HasSounds && self.HasImpactSounds then VJ_EmitSound(self,"physics/glass/glass_impact_bullet"..math.random(1,4)..".wav",70) end
+		end
 		end
 	else
 		self.Bleeds = true

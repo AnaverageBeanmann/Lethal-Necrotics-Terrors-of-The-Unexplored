@@ -25,6 +25,7 @@ local entsList = {
 	"npc_vj_totu_weaponized_cyst:2",
 	"npc_vj_totu_weaponized_cazador_torso:2",
 	"npc_vj_totu_weaponized_cazador:3",
+	"npc_vj_totu_weaponized_smog:7",
 }
 ENT.EntitiesToSpawn = {
 	{SpawnPosition = {vForward=20, vRight=0, vUp=0}, Entities = entsList},
