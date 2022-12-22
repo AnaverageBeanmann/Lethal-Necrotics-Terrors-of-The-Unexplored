@@ -370,7 +370,7 @@ end
 		-- []
 		VJ.AddNPC("Bulldozer","npc_vj_totu_milzomb_bulldozer",vCat2)
 		-- []
-		VJ.AddNPC("Ghost","npc_vj_totu_milzomb_ghost",vCat2)
+		VJ.AddNPC("Ghost (Infected)","npc_vj_totu_milzomb_ghost",vCat2)
 		-- []
 		VJ.AddNPC("Detonator","npc_vj_totu_milzomb_detonator",vCat2)
 		-- []
@@ -378,18 +378,19 @@ end
 		-- []
 		
 		VJ.AddNPC("Tank","npc_vj_totu_milzomb_tank",vCat2)
-		-- ()
-		-- bulldozer suit
+		-- []
 		
 		VJ.AddNPC("Ghost (Walker)","npc_vj_totu_milzomb_ghost_walker",vCat2)
-		-- ()
+		-- {}
 		
-		VJ.AddNPC("Ghillie","npc_vj_totu_milzomb_ghillie",vCat2)
-		-- ()
+		VJ.AddNPC("Ghillie (Infected)","npc_vj_totu_milzomb_ghillie",vCat2)
+		-- {}
 		-- dude in a Ghillie suit
 		-- lays still until you get near or crawls towards you
 		-- if crawling towards you, it gets up after taking damage
 
+		VJ.AddNPC("Ghillie (Walker)","npc_vj_totu_milzomb_ghillie_walker",vCat2)
+		-- {}
 		
 	-- Nightkin
 		VJ.AddNPC("Scragg","npc_vj_totu_nightkin_scragg",vCat3)
@@ -403,6 +404,7 @@ end
 		-- have them beat the shit out of corpses that arnt kin?
 		-- mourn corpses of kin
 		-- mudguy run for a bit after being crippled but then do walker cripple business afterward
+		-- add easter egg of francis saying "phew.. good thing i'm indestructable" when activating iron will
 		
 		VJ.AddNPC("Shrieker","npc_vj_totu_nightkin_shrieker",vCat3)
 		-- {}
@@ -550,6 +552,10 @@ end
 		VJ.AddNPC("Morti Hazmat Zombie (Infected)","npc_vj_totu_morti_zombie_hazmat_infected",vCat10)
 		-- ()
 		-- make the suit light teal
+		-- make the white suit darker
+		-- make it so if you bust the tank it lights on fire then explodes after a sec
+		-- use the hla grunt tank ignite sounds for that
+		-- have it try to grab you if the tank's ignited
 		VJ.AddNPC("Morti Test Subject Zombie (Walker)","npc_vj_totu_morti_zombie_testsub_walker",vCat10)
 		-- ()
 		VJ.AddNPC("Morti Test Subject Zombie (Infected)","npc_vj_totu_morti_zombie_testsub_infected",vCat10)
@@ -781,12 +787,7 @@ end
 			
 		-- VJ.AddNPCWeapon("vj_LN_TOTU_LMG","weapon_vj_ln_totu_lmg")
 		-- VJ.AddNPCWeapon("vj_LN_TOTU_KNIFE","weapon_vj_ln_totu_knife")
-	
-	-- add these convars
-	-- leg hp scales with difficulty
-	-- zombies can mutate at all
-	-- zombies can mutate when not possessed
-	
+
 	
 	local AddConvars = {}
 	AddConvars["VJ_ToTU_Spawn_UniversalDig"] = 0
@@ -848,6 +849,14 @@ end
 	AddConvars["VJ_ToTU_Weaponized_Cyst_Run"] = 1
 	AddConvars["VJ_ToTU_Weaponized_Cyst_HurtOnRanged"] = 1
 	AddConvars["VJ_ToTU_Weaponized_Cyst_Exploders_Chance"] = 4
+	AddConvars["VJ_ToTU_Weaponized_Smog_Faceplate_Breakable"] = 1
+	AddConvars["VJ_ToTU_Weaponized_Smog_Faceplate_Health"] = 500
+	AddConvars["VJ_ToTU_Weaponized_Smog_Tank_Breakable"] = 1
+	AddConvars["VJ_ToTU_Weaponized_Smog_Tank_Health"] = 35
+	AddConvars["VJ_ToTU_Weaponized_Smog_Bloody"] = 2
+	AddConvars["VJ_ToTU_MilZ_Grunt_Corpsman_Allow"] = 1
+	AddConvars["VJ_ToTU_MilZ_Grunt_Corpsman_Chance"] = 4
+	-- AddConvars["VJ_ToTU_General_TF2Mode"] = 0
 	-- AddConvars["VJ_ToTU_Weaponized_Carcass_"] = 
 	-- AddConvars[""] = 
 	-- AddConvars["VJ_ToTU_Nightkin_Shrieker_"] = 
@@ -957,6 +966,13 @@ end
 			VJ_ToTU_Weaponized_Cyst_Exploders_Chance = "4",
 			VJ_ToTU_Weaponized_Cyst_HurtOnRanged = "1",
 			VJ_ToTU_Weaponized_Cyst_Run = "1",
+			VJ_ToTU_Weaponized_Smog_Faceplate_Breakable = "1",
+			VJ_ToTU_Weaponized_Smog_Tank_Breakable = "1",
+			VJ_ToTU_Weaponized_Smog_Faceplate_Health = "500",
+			VJ_ToTU_Weaponized_Smog_Tank_Health = "35",
+			VJ_ToTU_Weaponized_Smog_Bloody = "2",
+			VJ_ToTU_MilZ_Grunt_Corpsman_Allow = "1",
+			VJ_ToTU_MilZ_Grunt_Corpsman_Chance = "4",
 			-- VJ_ToTU_MilZ_Det_ = "",
 			
 			
@@ -988,8 +1004,7 @@ end
 			-- vj_LN_TOTU_FeedbackShutUp = "0",
 }
 
-
-
+	
 	/*
 	examples
 	
@@ -1010,25 +1025,30 @@ end
 	
 	Panel:AddControl("ComboBox", vj_resetbutton)
 	
-	Panel:AddControl("Checkbox", {Label = "Enable Easter Eggs?", Command = "VJ_ToTU_General_EasterEggs"})
+	Panel:ControlHelp("--------------------------------------------------------")
+	Panel:AddControl( "Label", {Text = "Global ConVars"})
+	Panel:ControlHelp("These affect all zombies in ToTU.")
+	Panel:ControlHelp("--------------------------------------------------------")
 	
-	Panel:AddControl("Checkbox", {Label = "Allow Dig-Outs Everywhere?", Command = "VJ_ToTU_Spawn_UniversalDig"})
+	Panel:AddControl("Checkbox", {Label = "Enable easter eggs?", Command = "VJ_ToTU_General_EasterEggs"})
+	
+	Panel:AddControl("Checkbox", {Label = "Global digouts?", Command = "VJ_ToTU_Spawn_UniversalDig"})
 	Panel:ControlHelp("If enabled, zombies can do dig-out animations no matter what the ground type is.")
 	Panel:ControlHelp("If disabled, zombies can only do dig-out animations on 'soft' ground like dirt and sand.")
 	
-	Panel:AddControl("Slider", {Label = "Dig-Out Chance?", Command = "VJ_ToTU_Spawn_DigChance", Min = 1, Max = 100})
+	Panel:AddControl("Slider", {Label = "Digout chance?", Command = "VJ_ToTU_Spawn_DigChance", Min = 1, Max = 10000})
 	Panel:ControlHelp("Chance that a zombie will dig out of the ground when spawned.")
 	Panel:ControlHelp("Default chance is 5.")
 	
-	Panel:AddControl("Checkbox", {Label = "Alert Sound On Dig-Out?", Command = "VJ_ToTU_Spawn_AlertSound"})
+	Panel:AddControl("Checkbox", {Label = "Digout alert sound?", Command = "VJ_ToTU_Spawn_AlertSound"})
 	Panel:ControlHelp("If enabled, zombies will play an alert sound when they dig out, regardless if they have a target or not.")
 	
-	Panel:AddControl("Checkbox", {Label = "Allow Moving Death Animations?", Command = "VJ_ToTU_General_MovingDeathAnimations"})
+	Panel:AddControl("Checkbox", {Label = "Allow moving death animations?", Command = "VJ_ToTU_General_MovingDeathAnimations"})
 	Panel:ControlHelp("If disabled, zombies can only use stationary death animations.")
 	Panel:ControlHelp("Added because of a strange issue I experienced in the Horde gamemode.")
 	Panel:ControlHelp("It didn't fix it, but I thought I might as well keep this since it was already set up.")
 	
-	Panel:AddControl("Checkbox", {Label = "Leg Health Scales With Difficulty?", Command = "VJ_ToTU_General_LegHealthScalesWithDifficulty"})
+	Panel:AddControl("Checkbox", {Label = "Enable leg health scaling?", Command = "VJ_ToTU_General_LegHealthScalesWithDifficulty"})
 	Panel:ControlHelp("If enabled, zombie leg health will change depending on LNR Difficulty.")
 	
 	/*
@@ -1038,32 +1058,39 @@ end
 	Panel:ControlHelp("- All Military Zombies will have their armor tweaked to act more realistically (based on discussion with friends who know things about military armor)")
 	*/
 	
-	Panel:AddControl("Slider", {Label = "Crawler Spawn Chance?", Command = "VJ_ToTU_General_Crawler_Chance", Min = 1, Max = 100})
+	Panel:AddControl("Slider", {Label = "Crawler spawn chance.", Command = "VJ_ToTU_General_Crawler_Chance", Min = 1, Max = 10000})
 	Panel:ControlHelp("Chance that a zombie will spawn as a crawler.")
 	Panel:ControlHelp("Default chance is 5.")
 	
-	Panel:AddControl("Slider", {Label = "Runner Spawn Chance?", Command = "VJ_ToTU_General_Runners_Chance", Min = 1, Max = 100})
+	Panel:AddControl("Slider", {Label = "Runner spawn chance.", Command = "VJ_ToTU_General_Runners_Chance", Min = 1, Max = 10000})
 	Panel:ControlHelp("Chance that a walker will spawn as a runner.")
 	Panel:ControlHelp("Default chance is 3.")
 	
-	Panel:AddControl("Slider", {Label = "Super Sprinter Spawn Chance?", Command = "VJ_ToTU_General_SuperSprinters_Chance", Min = 1, Max = 100})
+	Panel:AddControl("Slider", {Label = "Super Sprinter spawn chance?", Command = "VJ_ToTU_General_SuperSprinters_Chance", Min = 1, Max = 10000})
 	Panel:ControlHelp("Chance that an infected will spawn as a super sprinter.")
 	Panel:ControlHelp("Default chance is 3.")
 	
-	Panel:AddControl("Checkbox", {Label = "Allow Rushers?", Command = "VJ_ToTU_General_Rushers_Allow"})
-	Panel:ControlHelp("If enabled, infected have a chance to spawn as a rusher.")
-	Panel:ControlHelp("That basically means they will use L4D common infected running animations.")
-	Panel:ControlHelp("They are quite fast.")
+	local combobox_rushers = {Options = {}, CVars = {}, Label = "Allow Rushers?", MenuButton = "0"}
+	combobox_rushers.Options["No"] = {VJ_ToTU_General_Rushers_Allow = 0}
+	combobox_rushers.Options["Infected Only"] = {VJ_ToTU_General_Rushers_Allow = 1}
+	combobox_rushers.Options["Walker Only"] = {VJ_ToTU_General_Rushers_Allow = 2}
+	combobox_rushers.Options["Both"] = {VJ_ToTU_General_Rushers_Allow = 3}
+	Panel:AddControl("ComboBox", combobox_rushers)
+	Panel:ControlHelp("If enabled, zombies have a chance to spawn as a rusher.")
+	Panel:ControlHelp("Infected will use L4D common infected running animations.")
+	Panel:ControlHelp("Walkers will just sprint.")
+	Panel:ControlHelp("Infected Rushers are quite fast.")
 	Panel:ControlHelp("This convar idea was brought to you by Lacrinimo.")
 	
-	Panel:AddControl("Slider", {Label = "Rusher Spawn Chance?", Command = "VJ_ToTU_General_Rushers_Chance", Min = 1, Max = 100})
+	
+	Panel:AddControl("Slider", {Label = "Rusher spawn chance.", Command = "VJ_ToTU_General_Rushers_Chance", Min = 1, Max = 10000})
 	Panel:ControlHelp("Chance that an infected will spawn as a rusher.")
 	Panel:ControlHelp("Default chance is 5.")
 	
-	Panel:AddControl("Checkbox", {Label = "Zombies Can Only Jump Down?", Command = "VJ_ToTU_General_Jump_DownOnly"})
+	Panel:AddControl("Checkbox", {Label = "Downward jumps only?", Command = "VJ_ToTU_General_Jump_DownOnly"})
 	Panel:ControlHelp("If enabled, zombies cannot jump upwards, but can still jump downwards.")
 	
-	Panel:AddControl("Checkbox", {Label = "Allow Armor?", Command = "VJ_ToTU_General_Armor_Allow"})
+	Panel:AddControl("Checkbox", {Label = "Allow armor?", Command = "VJ_ToTU_General_Armor_Allow"})
 	Panel:ControlHelp("If enabled, certain zombies will have working armor.")
 	
 	/*
@@ -1074,66 +1101,79 @@ end
 	Panel:ControlHelp("If enabled, zombies will also be allowed to eat gibs.")
 	*/
 	
-	Panel:AddControl("Checkbox", {Label = "Military Zombies Can Have Gasmasks?", Command = "VJ_ToTU_MilZ_Gasmasks_Allow"})
-	Panel:ControlHelp("If enabled, Grunts can sometimes spawn with grenades.")
+	Panel:ControlHelp("--------------------------------------------------------")
+	Panel:AddControl( "Label", {Text = "Military Zombies"})
+	Panel:ControlHelp("--------------------------------------------------------")
 	
-	Panel:AddControl("Slider", {Label = "Gasmask Spawn Chance?", Command = "VJ_ToTU_MilZ_Gasmasks_Chance", Min = 1, Max = 100})
-	Panel:ControlHelp("Chance that a Military Zombie will spawn with a gasmask.")
+	Panel:AddControl("Checkbox", {Label = "MilZombs have breakable helmets?", Command = "VJ_ToTU_MilZ_Helmet_Breakable"})
+	Panel:ControlHelp("If enabled, Grunt helmets can be broken if damaged enough.")
+	
+	Panel:AddControl("Slider", {Label = "MilZomb helmet health", Command = "VJ_ToTU_MilZ_Helmet_Health", Min = 1, Max = 10000})
+	Panel:ControlHelp("Health Grunt helmets will have.")
+	Panel:ControlHelp("Juggernaut helmets will have this value times 3.")
+	Panel:ControlHelp("Default ammount is 100.")
+	
+	Panel:AddControl("Checkbox", {Label = "MilZombs can spawn with gasmasks?", Command = "VJ_ToTU_MilZ_Gasmasks_Allow"})
+	Panel:ControlHelp("If enabled, Grunts can sometimes spawn with grenades.")
+	Panel:ControlHelp("It used to give nervegas protection, but is now just a cosmetic thing.")
+	
+	Panel:AddControl("Slider", {Label = "Gasmask chance.", Command = "VJ_ToTU_MilZ_Gasmasks_Chance", Min = 1, Max = 10000})
+	Panel:ControlHelp("Chance that a MilZomb will spawn with a gasmask.")
 	Panel:ControlHelp("Default chance is 3.")
 	
-	local combobox_milzgmasksounds = {Options = {}, CVars = {}, Label = "Gasmask Sounds?", MenuButton = "0"}
-	combobox_milzgmasksounds.Options["NH2 Security (New Sounds)"] = {VJ_ToTU_MilZ_Gasmasks_OriginalSounds = 0}
-	combobox_milzgmasksounds.Options["DL Gas Tanks (Original Sounds)"] = {VJ_ToTU_MilZ_Gasmasks_OriginalSounds = 1}
-	combobox_milzgmasksounds.Options["Both"] = {VJ_ToTU_MilZ_Gasmasks_OriginalSounds = 2}
+	local combobox_milzgmasksounds = {Options = {}, CVars = {}, Label = "Gasmask sounds.", MenuButton = "0"}
+	combobox_milzgmasksounds.Options["Nightmare House 2 Security Zombie (New Sounds)"] = {VJ_ToTU_MilZ_Gasmasks_OriginalSounds = 0}
+	combobox_milzgmasksounds.Options["Dying Light 1 Gas Tanks (Original Sounds)"] = {VJ_ToTU_MilZ_Gasmasks_OriginalSounds = 1}
+	combobox_milzgmasksounds.Options["Use Both"] = {VJ_ToTU_MilZ_Gasmasks_OriginalSounds = 2}
 	Panel:AddControl("ComboBox", combobox_milzgmasksounds)
 	
-	Panel:AddControl("Checkbox", {Label = "Military Zombies Can Have Flak Armor?", Command = "VJ_ToTU_MilZ_FlakArmor_Allow"})
-	Panel:ControlHelp("If enabled, Grunts can sometimes spawn with flak armor.")
+	Panel:AddControl("Checkbox", {Label = "MilZombs can spawn with flak armor?", Command = "VJ_ToTU_MilZ_FlakArmor_Allow"})
+	Panel:ControlHelp("If enabled, MilZombs can sometimes spawn with flak armor.")
 	Panel:ControlHelp("Flak armor provides protection against explosive damage, aswell as a small bit of limb protection.")
 	
-	Panel:AddControl("Slider", {Label = "Flak Armor Spawn Chance?", Command = "VJ_ToTU_MilZ_FlakArmor_Chance", Min = 1, Max = 100})
-	Panel:ControlHelp("Chance that a Military Zombie will spawn with flak armor.")
+	Panel:AddControl("Slider", {Label = "Flak armor chance.", Command = "VJ_ToTU_MilZ_FlakArmor_Chance", Min = 1, Max = 10000})
+	Panel:ControlHelp("Chance that a MilZomb will spawn with flak armor.")
 	Panel:ControlHelp("Default chance is 4.")
 	
-	local combobox_milzweps = {Options = {}, CVars = {}, Label = "Grunt Weaponry?", MenuButton = "0"}
+	local combobox_milzweps = {Options = {}, CVars = {}, Label = "Grunt weaponry.", MenuButton = "0"}
 	combobox_milzweps.Options["Nothing"] = {VJ_ToTU_MilZ_Weapons = 0}
 	combobox_milzweps.Options["Knives and Guns"] = {VJ_ToTU_MilZ_Weapons = 1}
 	combobox_milzweps.Options["Knives only"] = {VJ_ToTU_MilZ_Weapons = 2}
 	combobox_milzweps.Options["Guns only"] = {VJ_ToTU_MilZ_Weapons = 3}
 	Panel:AddControl("ComboBox", combobox_milzweps)
 	
-	Panel:AddControl("Slider", {Label = "Grunt Weapon Spawn Chance?", Command = "VJ_ToTU_MilZ_Weapons_Chance", Min = 1, Max = 100})
+	Panel:AddControl("Slider", {Label = "Grunt weapon chance.", Command = "VJ_ToTU_MilZ_Weapons_Chance", Min = 1, Max = 10000})
 	Panel:ControlHelp("Chance that a Grunt will spawn with a weapon, assuming they can.")
 	Panel:ControlHelp("Default chance is 4.")
 	
-	Panel:AddControl("Checkbox", {Label = "Grunts Can Have Grenades?", Command = "VJ_ToTU_MilZ_Grenades"})
+	Panel:AddControl("Checkbox", {Label = "Grunts can have grenades?", Command = "VJ_ToTU_MilZ_Grenades"})
 	Panel:ControlHelp("If enabled, Grunts can sometimes spawn with grenades.")
 	
-	Panel:AddControl("Slider", {Label = "Grunt Grenade Spawn Chance?", Command = "VJ_ToTU_MilZ_Grenades_Chance", Min = 1, Max = 100})
+	Panel:AddControl("Slider", {Label = "Grunt grenade chance.", Command = "VJ_ToTU_MilZ_Grenades_Chance", Min = 1, Max = 10000})
 	Panel:ControlHelp("Chance that a Grunt will spawn with grenades, assuming they can.")
 	Panel:ControlHelp("Default chance is 10.")
 	
-	Panel:AddControl("Slider", {Label = "Grunt Grenade Ammout?", Command = "VJ_ToTU_MilZ_Grenades_Ammount", Min = -1, Max = 100})
+	Panel:AddControl("Slider", {Label = "Grunt grenade ammount.", Command = "VJ_ToTU_MilZ_Grenades_Ammount", Min = -1, Max = 10000})
 	Panel:ControlHelp("Ammount of grenades a Grunt will have if they spawn with them.")
 	Panel:ControlHelp("Set to -1 for default values.")
 	
-	Panel:AddControl("Checkbox", {Label = "Grunts Can Have Shootable Guns?", Command = "VJ_ToTU_MilZ_ShootableGun"})
+	Panel:AddControl("Checkbox", {Label = "Grunts can have shootable guns?", Command = "VJ_ToTU_MilZ_ShootableGun"})
 	Panel:ControlHelp("If enabled, Grunts that spawn with guns can sometimes shoot them.")
 	
-	Panel:AddControl("Slider", {Label = "Grunt Shootable Gun Chance?", Command = "VJ_ToTU_MilZ_ShootableGun_Chance", Min = 1, Max = 100})
+	Panel:AddControl("Slider", {Label = "Grunt shootable gun chance.", Command = "VJ_ToTU_MilZ_ShootableGun_Chance", Min = 1, Max = 10000})
 	Panel:ControlHelp("Chance a Grunt with a gun is able to shoot it.")
 	Panel:ControlHelp("Default chance is 3.")
 	
-	Panel:AddControl("Checkbox", {Label = "Grunts Have Infinite Bullets?", Command = "VJ_ToTU_MilZ_ShootableGun_Bullets_Infinite"})
+	Panel:AddControl("Checkbox", {Label = "Grunts have infinite bullets?", Command = "VJ_ToTU_MilZ_ShootableGun_Bullets_Infinite"})
 	Panel:ControlHelp("If enabled, Grunts that spawn with shootable guns have infinite ammo.")
 	
-	Panel:AddControl("Checkbox", {Label = "Grunts Have Breakable Helmets?", Command = "VJ_ToTU_MilZ_Helmet_Breakable"})
-	Panel:ControlHelp("If enabled, Grunt helmets can be broken if damaged enough.")
+	Panel:AddControl("Checkbox", {Label = "Grunts can spawn as Corpsman?", Command = "VJ_ToTU_MilZ_Grunt_Corpsman_Allow"})
+	Panel:ControlHelp("If enabled, Grunts have a chance to spawn as Corpsman.")
+	Panel:ControlHelp("Corpsman can heal nearby zombies.")
 	
-	Panel:AddControl("Slider", {Label = "Military Zombie Helmet Health?", Command = "VJ_ToTU_MilZ_Helmet_Health", Min = 1, Max = 10000})
-	Panel:ControlHelp("Health Grunt helmets will have.")
-	Panel:ControlHelp("Juggernaut helmets will have this value times 3.")
-	Panel:ControlHelp("Default ammount is 100.")
+	Panel:AddControl("Slider", {Label = "Grunt Corpsman chance.", Command = "VJ_ToTU_MilZ_Grunt_Corpsman_Chance", Min = 1, Max = 10000})
+	Panel:ControlHelp("Chance that a Grunt will spawn as a Corpsman.")
+	Panel:ControlHelp("Default chance is 4.")
 	
 	/*
 	Panel:AddControl("Checkbox", {Label = "Juggernaut Napalm Walks?", Command = "VJ_ToTU_MilZ_Jugg_NapalmWalk"})
@@ -1168,40 +1208,44 @@ end
 	combobox_bullvoice.Options["Both"] = {VJ_ToTU_MilZ_Bull_Voice = 2}
 	Panel:AddControl("ComboBox", combobox_bullvoice)
 	
-	local combobox_detsounds = {Options = {}, CVars = {}, Label = "Gasmask Sounds?", MenuButton = "0"}
-	combobox_detsounds.Options["NH2 Security"] = {VJ_ToTU_MilZ_Det_Sounds = 0}
-	combobox_detsounds.Options["DL Gas Tanks"] = {VJ_ToTU_MilZ_Det_Sounds = 1}
-	combobox_detsounds.Options["Both"] = {VJ_ToTU_MilZ_Det_Sounds = 2}
+	local combobox_detsounds = {Options = {}, CVars = {}, Label = "Detonator sounds.", MenuButton = "0"}
+	combobox_detsounds.Options["Nightmare House 2 Security Zombie"] = {VJ_ToTU_MilZ_Det_Sounds = 0}
+	combobox_detsounds.Options["Dying Light 1 Gas Tank"] = {VJ_ToTU_MilZ_Det_Sounds = 1}
+	combobox_detsounds.Options["Use Both"] = {VJ_ToTU_MilZ_Det_Sounds = 2}
 	Panel:AddControl("ComboBox", combobox_detsounds)
 	
-	Panel:AddControl("Checkbox", {Label = "Detonators Have Breakable Faceplates?", Command = "VJ_ToTU_MilZ_Det_Faceplate_Breakable"})
+	Panel:AddControl("Checkbox", {Label = "Detonators have breakable faceplates?", Command = "VJ_ToTU_MilZ_Det_Faceplate_Breakable"})
 	Panel:ControlHelp("If enabled, Detonator faceplates can be broken if damaged enough.")
 	
-	Panel:AddControl("Slider", {Label = "Detonator Faceplate Health?", Command = "VJ_ToTU_MilZ_Det_Faceplate_Health", Min = 1, Max = 10000})
+	Panel:AddControl("Slider", {Label = "Detonator faceplate health.", Command = "VJ_ToTU_MilZ_Det_Faceplate_Health", Min = 1, Max = 10000})
 	Panel:ControlHelp("Health Detonator faceplates will have.")
 	Panel:ControlHelp("Default ammount is 50.")
 	
-	Panel:AddControl("Checkbox", {Label = "Detonators Infect Victims?", Command = "VJ_ToTU_MilZ_Det_Infection"})
+	Panel:AddControl("Checkbox", {Label = "Detonators infect victims?", Command = "VJ_ToTU_MilZ_Det_Infection"})
 	Panel:ControlHelp("If enabled, Detonators and Bulk Detonators will infect stuff they kill.")
 
-	local combobox_detlight = {Options = {}, CVars = {}, Label = "Detonator Lights?", MenuButton = "0"}
+	local combobox_detlight = {Options = {}, CVars = {}, Label = "Detonator lights.", MenuButton = "0"}
 	combobox_detlight.Options["Disable Entirely"] = {VJ_ToTU_MilZ_Det_BombLights = 0}
 	combobox_detlight.Options["Sprite Only"] = {VJ_ToTU_MilZ_Det_BombLights = 1}
 	combobox_detlight.Options["Sprite and Light"] = {VJ_ToTU_MilZ_Det_BombLights = 2}
 	Panel:AddControl("ComboBox", combobox_detlight)
 		
-	Panel:AddControl("Slider", {Label = "Ghost Cloak Device Health?", Command = "VJ_ToTU_MilZ_Ghost_Cloak_Health", Min = 1, Max = 10000})
-	Panel:ControlHelp("Health a Ghosts' Cloak Device will have.")
+	Panel:AddControl("Slider", {Label = "Ghost cloak device health.", Command = "VJ_ToTU_MilZ_Ghost_Cloak_Health", Min = 1, Max = 10000})
+	Panel:ControlHelp("Health a Ghosts' cloak device will have.")
 	Panel:ControlHelp("Default ammount is 100.")
 	
-	Panel:AddControl("Checkbox", {Label = "Ghosts' Cloak Recharges?", Command = "VJ_ToTU_MilZ_Ghost_Cloak_Recharge"})
-	Panel:ControlHelp("If enabled, a Ghosts' Cloak Device will recharge after a bit when it's broken.")
-	Panel:ControlHelp("If disabled, the Cloak Device will remain permanently broken when destroyed.")
+	Panel:AddControl("Checkbox", {Label = "Ghosts' cloak recharges?", Command = "VJ_ToTU_MilZ_Ghost_Cloak_Recharge"})
+	Panel:ControlHelp("If enabled, a Ghosts' cloak device will recharge after a bit when it's broken.")
+	Panel:ControlHelp("If disabled, the cloak device will remain permanently broken when destroyed.")
 	
-	Panel:AddControl("Checkbox", {Label = "Ghost Flees While Charging Cloak?", Command = "VJ_ToTU_MilZ_Ghost_Cloak_Recharge_RunWhileCharging"})
-	Panel:ControlHelp("If enabled, Ghosts will attempt to flee while their Cloak Device is recharging.")
+	Panel:AddControl("Checkbox", {Label = "Ghost flees while charging cloak?", Command = "VJ_ToTU_MilZ_Ghost_Cloak_Recharge_RunWhileCharging"})
+	Panel:ControlHelp("If enabled, Infected Ghosts will attempt to flee while their cloak device is recharging.")
 	Panel:ControlHelp("They will only do this is their current enemy is far enough.")
-	Panel:ControlHelp("If Cloak Recharging is disabled, then this convar doesn't do anything.")
+	Panel:ControlHelp("If cloak recharging is disabled, then this convar doesn't do anything.")
+	
+	Panel:ControlHelp("--------------------------------------------------------")
+	Panel:AddControl( "Label", {Text = "Nightkin"})
+	Panel:ControlHelp("--------------------------------------------------------")
 	
 	Panel:AddControl("Checkbox", {Label = "Nightkin can cause bleeding?", Command = "VJ_ToTU_Nightkin_General_Bleed"})
 	Panel:ControlHelp("If enabled, Nightkin melee attacks can occasionally cause their target to bleed, doing damage over time.")
@@ -1209,37 +1253,42 @@ end
 	Panel:AddControl("Checkbox", {Label = "Squallers can spawn with Iron Will?", Command = "VJ_ToTU_Nightkin_Squaller_IronWill"})
 	Panel:ControlHelp("If enabled, Squallers can sometimes spawn with Iron Will.")
 	Panel:ControlHelp("If they have it, it triggers a bit after death.")
-	Panel:ControlHelp("When triggered, the following will happen:")
-	Panel:ControlHelp("-The Squaller will revive itself.")
-	Panel:ControlHelp("-The Squaller will recieve half of its max hp.")
-	Panel:ControlHelp("-The Squaller will gain massive damage resistance.")
-	Panel:ControlHelp("-The Squaller will gain a glow effect.")
-	Panel:ControlHelp("-The Squaller will be redueced to Super Sprinting instead of Rushing.")
-	Panel:ControlHelp("-The Squaller will die after 12 seconds.")
+	Panel:ControlHelp("When triggered, the following will happen to the Squaller:")
+	Panel:ControlHelp("+ It will revive itself.")
+	Panel:ControlHelp("+ It will recieve half of its max hp.")
+	Panel:ControlHelp("+ It will gain massive damage resistance.")
+	Panel:ControlHelp("+ It cannot be crippled.")
+	Panel:ControlHelp("= It will gain a glow effect.")
+	Panel:ControlHelp("- It will be redueced to Super Sprinting instead of Rushing.")
+	Panel:ControlHelp("- It will die after 12 seconds.")
 	
-	Panel:AddControl("Slider", {Label = "Squaller Iron Will Chance?", Command = "VJ_ToTU_Nightkin_Squaller_IronWill_Chance", Min = 1, Max = 10000})
+	Panel:AddControl("Slider", {Label = "Squaller Iron Will chance.", Command = "VJ_ToTU_Nightkin_Squaller_IronWill_Chance", Min = 1, Max = 10000})
 	Panel:ControlHelp("Chance that a Squaller will spawn with Iron Will.")
 	Panel:ControlHelp("Default chance is 3.")
 	
-	Panel:AddControl("Checkbox", {Label = "Enable Carcass Exploders?", Command = "VJ_ToTU_Weaponized_Carcass_Exploders"})
+	Panel:ControlHelp("--------------------------------------------------------")
+	Panel:AddControl( "Label", {Text = "Weaponized/Lab Specimens"})
+	Panel:ControlHelp("--------------------------------------------------------")
+	
+	Panel:AddControl("Checkbox", {Label = "Enable Carcass exploders?", Command = "VJ_ToTU_Weaponized_Carcass_Exploders"})
 	Panel:ControlHelp("If enabled, Carcass can sometimes spawn as exploders.")
 	Panel:ControlHelp("Unbelievably, they explode when they die.")
 	Panel:ControlHelp("They also shoot out projectiles because reasons.")
 	
-	Panel:AddControl("Slider", {Label = "Carcass Exploder Chance?", Command = "VJ_ToTU_Weaponized_Carcass_Exploders_Chance", Min = 1, Max = 10000})
+	Panel:AddControl("Slider", {Label = "Carcass exploder chance.", Command = "VJ_ToTU_Weaponized_Carcass_Exploders_Chance", Min = 1, Max = 10000})
 	Panel:ControlHelp("Chance that a Carcass will spawn as an Exploder.")
 	Panel:ControlHelp("Default chance is 4.")
 	
-	Panel:AddControl("Checkbox", {Label = "Carcasses can Zombine Run?", Command = "VJ_ToTU_Weaponized_Carcass_ZombineRunning"})
+	Panel:AddControl("Checkbox", {Label = "Carcasses can Zombine run?", Command = "VJ_ToTU_Weaponized_Carcass_ZombineRunning"})
 	Panel:ControlHelp("If enabled, Carcass can run like Zombines every now and then.")
 	
-	Panel:AddControl("Checkbox", {Label = "Carcass Thoraxes can Super Crawl?", Command = "VJ_ToTU_Weaponized_Carcass_Torso_SuperCrawl"})
+	Panel:AddControl("Checkbox", {Label = "Carcass Thoraxes can super crawl?", Command = "VJ_ToTU_Weaponized_Carcass_Torso_SuperCrawl"})
 	Panel:ControlHelp("If enabled, Carcass Thoraxes can crawl fast every now and then.")
 	
-	Panel:AddControl("Checkbox", {Label = "Enable Cyst Exploders?", Command = "VJ_ToTU_Weaponized_Cyst_Exploders"})
+	Panel:AddControl("Checkbox", {Label = "Enable Cyst exploders?", Command = "VJ_ToTU_Weaponized_Cyst_Exploders"})
 	Panel:ControlHelp("If enabled, Cysts can sometimes spawn as exploders.")
 	
-	Panel:AddControl("Slider", {Label = "Cyst Exploder Chance?", Command = "VJ_ToTU_Weaponized_Cyst_Exploders_Chance", Min = 1, Max = 10000})
+	Panel:AddControl("Slider", {Label = "Cyst exploder chance.", Command = "VJ_ToTU_Weaponized_Cyst_Exploders_Chance", Min = 1, Max = 10000})
 	Panel:ControlHelp("Chance that a Cyst will spawn as an Exploder.")
 	Panel:ControlHelp("Default chance is 4.")
 	
@@ -1248,6 +1297,30 @@ end
 	
 	Panel:AddControl("Checkbox", {Label = "Cysts take damage when range attacking?", Command = "VJ_ToTU_Weaponized_Cyst_HurtOnRanged"})
 	Panel:ControlHelp("If enabled, Cysts will take damage when they use their ranged attack.")
+
+	Panel:AddControl("Checkbox", {Label = "Smogs faceplate is breakable?", Command = "VJ_ToTU_Weaponized_Smog_Faceplate_Breakable"})
+	Panel:ControlHelp("If enabled, Smogs faceplate can be broken after taking enough damage.")
+	
+	Panel:AddControl("Slider", {Label = "Smog faceplate health.", Command = "VJ_ToTU_Weaponized_Smog_Faceplate_Health", Min = 1, Max = 10000})
+	Panel:ControlHelp("Health that Smogs faceplate will have.")
+	Panel:ControlHelp("Default ammount is 500.")
+	
+	Panel:AddControl("Checkbox", {Label = "Smogs tank is breakable?", Command = "VJ_ToTU_Weaponized_Smog_Tank_Breakable"})
+	Panel:ControlHelp("If enabled, shooting the tank on Smogs back enough will cause it to leak.")
+	Panel:ControlHelp("If it's leaking, Smog can no longer spray biotoxin, but also gains aoe damage around himself.")
+	
+	Panel:AddControl("Slider", {Label = "Smog tank health.", Command = "VJ_ToTU_Weaponized_Smog_Tank_Health", Min = 1, Max = 10000})
+	Panel:ControlHelp("Health Smogs biotoxin tank will have.")
+	Panel:ControlHelp("Default ammount is 35.")
+	
+	local combobox_smogbloody = {Options = {}, CVars = {}, Label = "Smog uses bloody model?", MenuButton = "0"}
+	combobox_smogbloody.Options["Use It"] = {VJ_ToTU_Weaponized_Smog_Bloody = 0}
+	combobox_smogbloody.Options["Don't Use It"] = {VJ_ToTU_Weaponized_Smog_Bloody = 1}
+	combobox_smogbloody.Options["Use Both"] = {VJ_ToTU_Weaponized_Smog_Bloody = 2}
+	Panel:AddControl("ComboBox", combobox_smogbloody)
+	
+	
+	
 	-- Panel:AddControl("Checkbox", {Label ="Enable Realism Mode?", Command ="vj_LN_TOTU_RealismMode"})
 	-- Panel:ControlHelp("Enabling Realism Mode will cause the following:")
 	-- Panel:ControlHelp("-Chelonioidea will have their sight range and hear distance severely reduced, but breaking their faceplate will restore both.")
