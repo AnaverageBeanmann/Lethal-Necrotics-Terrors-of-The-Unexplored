@@ -1084,7 +1084,7 @@ end
 	
 	
 	Panel:AddControl("Slider", {Label = "Rusher spawn chance.", Command = "VJ_ToTU_General_Rushers_Chance", Min = 1, Max = 10000})
-	Panel:ControlHelp("Chance that an infected will spawn as a rusher.")
+	Panel:ControlHelp("Chance that a zombie will spawn as a rusher.")
 	Panel:ControlHelp("Default chance is 5.")
 	
 	Panel:AddControl("Checkbox", {Label = "Downward jumps only?", Command = "VJ_ToTU_General_Jump_DownOnly"})
