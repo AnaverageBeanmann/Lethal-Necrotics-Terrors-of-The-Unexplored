@@ -1,0 +1,14 @@
+"VertexlitGeneric"
+{
+	"$basetexture" "models\totu\tank\jager_met"
+	"$bumpmap" "models\totu\tank\jager_met_n2"
+ 	"$phong" "1"
+	"$phongexponent" "94.8"
+	"$phongboost"	"0.35"
+	"$phongfresnelranges"	"[.1 .1 1]"
+	"$selfillum" 1
+                "$detail" "models\totu\detail\ci_detail_dirt"
+                "$detailscale" 3.45
+                "$detailblendfactor" 0.60
+                "$detailblendmode" 0
+}
