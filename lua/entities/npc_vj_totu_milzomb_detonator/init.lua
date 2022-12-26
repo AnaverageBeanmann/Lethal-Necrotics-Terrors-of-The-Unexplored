@@ -15,8 +15,11 @@ function ENT:Zombie_CustomOnThink_AIEnabled()
 			VJ_EmitSound(self,{"fx/detonator_beep.mp3"},75,math.random(100,100))
 			
 		else
-		
+			if self.MiLZ_Det_Hector then
+			VJ_EmitSound(self,{"fx/egg/ding.mp3"},70,math.random(100,100))
+			else
 			VJ_EmitSound(self,{"fx/detonator_beep.mp3"},65,math.random(100,100))
+			end
 		
 		end
 		
@@ -105,6 +108,22 @@ function ENT:Zombie_CustomOnMeleeAttack_BeforeStartTimer()
 			else
 				self.AnimTbl_MeleeAttack = {"vjseq_crawl_idle2"}
 			end
+		end
+		
+		if self:GetClass() == "npc_vj_totu_milzomb_detonator" then
+		
+		self.SoundTbl_BeforeMeleeAttack = {
+		"voices/det/pain_critical_1.mp3",
+		"voices/det/pain_critical_2.mp3",
+		"voices/det/pain_critical_3.mp3"
+		}
+		if GetConVar("VJ_ToTU_General_EasterEggs"):GetInt() == 1 then
+			if math.random(1,100) == 1 then
+			timer.Simple(0.7,function() if IsValid(self) && !self.Dead then
+				VJ_EmitSound(self,{"fx/egg/HAAAAH.mp3"},150,math.random(100,100))
+			end end)
+		end
+		end
 		end
 		
 		VJ_EmitSound(self,{"fx/detonator_preexplode.mp3"},100,math.random(100,100))

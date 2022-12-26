@@ -28,6 +28,7 @@ ENT.MilZ_Det_DeathExplosionAllowed = false
 ENT.MilZ_Det_Beep_BeepT = 0
 ENT.MilZ_Det_Beep_CanBeep = true
 ENT.MilZ_Det_Faceplate_StartingHP = 1
+ENT.MiLZ_Det_Hector = false
 
 ENT.MilZ_Ghost_CloakBroke = false
 ENT.MilZ_Ghost_CloakHP = 1
@@ -36,8 +37,8 @@ ENT.MilZ_Ghost_CloakT = 0
 ENT.MilZ_Ghost_CloakDamageable = true
 ENT.MilZ_Ghost_CloakRechargable = true
 
-ENT.MilZ_Ghille_Walker_PlayChangeStateAnim = 1
-ENT.MilZ_Ghille_Walker_PlayChangeStateAnim_T = CurTime()
+ENT.MilZ_Ghille_PlayChangeStateAnim = 1
+ENT.MilZ_Ghille_PlayChangeStateAnim_T = CurTime()
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:Zombie_CustomOnPreInitialize()
 
@@ -187,6 +188,12 @@ function ENT:Zombie_CustomOnPreInitialize()
 	
 		self.Model = {"models/totu/detonator.mdl"}
 		
+		if GetConVar("VJ_ToTU_General_EasterEggs"):GetInt() == 1 then
+		if math.random(1,100) == 1 then
+			self.MiLZ_Det_Hector = true
+		end
+		end
+		
 	elseif self:GetClass() == "npc_vj_totu_milzomb_detonator_bulk" then
 	
 		self.Model = {"models/totu/detonator_bulk.mdl"}
@@ -228,8 +235,11 @@ function ENT:Zombie_CustomOnPreInitialize()
 		end
 		
 		if self:GetClass() == "npc_vj_totu_milzomb_tank" then
+		if GetConVar("VJ_ToTU_MilZ_Tank_NMRIHWalks"):GetInt() == 1 then
+		
 			self.AnimTbl_Walk = {ACT_WALK_RELAXED}
 			self.AnimTbl_Run = {ACT_WALK_RELAXED}
+			end
 			self.ToTU_CanUseMovingAttacks = false
 			self.AnimTbl_MeleeAttack = {
 				"vjseq_nz_attack_stand_ad_1",
@@ -324,6 +334,12 @@ function ENT:Zombie_CustomOnInitialize()
 	
 		self:SetCollisionBounds(Vector(13, 13, 68), Vector(-13, -13, 0))
 		
+	end
+	
+	if self:GetClass() == "npc_vj_totu_milzomb_tank" then
+		
+		self.MeleeAttackDistance = 25
+		self.MeleeAttackDamageDistance = 50
 	end
 	
 	if self:GetClass() == "npc_vj_totu_milzomb_detonator" or self:GetClass() == "npc_vj_totu_milzomb_detonator_bulk" or self:GetClass() == "npc_vj_totu_milzomb_tank" then return end
@@ -578,17 +594,17 @@ function ENT:Zombie_CustomOnThink_AIEnabled()
 			end
 		end
 	end
-	if self:GetClass() == "npc_vj_totu_milzomb_ghillie" then
-	if self.Dead == false && self:GetEnemy() != nil && self.VJ_IsBeingControlled == false && !self.LNR_Crippled then
-		local enemydist = self:GetPos():Distance(self:GetEnemy():GetPos())
-		if enemydist >= 150 then
-			self.AnimTbl_Run = {ACT_RUN_STEALTH}
-		else
-			self.AnimTbl_Run = {ACT_RUN_RELAXED}
-		end
-	end
-	end
-	if self:GetClass() == "npc_vj_totu_milzomb_ghillie_walker" then
+	-- if self:GetClass() == "npc_vj_totu_milzomb_ghillie" then
+	-- if self.Dead == false && self:GetEnemy() != nil && self.VJ_IsBeingControlled == false && !self.LNR_Crippled then
+		-- local enemydist = self:GetPos():Distance(self:GetEnemy():GetPos())
+		-- if enemydist >= 150 then
+			-- self.AnimTbl_Run = {ACT_RUN_STEALTH}
+		-- else
+			-- self.AnimTbl_Run = {ACT_RUN_RELAXED}
+		-- end
+	-- end
+	-- end
+	if self:GetClass() == "npc_vj_totu_milzomb_ghillie" or self:GetClass() == "npc_vj_totu_milzomb_ghillie_walker" then
 	if self.Dead == false && self:GetEnemy() != nil && self.VJ_IsBeingControlled == false && !self.LNR_Crippled then
 		local enemydist = self:GetPos():Distance(self:GetEnemy():GetPos())
 		
@@ -609,19 +625,91 @@ function ENT:Zombie_CustomOnThink_AIEnabled()
 		then
 		return end
 		
-		if enemydist >= 150 && self.MilZ_Ghille_Walker_PlayChangeStateAnim == 1 && CurTime() > self.MilZ_Ghille_Walker_PlayChangeStateAnim_T then
-			self:ToTU_Ghille_Walker_StartCrawling()
-			self.MilZ_Ghille_Walker_PlayChangeStateAnim_T = CurTime() + (3)
+		if enemydist >= 150 && self.MilZ_Ghille_PlayChangeStateAnim == 1 && CurTime() > self.MilZ_Ghille_PlayChangeStateAnim_T then
+			self:ToTU_Ghille_StartCrawling()
+			self.MilZ_Ghille_PlayChangeStateAnim_T = CurTime() + (3)
 			local anim = {"vjseq_Stand_to_crouch"}				
 			self:VJ_ACT_PLAYACTIVITY(anim,true,false,false)
-		elseif enemydist <= 149 && self.MilZ_Ghille_Walker_PlayChangeStateAnim == 2 && CurTime() > self.MilZ_Ghille_Walker_PlayChangeStateAnim_T then
-			self:ToTU_Ghille_Walker_GetTheUp()
-			self.MilZ_Ghille_Walker_PlayChangeStateAnim_T = CurTime() + (3)
+		elseif enemydist <= 149 && self.MilZ_Ghille_PlayChangeStateAnim == 2 && CurTime() > self.MilZ_Ghille_PlayChangeStateAnim_T then
+			self:ToTU_Ghille_GetTheUp()
+			self.MilZ_Ghille_PlayChangeStateAnim_T = CurTime() + (3)
 			local anim = {"vjseq_Crouch_to_stand"}				
 			self:VJ_ACT_PLAYACTIVITY(anim,true,false,false)
 		end
 	end
 	end
+end
+---------------------------------------------------------------------------------------------------------------------------------------------
+function ENT:ToTU_Ghille_StartCrawling()
+
+	self.CanTurnWhileStationary = false
+	
+	if self.LNR_Walker then
+		self.AnimTbl_IdleStand = {ACT_CROUCHIDLE}
+		self.AnimTbl_Walk = {ACT_WALK_CROUCH_AIM}
+		self.AnimTbl_Run = {ACT_WALK_CROUCH_AIM}
+	else
+		self.AnimTbl_IdleStand = {ACT_CROUCHIDLE}
+		self.AnimTbl_Walk = {ACT_WALK_CROUCH_AIM}
+		self.AnimTbl_Run = {ACT_RUN_STEALTH}
+	end
+	
+	-- self:SetCollisionBounds(Vector(13,13,26),Vector(-13,-11,0))
+	
+	self.VJC_Data = {
+	CameraMode = 1, 
+	ThirdP_Offset = Vector(30, 25, -20), 
+	FirstP_Bone = "ValveBiped.Bip01_Head1", 
+	FirstP_Offset = Vector(5, 0, -1), 
+}	
+
+	self:CapabilitiesRemove(bit.bor(CAP_MOVE_JUMP))
+	self:CapabilitiesRemove(bit.bor(CAP_MOVE_CLIMB))
+	self.HasDeathAnimation = false
+	self.MilZ_Ghille_PlayChangeStateAnim = 2
+	
+end
+---------------------------------------------------------------------------------------------------------------------------------------------
+function ENT:ToTU_Ghille_GetTheUp()
+
+	self.CanTurnWhileStationary = true
+	
+	if self.LNR_Walker then	 
+		self.AnimTbl_IdleStand = {ACT_IDLE}
+		if self.LNR_UsingRelaxedIdle == true then
+			self.AnimTbl_IdleStand = {ACT_IDLE_RELAXED}
+		end
+		self.AnimTbl_Walk = {ACT_WALK}
+		self.AnimTbl_Run = {ACT_WALK}
+		if self.LNR_Runner == true then
+			self.AnimTbl_Run = {ACT_RUN}
+		end
+	else
+		self.AnimTbl_IdleStand = {ACT_IDLE}
+		if self.LNR_UsingRelaxedIdle == true then
+			self.AnimTbl_IdleStand = {ACT_IDLE_RELAXED}
+		end
+		self.AnimTbl_Walk = {ACT_SPRINT}
+		self.AnimTbl_Run = {ACT_RUN_RELAXED}
+	end
+
+	-- self:SetCollisionBounds(Vector(13, 13, 70), Vector(-13, -13, 0))
+	
+	self.VJC_Data = {
+	CameraMode = 1,
+	ThirdP_Offset = Vector(40, 20, -50),
+	FirstP_Bone = "ValveBiped.Bip01_Head1",
+	FirstP_Offset = Vector(0, 0, 5),
+}
+
+	self.HasDeathAnimation = true
+	self.MilZ_Ghille_PlayChangeStateAnim = 1
+	
+	if GetConVar("VJ_LNR_JumpClimb"):GetInt() == 0 or self.LNR_Crawler or self.LNR_Crippled then return end
+	
+	self:CapabilitiesAdd(bit.bor(CAP_MOVE_JUMP))
+	self:CapabilitiesAdd(bit.bor(CAP_MOVE_CLIMB))
+	
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:RangeAttackCode_GetShootPos(projectile)

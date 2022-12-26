@@ -104,6 +104,51 @@ ENT.MilZ_Bulldozer_NextSprintT = 0
 ENT.MilZ_Jugg_RunTime = 0
 ENT.MilZ_Bulldozer_RunTime = 0
 
+ENT.ToTU_DoorBreakModels_Wood = {
+	"models/props_c17/door02_double.mdl",
+	"models/props_doors/doormain01.mdl",
+	"models/props_doors/doormain01_airport_small.mdl",
+	"models/props_doors/doormain01_airport.mdl",
+	"models/props_doors/doormain01_small.mdl",
+	"models/props_doors/doormain_rural01.mdl",
+	"models/props_doors/doormain_rural01_small.mdl",
+	"models/props_downtown/door_interior_128_01.mdl",
+	"models/props_downtown/door_interior_112_01.mdl"
+	}
+ENT.ToTU_DoorBreakModels_Metal = {
+	"models/combine_gate_vehicle.mdl",
+	"models/combine_gate_citizen.mdl",
+	"models/props_combine/combine_door01.mdl",
+	"models/props_c17/door03_left.mdl",
+	"models/props_doors/checkpoint_door_-02.mdl",
+	"models/props_doors/checkpoint_door_02.mdl",
+	"models/props_doors/door03_slotted_left.mdl",
+	"models/props_doors/doorfreezer01.mdl",
+	"models/props_doors/doorklab01.mdl",
+	"models/props_doors/doormainmetalsmall01.mdl",
+	"models/props_doors/doormainmetal01.mdl",
+	"models/props_doors/doormainmetalwindow01.mdl",
+	"models/props_doors/doormainmetalwindowsmall01.mdl",
+	"models/props_downtown/metal_door_112.mdl",
+	}
+ENT.ToTU_DoorBreakModels_Gate = {
+	"models/props_lab/elevatordoor.mdl",
+	"models/props_mining/elevator01_cagedoor.mdl"
+	}
+ENT.ToTU_DoorBreakModels_Glass = {
+	"models/props_doors/door_rotate_112.mdl"
+	}
+ENT.ToTU_DoorBreakModels_GatedMetal = {
+	"models/props_mining/techgate01.mdl",
+	"models/props_doors/checkpoint_door_01.mdl",
+	"models/props_doors/checkpoint_door_-01.mdl"
+	}
+ENT.ToTU_DoorBreakModels_Frame = {
+	"models/props_doors/doorglassmain01.mdl",
+	"models/props_doors/door_sliding_112.mdl",
+	"models/props_doors/doorglassmain01_small.mdl"
+	}
+
 -- ENT.CanMutate = false
 -- ENT.Mutated = false
 -- ENT.CanBurntate = false
@@ -317,8 +362,10 @@ function ENT:CustomOnPreInitialize()
 		"vjseq_nz_taunt_2",
 		"vjseq_nz_taunt_7",
 		}
+		if GetConVar("VJ_ToTU_MilZ_Det_Bulk_NMRIHWalks"):GetInt() == 1 then
 		self.AnimTbl_Walk = {ACT_WALK_RELAXED}
 		self.AnimTbl_Run = {ACT_WALK_RELAXED}
+		end
 		self.LNR_Walker = true
 		self.LNR_Infected = false
 	end
@@ -361,15 +408,37 @@ function ENT:CustomOnInitialize()
 			self.AnimTbl_IdleStand = {ACT_IDLE_RELAXED}
 		end
 		
-		if GetConVar("VJ_LNR_Runner"):GetInt() == 1 && self:GetClass() != "npc_vj_totu_milzomb_detonator_bulk" && self:GetClass() != "npc_vj_totu_milzomb_tank" then
-			if math.random(1,GetConVar("VJ_ToTU_General_Runners_Chance"):GetInt()) == 1 && !self.LNR_Infected then 
-				self.LNR_Runner = true
-				self.AnimTbl_Run = {ACT_RUN}
+		if GetConVar("VJ_LNR_Runner"):GetInt() == 1 then
+			if math.random(1,GetConVar("VJ_ToTU_General_Runners_Chance"):GetInt()) == 1 && !self.LNR_Infected then
+				-- there's probably a better way to do this
+				if self:GetClass() == "npc_vj_totu_milzomb_detonator_bulk" then
+					if GetConVar("VJ_ToTU_MilZ_Det_Bulk_SubtypeBlacklisted"):GetInt() == 0 then
+						self.LNR_Runner = true
+						self.AnimTbl_Run = {ACT_RUN}
+					end
+				end
+				if self:GetClass() == "npc_vj_totu_milzomb_tank" then
+					if GetConVar("VJ_ToTU_MilZ_Tank_SubtypeBlacklisted"):GetInt() == 0 then
+						self.LNR_Runner = true
+						self.AnimTbl_Run = {ACT_RUN}
+					end
+				end
+				if self:GetClass() != "npc_vj_totu_milzomb_tank" && self:GetClass() != "npc_vj_totu_milzomb_detonator_bulk" then
+					self.LNR_Runner = true
+					self.AnimTbl_Run = {ACT_RUN}
+				end
 			end
 		end
 		
 		if GetConVar("VJ_LNR_Biter"):GetInt() == 1 then
-			if math.random(1,3) == 1 && !self.LNR_Infected && self:GetClass() != "npc_vj_totu_milzomb_ghost_walker" && self:GetClass() != "npc_vj_totu_milzomb_juggernaut" && self:GetClass() != "npc_vj_totu_milzomb_tank" && self:GetClass() != "npc_vj_totu_milzomb_ghillie_walker" && !self.MilZ_HasGasmask then 
+			if math.random(1,3) == 1 && 
+				!self.LNR_Infected && 
+				self:GetClass() != "npc_vj_totu_milzomb_ghost_walker" && 
+				self:GetClass() != "npc_vj_totu_milzomb_juggernaut" && 
+				self:GetClass() != "npc_vj_totu_milzomb_tank" && 
+				self:GetClass() != "npc_vj_totu_milzomb_ghillie_walker" && 
+				!self.MilZ_HasGasmask 
+			then 
 				self.LNR_Biter = true
 			end
 		end
@@ -387,15 +456,23 @@ function ENT:CustomOnInitialize()
 		if self.LNR_Infected then
 		
 			if 
-				GetConVar("VJ_LNR_SuperSprinter"):GetInt() == 1 && 
-				self:GetClass() != "npc_vj_totu_milzomb_detonator" && 
+				GetConVar("VJ_LNR_SuperSprinter"):GetInt() == 1 &&
 				self:GetClass() != "npc_vj_totu_nightkin_squaller" && 
 				self:GetClass() != "npc_vj_totu_nightkin_scylla" 
 			then 
 				if math.random(1,GetConVar("VJ_ToTU_General_SuperSprinters_Chance"):GetInt()) == 1 then
-					self.LNR_SuperSprinter = true
-					self.AnimTbl_Walk = {ACT_RUN_AIM}
-					self.AnimTbl_Run = {ACT_RUN_AIM}
+					if self:GetClass() == "npc_vj_totu_milzomb_detonator" then
+						if GetConVar("VJ_ToTU_MilZ_Det_SubtypeBlacklisted"):GetInt() == 0 then
+							self.LNR_SuperSprinter = true
+							self.AnimTbl_Walk = {ACT_RUN_AIM}
+							self.AnimTbl_Run = {ACT_RUN_AIM}
+						end
+					end
+					if self:GetClass() != "npc_vj_totu_milzomb_detonator" then
+						self.LNR_SuperSprinter = true
+						self.AnimTbl_Walk = {ACT_RUN_AIM}
+						self.AnimTbl_Run = {ACT_RUN_AIM}
+					end
 				end
 			end
 			
@@ -415,41 +492,87 @@ function ENT:CustomOnInitialize()
 		elseif GetConVar("VJ_ToTU_General_Rushers_Allow"):GetInt() == 1 then
 			if self.LNR_Infected then
 				if math.random(1,GetConVar("VJ_ToTU_General_Rushers_Chance"):GetInt()) == 1 && 
-					self:GetClass() != "npc_vj_totu_milzomb_detonator" && 
 					self:GetClass() != "npc_vj_totu_nightkin_scylla" 
 				then
+					if self:GetClass() == "npc_vj_totu_milzomb_detonator" then
+						if GetConVar("VJ_ToTU_MilZ_Det_SubtypeBlacklisted"):GetInt() == 0 then
 					self.AnimTbl_Walk = {ACT_SPRINT}
 					self.AnimTbl_Run = {ACT_RUN_RELAXED}
 					self.ToTU_Rusher = true
+						end
+					end
+					if self:GetClass() != "npc_vj_totu_milzomb_detonator" then
+					self.AnimTbl_Walk = {ACT_SPRINT}
+					self.AnimTbl_Run = {ACT_RUN_RELAXED}
+					self.ToTU_Rusher = true
+					end
 				end
 			end
 		elseif GetConVar("VJ_ToTU_General_Rushers_Allow"):GetInt() == 2 then
 			if self.LNR_Walker then
-				if math.random(1,GetConVar("VJ_ToTU_General_Rushers_Chance"):GetInt()) == 1 &&
-					self:GetClass() != "npc_vj_totu_milzomb_detonator_bulk" &&
-					self:GetClass() != "npc_vj_totu_milzomb_tank"
-				then
+				if math.random(1,GetConVar("VJ_ToTU_General_Rushers_Chance"):GetInt()) == 1 then
+					
+				if self:GetClass() == "npc_vj_totu_milzomb_detonator_bulk" then
+					if GetConVar("VJ_ToTU_MilZ_Det_Bulk_SubtypeBlacklisted"):GetInt() == 0 then
 					self.AnimTbl_Walk = {ACT_RUN}
 					self.AnimTbl_Run = {ACT_SPRINT}
 					self.ToTU_Rusher = true
+					end
+				end
+				if self:GetClass() == "npc_vj_totu_milzomb_tank" then
+					if GetConVar("VJ_ToTU_MilZ_Tank_SubtypeBlacklisted"):GetInt() == 0 then
+					self.AnimTbl_Walk = {ACT_RUN}
+					self.AnimTbl_Run = {ACT_SPRINT}
+					self.ToTU_Rusher = true
+					end
+				end
+				
+				if self:GetClass() != "npc_vj_totu_milzomb_tank" && self:GetClass() != "npc_vj_totu_milzomb_detonator_bulk" then
+					self.AnimTbl_Walk = {ACT_RUN}
+					self.AnimTbl_Run = {ACT_SPRINT}
+					self.ToTU_Rusher = true
+				end
 				end
 			end
 		elseif GetConVar("VJ_ToTU_General_Rushers_Allow"):GetInt() == 3 then
-			if math.random(1,GetConVar("VJ_ToTU_General_Rushers_Chance"):GetInt()) == 1 && 
-				self:GetClass() != "npc_vj_totu_milzomb_detonator" &&
-				self:GetClass() != "npc_vj_totu_nightkin_scylla" &&
-				self:GetClass() != "npc_vj_totu_milzomb_detonator_bulk" &&
-				self:GetClass() != "npc_vj_totu_milzomb_tank"
+			if math.random(1,GetConVar("VJ_ToTU_General_Rushers_Chance"):GetInt()) == 1 &&
+				self:GetClass() != "npc_vj_totu_nightkin_scylla"
 			then
 				if self.LNR_Infected then
+					if self:GetClass() == "npc_vj_totu_milzomb_detonator" then
+						if GetConVar("VJ_ToTU_MilZ_Det_SubtypeBlacklisted"):GetInt() == 0 then
 					self.AnimTbl_Walk = {ACT_SPRINT}
 					self.AnimTbl_Run = {ACT_RUN_RELAXED}
 					self.ToTU_Rusher = true
+						end
+					end
+					if self:GetClass() != "npc_vj_totu_milzomb_detonator" then
+					self.AnimTbl_Walk = {ACT_SPRINT}
+					self.AnimTbl_Run = {ACT_RUN_RELAXED}
+					self.ToTU_Rusher = true
+					end
 				end
 				if self.LNR_Walker then
+				if self:GetClass() == "npc_vj_totu_milzomb_detonator_bulk" then
+					if GetConVar("VJ_ToTU_MilZ_Det_Bulk_SubtypeBlacklisted"):GetInt() == 0 then
 					self.AnimTbl_Walk = {ACT_RUN}
 					self.AnimTbl_Run = {ACT_SPRINT}
 					self.ToTU_Rusher = true
+					end
+				end
+				if self:GetClass() == "npc_vj_totu_milzomb_tank" then
+					if GetConVar("VJ_ToTU_MilZ_Tank_SubtypeBlacklisted"):GetInt() == 0 then
+					self.AnimTbl_Walk = {ACT_RUN}
+					self.AnimTbl_Run = {ACT_SPRINT}
+					self.ToTU_Rusher = true
+					end
+				end
+				
+				if self:GetClass() != "npc_vj_totu_milzomb_tank" && self:GetClass() != "npc_vj_totu_milzomb_detonator_bulk" then
+					self.AnimTbl_Walk = {ACT_RUN}
+					self.AnimTbl_Run = {ACT_SPRINT}
+					self.ToTU_Rusher = true
+				end
 				end
 			end
 		end
@@ -978,7 +1101,7 @@ function ENT:ZombieSounds()
 		self.MeleeAttackSoundPitch = VJ_Set(80, 75)
 		self.DeathSoundPitch = VJ_Set(100, 90)
 		
-		if self.LNR_Runner then
+		if self.LNR_Runner or self.ToTU_Rusher then
 		
 			self.SoundTbl_Alert = {
 				"voices/mil_jugg/run_start_1.mp3",
@@ -2050,6 +2173,116 @@ function ENT:ZombieSounds()
 		"monsters/tesla/tesla_enabled_02.wav",
 		"monsters/tesla/tesla_enabled_03.wav",
 		}
+		
+	elseif self:GetClass() == "npc_vj_totu_milzomb_detonator" or self:GetClass() == "npc_vj_totu_milzomb_detonator_bulk" then
+	
+		self.SoundTbl_Idle = {
+		"voices/det/idle_1.mp3",
+		"voices/det/idle_2.mp3",
+		"voices/det/idle_3.mp3",
+		"voices/det/idle_4.mp3",
+		"voices/det/idle_5.mp3",
+		"voices/det/idle_6.mp3",
+		"voices/det/idle_7.mp3",
+		"voices/det/idle_8.mp3",
+		"voices/det/idle_9.mp3",
+		"voices/det/idle_10.mp3",
+		"voices/det/idle_11.mp3",
+		"voices/det/idle_12.mp3",
+		"voices/det/idle_13.mp3",
+		"voices/det/idle_14.mp3",
+		"voices/det/idle_15.mp3",
+		"voices/det/idle_16.mp3",
+		"voices/det/idle_17.mp3",
+		"voices/det/idle_18.mp3",
+		"voices/det/idle_19.mp3",
+		"voices/det/idle_20.mp3",
+		"voices/det/idle_21.mp3",
+		"voices/det/idle_22.mp3",
+		"voices/det/idle_23.mp3"
+		}
+		
+		self.SoundTbl_Alert = {
+		"voices/det/alert_1.mp3",
+		"voices/det/alert_2.mp3",
+		"voices/det/alert_3.mp3",
+		"voices/det/alert_4.mp3",
+		"voices/det/alert_5.mp3",
+		"voices/det/alert_6.mp3",
+		"voices/det/alert_7.mp3",
+		"voices/det/alert_8.mp3",
+		"voices/det/alert_9.mp3",
+		"voices/det/alert_10.mp3",
+		"voices/det/alert_11.mp3",
+		"voices/det/alert_12.mp3",
+		"voices/det/alert_13.mp3",
+		"voices/det/alert_14.mp3",
+		"voices/det/alert_15.mp3"
+		}
+		
+		self.SoundTbl_CombatIdle = {
+		"voices/det/cidle_1.mp3",
+		"voices/det/cidle_2.mp3",
+		"voices/det/cidle_3.mp3",
+		"voices/det/cidle_4.mp3",
+		"voices/det/cidle_5.mp3",
+		"voices/det/cidle_6.mp3",
+		"voices/det/cidle_7.mp3",
+		"voices/det/cidle_8.mp3",
+		"voices/det/cidle_9.mp3",
+		"voices/det/cidle_10.mp3",
+		"voices/det/cidle_11.mp3",
+		"voices/det/cidle_12.mp3",
+		"voices/det/cidle_13.mp3",
+		"voices/det/cidle_14.mp3",
+		"voices/det/cidle_15.mp3",
+		"voices/det/cidle_16.mp3",
+		"voices/det/cidle_17.mp3",
+		"voices/det/cidle_18.mp3",
+		"voices/det/cidle_19.mp3"
+		}
+		
+		self.SoundTbl_BeforeMeleeAttack = {
+		"voices/det/attack_1.mp3",
+		"voices/det/attack_2.mp3",
+		"voices/det/attack_3.mp3",
+		"voices/det/attack_4.mp3",
+		"voices/det/attack_5.mp3",
+		"voices/det/attack_6.mp3",
+		"voices/det/attack_7.mp3",
+		"voices/det/attack_8.mp3",
+		"voices/det/attack_9.mp3",
+		"voices/det/attack_10.mp3",
+		"voices/det/attack_11.mp3",
+		"voices/det/attack_12.mp3"
+		}
+		
+		self.SoundTbl_Pain = {
+		"voices/det/pain_1.mp3",
+		"voices/det/pain_2.mp3",
+		"voices/det/pain_3.mp3",
+		"voices/det/pain_4.mp3",
+		"voices/det/pain_5.mp3",
+		"voices/det/pain_6.mp3"
+		}
+		
+    	self.SoundTbl_Death = {
+		"voices/det/death_1.mp3",
+		"voices/det/death_2.mp3",
+		"voices/det/death_3.mp3",
+		"voices/det/death_4.mp3",
+		"voices/det/death_5.mp3"
+		}
+		
+		if self:GetClass() == "npc_vj_totu_milzomb_detonator_bulk" then
+			self.IdleSoundPitch = VJ_Set(80, 70)
+			self.AlertSoundPitch = VJ_Set(80, 70)
+			self.CombatIdleSoundPitch = VJ_Set(80, 70)
+			self.BeforeMeleeAttackSoundPitch = VJ_Set(80, 70)
+			self.PainSoundPitch = VJ_Set(80, 70)
+			self.DeathSoundPitch = VJ_Set(80, 70)	
+		end
+		
 	/*
 	elseif self:GetClass() == "npc_vj_totu_" then
 		self.SoundTbl_Idle = {
@@ -2075,9 +2308,7 @@ function ENT:ZombieSounds()
 	end
 	
 	if 
-		self.MilZ_HasGasmask or 
-		self:GetClass() == "npc_vj_totu_milzomb_detonator" or 
-		self:GetClass() == "npc_vj_totu_milzomb_detonator_bulk" or 
+		self.MilZ_HasGasmask or
 		self:GetClass() == "npc_vj_totu_milzomb_ghost" or
 		self:GetClass() == "npc_vj_totu_milzomb_ghost_walker" or
 		self:GetClass() == "npc_vj_totu_milzomb_tank" 
@@ -2148,7 +2379,7 @@ function ENT:ZombieSounds()
 		
 		if GetConVar("VJ_ToTU_MilZ_Gasmasks_OriginalSounds"):GetInt() != 0 then
 		
-			if self:GetClass() == "npc_vj_totu_milzomb_walker" or self:GetClass() == "npc_vj_totu_milzomb_infected" or self:GetClass() == "npc_vj_totu_milzomb_ghillie" then
+			if self:GetClass() == "npc_vj_totu_milzomb_walker" or self:GetClass() == "npc_vj_totu_milzomb_infected" or self:GetClass() == "npc_vj_totu_milzomb_juggernaut" then
 			
 				if GetConVar("VJ_ToTU_MilZ_Gasmasks_OriginalSounds"):GetInt() == 1 or (GetConVar("VJ_ToTU_MilZ_Gasmasks_OriginalSounds"):GetInt() == 2 && math.random(1,2) == 1) then
 			
@@ -2502,6 +2733,12 @@ function ENT:MilZ_GiveGun()
 				self.AnimTbl_Run = {ACT_RUN_PISTOL}
 						
 			end
+			
+			if self.ToTU_Rusher then
+					
+				self.AnimTbl_Run = {ACT_RUN_AIM_PISTOL}
+						
+			end
 					
 		elseif self.LNR_Infected then
 				
@@ -2717,101 +2954,6 @@ function ENT:CustomOnAcceptInput(key,activator,caller,data)
         VJ_EmitSound(self,"ambient/water/water_splash"..math.random(1,3)..".wav",75,100)
 	end
 	
-	if key == "break_door" then
-	
-		if IsValid(self.LNR_DoorToBreak) then
-		
-			VJ_CreateSound(self,self.SoundTbl_BeforeMeleeAttack,self.BeforeMeleeAttackSoundLevel,self:VJ_DecideSoundPitch(self.BeforeMeleeAttackSoundPitch.a, self.BeforeMeleeAttackSoundPitch.b))
-			VJ_EmitSound(self,"physics/wood/wood_panel_impact_hard1.wav",75,100)
-			
-			if 
-				self:GetClass() == "npc_vj_totu_milzomb_juggernaut" or 
-				self:GetClass() == "npc_vj_totu_milzomb_bulldozer" or 
-				self:GetClass() == "npc_vj_totu_milzomb_detonator_bulk" or 
-				self:GetClass() == "npc_vj_totu_milzomb_tank" or 
-				self:GetClass() == "npc_vj_totu_weaponized_smog" or 
-				self:GetClass() == "npc_vj_totu_nightkin_scylla" 
-			then
-				util.ScreenShake(self:GetPos(), self.WorldShakeOnMoveAmplitude, self.WorldShakeOnMoveFrequency, self.WorldShakeOnMoveDuration, self.WorldShakeOnMoveRadius)
-			end
-			
-			local doorDmg = self.MeleeAttackDamage
-			local door = self.LNR_DoorToBreak
-			
-			if door.DoorHealth == nil then
-				door.DoorHealth = 200 - doorDmg
-			elseif door.DoorHealth <= 0 then
-				VJ_EmitSound(self,self.SoundTbl_MeleeAttackMiss,self.MeleeAttackMissSoundLevel,self:VJ_DecideSoundPitch(self.MeleeAttackMissSoundPitch.a,self.MeleeAttackMissSoundPitch.b))
-			return -- To prevent door props making a duplication when it shouldn't
-			else
-				door.DoorHealth = door.DoorHealth - doorDmg
-			end
-			
-		if door:GetClass() == "prop_door_rotating" && door.DoorHealth <= 0 then
-		
-			door:EmitSound("physics/wood/wood_furniture_break"..math.random(1,2)..".wav",75,100)
-			door:EmitSound("ambient/materials/door_hit1.wav",75,100)
-			ParticleEffect("door_pound_core",door:GetPos(),door:GetAngles(),nil)
-			ParticleEffect("door_explosion_chunks",door:GetPos(),door:GetAngles(),nil)
-			door:Remove()
-			
-			if self.ToTU_BigZombie or self.ToTU_GiantZombie then
-				if math.random(1,3) == 1 then
-					self:VJ_ACT_PLAYACTIVITY("vjseq_Run_Stumble_01",true,false,false)
-				else
-					self:VJ_ACT_PLAYACTIVITY("vjseq_shove_forward_01",true,false,false)
-				end
-			else
-				self:VJ_ACT_PLAYACTIVITY(ACT_STEP_FORE,true,1.6)
-			end
-			
-			if math.random(1,100) == 1 && GetConVar("VJ_ToTU_General_EasterEggs"):GetInt() == 1 then
-			VJ_EmitSound(self,"fx/egg/OHYEAH.mp3",100,100)
-			end
-			
-            local doorgib = ents.Create("prop_physics")
-            doorgib:SetPos(door:GetPos())
-            doorgib:SetAngles(door:GetAngles())
-            doorgib:SetModel(door:GetModel())
-            doorgib:SetSkin(door:GetSkin())
-			doorgib:SetBodygroup(1,door:GetBodygroup(1))
-			doorgib:SetCollisionGroup(COLLISION_GROUP_DEBRIS)
-			doorgib:SetSolid(SOLID_NONE)
-            doorgib:Spawn()
-			doorgib:GetPhysicsObject():ApplyForceCenter(self:GetForward()*5000)
-			SafeRemoveEntityDelayed(doorgib,30)
-			
-		elseif door:GetClass() == "func_door_rotating" && door.DoorHealth <= 0 then
-		
-			door:EmitSound("physics/wood/wood_furniture_break"..math.random(1,2)..".wav",75,100)
-			ParticleEffect("door_pound_core",door:GetPos(),door:GetAngles(),nil)
-			ParticleEffect("door_explosion_chunks",door:GetPos(),door:GetAngles(),nil)
-			door:Remove()
-			if self.ToTU_BigZombie then
-				if math.random(1,3) == 1 then
-					self:VJ_ACT_PLAYACTIVITY("vjseq_Run_Stumble_01",true,false,false)
-				else
-					self:VJ_ACT_PLAYACTIVITY("vjseq_shove_forward_01",true,false,false)
-				end
-			else
-				self:VJ_ACT_PLAYACTIVITY(ACT_STEP_FORE,true,1.6)
-			end
-			
-			if math.random(1,100) == 1 && GetConVar("VJ_ToTU_General_EasterEggs"):GetInt() == 1 then
-			VJ_EmitSound(self,"fx/egg/OHYEAH.mp3",100,100)
-			end
-			
-            local doorgibs = ents.Create("prop_dynamic")
-            doorgibs:SetPos(door:GetPos())
-            doorgibs:SetModel("models/props_c17/FurnitureDresser001a.mdl")
-            doorgibs:Spawn()
-            doorgibs:TakeDamage(9999)
-            doorgibs:Fire("break")		
-			
-			end
-		end
-	end	
-
 	if key == "rip_flesh_LH" then
 			ParticleEffectAttach("blood_impact_red_01_chunk",PATTACH_POINT_FOLLOW,self,self:LookupAttachment("anim_attachment_LH"))
 			ParticleEffectAttach("blood_impact_red_01_goop",PATTACH_POINT_FOLLOW,self,self:LookupAttachment("anim_attachment_LH"))
@@ -2841,6 +2983,364 @@ function ENT:CustomOnAcceptInput(key,activator,caller,data)
 			self:EmitSound(Sound("barnacle/bcl_chew"..math.random(1,3)..".wav", 100, math.random(100,95)))
 	end
 	
+	if key == "break_door" then
+	
+		if IsValid(self.LNR_DoorToBreak) then
+		
+			local doorDmg = self.MeleeAttackDamage
+			local door = self.LNR_DoorToBreak
+		
+			VJ_CreateSound(self,self.SoundTbl_BeforeMeleeAttack,self.BeforeMeleeAttackSoundLevel,self:VJ_DecideSoundPitch(self.BeforeMeleeAttackSoundPitch.a, self.BeforeMeleeAttackSoundPitch.b))
+
+				if door:GetModel() == "models/props_c17/door01_left.mdl" then
+					if 
+						door:GetSkin() == 0 or
+						door:GetSkin() == 1 or
+						door:GetSkin() == 2 or
+						door:GetSkin() == 3 or
+						door:GetSkin() == 10 or
+						door:GetSkin() == 11 or
+						door:GetSkin() == 13
+					then
+						if self.ToTU_BigZombie or self.ToTU_GiantZombie then
+							VJ_EmitSound(door,"fx/doorhit/wood_heavy_"..math.random(1,3)..".mp3",100,100)
+						else
+							VJ_EmitSound(door,"fx/doorhit/wood_weak_"..math.random(1,3)..".mp3",100,100)
+						end
+					
+					elseif
+						door:GetSkin() == 4 or
+						door:GetSkin() == 5 or
+						door:GetSkin() == 6 or
+						door:GetSkin() == 7 or
+						door:GetSkin() == 8 or
+						door:GetSkin() == 9 or
+						door:GetSkin() == 12
+					then
+						VJ_EmitSound(door,"fx/doorhit/metal_heavy_"..math.random(1,3)..".mp3",100,100)
+						if self.ToTU_BigZombie or self.ToTU_GiantZombie then
+							VJ_EmitSound(door,"fx/doorhit/train_wagon_heavy_"..math.random(1,4)..".mp3",100,100)
+						else
+							VJ_EmitSound(door,"fx/doorhit/train_wagon_weak_"..math.random(1,3)..".mp3",100,100)
+						end
+					end
+					
+				elseif
+					door:GetModel() == "models/props_c17/door02_double.mdl" or
+					door:GetModel() == "models/props_doors/doormain01.mdl" or
+					door:GetModel() == "models/props_doors/doormain01_airport_small.mdl" or
+					door:GetModel() == "models/props_doors/doormain01_airport.mdl" or
+					door:GetModel() == "models/props_doors/doormain01_small.mdl" or
+					door:GetModel() == "models/props_doors/doormain_rural01.mdl" or
+					door:GetModel() == "models/props_doors/doormain_rural01_small.mdl" or
+					door:GetModel() == "models/props_downtown/door_interior_128_01.mdl" or
+					door:GetModel() == "models/props_downtown/door_interior_112_01.mdl"
+				then
+					if self.ToTU_BigZombie or self.ToTU_GiantZombie then
+						VJ_EmitSound(door,"fx/doorhit/wood_heavy_"..math.random(1,3)..".mp3",100,100)
+					else
+						VJ_EmitSound(door,"fx/doorhit/wood_weak_"..math.random(1,3)..".mp3",100,100)
+					end
+			
+			elseif 
+				door:GetModel() == "models/props_c17/door01_left.mdl" or
+				door:GetModel() == "models/combine_gate_vehicle.mdl" or
+				door:GetModel() == "models/combine_gate_citizen.mdl" or
+				door:GetModel() == "models/props_combine/combine_door01.mdl" or
+				door:GetModel() == "models/props_c17/door03_left.mdl" or
+				door:GetModel() == "models/props_doors/checkpoint_door_-02.mdl" or
+				door:GetModel() == "models/props_doors/checkpoint_door_02.mdl" or
+				door:GetModel() == "models/props_doors/door03_slotted_left.mdl" or
+				door:GetModel() == "models/props_doors/doorfreezer01.mdl" or
+				door:GetModel() == "models/props_doors/doorklab01.mdl" or
+				door:GetModel() == "models/props_doors/doormainmetalsmall01.mdl" or
+				door:GetModel() == "models/props_doors/doormainmetal01.mdl" or
+				door:GetModel() == "models/props_doors/doormainmetalwindow01.mdl" or
+				door:GetModel() == "models/props_doors/doormainmetalwindowsmall01.mdl" or
+				door:GetModel() == "models/props_downtown/metal_door_112.mdl"
+			then
+				if 
+					door:GetModel() == "models/combine_gate_vehicle.mdl" or
+					door:GetModel() == "models/combine_gate_citizen.mdl" or
+					door:GetModel() == "models/props_combine/combine_door01.mdl" or
+					door:GetModel() == "models/props_c17/door03_left.mdl" or
+					door:GetModel() == "models/props_doors/checkpoint_door_-02.mdl" or
+					door:GetModel() == "models/props_doors/checkpoint_door_02.mdl" or
+					door:GetModel() == "models/props_doors/door03_slotted_left.mdl" or
+					door:GetModel() == "models/props_doors/doorfreezer01.mdl" or
+					door:GetModel() == "models/props_doors/doorklab01.mdl" or
+					door:GetModel() == "models/props_doors/doormainmetalsmall01.mdl" or
+					door:GetModel() == "models/props_doors/doormainmetal01.mdl" or
+					door:GetModel() == "models/props_doors/doormainmetalwindow01.mdl" or
+					door:GetModel() == "models/props_doors/doormainmetalwindowsmall01.mdl" or
+					door:GetModel() == "models/props_downtown/metal_door_112.mdl"
+				then
+					VJ_EmitSound(door,"fx/doorhit/metal_heavy_"..math.random(1,3)..".mp3",100,100)
+					if self.ToTU_BigZombie or self.ToTU_GiantZombie then
+						VJ_EmitSound(door,"fx/doorhit/train_wagon_heavy_"..math.random(1,4)..".mp3",100,100)
+					else
+						VJ_EmitSound(door,"fx/doorhit/train_wagon_weak_"..math.random(1,3)..".mp3",100,100)
+					end
+				end
+			
+			elseif 
+				door:GetModel() == "models/props_lab/elevatordoor.mdl" or
+				door:GetModel() == "models/props_mining/elevator01_cagedoor.mdl"
+			then
+				VJ_EmitSound(door,"fx/doorhit/wire_heavy_"..math.random(1,3)..".mp3",100,100)
+				VJ_EmitSound(door,"fx/doorhit/grid_metal_heavy_"..math.random(1,4)..".mp3",100,100)
+			elseif 
+				door:GetModel() == "models/props_mining/techgate01.mdl" or
+				door:GetModel() == "models/props_doors/checkpoint_door_01.mdl" or
+				door:GetModel() == "models/props_doors/checkpoint_door_-01.mdl" 
+			then
+				VJ_EmitSound(door,"fx/doorhit/grid_metal_heavy_"..math.random(1,4)..".mp3",100,100)
+				VJ_EmitSound(door,"fx/doorhit/metal_heavy_"..math.random(1,3)..".mp3",100,100)
+				if self.ToTU_BigZombie or self.ToTU_GiantZombie then
+					VJ_EmitSound(door,"fx/doorhit/train_wagon_heavy_"..math.random(1,4)..".mp3",100,100)
+				else
+					VJ_EmitSound(door,"fx/doorhit/train_wagon_weak_"..math.random(1,3)..".mp3",100,100)
+				end
+				
+			elseif 
+				door:GetModel() == "models/props_doors/door_rotate_112.mdl"
+			then
+				if self.ToTU_BigZombie or self.ToTU_GiantZombie then
+					VJ_EmitSound(door,"physics/glass/glass_impact_hard"..math.random(1,3)..".wav",100,100)
+					VJ_EmitSound(door,"physics/glass/glass_bottle_impact_hard"..math.random(1,3)..".wav",100,100)
+					VJ_EmitSound(door,"physics/glass/glass_sheet_impact_hard"..math.random(1,3)..".wav",100,100)
+				else
+					VJ_EmitSound(door,"physics/glass/glass_sheet_impact_hard"..math.random(1,3)..".wav",100,100)
+				end
+				
+			elseif door:GetModel() == "models/props_doors/doorglassmain01.mdl" or
+				door:GetModel() == 	"models/props_doors/door_sliding_112.mdl" or
+				door:GetModel() == 	"models/props_doors/doorglassmain01_small.mdl" 
+			then
+			
+				VJ_EmitSound(door,"fx/doorhit/wire_heavy_"..math.random(1,3)..".mp3",100,100)
+				if self.ToTU_BigZombie or self.ToTU_GiantZombie then
+					VJ_EmitSound(door,"fx/doorhit/train_wagon_heavy_"..math.random(1,4)..".mp3",100,100)
+				else
+					VJ_EmitSound(door,"fx/doorhit/train_wagon_weak_"..math.random(1,3)..".mp3",100,100)
+				end
+			
+			
+			else
+				VJ_EmitSound(door,"physics/wood/wood_panel_impact_hard1.wav",75,100)
+			end
+			
+			if 
+				self:GetClass() == "npc_vj_totu_milzomb_juggernaut" or 
+				self:GetClass() == "npc_vj_totu_milzomb_bulldozer" or 
+				self:GetClass() == "npc_vj_totu_milzomb_detonator_bulk" or 
+				self:GetClass() == "npc_vj_totu_milzomb_tank" or 
+				self:GetClass() == "npc_vj_totu_weaponized_smog" or 
+				self:GetClass() == "npc_vj_totu_nightkin_scylla" 
+			then
+				util.ScreenShake(self:GetPos(), self.WorldShakeOnMoveAmplitude, self.WorldShakeOnMoveFrequency, self.WorldShakeOnMoveDuration, self.WorldShakeOnMoveRadius)
+			end
+			
+			if door.DoorHealth == nil then
+				door.DoorHealth = 200 - doorDmg
+			elseif door.DoorHealth <= 0 then
+				VJ_EmitSound(self,self.SoundTbl_MeleeAttackMiss,self.MeleeAttackMissSoundLevel,self:VJ_DecideSoundPitch(self.MeleeAttackMissSoundPitch.a,self.MeleeAttackMissSoundPitch.b))
+			return -- To prevent door props making a duplication when it shouldn't
+			else
+				door.DoorHealth = door.DoorHealth - doorDmg
+			end
+			
+		if (door:GetClass() == "prop_door_rotating" or 
+			door:GetClass() == "func_door_rotating" or
+			door:GetClass() == "prop_door_dynamic") &&
+			door.DoorHealth <= 0 then
+			
+			if self.ToTU_BigZombie or self.ToTU_GiantZombie then
+				if math.random(1,3) == 1 then
+					self:VJ_ACT_PLAYACTIVITY("vjseq_Run_Stumble_01",true,false,false)
+				else
+					self:VJ_ACT_PLAYACTIVITY("vjseq_shove_forward_01",true,false,false)
+				end
+			else
+				self:VJ_ACT_PLAYACTIVITY(ACT_STEP_FORE,true,1.6)
+			end
+			
+			if math.random(1,100) == 1 && GetConVar("VJ_ToTU_General_EasterEggs"):GetInt() == 1 then
+				VJ_EmitSound(self,"fx/egg/OHYEAH.mp3",100,100)
+			end
+			
+			if 
+				door:GetModel() == "models/props_c17/door01_left.mdl" or 
+				door:GetModel() == "models/props_c17/door02_double.mdl" or
+				door:GetModel() == "models/props_doors/doormain01.mdl" or
+				door:GetModel() == "models/props_doors/doormain01_airport_small.mdl" or
+				door:GetModel() == "models/props_doors/doormain01_airport.mdl" or
+				door:GetModel() == "models/props_doors/doormain01_small.mdl" or
+				door:GetModel() == "models/props_doors/doormain_rural01.mdl" or
+				door:GetModel() == "models/props_doors/doormain_rural01_small.mdl" or
+				door:GetModel() == "models/props_downtown/door_interior_128_01.mdl" or
+				door:GetModel() == "models/props_downtown/door_interior_112_01.mdl"
+			then
+				if door:GetModel() == "models/props_c17/door01_left.mdl" then
+					if 
+						door:GetSkin() == 0 or
+						door:GetSkin() == 1 or
+						door:GetSkin() == 2 or
+						door:GetSkin() == 3 or
+						door:GetSkin() == 10 or
+						door:GetSkin() == 11 or
+						door:GetSkin() == 13
+					then
+						door:EmitSound("physics/wood/wood_furniture_break"..math.random(1,2)..".wav",75,100)
+						ParticleEffect("door_explosion_chunks",door:GetPos(),door:GetAngles(),nil)
+					end
+				elseif
+					door:GetModel() == "models/props_c17/door02_double.mdl" or
+					door:GetModel() == "models/props_doors/doormain01.mdl" or
+					door:GetModel() == "models/props_doors/doormain01_airport_small.mdl" or
+					door:GetModel() == "models/props_doors/doormain01_airport.mdl" or
+					door:GetModel() == "models/props_doors/doormain01_small.mdl" or
+					door:GetModel() == "models/props_doors/doormain_rural01.mdl" or
+					door:GetModel() == "models/props_doors/doormain_rural01_small.mdl" or
+					door:GetModel() == "models/props_downtown/door_interior_128_01.mdl" or
+					door:GetModel() == "models/props_downtown/door_interior_112_01.mdl"
+				then
+					door:EmitSound("physics/wood/wood_furniture_break"..math.random(1,2)..".wav",75,100)
+					ParticleEffect("door_explosion_chunks",door:GetPos(),door:GetAngles(),nil)
+				end
+				
+			elseif 
+				door:GetModel() == "models/props_c17/door01_left.mdl" or 
+				door:GetModel() == "models/combine_gate_vehicle.mdl" or
+				door:GetModel() == "models/combine_gate_citizen.mdl" or
+				door:GetModel() == "models/props_combine/combine_door01.mdl" or
+				door:GetModel() == "models/props_c17/door03_left.mdl" or
+				door:GetModel() == "models/props_doors/checkpoint_door_-02.mdl" or
+				door:GetModel() == "models/props_doors/checkpoint_door_02.mdl" or
+				door:GetModel() == "models/props_doors/door03_slotted_left.mdl" or
+				door:GetModel() == "models/props_doors/doorfreezer01.mdl" or
+				door:GetModel() == "models/props_doors/doorklab01.mdl" or
+				door:GetModel() == "models/props_doors/doormainmetalsmall01.mdl" or
+				door:GetModel() == "models/props_doors/doormainmetal01.mdl" or
+				door:GetModel() == "models/props_doors/doormainmetalwindow01.mdl" or
+				door:GetModel() == "models/props_doors/doormainmetalwindowsmall01.mdl" or
+				door:GetModel() == "models/props_downtown/metal_door_112.mdl" or
+				door:GetModel() == "models/props_lab/elevatordoor.mdl" or
+				door:GetModel() == "models/props_mining/elevator01_cagedoor.mdl" or
+				door:GetModel() == "models/props_mining/techgate01.mdl" or
+				door:GetModel() == "models/props_doors/checkpoint_door_01.mdl" or
+				door:GetModel() == "models/props_doors/checkpoint_door_-01.mdl" or
+				door:GetModel() == "models/props_doors/doorglassmain01.mdl" or
+				door:GetModel() == 	"models/props_doors/door_sliding_112.mdl" or
+				door:GetModel() == 	"models/props_doors/doorglassmain01_small.mdl" 
+			then
+				if door:GetModel() == "models/props_c17/door01_left.mdl" then
+					if
+						door:GetSkin() == 4 or
+						door:GetSkin() == 5 or
+						door:GetSkin() == 6 or
+						door:GetSkin() == 7 or
+						door:GetSkin() == 8 or
+						door:GetSkin() == 9 or
+						door:GetSkin() == 12
+					then
+						door:EmitSound("physics/metal/metal_box_break"..math.random(1,2)..".wav",75,100)
+					end
+				elseif 
+					door:GetModel() == "models/props_c17/door01_left.mdl" or 
+					door:GetModel() == "models/combine_gate_vehicle.mdl" or
+					door:GetModel() == "models/combine_gate_citizen.mdl" or
+					door:GetModel() == "models/props_combine/combine_door01.mdl" or
+					door:GetModel() == "models/props_c17/door03_left.mdl" or
+					door:GetModel() == "models/props_doors/checkpoint_door_-02.mdl" or
+					door:GetModel() == "models/props_doors/checkpoint_door_02.mdl" or
+					door:GetModel() == "models/props_doors/door03_slotted_left.mdl" or
+					door:GetModel() == "models/props_doors/doorfreezer01.mdl" or
+					door:GetModel() == "models/props_doors/doorklab01.mdl" or
+					door:GetModel() == "models/props_doors/doormainmetalsmall01.mdl" or
+					door:GetModel() == "models/props_doors/doormainmetal01.mdl" or
+					door:GetModel() == "models/props_doors/doormainmetalwindow01.mdl" or
+					door:GetModel() == "models/props_doors/doormainmetalwindowsmall01.mdl" or
+					door:GetModel() == "models/props_downtown/metal_door_112.mdl" or
+					door:GetModel() == "models/props_lab/elevatordoor.mdl" or
+					door:GetModel() == "models/props_mining/elevator01_cagedoor.mdl" or
+					door:GetModel() == "models/props_mining/techgate01.mdl" or
+					door:GetModel() == "models/props_doors/checkpoint_door_01.mdl" or
+					door:GetModel() == "models/props_doors/checkpoint_door_-01.mdl" or
+					door:GetModel() == "models/props_doors/doorglassmain01.mdl" or
+					door:GetModel() == 	"models/props_doors/door_sliding_112.mdl" or
+					door:GetModel() == 	"models/props_doors/doorglassmain01_small.mdl" 
+				then
+					door:EmitSound("physics/metal/metal_box_break"..math.random(1,2)..".wav",75,100)
+				end
+			end
+			
+			-- else
+			
+			-- end
+			
+			door:EmitSound("ambient/materials/door_hit1.wav",75,100)
+			ParticleEffect("door_pound_core",door:GetPos(),door:GetAngles(),nil)
+			
+			if door:GetClass() == "prop_door_rotating" then
+				local doorgib = ents.Create("prop_physics")
+				doorgib:SetPos(door:GetPos())
+				doorgib:SetAngles(door:GetAngles())
+				doorgib:SetModel(door:GetModel())
+				doorgib:SetSkin(door:GetSkin())
+				doorgib:SetBodygroup(1,door:GetBodygroup(1))
+				doorgib:SetCollisionGroup(COLLISION_GROUP_DEBRIS)
+				doorgib:SetSolid(SOLID_NONE)
+				doorgib:Spawn()
+				if self.ToTU_GiantZombie then
+					doorgib:GetPhysicsObject():ApplyForceCenter(self:GetForward()*15000)
+				elseif self.ToTU_BigZombie then
+					doorgib:GetPhysicsObject():ApplyForceCenter(self:GetForward()*10000)
+				else
+					doorgib:GetPhysicsObject():ApplyForceCenter(self:GetForward()*5000)
+				end
+				SafeRemoveEntityDelayed(doorgib,30)
+				door:Remove()
+			end
+			
+			if door:GetClass() == "func_door_rotating" then
+				local doorgibs = ents.Create("prop_dynamic")
+				doorgibs:SetPos(door:GetPos())
+				doorgibs:SetModel("models/props_c17/FurnitureDresser001a.mdl")
+				doorgibs:Spawn()
+				doorgibs:TakeDamage(9999)
+				doorgibs:Fire("break")		
+				door:Remove()
+			end
+			
+			if door:GetClass() == "prop_door_dynamic" then
+				door.ToTU_DynamDoor_Broken = true
+				door:Open()
+				
+				
+				local spark = ents.Create("env_spark")
+				spark:SetKeyValue("Magnitude","8")
+				spark:SetKeyValue("Spark Trail Length","3")
+				spark:SetPos(door:GetPos())
+				spark:SetAngles(door:GetAngles())
+				spark:SetParent(door)
+				spark:Spawn()
+				spark:Activate()
+				spark:Fire("StartSpark","",0)
+				spark:Fire("StopSpark","",2)
+				self:DeleteOnRemove(spark)
+				
+				door:SetRenderFX(5)
+				
+				timer.Simple(2,function() if IsValid(door) then
+					door:Fire("Kill","",0.07)
+				end end)
+			end
+
+	
+	end
+	end
+end
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:CustomOnThink()
@@ -2876,6 +3376,7 @@ function ENT:CustomOnThink()
 			if ((!self.VJ_IsBeingControlled) or (self.VJ_IsBeingControlled && self.VJ_TheController:KeyDown(IN_DUCK))) then
 				for _,v in pairs(ents.FindInSphere(self:GetPos(),40)) do
 					if v:GetClass() == "func_door_rotating" && v:Visible(self) then self.LNR_DoorToBreak = v end
+					if v:GetClass() == "prop_door_dynamic" && !v.ToTU_DynamDoor_Broken && v:Visible(self) then self.LNR_DoorToBreak = v end
 					if v:GetClass() == "prop_door_rotating" && v:Visible(self) then
 						local anim = string.lower(v:GetSequenceName(v:GetSequence()))
 						if string.find(anim,"idle") or string.find(anim,"open") /*or string.find(anim,"locked")*/ then
@@ -3708,7 +4209,7 @@ end
 function ENT:CustomOnFlinch_BeforeFlinch(dmginfo,hitgroup)
 
 	if self:GetClass() == "npc_vj_totu_weaponized_cyst" then return end
-	
+	if GetConVar("VJ_ToTU_General_Stumbling_Disable"):GetInt() == 1 then return end
 	if
 		self.LNR_Crawler or
 		self.LNR_Crippled or
@@ -3719,6 +4220,10 @@ function ENT:CustomOnFlinch_BeforeFlinch(dmginfo,hitgroup)
 		self:GetActivity() == ACT_BIG_FLINCH or
 		self:GetActivity() == ACT_FLINCH_STOMACH or
 		self:GetActivity() == ACT_GMOD_SHOWOFF_STAND_01 or
+		self:GetActivity() == ACT_WALK_CROUCH_AIM or
+		self:GetActivity() == ACT_RUN_STEALTH or
+		self:GetSequence() == self:LookupSequence("Hunter_Crawl") or
+		self:GetSequence() == self:LookupSequence("mudguy_run") or
 		self:GetSequence() == self:LookupSequence("jump_attack") or
 		self:GetSequence() == self:LookupSequence("nz_spawn_jump") or
 		self:GetSequence() == self:LookupSequence("nz_spawn_climbout_fast") or
@@ -4003,7 +4508,7 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:CustomOnTakeDamage_AfterDamage(dmginfo,hitgroup)
 	
-	if dmginfo:IsExplosionDamage() then
+	if dmginfo:IsExplosionDamage() && GetConVar("VJ_ToTU_General_Stumbling_Disable"):GetInt() != 1 then
 	
 		if
 		self.LNR_Crawler or
@@ -4119,7 +4624,7 @@ self.HasLeapAttack = false
 	self:CapabilitiesRemove(bit.bor(CAP_MOVE_CLIMB))
 	self.HasDeathAnimation = false
 	
-	if self:GetClass() == "npc_vj_totu_milzomb_juggernaut" or self:GetClass() == "npc_vj_totu_milzomb_bulldozer" then
+	if self:GetClass() == "npc_vj_totu_milzomb_juggernaut" or self:GetClass() == "npc_vj_totu_milzomb_bulldozer" or self:GetClass() == "npc_vj_totu_milzomb_tank" then
 		if GetConVar("VJ_LNR_Difficulty"):GetInt() == 1 then
 			self.MeleeAttackDamage = math.Rand(10,15)
 		elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 2 then
