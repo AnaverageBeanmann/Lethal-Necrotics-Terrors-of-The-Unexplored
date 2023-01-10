@@ -16,40 +16,20 @@ function ENT:CustomPhysicsObjectOnInitialize(phys)
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:CustomOnInitialize()
-	//if self:GetOwner():IsValid() && (self:GetOwner().GrenadeAttackFussTime) then
-	//timer.Simple(self:GetOwner().GrenadeAttackFussTime,function() if IsValid(self) then self:DeathEffects() end end) else
+
 	timer.Simple(self.FussTime,function() if IsValid(self) then self:DeathEffects() end end)
-	//end
-	self:SetSkin(1)
-	
+
 	self.SoundTbl_Idle = {"weapons/grenade/tick1.wav"}
-	-- self.SoundTbl_Idle = {"weapons/hegrenade/beep.wav"}
 	self.IdleSoundPitch = VJ_Set(100, 100)
-	self.IdleSoundLevel = 70
-	
+	self.IdleSoundLevel = 75
+
 	self.NextSoundTime_Idle = VJ_Set(0.9, 0.9)
 	timer.Simple(1.5,function() if IsValid(self) then
 		self.NextSoundTime_Idle = VJ_Set(0.2, 0.2)
 	end end)
 	
-	-- self.NextSoundTime_Idle = VJ_Set(0.2, 0.2)
-	-- timer.Simple(1.5,function() if IsValid(self) then
-		-- self.NextSoundTime_Idle = VJ_Set(0.1, 0.1)
-	-- end end)
-	
-	local redGlow = ents.Create("env_sprite")
-	redGlow:SetKeyValue("model", "vj_base/sprites/vj_glow1.vmt")
-	redGlow:SetKeyValue("scale", "0.07")
-	redGlow:SetKeyValue("rendermode", "5")
-	redGlow:SetKeyValue("rendercolor", "150 0 0")
-	redGlow:SetKeyValue("spawnflags", "1") -- If animated
-	redGlow:SetParent(self)
-	-- redGlow:Fire("SetParentAttachment", "fuse", 0)
-	redGlow:Spawn()
-	redGlow:Activate()
-	self:DeleteOnRemove(redGlow)
-	util.SpriteTrail(self, 1, Color(255,0,0), true, 15, 15, 0.35, 1/(6+6)*0.5, "VJ_Base/sprites/vj_trial1.vmt")
-	
+	util.SpriteTrail(self, 0, Color(255,0,0), true, 15, 15, 0.35, 1/(6+6)*0.5, "VJ_Base/sprites/vj_trial1.vmt")
+
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 local defAngle = Angle(0, 0, 0)
@@ -63,23 +43,8 @@ function ENT:DeathEffects()
 	
 	local effectData = EffectData()
 	effectData:SetOrigin(self:GetPos())
-	//effectData:SetScale(500)
-	//util.Effect("HelicopterMegaBomb", effectData)
-	//util.Effect("ThumperDust", effectData)
 	util.Effect("Explosion", effectData)
-	//util.Effect("VJ_Small_Explosion1", effectData)
 
-	local expLight = ents.Create("light_dynamic")
-	expLight:SetKeyValue("brightness", "4")
-	expLight:SetKeyValue("distance", "300")
-	expLight:SetLocalPos(selfPos)
-	expLight:SetLocalAngles(self:GetAngles())
-	expLight:Fire("Color", "255 150 0")
-	expLight:SetParent(self)
-	expLight:Spawn()
-	expLight:Activate()
-	expLight:Fire("TurnOn", "", 0)
-	self:DeleteOnRemove(expLight)
 	util.ScreenShake(self:GetPos(), 100, 200, 1, 2500)
 
 	self:SetLocalPos(selfPos + vecZ4) -- Because the entity is too close to the ground

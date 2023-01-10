@@ -15,12 +15,12 @@ function ENT:Zombie_Difficulty()
 	elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 2 then
 	
 		self.StartHealth = 1500
-		self.MeleeAttackDamage = math.Rand(25,39)
+		self.MeleeAttackDamage = math.Rand(25,30)
 		
 	elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 3 then
 	
 		self.StartHealth = 2000
-		self.MeleeAttackDamage = math.Rand(39,35)
+		self.MeleeAttackDamage = math.Rand(30,35)
 		
 	elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 4 then
 	
@@ -67,6 +67,7 @@ function ENT:ArmorDamage(dmginfo,hitgroup)
 	if dmginfo:IsExplosionDamage() then
 		dmginfo:ScaleDamage(0.50)
 	else
+	if dmginfo:IsBulletDamage() or dmginfo:IsDamageType(DMG_BUCKSHOT) or dmginfo:IsDamageType(DMG_SLASH) or dmginfo:IsDamageType(DMG_CLUB) then
 		if self.HasSounds && self.HasImpactSounds then VJ_EmitSound(self,"player/bhit_helmet-1.wav",70) end
 		if math.random(1,3) == 1 then
 			dmginfo:ScaleDamage(0.50)
@@ -84,6 +85,7 @@ function ENT:ArmorDamage(dmginfo,hitgroup)
 		else
 			dmginfo:ScaleDamage(0.35)				
 		end
+	end
 	end
 end
 /*-----------------------------------------------
