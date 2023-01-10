@@ -81,6 +81,7 @@ end
 	local vCat8 = "Lethal Necrotics: Terrors of The Unexplored - Spawners/Bonus"
 	local vCat9 = "Lethal Necrotics: Terrors of The Unexplored - Tundra Wastes"
 	local vCat10 = "Lethal Necrotics: Terrors of The Unexplored - Morti Labs"
+	local vCat11 = "Lethal Necrotics: Terrors of The Unexplored - Freaks of Nature"
 	-- VJ.AddCategoryInfo("Lethal Necrotics: Terrors of The Unexplored", {Icon = "icons/totu_icon.png"})
 	-- VJ.AddCategoryInfo("Lethal Necrotics: Terrors of The Unexplored", {Icon = "icons/icon_new_16.png"})
 	-- VJ.AddCategoryInfo("Lethal Necrotics: Terrors of The Unexplored", {Icon = "icons/icon_new_32.png"})
@@ -97,6 +98,7 @@ end
 	VJ.AddCategoryInfo("Lethal Necrotics: Terrors of The Unexplored - Spawners/Bonus", {Icon = "icons/symbolv3.png"})
 	VJ.AddCategoryInfo("Lethal Necrotics: Terrors of The Unexplored - Tundra Wastes", {Icon = "icons/symbolv3.png"})
 	VJ.AddCategoryInfo("Lethal Necrotics: Terrors of The Unexplored - Morti Labs", {Icon = "icons/symbolv3.png"})
+	VJ.AddCategoryInfo("Lethal Necrotics: Terrors of The Unexplored - Freaks of Nature", {Icon = "icons/symbolv3.png"})
 	-- local vCat2 = "Lethal Necrotics: Terrors of The Unexplored - Misc & Spawners"
 	-- VJ.AddCategoryInfo("Lethal Necrotics: Terrors of The Unexplored - Misc & Spawners", {Icon = "icons/totu_icon.png"})
 	
@@ -172,7 +174,6 @@ end
 	Likely Keeping
 		Exploder (Walker)
 		Goliath
-		Smog
 		Laticauda
 	Unsure
 		Meathead
@@ -187,9 +188,6 @@ end
 		Fumigator -- merge aoe damage with hive if not kept
 		Regenerator
 		Revenant
-		Carcass
-		Carcass Torso
-		Cazador
 		Praetorian
 		Novistador
 		Apollyon
@@ -225,13 +223,18 @@ end
 		
 		Freaks of Nature - "Boss" version of non-boss zombies
 		
-		Original Zombie - FoV Name
+		Original Zombie - FoV Name - Boss Music
 		
-		Juggernaut - Skullcrusher
-		Bulldozer  - Wrath
-		Ghost      - Novistador
-		Squaller   - Grief
-		
+		Juggernaut 	- Skullcrusher - Gravity Perforation Detail
+		Bulldozer  	- Wrath 	   - Cauterizer https://www.youtube.com/watch?v=_rRAaUa_VAQ&list=OLAK5uy_lipO8WT10o3Q5y8OYc6lOnb0txtnPl-ps&index=4&ab_channel=Valve-Topic
+		Tank		- B.S.F. (Big Slow Fucker) -
+		Ghost      	- Novistador   -
+		Squaller   	- Sorrow 	   - Gerhman, The First Hunter
+		Scylla 	    -			   - Attack of The Killer Queen
+		Decayed 	- Pestilence   - Crypted Chaos
+		Sentinel 	- Apollyon 	   - Abandon All
+		Smog 		- Asphyxia 	   - Avatar Beat
+		Goliath		-			   - 
 		
 		Todo:
 
@@ -345,6 +348,64 @@ end
 		use this for the trailer
 		https://youtu.be/QEUS4uh4c4Y
 		
+		todo
+		- convar for failsafe doorsound options (sound used if it doesn't detect a doortype)
+		- fix up possession
+		- redo shots of detonator for milzomb video
+		- do rest of shots for milzomb video
+		- finish milzomb video
+		
+		for nightkin showcase vid
+		- map: necro forest
+		- weapons: urban coalition
+		- playermodels: hunter-looking dudes
+		- senseless violcence part: shitty gmod realism section
+		
+		- get text addon (like 3d/2d text or something) for future sets
+		
+		- give bulk detonator a bigger bomb
+		
+		- make zombies do explosion deaths while gliding
+		
+		- make it so zombs cant do this stuff while gliding
+		* cripple
+		* stumbling
+		* dodging
+		* range attacking
+		
+		trailer music contenders
+		- https://youtu.be/ICjD3f-8SXE
+		- https://youtu.be/QEUS4uh4c4Y
+		
+		- add convar for tank moving attacks
+		- experiment with silent/quiet crawling ghilles
+		- jet pilot milzomb?
+		* name it airman
+		* use this model https://steamcommunity.com/sharedfiles/filedetails/?id=1288267845&searchtext=pilot
+		
+		c-strain = Cepheus
+		- drone
+		- razor
+		- sentinel
+		- peacekeeper
+		- caretaker
+		- smog
+		
+		d-strain = Deimos
+		- carcass
+		- cazador
+		- cyst
+		- redead
+		- cancer
+		- revenant
+		
+		get these sounds in for milzombs
+		- css knife
+		- css armor hit
+		- l4d2 shove
+		- l4d2 tank and charger voice
+		- ghost easter egg reveal sound
+
 	*/
 
 	-- [] = done
@@ -364,8 +425,6 @@ end
 		-- []
 		VJ.AddNPC("Grunt (Infected)","npc_vj_totu_milzomb_infected",vCat2)
 		-- []
-		-- add corpsman varient
-		-- use black mesa hecu corpsman helmet texture
 		VJ.AddNPC("Juggernaut","npc_vj_totu_milzomb_juggernaut",vCat2)
 		-- []
 		VJ.AddNPC("Bulldozer","npc_vj_totu_milzomb_bulldozer",vCat2)
@@ -376,21 +435,18 @@ end
 		-- []
 		VJ.AddNPC("Bulk Detonator","npc_vj_totu_milzomb_detonator_bulk",vCat2)
 		-- []
-		
 		VJ.AddNPC("Tank","npc_vj_totu_milzomb_tank",vCat2)
 		-- []
-		
 		VJ.AddNPC("Ghost (Walker)","npc_vj_totu_milzomb_ghost_walker",vCat2)
-		-- {}
-		
+		-- []
 		VJ.AddNPC("Ghillie (Infected)","npc_vj_totu_milzomb_ghillie",vCat2)
-		-- {}
-		-- dude in a Ghillie suit
-		-- lays still until you get near or crawls towards you
-		-- if crawling towards you, it gets up after taking damage
-
+		-- []
 		VJ.AddNPC("Ghillie (Walker)","npc_vj_totu_milzomb_ghillie_walker",vCat2)
-		-- {}
+		-- []
+		VJ.AddNPC("Airman (Walker)","npc_vj_totu_milzomb_airman",vCat2)
+		-- ()
+		VJ.AddNPC("Airman (Infected)","npc_vj_totu_milzomb_airman_infected",vCat2)
+		-- ()
 		
 	-- Nightkin
 		VJ.AddNPC("Scragg","npc_vj_totu_nightkin_scragg",vCat3)
@@ -503,6 +559,15 @@ end
 		
 		VJ.AddNPC("Revenant","npc_vj_totu_weaponized_revenant",vCat4)
 		-- ()
+		-- new model idea: revived and rotting caretaker
+		
+		-- VJ.AddNPC("Redead","npc_vj_totu_weaponized_redead",vCat4)
+		-- main revenant minion
+		-- rev can still spawn the c trio
+		-- purple glowing eyes
+		-- voiced by doom 2016 zombie
+		-- slow but can run occasionally
+		-- ()
 		
 		VJ.AddNPC("Smog","npc_vj_totu_weaponized_smog",vCat4)
 		-- []
@@ -608,7 +673,7 @@ end
 		-- ()
 		-- fleshpound/charger
 		
-		VJ.AddNPC("Sawzall","npc_vj_totu_backcounty_sawman",vCat5)
+		VJ.AddNPC("Leatherneck","npc_vj_totu_backcounty_sawman",vCat5)
 		-- ()
 		-- verdugo/chainsaw fatman
 		-- rename to leatherneck
@@ -729,6 +794,9 @@ end
 		VJ.AddNPC("Remnant Husk","npc_vj_totu_bonus_remnant",vCat8)
 		-- ()
 		-- michael afton moment
+		-- easter egg death sounds
+		-- fnaf 3 death
+		-- fnaf vhs purple man burning
 		
 		VJ.AddNPC("Ambient Vessel","npc_vj_totu_bonus_ambves",vCat8)
 		-- ()
@@ -754,7 +822,9 @@ end
 		-- https://steamcommunity.com/sharedfiles/filedetails/?id=1199974271
 		
 		-- VJ.AddNPC("","npc_vj_totu_bonus_",vCat)
-		
+	
+	-- Freaks of Nature
+		VJ.AddNPC("Skullcrusher","npc_vj_totu_fon_juggernaut",vCat11)
 	
 	--Zombies
 		--No Specific Area
@@ -831,8 +901,8 @@ end
 	AddConvars["VJ_ToTU_MilZ_Det_Infection"] = 1
 	AddConvars["VJ_ToTU_MilZ_Det_BombLights"] = 2
 	AddConvars["VJ_ToTU_General_Crawler_Chance"] = 5
-	AddConvars["VJ_ToTU_MilZ_Gasmasks_OriginalSounds"] = 0
-	AddConvars["VJ_ToTU_MilZ_Det_Sounds"] = 0
+	-- AddConvars["VJ_ToTU_MilZ_Gasmasks_OriginalSounds"] = 0
+	-- AddConvars["VJ_ToTU_MilZ_Det_Sounds"] = 0
 	AddConvars["VJ_ToTU_MilZ_Bull_Voice"] = 0
 	AddConvars["VJ_ToTU_General_EasterEggs"] = 1
 	AddConvars["VJ_ToTU_MilZ_Ghost_Cloak_Health"] = 100
@@ -856,6 +926,18 @@ end
 	AddConvars["VJ_ToTU_Weaponized_Smog_Bloody"] = 2
 	AddConvars["VJ_ToTU_MilZ_Grunt_Corpsman_Allow"] = 1
 	AddConvars["VJ_ToTU_MilZ_Grunt_Corpsman_Chance"] = 4
+	
+	-- get these working
+	AddConvars["VJ_ToTU_MilZ_Tank_NMRIHWalks"] = 1
+	AddConvars["VJ_ToTU_MilZ_Det_Bulk_NMRIHWalks"] = 1
+	AddConvars["VJ_ToTU_MilZ_Tank_SubtypeBlacklisted"] = 1
+	AddConvars["VJ_ToTU_MilZ_Det_Bulk_SubtypeBlacklisted"] = 1
+	AddConvars["VJ_ToTU_MilZ_Det_SubtypeBlacklisted"] = 1
+	AddConvars["VJ_ToTU_General_Stumbling_Disable"] = 0
+	AddConvars["VJ_ToTU_MilZ_Det_Bomb_Bustable"] = 1
+	AddConvars["VJ_ToTU_MilZ_Det_Bomb_Health"] = 10
+	AddConvars["VJ_ToTU_MilZ_Det_ExplosionSetup"] = 1
+
 	-- AddConvars["VJ_ToTU_General_TF2Mode"] = 0
 	-- AddConvars["VJ_ToTU_Weaponized_Carcass_"] = 
 	-- AddConvars[""] = 
@@ -948,8 +1030,8 @@ end
 			VJ_ToTU_MilZ_Det_Infection = "1",
 			VJ_ToTU_MilZ_Det_BombLights = "2",
 			VJ_ToTU_General_Crawler_Chance = "5",
-			VJ_ToTU_MilZ_Gasmasks_OriginalSounds = "0",
-			VJ_ToTU_MilZ_Det_Sounds = "0",
+			-- VJ_ToTU_MilZ_Gasmasks_OriginalSounds = "0",
+			-- VJ_ToTU_MilZ_Det_Sounds = "0",
 			VJ_ToTU_MilZ_Bull_Voice = "0",
 			VJ_ToTU_General_EasterEggs = "1",
 			VJ_ToTU_MilZ_Ghost_Cloak_Health = "100",
@@ -973,6 +1055,15 @@ end
 			VJ_ToTU_Weaponized_Smog_Bloody = "2",
 			VJ_ToTU_MilZ_Grunt_Corpsman_Allow = "1",
 			VJ_ToTU_MilZ_Grunt_Corpsman_Chance = "4",
+			VJ_ToTU_MilZ_Tank_NMRIHWalks = "1",
+			VJ_ToTU_MilZ_Det_Bulk_NMRIHWalks = "1",
+			VJ_ToTU_MilZ_Tank_SubtypeBlacklisted = "1",
+			VJ_ToTU_MilZ_Det_Bulk_SubtypeBlacklisted = "1",
+			VJ_ToTU_MilZ_Det_SubtypeBlacklisted = "1",
+			VJ_ToTU_General_Stumbling_Disable = "0",
+			VJ_ToTU_MilZ_Det_Bomb_Bustable = "1",
+			VJ_ToTU_MilZ_Det_Bomb_Health = "10",
+			VJ_ToTU_MilZ_Det_ExplosionSetup = "1",
 			-- VJ_ToTU_MilZ_Det_ = "",
 			
 			
@@ -1031,6 +1122,8 @@ end
 	Panel:ControlHelp("--------------------------------------------------------")
 	
 	Panel:AddControl("Checkbox", {Label = "Enable easter eggs?", Command = "VJ_ToTU_General_EasterEggs"})
+	
+	Panel:AddControl("Checkbox", {Label = "Disable the stumbling system?", Command = "VJ_ToTU_General_Stumbling_Disable"})
 	
 	Panel:AddControl("Checkbox", {Label = "Global digouts?", Command = "VJ_ToTU_Spawn_UniversalDig"})
 	Panel:ControlHelp("If enabled, zombies can do dig-out animations no matter what the ground type is.")
@@ -1121,11 +1214,11 @@ end
 	Panel:ControlHelp("Chance that a MilZomb will spawn with a gasmask.")
 	Panel:ControlHelp("Default chance is 3.")
 	
-	local combobox_milzgmasksounds = {Options = {}, CVars = {}, Label = "Gasmask sounds.", MenuButton = "0"}
-	combobox_milzgmasksounds.Options["Nightmare House 2 Security Zombie (New Sounds)"] = {VJ_ToTU_MilZ_Gasmasks_OriginalSounds = 0}
-	combobox_milzgmasksounds.Options["Dying Light 1 Gas Tanks (Original Sounds)"] = {VJ_ToTU_MilZ_Gasmasks_OriginalSounds = 1}
-	combobox_milzgmasksounds.Options["Use Both"] = {VJ_ToTU_MilZ_Gasmasks_OriginalSounds = 2}
-	Panel:AddControl("ComboBox", combobox_milzgmasksounds)
+	-- local combobox_milzgmasksounds = {Options = {}, CVars = {}, Label = "Gasmask sounds.", MenuButton = "0"}
+	-- combobox_milzgmasksounds.Options["Nightmare House 2 Security Zombie (New Sounds)"] = {VJ_ToTU_MilZ_Gasmasks_OriginalSounds = 0}
+	-- combobox_milzgmasksounds.Options["Dying Light 1 Gas Tanks (Original Sounds)"] = {VJ_ToTU_MilZ_Gasmasks_OriginalSounds = 1}
+	-- combobox_milzgmasksounds.Options["Use Both"] = {VJ_ToTU_MilZ_Gasmasks_OriginalSounds = 2}
+	-- Panel:AddControl("ComboBox", combobox_milzgmasksounds)
 	
 	Panel:AddControl("Checkbox", {Label = "MilZombs can spawn with flak armor?", Command = "VJ_ToTU_MilZ_FlakArmor_Allow"})
 	Panel:ControlHelp("If enabled, MilZombs can sometimes spawn with flak armor.")
@@ -1208,21 +1301,44 @@ end
 	combobox_bullvoice.Options["Both"] = {VJ_ToTU_MilZ_Bull_Voice = 2}
 	Panel:AddControl("ComboBox", combobox_bullvoice)
 	
-	local combobox_detsounds = {Options = {}, CVars = {}, Label = "Detonator sounds.", MenuButton = "0"}
-	combobox_detsounds.Options["Nightmare House 2 Security Zombie"] = {VJ_ToTU_MilZ_Det_Sounds = 0}
-	combobox_detsounds.Options["Dying Light 1 Gas Tank"] = {VJ_ToTU_MilZ_Det_Sounds = 1}
-	combobox_detsounds.Options["Use Both"] = {VJ_ToTU_MilZ_Det_Sounds = 2}
-	Panel:AddControl("ComboBox", combobox_detsounds)
+	-- local combobox_detsounds = {Options = {}, CVars = {}, Label = "Detonator sounds.", MenuButton = "0"}
+	-- combobox_detsounds.Options["Nightmare House 2 Security Zombie"] = {VJ_ToTU_MilZ_Det_Sounds = 0}
+	-- combobox_detsounds.Options["Dying Light 1 Gas Tank"] = {VJ_ToTU_MilZ_Det_Sounds = 1}
+	-- combobox_detsounds.Options["Use Both"] = {VJ_ToTU_MilZ_Det_Sounds = 2}
+	-- Panel:AddControl("ComboBox", combobox_detsounds)
 	
 	Panel:AddControl("Checkbox", {Label = "Detonators have breakable faceplates?", Command = "VJ_ToTU_MilZ_Det_Faceplate_Breakable"})
 	Panel:ControlHelp("If enabled, Detonator faceplates can be broken if damaged enough.")
 	
+	Panel:AddControl("Checkbox", {Label = "Alternate Detonator damage system?", Command = "VJ_ToTU_MilZ_Det_ExplosionSetup"})
+	Panel:ControlHelp("If enabled, Detonator explosions will use multiple damage spheres instead of just 1.")
+	Panel:ControlHelp("This allows damage falloff, but this could also create invisible zombies.")
+	Panel:ControlHelp("This is more noticable with the Bulk Detonator.")
+	
 	Panel:AddControl("Slider", {Label = "Detonator faceplate health.", Command = "VJ_ToTU_MilZ_Det_Faceplate_Health", Min = 1, Max = 10000})
 	Panel:ControlHelp("Health Detonator faceplates will have.")
+	Panel:ControlHelp("Bulk Detonators will have this amount times 3.")
 	Panel:ControlHelp("Default ammount is 50.")
 	
+	Panel:AddControl("Checkbox", {Label = "Detonator bombs can be shot off?", Command = "VJ_ToTU_MilZ_Det_Bomb_Bustable"})
+	Panel:ControlHelp("If enabled, Detonator bombs will explode if you shoot them enough.")
+	
+	Panel:AddControl("Slider", {Label = "Detonator bomb health.", Command = "VJ_ToTU_MilZ_Det_Bomb_Health", Min = 1, Max = 10000})
+	Panel:ControlHelp("Health Detonator bombs will have.")
+	Panel:ControlHelp("Bulk Detonators will have this amount times 5.")
+	Panel:ControlHelp("Default ammount is 10.")
+
 	Panel:AddControl("Checkbox", {Label = "Detonators infect victims?", Command = "VJ_ToTU_MilZ_Det_Infection"})
 	Panel:ControlHelp("If enabled, Detonators and Bulk Detonators will infect stuff they kill.")
+	
+	Panel:AddControl("Checkbox", {Label = "Blacklist Detonator subtypes?", Command = "VJ_ToTU_MilZ_Det_SubtypeBlacklisted"})
+	Panel:ControlHelp("If enabled, Detonators cannot spawn as Super Sprinters or Rushers.")
+	
+	Panel:AddControl("Checkbox", {Label = "Bulk Detonator uses NMRiH walks?", Command = "VJ_ToTU_MilZ_Det_Bulk_NMRIHWalks"})
+	Panel:ControlHelp("If enabled, Bulk Detonators will use walking animations from No More Room in Hell instead of the cod zombies ones.")
+	
+	Panel:AddControl("Checkbox", {Label = "Blacklist Bulk Detonator subtypes?", Command = "VJ_ToTU_MilZ_Det_Bulk_SubtypeBlacklisted"})
+	Panel:ControlHelp("If enabled, Bulk Detonators cannot spawn as Runners or Rushers.")
 
 	local combobox_detlight = {Options = {}, CVars = {}, Label = "Detonator lights.", MenuButton = "0"}
 	combobox_detlight.Options["Disable Entirely"] = {VJ_ToTU_MilZ_Det_BombLights = 0}
@@ -1243,6 +1359,12 @@ end
 	Panel:ControlHelp("They will only do this is their current enemy is far enough.")
 	Panel:ControlHelp("If cloak recharging is disabled, then this convar doesn't do anything.")
 	
+	Panel:AddControl("Checkbox", {Label = "Tank uses NMRiH walks?", Command = "VJ_ToTU_MilZ_Tank_NMRIHWalks"})
+	Panel:ControlHelp("If enabled, Tanks will use walking animations from No More Room in Hell instead of the cod zombies ones.")
+	
+	Panel:AddControl("Checkbox", {Label = "Blacklist Tank subtypes?", Command = "VJ_ToTU_MilZ_Tank_SubtypeBlacklisted"})
+	Panel:ControlHelp("If enabled, Tanks cannot spawn as Runners or Rushers.")
+	
 	Panel:ControlHelp("--------------------------------------------------------")
 	Panel:AddControl( "Label", {Text = "Nightkin"})
 	Panel:ControlHelp("--------------------------------------------------------")
@@ -1259,7 +1381,7 @@ end
 	Panel:ControlHelp("+ It will gain massive damage resistance.")
 	Panel:ControlHelp("+ It cannot be crippled.")
 	Panel:ControlHelp("= It will gain a glow effect.")
-	Panel:ControlHelp("- It will be redueced to Super Sprinting instead of Rushing.")
+	Panel:ControlHelp("- It will be reduced to Super Sprinting instead of Rushing.")
 	Panel:ControlHelp("- It will die after 12 seconds.")
 	
 	Panel:AddControl("Slider", {Label = "Squaller Iron Will chance.", Command = "VJ_ToTU_Nightkin_Squaller_IronWill_Chance", Min = 1, Max = 10000})
