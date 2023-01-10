@@ -11,8 +11,8 @@
 	"$phongalbedotint"      "1" 
 	"$phongfresnelranges"   "[0.5 1.5 8.0]"
 
-	$detail models\mbczombies\detail\ci_detail_dirt
-	$detailscale 7.74
-	$detailblendfactor 0.8
-	$detailblendmode 0
+                  $detail models\lnrzombies\detail\ci_detail_dirt
+                  $detailscale 7.74
+                  $detailblendfactor 0.4
+                  $detailblendmode 0
 }

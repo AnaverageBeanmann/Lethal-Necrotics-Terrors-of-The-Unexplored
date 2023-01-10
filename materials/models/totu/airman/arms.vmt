@@ -1,0 +1,16 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models/totu\airman\arms"
+	"$bumpmap" "models/totu\airman\arms_normal"
+	"$phong" 1
+	"$phongboost" ".5"
+	"$phongexponent" 5
+	"$phongtint" "[.85 .85 1]"
+	"$phongfresnelranges" "[.3 .65 30]"
+ 	"$halflambert"		"1"
+
+	"$detail" "models\totu\detail\ci_detail_dirt"
+	"$detailscale" 7.74
+	"$detailblendfactor" 0.8
+	"$detailblendmode" 0
+}
