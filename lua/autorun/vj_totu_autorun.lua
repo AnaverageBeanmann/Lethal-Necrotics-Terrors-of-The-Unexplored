@@ -351,9 +351,6 @@ end
 		todo
 		- convar for failsafe doorsound options (sound used if it doesn't detect a doortype)
 		- fix up possession
-		- redo shots of detonator for milzomb video
-		- do rest of shots for milzomb video
-		- finish milzomb video
 		
 		for nightkin showcase vid
 		- map: necro forest
@@ -363,25 +360,11 @@ end
 		
 		- get text addon (like 3d/2d text or something) for future sets
 		
-		- give bulk detonator a bigger bomb
-		
-		- make zombies do explosion deaths while gliding
-		
-		- make it so zombs cant do this stuff while gliding
-		* cripple
-		* stumbling
-		* dodging
-		* range attacking
-		
 		trailer music contenders
 		- https://youtu.be/ICjD3f-8SXE
 		- https://youtu.be/QEUS4uh4c4Y
 		
 		- add convar for tank moving attacks
-		- experiment with silent/quiet crawling ghilles
-		- jet pilot milzomb?
-		* name it airman
-		* use this model https://steamcommunity.com/sharedfiles/filedetails/?id=1288267845&searchtext=pilot
 		
 		c-strain = Cepheus
 		- drone
@@ -399,12 +382,56 @@ end
 		- cancer
 		- revenant
 		
-		get these sounds in for milzombs
-		- css knife
-		- css armor hit
-		- l4d2 shove
-		- l4d2 tank and charger voice
-		- ghost easter egg reveal sound
+		 get l4d common voices in
+		 
+		add the underhell spray can model
+		
+		dmg types
+		name - what causes it
+		
+		DMG_GENERIC				  - Generic damage (used by weapon_fists)
+		DMG_CLUB				  - Blunt attacks such as from the Crowbar, Antlion Guard & Hunter
+		DMG_SLASH				  - Used by the Stunstick, Manhacks, Antlions, Antlion Guards, Headcrabs, Fast Headcrabs, all Zombies types, Hunter, and potentially other NPCs attacks
+		DMG_CRUSH				  - Caused by physics interaction and ignored by airboat drivers. This is used by the Rollermine and an unused animation attack called 'Fireattack' by the Antlion Guard ACT_RANGE_ATTACK1
+		DMG_VEHICLE				  - Hit by a vehicle (This will need to be set for passengers of some vehicle to receive damage)
+		DMG_FALL				  - Fall damage
+		DMG_DIRECT				  - Direct damage to the entity that does not go through any damage value modifications
+		DMG_SONIC				  - Sonic damage, used by the Gargantua and Houndeye NPCs
+		DMG_NEVERGIB			  - Crossbow damage, never creates gibs.
+		DMG_PHYSGUN				  - Damage done by the gravity gun.
+		
+		DMG_BULLET				  - Bullet damage from Ceiling Turrets, the Strider, Turrets and most guns.
+		- use dmginfo:IsBulletDamage() for this
+		DMG_BUCKSHOT			  - The pellets fired from a shotgun
+		DMG_SNIPER				  - Damage from SniperRound/SniperPenetratedRound ammo types
+		DMG_AIRBOAT				  - Airboat gun damage
+		
+		DMG_BURN				  - Damage from fire
+		DMG_SLOWBURN			  - In an oven
+		
+		DMG_BLAST				  - Explosion damage like grenades, helicopter bombs, combine mines, Will be ignored by most vehicle passengers.
+		DMG_BLAST_SURFACE		  - This won't hurt the player underwater
+		DMG_MISSILEDEFENSE		  - Damage from npc_missiledefense, npc_combinegunship, or monster_mortar
+		DMG_ALWAYSGIB			  - Always create gibs
+		
+		DMG_POISON				  - Poison damage used by Antlion Workers & Poison Headcrabs.
+		DMG_PARALYZE			  - Same as DMG_POISON
+		DMG_NERVEGAS			  - Neurotoxin damage
+		
+		DMG_SHOCK				  - Electrical damage, shows smoke at the damage position and its used by Stalkers & Vortigaunts
+		DMG_ENERGYBEAM			  - Laser damage
+		DMG_PLASMA				  - Plasma damage
+		DMG_DISSOLVE			  - Forces the entity to dissolve on death. This is what the combine ball uses when it hits a target.
+		
+		DMG_RADIATION			  - Radiation damage & it will be ignored by most vehicle passengers
+		
+		DMG_ACID				  - Toxic chemical or acid burn damage used by the Antlion Workers
+		
+		DMG_PREVENT_PHYSICS_FORCE - Prevent a physics force.
+		
+		DMG_DROWN				  - Drown damage
+		DMG_DROWNRECOVER		  - Damage applied to the player to restore health after drowning
+		DMG_REMOVENORAGDOLL		  - Don't create a ragdoll on death
 
 	*/
 
@@ -417,7 +444,7 @@ end
 		-- []
 		VJ.AddNPC("Base Infected","npc_vj_totu_base_infected",vCat1)
 		-- []
-		VJ.AddNPC("Base C-Strain Gunner Zombie Guy Dude Thing","npc_vj_totu_base_cstrain",vCat1)
+		VJ.AddNPC("Base Cepheus Gunner Zombie Guy Dude Thing","npc_vj_totu_base_cstrain",vCat1)
 		-- ()
 	
 	-- Military
@@ -444,9 +471,9 @@ end
 		VJ.AddNPC("Ghillie (Walker)","npc_vj_totu_milzomb_ghillie_walker",vCat2)
 		-- []
 		VJ.AddNPC("Airman (Walker)","npc_vj_totu_milzomb_airman",vCat2)
-		-- ()
+		-- []
 		VJ.AddNPC("Airman (Infected)","npc_vj_totu_milzomb_airman_infected",vCat2)
-		-- ()
+		-- []
 		
 	-- Nightkin
 		VJ.AddNPC("Scragg","npc_vj_totu_nightkin_scragg",vCat3)
@@ -825,6 +852,7 @@ end
 	
 	-- Freaks of Nature
 		VJ.AddNPC("Skullcrusher","npc_vj_totu_fon_juggernaut",vCat11)
+		VJ.AddNPC("Wrath","npc_vj_totu_fon_bulldozer",vCat11)
 	
 	--Zombies
 		--No Specific Area
@@ -937,6 +965,8 @@ end
 	AddConvars["VJ_ToTU_MilZ_Det_Bomb_Bustable"] = 1
 	AddConvars["VJ_ToTU_MilZ_Det_Bomb_Health"] = 10
 	AddConvars["VJ_ToTU_MilZ_Det_ExplosionSetup"] = 1
+	AddConvars["VJ_ToTU_General_DefaultVoices_AltInfected"] = 1
+	AddConvars["VJ_ToTU_General_DefaultVoices_AltWalker"] = 1
 
 	-- AddConvars["VJ_ToTU_General_TF2Mode"] = 0
 	-- AddConvars["VJ_ToTU_Weaponized_Carcass_"] = 
@@ -1064,6 +1094,8 @@ end
 			VJ_ToTU_MilZ_Det_Bomb_Bustable = "1",
 			VJ_ToTU_MilZ_Det_Bomb_Health = "10",
 			VJ_ToTU_MilZ_Det_ExplosionSetup = "1",
+			VJ_ToTU_General_DefaultVoices_AltInfected = "1",
+			VJ_ToTU_General_DefaultVoices_AltWalker = "1",
 			-- VJ_ToTU_MilZ_Det_ = "",
 			
 			
@@ -1185,6 +1217,14 @@ end
 	
 	Panel:AddControl("Checkbox", {Label = "Allow armor?", Command = "VJ_ToTU_General_Armor_Allow"})
 	Panel:ControlHelp("If enabled, certain zombies will have working armor.")
+
+	Panel:AddControl("Checkbox", {Label = "Alternate Walker voices?", Command = "VJ_ToTU_General_DefaultVoices_AltWalker"})
+	Panel:ControlHelp("If enabled, zombies that use the default voice pack will use alternate voices instead.")
+	Panel:ControlHelp("Walkers will be voiced by Dying Light 1 Biters if this is enabled.")
+	
+	Panel:AddControl("Checkbox", {Label = "Alternate Infected voices?", Command = "VJ_ToTU_General_DefaultVoices_AltInfected"})
+	Panel:ControlHelp("If enabled, zombies that use the default voice pack will use alternate voices instead.")
+	Panel:ControlHelp("Infected will be voiced by Left 4 Dead Common Infected if this is enabled.")
 	
 	/*
 	Panel:AddControl("Checkbox", {Label = "Zombies Can Eat?", Command = "VJ_ToTU_General_CanEat"})
