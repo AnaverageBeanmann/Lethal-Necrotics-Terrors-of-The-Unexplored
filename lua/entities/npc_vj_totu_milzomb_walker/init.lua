@@ -48,6 +48,10 @@ ENT.MilZ_Ghille_IsOnFire = false
 ENT.MiLZ_Ghille_IsGhille = false
 
 ENT.MilZ_Airman_IsAirman = false
+
+ENT.MilZ_FoN_Rage = false
+ENT.MilZ_FoN_CanSpawnHelp = true
+ENT.MilZ_FoN_SpawnCoolDownT = 5
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:Zombie_CustomOnPreInitialize()
 
@@ -269,7 +273,7 @@ function ENT:Zombie_CustomOnPreInitialize()
 
 		self.Model = {"models/totu/juggernaut.mdl"}
 
-	elseif self:GetClass() == "npc_vj_totu_milzomb_bulldozer" then
+	elseif self:GetClass() == "npc_vj_totu_milzomb_bulldozer" or self:GetClass() == "npc_vj_totu_fon_bulldozer" then
 
 		self.Model = {"models/totu/bulldozer.mdl"}
 
@@ -336,12 +340,14 @@ function ENT:Zombie_CustomOnPreInitialize()
 		self:GetClass() == "npc_vj_totu_milzomb_bulldozer" or 
 		self:GetClass() == "npc_vj_totu_milzomb_detonator_bulk" or
 		self:GetClass() == "npc_vj_totu_milzomb_tank" or
-		self:GetClass() == "npc_vj_totu_fon_juggernaut"
+		self:GetClass() == "npc_vj_totu_fon_juggernaut" or
+		self:GetClass() == "npc_vj_totu_fon_bulldozer"
 	then
 
 		if
 			self:GetClass() == "npc_vj_totu_milzomb_juggernaut" or 
 			self:GetClass() == "npc_vj_totu_fon_juggernaut" or 
+			self:GetClass() == "npc_vj_totu_fon_bulldozer" or 
 			self:GetClass() == "npc_vj_totu_milzomb_bulldozer"
 		then
 
@@ -373,6 +379,9 @@ function ENT:Zombie_CustomOnPreInitialize()
 		end
 		
 		if self:GetClass() == "npc_vj_totu_fon_juggernaut" then
+		self:SetModelScale(1.45)
+		self:SetKeyValue("rendercolor","171 134 134 255")
+		elseif self:GetClass() == "npc_vj_totu_fon_bulldozer" then
 		self:SetModelScale(1.45)
 		self:SetKeyValue("rendercolor","171 134 134 255")
 		else
@@ -417,6 +426,7 @@ function ENT:Zombie_CustomOnPreInitialize()
 		math.random(1,GetConVar("VJ_ToTU_MilZ_Gasmasks_Chance"):GetInt()) == 1 &&
 		self:GetClass() != "npc_vj_totu_milzomb_bulldozer" &&
 		self:GetClass() != "npc_vj_totu_fon_juggernaut" &&
+		self:GetClass() != "npc_vj_totu_fon_bulldozer" &&
 		!self.MilZ_Det_IsDetonator
 	then
 		self.MilZ_HasGasmask = true
@@ -455,6 +465,22 @@ function ENT:Zombie_CustomOnPreInitialize()
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:Zombie_CustomOnInitialize()
+
+	if self:GetClass() == "npc_vj_totu_fon_juggernaut" then
+		self.HasRangeAttack = true
+		self.RangeAttackEntityToSpawn = "obj_vj_totu_milzgren"
+		self.RangeAttackAnimationFaceEnemy = true
+		self.AnimTbl_RangeAttack = {"vjseq_throw_right"}
+		self.RangeDistance = 750 
+		self.RangeToMeleeDistance = 1 
+		self.RangeAttackAngleRadius = 100
+		self.TimeUntilRangeAttackProjectileRelease = 1.6
+		self.NextRangeAttackTime = math.random(15,20)
+		self.RangeUseAttachmentForPos = true 
+		self.RangeUseAttachmentForPosID = "anim_attachment_RH"
+		self.RangeAttackPos_Forward = 20
+		self.RangeAttackPos_Up = 20
+	end
 	
 	if self.MilZ_Airman_IsAirman then
 		self.ToTU_Almanac_Name = "-= Airman =-"
@@ -470,6 +496,7 @@ function ENT:Zombie_CustomOnInitialize()
 	if
 		self:GetClass() == "npc_vj_totu_milzomb_juggernaut" or 
 		self:GetClass() == "npc_vj_totu_fon_juggernaut" or 
+		self:GetClass() == "npc_vj_totu_fon_bulldozer" or 
 		self:GetClass() == "npc_vj_totu_milzomb_bulldozer" or 
 		self:GetClass() == "npc_vj_totu_milzomb_detonator_bulk" or
 		self:GetClass() == "npc_vj_totu_milzomb_tank"
@@ -698,6 +725,14 @@ function ENT:Zombie_CustomOnInitialize()
 		self.AnimTbl_Walk = {ACT_WALK_AIM}
 		self.AnimTbl_Run = {ACT_WALK_AIM}
 	end
+	if self:GetClass() == "npc_vj_totu_fon_bulldozer" then
+		self.MilZ_HasFlakSuit = true
+		self:SetSkin(2)
+		self:SetBodygroup(1,3)
+		self:SetBodygroup(2,0)
+		-- self.AnimTbl_Walk = {ACT_WALK_AIM}
+		-- self.AnimTbl_Run = {ACT_WALK_AIM}
+	end
 
 	if self:GetClass() == "npc_vj_totu_milzomb_juggernaut" then
 
@@ -767,6 +802,7 @@ function ENT:Zombie_CustomOnInitialize()
 	if
 		self:GetClass() == "npc_vj_totu_milzomb_juggernaut" or
 		self:GetClass() == "npc_vj_totu_fon_juggernaut" or
+		self:GetClass() == "npc_vj_totu_fon_bulldozer" or
 		self:GetClass() == "npc_vj_totu_milzomb_bulldozer" or
 		self.MilZ_Ghost_IsGhost
 	then return end
@@ -1056,18 +1092,22 @@ function ENT:CustomOnRangeAttack_AfterStartTimer(seed)
 
 	if self.MilZ_CanShuutDeGun == true then return end
 
-	if self.MilZ_Grenades == 1 or self.MilZ_Grenades > 1 then
+	if self.MilZ_Grunt_IsGrunt then
+	
+		if self.MilZ_Grenades == 1 or self.MilZ_Grenades > 1 then
 
-		self.MilZ_Grenades = self.MilZ_Grenades - 1
-				if self.VJ_IsBeingControlled then
-					self.VJ_TheController:ChatPrint("Grenades left: "..self.MilZ_Grenades.."")
-				end
+			self.MilZ_Grenades = self.MilZ_Grenades - 1
+					if self.VJ_IsBeingControlled then
+						self.VJ_TheController:ChatPrint("Grenades left: "..self.MilZ_Grenades.."")
+					end
 
-	end
+		end
 
-	if self.MilZ_Grenades < 1 then
+		if self.MilZ_Grenades < 1 then
 
-		self.HasRangeAttack = false
+			self.HasRangeAttack = false
+
+		end
 
 	end
 
@@ -1156,10 +1196,33 @@ function ENT:Zombie_CustomOnThink_AIEnabled()
 				self:GetActivity() == ACT_BIG_FLINCH or
 				self:GetActivity() == ACT_FLINCH_STOMACH or
 				self:GetActivity() == ACT_GMOD_SHOWOFF_STAND_01 or
+				self:GetActivity() == ACT_VM_DEPLOYED_FIRE or
 				self:GetSequence() == self:LookupSequence("jump_attack") or
 				self:GetSequence() == self:LookupSequence("nz_spawn_jump") or
 				self:GetSequence() == self:LookupSequence("nz_spawn_climbout_fast") or
 				self:GetSequence() == self:LookupSequence("Run_Stumble_01") or
+				self:GetSequence() == self:LookupSequence("Climb120_00_InPlace") or
+				self:GetSequence() == self:LookupSequence("Climb120_00a_InPlace") or
+				self:GetSequence() == self:LookupSequence("Climb120_03_InPlace") or
+				self:GetSequence() == self:LookupSequence("Climb120_03a_InPlace") or
+				self:GetSequence() == self:LookupSequence("Climb120_04_InPlace") or
+				self:GetSequence() == self:LookupSequence("Climb144_00_InPlace") or
+				self:GetSequence() == self:LookupSequence("Climb144_00a_InPlace") or
+				self:GetSequence() == self:LookupSequence("Climb144_01_InPlace") or
+				self:GetSequence() == self:LookupSequence("Climb144_03_InPlace") or
+				self:GetSequence() == self:LookupSequence("Climb144_03a_InPlace") or
+				self:GetSequence() == self:LookupSequence("Climb144_04_InPlace") or
+				self:GetSequence() == self:LookupSequence("Climb72_03_InPlace") or
+				self:GetSequence() == self:LookupSequence("Climb72_04_InPlace") or
+				self:GetSequence() == self:LookupSequence("Climb72_05_InPlace") or
+				self:GetSequence() == self:LookupSequence("Climb72_06_InPlace") or
+				self:GetSequence() == self:LookupSequence("Climb72_07_InPlace") or
+				self:GetSequence() == self:LookupSequence("Climb96_00_InPlace") or
+				self:GetSequence() == self:LookupSequence("Climb96_00a_InPlace") or
+				self:GetSequence() == self:LookupSequence("Climb96_03_InPlace") or
+				self:GetSequence() == self:LookupSequence("Climb96_03a_InPlace") or
+				self:GetSequence() == self:LookupSequence("Climb96_04a_InPlace") or
+				self:GetSequence() == self:LookupSequence("Climb96_05_InPlace") or
 				self:IsOnFire()
 			then return end
 
@@ -1167,7 +1230,7 @@ function ENT:Zombie_CustomOnThink_AIEnabled()
 
 				self:ToTU_Ghille_StartCrawling()
 				self.MilZ_Ghille_PlayChangeStateAnim_T = CurTime() + (3)
-				local anim = {"vjseq_Stand_to_crouch"}				
+				local anim = {"vjseq_Stand_to_crouch"}
 				self:VJ_ACT_PLAYACTIVITY(anim,true,false,false)
 
 			elseif enemydist <= 149 && self.MilZ_Ghille_PlayChangeStateAnim == 2 && CurTime() > self.MilZ_Ghille_PlayChangeStateAnim_T then
@@ -1187,6 +1250,143 @@ function ENT:Zombie_CustomOnThink_AIEnabled()
 
 	end
 
+	if self:GetClass() == "npc_vj_totu_fon_juggernaut" or self:GetClass() == "npc_vj_totu_fon_bulldozer" then
+
+		if self.MilZ_FoN_CanSpawnHelp && self.MilZ_FoN_SpawnCoolDownT < CurTime() then
+			self:MilZ_FoN_SummonHelp_Spawn()
+		end
+
+		if self:Health() <= (self:GetMaxHealth() / 2) && !self.MilZ_FoN_Rage &&
+
+		self:GetActivity() != ACT_STEP_BACK &&
+		self:GetActivity() != ACT_STEP_FORE &&
+		self:GetActivity() != ACT_SMALL_FLINCH &&
+		self:GetActivity() != ACT_BIG_FLINCH &&
+		self:GetActivity() != ACT_FLINCH_STOMACH &&
+		self:GetActivity() != ACT_GMOD_SHOWOFF_STAND_01 &&
+		self:GetActivity() != ACT_WALK_CROUCH_AIM &&
+		self:GetActivity() != ACT_RUN_STEALTH &&
+		self:GetSequence() != self:LookupSequence("Hunter_Crawl") &&
+		self:GetSequence() != self:LookupSequence("mudguy_run") &&
+		self:GetSequence() != self:LookupSequence("jump_attack") &&
+		self:GetSequence() != self:LookupSequence("Run_Stumble_01")
+
+
+		then
+			self.MilZ_FoN_Rage = true
+			if self:GetClass() == "npc_vj_totu_fon_bulldozer" then
+				self.AnimTbl_Run = {ACT_RUN_AIM}
+				self.LNR_SuperSprinter = true
+				self:VJ_ACT_PLAYACTIVITY("vjseq_nz_sonic_attack_1",true,false,false)
+				VJ_EmitSound(self,self.SoundTbl_Alert,self.AlertSoundLevel,self:VJ_DecideSoundPitch(self.AlertSoundPitch.a,self.AlertSoundPitch.b))
+			end
+			if self:GetClass() == "npc_vj_totu_fon_juggernaut" then
+				self.AnimTbl_Run = {ACT_SPRINT}
+				self.ToTU_Rusher = true
+				self:VJ_ACT_PLAYACTIVITY("vjseq_nz_sonic_attack_1",true,false,false)
+				self.SoundTbl_Alert = {
+					"voices/mil_jugg/run_start_1.mp3",
+					"voices/mil_jugg/run_start_2.mp3",
+					"voices/mil_jugg/run_start_3.mp3"
+				}
+				self.SoundTbl_CombatIdle = {
+					"voices/mil_jugg/cidle_1.mp3",
+					"voices/mil_jugg/cidle_2.mp3"
+				}
+				VJ_EmitSound(self,"voices/mil_jugg/run_start_"..math.random(1,3)..".mp3",self.AlertSoundLevel,self:VJ_DecideSoundPitch(self.AlertSoundPitch.a,self.AlertSoundPitch.b))
+			end
+		end
+	end
+
+end
+---------------------------------------------------------------------------------------------------------------------------------------------
+function ENT:MilZ_FoN_SummonHelp_Spawn()
+	if !IsValid(self.KinHelp1) then
+		self.KinHelp1 = self:MilZ_FoN_SummonHelp()
+		return 15
+	elseif !IsValid(self.KinHelp2) then
+		self.KinHelp2 = self:MilZ_FoN_SummonHelp()
+		return 15
+	elseif !IsValid(self.KinHelp3) then
+		self.KinHelp3 = self:MilZ_FoN_SummonHelp()
+		return 15
+	elseif !IsValid(self.KinHelp4) then
+		self.KinHelp4 = self:MilZ_FoN_SummonHelp()
+		return 15
+	elseif !IsValid(self.KinHelp5) then
+		self.KinHelp5 = self:MilZ_FoN_SummonHelp()
+		return 15
+	elseif !IsValid(self.KinHelp6) then
+		self.KinHelp6 = self:MilZ_FoN_SummonHelp()
+		return 15
+	elseif !IsValid(self.KinHelp7) then
+		self.KinHelp7 = self:MilZ_FoN_SummonHelp()
+		return 15
+	elseif !IsValid(self.KinHelp8) then
+		self.KinHelp8 = self:MilZ_FoN_SummonHelp()
+		return 15
+	elseif !IsValid(self.KinHelp9) then
+		self.KinHelp9 = self:MilZ_FoN_SummonHelp()
+		return 15
+	elseif !IsValid(self.KinHelp10) then
+		self.KinHelp10 = self:MilZ_FoN_SummonHelp()
+		return 15
+	
+	end
+	return 8
+end
+---------------------------------------------------------------------------------------------------------------------------------------------
+function ENT:MilZ_FoN_SummonHelp()
+	-- local randnest = math.random(1,100)
+	-- if randnest == 1 then
+		-- self.KinT = "npc_vj_totu_nightkin_shrieker"
+	-- elseif randnest >= 2 && randnest <= 5 then
+		-- self.KinT = "npc_vj_totu_nightkin_scylla"
+	-- elseif randnest >= 6 && randnest <= 15 then
+		-- self.KinT = "npc_vj_totu_nightkin_squaller"
+	-- elseif randnest >= 16 && randnest <= 30 then
+		-- if math.random (1,2) == 1 then
+			-- self.KinT = "npc_vj_totu_nightkin_spitballer"
+		-- else
+			-- self.KinT = "npc_vj_totu_nightkin_skitter"
+		-- end
+	-- else
+		-- self.KinT = "npc_vj_totu_milzomb_infected"
+	-- end
+			if self:GetClass() == "npc_vj_totu_fon_bulldozer" then
+	local randnest = math.random(1,5)
+	if randnest == 1 then
+		self.KinT = "npc_vj_totu_milzomb_detonator"
+	else
+		self.KinT = "npc_vj_totu_milzomb_airman_infected"
+	end
+			end
+	
+			if self:GetClass() == "npc_vj_totu_fon_juggernaut" then
+		self.KinT = "npc_vj_totu_milzomb_infected"
+			end
+	local tr = util.TraceLine({
+		start = self:GetPos(),
+		endpos = self:GetPos() + self:GetForward() * math.Rand(-700, -400) + self:GetRight() * math.Rand(-700, 700) + self:GetUp() * 60,
+		filter = {self},
+		mask = MASK_ALL,
+	})
+	local spawnpos = tr.HitPos + tr.HitNormal*300
+	local ally = ents.Create(self.KinT)
+	ally:SetPos(spawnpos)
+	ally:SetAngles(self:GetAngles())
+	ally:Spawn()
+	ally:Activate()
+	ally.ToTU_InstantDigout = true
+	ally.VJ_NPC_Class = self.VJ_NPC_Class
+	ally:RiseFromGround_Instant()
+			if self:GetClass() == "npc_vj_totu_fon_bulldozer" then
+	self.MilZ_FoN_SpawnCoolDownT = CurTime() + 15
+			end
+			if self:GetClass() == "npc_vj_totu_fon_juggernaut" then
+	self.MilZ_FoN_SpawnCoolDownT = CurTime() + 5
+			end
+	return ally
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:ToTU_Ghille_StartCrawling()
@@ -1455,7 +1655,7 @@ function ENT:ArmorDamage(dmginfo,hitgroup)
 
 			dmginfo:ScaleDamage(0.35)
 
-			if self.HasSounds && self.HasImpactSounds then VJ_EmitSound(self,"player/bhit_helmet-1.wav",70) end
+			if self.HasSounds && self.HasImpactSounds then VJ_EmitSound(self,"fx/armor/bhit_helmet-1.wav",70) end
 
 		end
 
@@ -1464,6 +1664,7 @@ function ENT:ArmorDamage(dmginfo,hitgroup)
 	if
 		hitgroup == HITGROUP_HEAD &&
 		self:GetClass() != "npc_vj_totu_milzomb_bulldozer" &&
+		self:GetClass() != "npc_vj_totu_fon_bulldozer" &&
 		!self.MilZ_HelmetBroken &&
 		!self.MiLZ_Ghille_IsGhille
 	then
@@ -1517,7 +1718,7 @@ function ENT:ArmorDamage(dmginfo,hitgroup)
 
 		end
 	
-		if self.HasSounds && self.HasImpactSounds then VJ_EmitSound(self,"player/bhit_helmet-1.wav",70) end
+		if self.HasSounds && self.HasImpactSounds then VJ_EmitSound(self,"fx/armor/bhit_helmet-1.wav",70) end
 
 		self.Bleeds = false
 
@@ -1547,7 +1748,7 @@ function ENT:ArmorDamage(dmginfo,hitgroup)
 
 		if dmginfo:IsBulletDamage() or dmginfo:IsDamageType(DMG_BUCKSHOT) or dmginfo:IsDamageType(DMG_SLASH) then
 
-			if self.HasSounds && self.HasImpactSounds then VJ_EmitSound(self,"player/bhit_helmet-1.wav",70) end
+			if self.HasSounds && self.HasImpactSounds then VJ_EmitSound(self,"fx/armor/bhit_helmet-1.wav",70) end
 
 			if math.random(1,3) == 1 then
 
@@ -1589,7 +1790,7 @@ function ENT:ArmorDamage(dmginfo,hitgroup)
 
 		if dmginfo:IsBulletDamage() or dmginfo:IsDamageType(DMG_BUCKSHOT) or dmginfo:IsDamageType(DMG_SLASH) then
 
-		if self.HasSounds && self.HasImpactSounds then VJ_EmitSound(self,"player/kevlar"..math.random(1,5)..".wav",70) end
+		if self.HasSounds && self.HasImpactSounds then VJ_EmitSound(self,"fx/armor/kevlar"..math.random(1,5)..".wav",70) end
 
 			if math.random(1,3) == 1 then
 

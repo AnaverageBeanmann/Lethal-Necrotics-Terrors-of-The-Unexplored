@@ -7,7 +7,7 @@ AddCSLuaFile()
 
 ENT.Base 			= "obj_vj_spawner_base"
 ENT.Type 			= "anim"
-ENT.PrintName 		= "Random Special Spawner"
+ENT.PrintName 		= "MilZomb Spawner"
 ENT.Author 			= "Originally made by Darkborn & King of Pootis, Modified by Bean"
 ENT.Contact 		= "http://steamcommunity.com/groups/vrejgaming"
 ENT.Purpose 		= "To create an outbreak!"
@@ -23,21 +23,26 @@ local entsList = {
 	"npc_vj_totu_milzomb_walker:1",
 	"npc_vj_totu_milzomb_infected:2",
 	"npc_vj_totu_milzomb_juggernaut:4",
-	"npc_vj_totu_milzomb_bulldozer:5",
-	"npc_vj_totu_milzomb_detonator:4",
-	"npc_vj_totu_milzomb_detonator_bulk:6",
+	"npc_vj_totu_milzomb_bulldozer:7",
+	"npc_vj_totu_milzomb_detonator:2",
+	"npc_vj_totu_milzomb_detonator_bulk:7",
 	"npc_vj_totu_milzomb_ghost:4",
 	"npc_vj_totu_milzomb_ghost_walker:3",
-	"npc_vj_totu_milzomb_ghillie_walker:3",
-	"npc_vj_totu_milzomb_ghillie:4",
-	"npc_vj_totu_milzomb_tank:6",
+	"npc_vj_totu_milzomb_ghillie_walker:2",
+	"npc_vj_totu_milzomb_ghillie:3",
+	"npc_vj_totu_milzomb_tank:7",
+	-- "npc_vj_totu_fon_juggernaut:10",
+	-- "npc_vj_totu_fon_bulldozer:12",
+	"npc_vj_totu_milzomb_airman:1",
+	"npc_vj_totu_milzomb_airman_infected:2",
 }
+
 ENT.EntitiesToSpawn = {
-	{SpawnPosition = {vForward=20, vRight=0, vUp=0}, Entities = entsList},
-	{SpawnPosition = {vForward=0, vRight=50, vUp=0}, Entities = entsList},
+	{SpawnPosition = {vForward=0, vRight=0, vUp=0}, Entities = entsList},
+	{SpawnPosition = {vForward=-50, vRight=50, vUp=0}, Entities = entsList},
 	{SpawnPosition = {vForward=50, vRight=50, vUp=0}, Entities = entsList},
 	{SpawnPosition = {vForward=50, vRight=-50, vUp=0}, Entities = entsList},
-	{SpawnPosition = {vForward=0, vRight=-50, vUp=0}, Entities = entsList},
+	{SpawnPosition = {vForward=-50, vRight=-50, vUp=0}, Entities = entsList},
 }
 /*--------------------------------------------------
 	*** Copyright (c) 2012-2022 by DrVrej, All rights reserved. ***

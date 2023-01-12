@@ -162,7 +162,7 @@ function ENT:ToTU_Ghost_BreakCloak()
 	-- update this when the easter egg convar gets added
 	if math.random(1,100) == 1 && GetConVar("VJ_ToTU_General_EasterEggs"):GetInt() == 1 then
 	
-		VJ_EmitSound(self,{"zombies/military/cloaker/invisiblereveal.wav"},100,math.random(100,100))
+		VJ_EmitSound(self,{"fx/egg/invisiblereveal.wav"},100,math.random(100,100))
 		
 	end
 	
