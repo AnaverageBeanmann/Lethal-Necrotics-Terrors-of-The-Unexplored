@@ -382,10 +382,6 @@ end
 		- cancer
 		- revenant
 		
-		 get l4d common voices in
-		 
-		add the underhell spray can model
-		
 		dmg types
 		name - what causes it
 		
@@ -562,6 +558,7 @@ end
 		VJ.AddNPC("Caretaker","npc_vj_totu_weaponized_caretaker",vCat4)
 		-- ()
 		-- medic npc
+		-- voiced by this? https://youtu.be/YCk6AvqA95k
 		
 		VJ.AddNPC("Carcass","npc_vj_totu_weaponized_carcass",vCat4)
 		-- []
@@ -844,6 +841,8 @@ end
 		-- pyro is immune to afterburn
 		-- medic has hp regen
 		-- spy can cloak
+
+		-- VJ.AddNPC("Kromling","npc_vj_totu_bonus_kromer",vCat8)
 		
 		-- obese male?
 		-- https://steamcommunity.com/sharedfiles/filedetails/?id=1199974271
