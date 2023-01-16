@@ -13,6 +13,7 @@ ENT.ToTU_Weaponized_Carcass_ZombineRunT = 0
 ENT.ToTU_Weaponized_Carcass_ZombineRunTargetCloseEnough = false
 ENT.ToTU_Weaponized_Carcass_Thorax_SplitSpawned = false
 ENT.ToTU_Weaponized_Carcass_Exploder = false
+ENT.ToTU_Weaponized_Cyst_VomitAttack = false
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:Zombie_CustomOnPreInitialize()
 
@@ -88,13 +89,13 @@ function ENT:Zombie_CustomOnPreInitialize()
 		self.RangeAttackPos_Forward = 20
 		self.RangeAttackPos_Up = 20
 		
-		if GetConVar("VJ_ToTU_Weaponized_Carcass_ZombineRunning"):GetInt() == 1 then
+		if GetConVar("VJ_ToTU_Weaponized_Cyst_Run"):GetInt() == 1 then
 			self.ToTU_Weaponized_Carcass_CanZombineRun = true
 		end
 		
 		if 
-			GetConVar("VJ_ToTU_Weaponized_Carcass_Exploders"):GetInt() == 1 && 
-			math.random(1,GetConVar("VJ_ToTU_Weaponized_Carcass_Exploders_Chance"):GetInt()) == 1 
+			GetConVar("VJ_ToTU_Weaponized_Cyst_Exploders"):GetInt() == 1 && 
+			math.random(1,GetConVar("VJ_ToTU_Weaponized_Cyst_Exploders_Chance"):GetInt()) == 1 
 		then
 			self.ToTU_Weaponized_Carcass_Exploder = true
 			self.DeathAnimationTime = 1.5
@@ -172,7 +173,7 @@ function ENT:Zombie_CustomOnInitialize()
 		self:SetCollisionBounds(Vector(11, 15, 70), Vector(-13, -15, 0))
 		self.ToTU_Weaponized_Carcass_NextZombineRunT = CurTime() + math.random(3,10)	
 		self.AnimTbl_Flinch = {""}
-		self:SetKeyValue("rendercolor","76 124 76 255")
+		-- self:SetKeyValue("rendercolor","76 124 76 255")
 		
 	elseif self:GetClass() == "npc_vj_totu_weaponized_carcass_torso" then
 	
@@ -183,7 +184,7 @@ function ENT:Zombie_CustomOnInitialize()
 		self.MeleeAttackDamageDistance = 45	
 		self.AnimTbl_MeleeAttack = {"vjseq_attack"}
 		self.CanOpenDoors = false
-		self:SetKeyValue("rendercolor","61 98 61 255")
+		-- self:SetKeyValue("rendercolor","61 98 61 255")
 		self.HasDeathAnimation = false
 		self.CanFlinch = 0
 		
@@ -196,7 +197,7 @@ function ENT:Zombie_CustomOnInitialize()
 		
 	elseif self:GetClass() == "npc_vj_totu_weaponized_cyst" then
 	
-		self:SetKeyValue("rendercolor","74 121 74 255")
+		-- self:SetKeyValue("rendercolor","74 121 74 255")
 		self:SetCollisionBounds(Vector(19, 11, 60), Vector(-11, -15, 0))
 		self.AnimTbl_Flinch = {""}
 		self.AnimTbl_Run = {ACT_WALK}
@@ -204,12 +205,12 @@ function ENT:Zombie_CustomOnInitialize()
 		
 	elseif self:GetClass() == "npc_vj_totu_weaponized_cazador" then
 		self:SetCollisionBounds(Vector(11, 15, 60), Vector(-13, -15, 0))
-		self:SetKeyValue("rendercolor","76 124 76 255")
+		-- self:SetKeyValue("rendercolor","76 124 76 255")
 		self.AnimTbl_Run = {ACT_RUN}
 
 	elseif self:GetClass() == "npc_vj_totu_weaponized_cazador_torso" then
 		self:SetCollisionBounds(Vector(13, 15, 15), Vector(-13, -16, 0))
-		self:SetKeyValue("rendercolor","76 124 76 255")
+		-- self:SetKeyValue("rendercolor","76 124 76 255")
 		self.AnimTbl_MeleeAttack = {"vjseq_attack01"}
 		self.CanOpenDoors = false
 		self.HasDeathAnimation = false
@@ -234,6 +235,28 @@ function ENT:Zombie_GlowEyes_Give()
 			EyeGlow:Spawn()
 			EyeGlow:Activate()
 			self:DeleteOnRemove(EyeGlow)
+			
+		end
+		local TrailColor = Color(220,0,255,255)
+		if self:GetClass() == "npc_vj_totu_weaponized_carcass" then
+			local EyeTrail = util.SpriteTrail(self,5,TrailColor,false,15,0,0.25,1,"vj_base/sprites/vj_trial1")
+			local EyeTrail2 = util.SpriteTrail(self,6,TrailColor,false,15,0,0.25,1,"vj_base/sprites/vj_trial1")
+		end
+		if self:GetClass() == "npc_vj_totu_weaponized_carcass_torso" then
+			local EyeTrail = util.SpriteTrail(self,5,TrailColor,false,15,0,0.25,1,"vj_base/sprites/vj_trial1")
+			local EyeTrail2 = util.SpriteTrail(self,4,TrailColor,false,15,0,0.25,1,"vj_base/sprites/vj_trial1")
+		end
+		if self:GetClass() == "npc_vj_totu_weaponized_cazador" then
+			local EyeTrail = util.SpriteTrail(self,11,TrailColor,false,15,0,0.25,1,"vj_base/sprites/vj_trial1")
+			local EyeTrail2 = util.SpriteTrail(self,10,TrailColor,false,15,0,0.25,1,"vj_base/sprites/vj_trial1")
+		end
+		if self:GetClass() == "npc_vj_totu_weaponized_cazador_torso" then
+			local EyeTrail = util.SpriteTrail(self,7,TrailColor,false,15,0,0.25,1,"vj_base/sprites/vj_trial1")
+			local EyeTrail2 = util.SpriteTrail(self,8,TrailColor,false,15,0,0.25,1,"vj_base/sprites/vj_trial1")
+		end
+		if self:GetClass() == "npc_vj_totu_weaponized_cyst" then
+			local EyeTrail = util.SpriteTrail(self,2,TrailColor,false,15,0,0.25,1,"vj_base/sprites/vj_trial1")
+			local EyeTrail2 = util.SpriteTrail(self,3,TrailColor,false,15,0,0.25,1,"vj_base/sprites/vj_trial1")
 		end
 	end	
 end
@@ -273,23 +296,23 @@ function ENT:Zombie_Difficulty()
 		
 			if GetConVar("VJ_LNR_Difficulty"):GetInt() == 1 then
 			
-				self.LNR_LegHP = 10
+				self.LNR_LegHP = 30
 				
 			elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 2 then
 			
-				self.LNR_LegHP = 25
+				self.LNR_LegHP = 40
 				
 			elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 3 then
 			
-				self.LNR_LegHP = 40
+				self.LNR_LegHP = 50
 				
 			elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 4 then
 			
-				self.LNR_LegHP = 55
+				self.LNR_LegHP = 60
 				
 			elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 5 then
 			
-				self.LNR_LegHP = 60
+				self.LNR_LegHP = 70
 				
 			end
 			
@@ -442,6 +465,17 @@ function ENT:Zombie_CustomOnThink_AIEnabled()
 		
 	end
 	
+	if self.Dead == false && self:GetEnemy() != nil && self.VJ_IsBeingControlled == false then
+		local enemydist = self:GetPos():Distance(self:GetEnemy():GetPos())
+		if self:GetClass() == "npc_vj_totu_weaponized_cyst" then
+			if enemydist >= 150 then
+				self.ToTU_Weaponized_Cyst_VomitAttack = false
+			else
+				self.ToTU_Weaponized_Cyst_VomitAttack = true
+			end
+		end
+	end
+	
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:Zombie_CustomOnMeleeAttack_BeforeStartTimer(seed)
@@ -498,6 +532,76 @@ function ENT:Zombie_CustomOnMeleeAttack_BeforeStartTimer(seed)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------------
+function ENT:CustomOnRangeAttack_BeforeStartTimer(seed) 
+	if self:GetClass() == "npc_vj_totu_weaponized_cyst" then
+		if self.ToTU_Weaponized_Cyst_VomitAttack then
+		
+		self.AnimTbl_RangeAttack = {"vjseq_releasecrab"}
+		self.RangeAttackAngleRadius = 100
+		self.TimeUntilRangeAttackProjectileRelease = 0.2
+		
+		self.RangeAttackReps = 4 -- How many times does it run the projectile code?
+		self.RangeAttackExtraTimers = {1, 1.4}
+		self.RangeAttackPos_Forward = 20
+		self.RangeAttackPos_Up = 20
+		
+		timer.Simple(0.4,function() if IsValid(self) then
+			self:RangeAttackCode()
+		end end)
+		timer.Simple(0.6,function() if IsValid(self) then
+			self:RangeAttackCode()
+		end end)
+		timer.Simple(0.8,function() if IsValid(self) then
+			self:RangeAttackCode()
+		end end)
+		timer.Simple(1,function() if IsValid(self) then
+			self:RangeAttackCode()
+		end end)
+		
+		
+		if GetConVar("VJ_ToTU_General_EasterEggs"):GetInt() == 1 then
+		if math.random(1,100) == 1 then
+		self.RangeAttackSoundLevel = 90
+		self.SoundTbl_BeforeRangeAttack = {
+		"fx/egg/chowder/vom1.mp3",
+		"fx/egg/chowder/vom1vo.mp3",
+		"fx/egg/chowder/vom2.mp3",
+		"fx/egg/chowder/vom2vo.mp3",
+		}
+		
+		else
+		
+		self.RangeAttackSoundLevel = 75
+		self.SoundTbl_BeforeRangeAttack = {
+		"npc/barnacle/barnacle_tongue_pull1.wav",
+		"npc/barnacle/barnacle_tongue_pull2.wav",
+		"npc/barnacle/barnacle_tongue_pull3.wav",
+		}
+		
+		end
+		else
+		self.RangeAttackSoundLevel = 75
+		self.SoundTbl_BeforeRangeAttack = {
+		"npc/barnacle/barnacle_tongue_pull1.wav",
+		"npc/barnacle/barnacle_tongue_pull2.wav",
+		"npc/barnacle/barnacle_tongue_pull3.wav",
+		}
+		end
+		
+		else
+		
+		self.AnimTbl_RangeAttack = {"vjseq_ThrowWarning"}
+		self.RangeAttackAngleRadius = 100
+		self.TimeUntilRangeAttackProjectileRelease = 0.2
+		
+		self.RangeAttackReps = 1 -- How many times does it run the projectile code?
+		self.RangeAttackExtraTimers = nil
+		self.RangeAttackPos_Forward = 20
+		self.RangeAttackPos_Up = 20
+		end
+	end
+end
+---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:CustomOnLeapAttack_BeforeStartTimer(seed)
 
 	if self:GetClass() != "npc_vj_totu_weaponized_cazador" then return end
@@ -522,6 +626,7 @@ function ENT:ToTU_Carcass_Split()
 	-- VJ_EmitSound(self,self.SoundTbl_Death,self.DeathSoundLevel,self:VJ_DecideSoundPitch(self.GeneralSoundPitch1,self.GeneralSoundPitch2))
 	
 	local RevSqSpawnH = self.StartHealth * 0.45
+	-- local RevSqSpawnH = self:Health() * 0.45
 	-- add blood effects
 
 	local d = DamageInfo()

@@ -56,12 +56,17 @@ ENT.MilZ_FoN_SpawnCoolDownT = 5
 function ENT:Zombie_CustomOnPreInitialize()
 
 	self.MilZ_HelmetHealth = GetConVar("VJ_ToTU_MilZ_Helmet_Health"):GetInt()
-	
+
 	self.MilZ_Det_Faceplate_Health = GetConVar("VJ_ToTU_MilZ_Det_Faceplate_Health"):GetInt()
 	self.MilZ_Det_Faceplate_StartingHP = GetConVar("VJ_ToTU_MilZ_Det_Faceplate_Health"):GetInt()
 	self.MilZ_Det_BombHealth = GetConVar("VJ_ToTU_MilZ_Det_Bomb_Health"):GetInt()
-	
-	if self:GetClass() != "npc_vj_totu_milzomb_detonator" && self:GetClass() != "npc_vj_totu_milzomb_detonator_bulk" then
+
+	if
+		self:GetClass() != "npc_vj_totu_milzomb_detonator" &&
+		self:GetClass() != "npc_vj_totu_milzomb_detonator_bulk" &&
+		self:GetClass() != "npc_vj_totu_milzomb_airman" &&
+		self:GetClass() != "npc_vj_totu_milzomb_airman_infected"
+	then
 		self.ItemDropsOnDeath_EntityList = {
 			"item_ammo_pistol",
 			"item_ammo_357",
@@ -70,9 +75,14 @@ function ENT:Zombie_CustomOnPreInitialize()
 			"item_box_buckshot",
 		}
 	end
-	
-	if self:GetClass() == "npc_vj_totu_milzomb_walker" or self:GetClass() == "npc_vj_totu_milzomb_infected" then
-		
+
+	if
+		self:GetClass() == "npc_vj_totu_milzomb_walker" or
+		self:GetClass() == "npc_vj_totu_milzomb_infected" or
+		self:GetClass() == "npc_vj_totu_milzomb_walker_snowy" or
+		self:GetClass() == "npc_vj_totu_milzomb_infected_snowy"
+	then
+
 		self.MilZ_Grunt_IsGrunt = true
 
 		if
@@ -86,9 +96,9 @@ function ENT:Zombie_CustomOnPreInitialize()
 			self.AnimTbl_Medic_GiveHealth = {"vjseq_nz_attack_stand_ad_1"}
 			self.Medic_TimeUntilHeal = 0.9
 			self.Medic_HealthAmount = math.random(45,50)
-			self.Medic_SpawnPropOnHealModel = "models/uh_hpspray.mdl"
+			self.Medic_SpawnPropOnHealModel = "models/totu/hspray.mdl"
 			self.Medic_SpawnPropOnHealAttachment = "anim_attachment_RH"
-			self.SoundTbl_MedicAfterHeal = {"uh/pickup/medspray.wav"}
+			self.SoundTbl_MedicAfterHeal = {"fx/medspray.wav"}
 			
 			self.ItemDropsOnDeath_EntityList = {
 				"item_ammo_pistol",
@@ -245,7 +255,7 @@ function ENT:Zombie_CustomOnPreInitialize()
 
 	end
 
-	if self:GetClass() == "npc_vj_totu_milzomb_walker" then
+	if self:GetClass() == "npc_vj_totu_milzomb_walker" or self:GetClass() == "npc_vj_totu_milzomb_walker_snowy" then
 
 		if self.MilZ_Corpsman then
 
@@ -257,7 +267,7 @@ function ENT:Zombie_CustomOnPreInitialize()
 
 		end
 
-	elseif self:GetClass() == "npc_vj_totu_milzomb_infected" then
+	elseif self:GetClass() == "npc_vj_totu_milzomb_infected" or self:GetClass() == "npc_vj_totu_milzomb_infected_snowy" then
 
 		if self.MilZ_Corpsman then
 
