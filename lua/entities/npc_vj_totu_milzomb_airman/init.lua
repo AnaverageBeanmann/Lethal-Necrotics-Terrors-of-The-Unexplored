@@ -96,7 +96,7 @@ function ENT:ZombieSounds_Custom()
 		"voices/det/pain_5.mp3",
 		"voices/det/pain_6.mp3"
 	}
-		
+
     self.SoundTbl_Death = {
 		"voices/det/death_1.mp3",
 		"voices/det/death_2.mp3",
@@ -104,15 +104,6 @@ function ENT:ZombieSounds_Custom()
 		"voices/det/death_4.mp3",
 		"voices/det/death_5.mp3"
 	}
-
-	if self:GetClass() == "npc_vj_totu_milzomb_detonator_bulk" then
-		self.IdleSoundPitch = VJ_Set(80, 70)
-		self.AlertSoundPitch = VJ_Set(80, 70)
-		self.CombatIdleSoundPitch = VJ_Set(80, 70)
-		self.BeforeMeleeAttackSoundPitch = VJ_Set(80, 70)
-		self.PainSoundPitch = VJ_Set(80, 70)
-		self.DeathSoundPitch = VJ_Set(80, 70)	
-	end
 
 end
 /*-----------------------------------------------

@@ -42,10 +42,10 @@ ENT.MilZ_Ghost_CloakDamageable = true
 ENT.MilZ_Ghost_CloakRechargable = true
 ENT.MilZ_Ghost_IsGhost = false
 
-ENT.MilZ_Ghille_PlayChangeStateAnim = 1
-ENT.MilZ_Ghille_PlayChangeStateAnim_T = CurTime()
-ENT.MilZ_Ghille_IsOnFire = false
-ENT.MiLZ_Ghille_IsGhille = false
+ENT.MilZ_Ghillie_PlayChangeStateAnim = 1
+ENT.MilZ_Ghillie_PlayChangeStateAnim_T = CurTime()
+ENT.MilZ_Ghillie_IsOnFire = false
+ENT.MiLZ_Ghillie_IsGhillie = false
 
 ENT.MilZ_Airman_IsAirman = false
 
@@ -62,6 +62,7 @@ function ENT:Zombie_CustomOnPreInitialize()
 	self.MilZ_Det_BombHealth = GetConVar("VJ_ToTU_MilZ_Det_Bomb_Health"):GetInt()
 
 	if
+		-- maybe move this below the stuff that sets MilZ_Det_IsDetonator and MilZ_Airman_IsAirman to true
 		self:GetClass() != "npc_vj_totu_milzomb_detonator" &&
 		self:GetClass() != "npc_vj_totu_milzomb_detonator_bulk" &&
 		self:GetClass() != "npc_vj_totu_milzomb_airman" &&
@@ -91,7 +92,7 @@ function ENT:Zombie_CustomOnPreInitialize()
 		then
 
 			self.MilZ_Corpsman = true
-			
+
 			self.IsMedicSNPC = true
 			self.AnimTbl_Medic_GiveHealth = {"vjseq_nz_attack_stand_ad_1"}
 			self.Medic_TimeUntilHeal = 0.9
@@ -99,7 +100,7 @@ function ENT:Zombie_CustomOnPreInitialize()
 			self.Medic_SpawnPropOnHealModel = "models/totu/hspray.mdl"
 			self.Medic_SpawnPropOnHealAttachment = "anim_attachment_RH"
 			self.SoundTbl_MedicAfterHeal = {"fx/medspray.wav"}
-			
+
 			self.ItemDropsOnDeath_EntityList = {
 				"item_ammo_pistol",
 				"item_ammo_357",
@@ -114,7 +115,7 @@ function ENT:Zombie_CustomOnPreInitialize()
 		end
 
 	end
-	
+
 	if self:GetClass() == "npc_vj_totu_milzomb_juggernaut" then
 
 		self.MilZ_HelmetHealth = GetConVar("VJ_ToTU_MilZ_Helmet_Health"):GetInt() * 3
@@ -142,11 +143,11 @@ function ENT:Zombie_CustomOnPreInitialize()
 		self.MilZ_Ghost_IsGhost = true
 
 		self.MilZ_Ghost_CloakHP = GetConVar("VJ_ToTU_MilZ_Ghost_Cloak_Health"):GetInt()
-		
+
 		if GetConVar("VJ_ToTU_MilZ_Ghost_Cloak_Recharge"):GetInt() == 0 then
-		
+
 			self.MilZ_Ghost_CloakRechargable = false
-		
+
 		end
 
 	end
@@ -155,7 +156,7 @@ function ENT:Zombie_CustomOnPreInitialize()
 		self:GetClass() == "npc_vj_totu_milzomb_ghillie" or
 		self:GetClass() == "npc_vj_totu_milzomb_ghillie_walker"
 	then
-		self.MiLZ_Ghille_IsGhille = true
+		self.MiLZ_Ghillie_IsGhillie = true
 	end
 
 	if
@@ -164,19 +165,19 @@ function ENT:Zombie_CustomOnPreInitialize()
 	then
 		self.MilZ_Det_IsDetonator = true
 	end
-	
+
 	if
 		self:GetClass() == "npc_vj_totu_milzomb_airman" or
 		self:GetClass() == "npc_vj_totu_milzomb_airman_infected"
 	then
 		self.MilZ_Airman_IsAirman = true
 	end
-	
+
 	if
 		!self.MilZ_Ghost_IsGhost &&
-		!self.MiLZ_Ghille_IsGhille
+		!self.MiLZ_Ghillie_IsGhillie
 	then
-	
+
 		self.SoundTbl_Breath = {
 			"ambient/levels/prison/radio_random1.wav",
 			"ambient/levels/prison/radio_random2.wav",
@@ -196,21 +197,21 @@ function ENT:Zombie_CustomOnPreInitialize()
 
 		self.NextSoundTime_Breath = VJ_Set(7,20)
 
-
 		if math.random(1,4) == 1 then
-		
+
+			-- move these to the fx folder and put them on the github
 			self.SoundTbl_Breath = {
-			"zombies/military/radio/1/radio_1.mp3",
-			"zombies/military/radio/1/radio_2.mp3",
-			"zombies/military/radio/1/radio_3.mp3",
-			"zombies/military/radio/1/radio_4.mp3",
-			"zombies/military/radio/1/radio_5.mp3",
-			"zombies/military/radio/1/radio_6.mp3",
-			"zombies/military/radio/1/radio_7.mp3",
-			"zombies/military/radio/1/radio_8.mp3",
-			"zombies/military/radio/1/radio_9.mp3"
+				"zombies/military/radio/1/radio_1.mp3",
+				"zombies/military/radio/1/radio_2.mp3",
+				"zombies/military/radio/1/radio_3.mp3",
+				"zombies/military/radio/1/radio_4.mp3",
+				"zombies/military/radio/1/radio_5.mp3",
+				"zombies/military/radio/1/radio_6.mp3",
+				"zombies/military/radio/1/radio_7.mp3",
+				"zombies/military/radio/1/radio_8.mp3",
+				"zombies/military/radio/1/radio_9.mp3"
 			}
-			
+
 		end
 
 		if math.random(1,7) == 1 then
@@ -248,7 +249,7 @@ function ENT:Zombie_CustomOnPreInitialize()
 			}
 
 		end
-		
+
 		if self.MilZ_Det_IsDetonator or self.MilZ_Airman_IsAirman then
 			self.BreathSoundLevel = 40
 		end
@@ -342,7 +343,7 @@ function ENT:Zombie_CustomOnPreInitialize()
 		self.Model = {"models/totu/airman_infected.mdl"}
 
 	end
-	
+
 	if self.MilZ_Airman_IsAirman then return end
 
 	if 
@@ -364,7 +365,7 @@ function ENT:Zombie_CustomOnPreInitialize()
 			self:SetSkin(math.random(0,2))
 
 		end
-		
+
 		if self:GetClass() == "npc_vj_totu_milzomb_tank" then
 
 			if GetConVar("VJ_ToTU_MilZ_Tank_NMRIHWalks"):GetInt() == 1 then
@@ -387,15 +388,15 @@ function ENT:Zombie_CustomOnPreInitialize()
 			}
 
 		end
-		
+
 		if self:GetClass() == "npc_vj_totu_fon_juggernaut" then
-		self:SetModelScale(1.45)
-		self:SetKeyValue("rendercolor","171 134 134 255")
+			self:SetModelScale(1.45)
+			self:SetKeyValue("rendercolor","171 134 134 255")
 		elseif self:GetClass() == "npc_vj_totu_fon_bulldozer" then
-		self:SetModelScale(1.45)
-		self:SetKeyValue("rendercolor","171 134 134 255")
+			self:SetModelScale(1.45)
+			self:SetKeyValue("rendercolor","171 134 134 255")
 		else
-		self:SetModelScale(1.25)
+			self:SetModelScale(1.25)
 		end
 
 		self.AnimTbl_Death = {"vjseq_death_04"}
@@ -404,7 +405,7 @@ function ENT:Zombie_CustomOnPreInitialize()
 		self.VJ_IsHugeMonster = true
 
 		self.HasWorldShakeOnMove = true
-		
+
 		if self:GetClass() == "npc_vj_totu_milzomb_tank" or self:GetClass() == "npc_vj_totu_fon_juggernaut" then
 
 			self.WorldShakeOnMoveAmplitude = 2
@@ -412,6 +413,7 @@ function ENT:Zombie_CustomOnPreInitialize()
 		else
 
 			self.WorldShakeOnMoveAmplitude = 1
+
 		end
 
 		self.MeleeAttackDistance = 50
@@ -428,7 +430,7 @@ function ENT:Zombie_CustomOnPreInitialize()
 	if
 		self.MilZ_Ghost_IsGhost or
 		self:GetClass() == "npc_vj_totu_milzomb_tank" or
-		self.MiLZ_Ghille_IsGhille
+		self.MiLZ_Ghillie_IsGhillie
 	then return end
 
 	if
@@ -441,7 +443,6 @@ function ENT:Zombie_CustomOnPreInitialize()
 	then
 		self.MilZ_HasGasmask = true
 	end
-
 
 	if 
 		GetConVar("VJ_ToTU_MilZ_FlakArmor_Allow"):GetInt() == 1 &&
@@ -471,423 +472,22 @@ function ENT:Zombie_CustomOnPreInitialize()
 		self.bobm:SetSolid(SOLID_NONE)
 
 	end
-	
+
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
-function ENT:Zombie_CustomOnInitialize()
+function ENT:Zombie_UpdateAlmanacStuff()
 
-	if self:GetClass() == "npc_vj_totu_fon_juggernaut" then
-		self.HasRangeAttack = true
-		self.RangeAttackEntityToSpawn = "obj_vj_totu_milzgren"
-		self.RangeAttackAnimationFaceEnemy = true
-		self.AnimTbl_RangeAttack = {"vjseq_throw_right"}
-		self.RangeDistance = 750 
-		self.RangeToMeleeDistance = 1 
-		self.RangeAttackAngleRadius = 100
-		self.TimeUntilRangeAttackProjectileRelease = 1.6
-		self.NextRangeAttackTime = math.random(15,20)
-		self.RangeUseAttachmentForPos = true 
-		self.RangeUseAttachmentForPosID = "anim_attachment_RH"
-		self.RangeAttackPos_Forward = 20
-		self.RangeAttackPos_Up = 20
-	end
-	
 	if self.MilZ_Airman_IsAirman then
 		self.ToTU_Almanac_Name = "-= Airman =-"
 		if self.LNR_Infected then
-		self.ToTU_Almanac_Strain = "Strain: Infected"
-		else
-		self.ToTU_Almanac_Strain = "Strain: Walker"
-		end
-		self.ToTU_Almanac_Toughness = "Toughness: Above-Average"
-		self.ToTU_Almanac_Damage = "Damage: Average"
-	return end
-	
-	if
-		self:GetClass() == "npc_vj_totu_milzomb_juggernaut" or 
-		self:GetClass() == "npc_vj_totu_fon_juggernaut" or 
-		self:GetClass() == "npc_vj_totu_fon_bulldozer" or 
-		self:GetClass() == "npc_vj_totu_milzomb_bulldozer" or 
-		self:GetClass() == "npc_vj_totu_milzomb_detonator_bulk" or
-		self:GetClass() == "npc_vj_totu_milzomb_tank"
-	then
-
-		self:SetCollisionBounds(Vector(13, 13, 68), Vector(-13, -13, 0))
-
-	end
-
-	if self:GetClass() == "npc_vj_totu_milzomb_tank" then
-		
-		self.MeleeAttackDistance = 25
-		self.MeleeAttackDamageDistance = 50
-
-	end
-
-	if self:GetClass() == "npc_vj_totu_milzomb_detonator" then
-
-		self.ToTU_Almanac_Name = "-= Detonator =-"
-		self.ToTU_Almanac_Strain = "Strain: Infected"
-		self.ToTU_Almanac_Toughness = "Toughness: Above-Average"
-		self.ToTU_Almanac_Damage = "Damage: Lethal"
-		self.ToTU_Almanac_Notes = "Attacks by blowing himself up."
-		self.ToTU_Almanac_Notes2 = "The suit protects him from explosions."
-		self.ToTU_Almanac_Notes3 = "The faceplate can block a bullet or two."
-		self.ToTU_Almanac_Notes4 = "Shooting the bomb wil cause it to explode."
-
-		local randflavortext = math.random(1,6)
-		if randflavortext == 1 then
-			self.ToTU_Almanac_FlavorText = "What makes him a good demoman? Good question, we're not sure either."
-		elseif randflavortext == 2 then
-			self.ToTU_Almanac_FlavorText = "Not even sure how a bomb got strapped to him, he just woke up and boom there it was."
-		elseif randflavortext == 3 then
-			self.ToTU_Almanac_FlavorText = "He'd take the helmet off but he's self conscious about how he looks with it off."
-		elseif randflavortext == 4 then
-			self.ToTU_Almanac_FlavorText = "Thinks running around in that suit is good exercise."
-		elseif randflavortext == 5 then
-			self.ToTU_Almanac_FlavorText = "He's a real blast at parties, or so we've heard."
-		elseif randflavortext == 6 then
-			self.ToTU_Almanac_FlavorText = "One crossed wire, one wayward pinch of potassium chlorate, one errant twitch.. aND KABLOOIE-"
-		end
-
-		if self.MiLZ_Det_Hector then
-			self.ToTU_Almanac_FlavorText = "Has a deep-seated hatred for someone named Gustavo."
-		end
-
-	elseif self:GetClass() == "npc_vj_totu_milzomb_detonator_bulk" then
-
-		self.ToTU_Almanac_Name = "-= Bulk Detonator =-"
-		self.ToTU_Almanac_Strain = "Strain: Walker"
-		self.ToTU_Almanac_Toughness = "Toughness: Undying"
-		self.ToTU_Almanac_Damage = "Damage: Lethal"
-		self.ToTU_Almanac_Notes = "Attacks by blowing himself up."
-		self.ToTU_Almanac_Notes2 = "The suit protects him from explosions."
-		self.ToTU_Almanac_Notes3 = "The faceplate has 3x the health of a normal Detonators."
-		self.ToTU_Almanac_Notes4 = "Shooting the bomb enough wil cause it to explode."
-		
-		local randflavortext = math.random(1,5)
-		if randflavortext == 1 then
-			self.ToTU_Almanac_FlavorText = "If he goes off, they'll be burying what's left of ye in a soup can."
-		elseif randflavortext == 2 then
-			self.ToTU_Almanac_FlavorText = "The bomb was strapped to him as part of a dare."
-		elseif randflavortext == 3 then
-			self.ToTU_Almanac_FlavorText = "Tends to tease the Detonator infront of the others."
-		elseif randflavortext == 4 then
-			self.ToTU_Almanac_FlavorText = "He originally was going to get a black suit, but took the tan one due to not wanting to heatstroke."
-		elseif randflavortext == 5 then
-			self.ToTU_Almanac_FlavorText = "Likes grilled cheese sandwiches."
-		end
-
-	elseif self:GetClass() == "npc_vj_totu_milzomb_tank" then
-
-		self.ToTU_Almanac_Name = "-= Tank =-"
-		self.ToTU_Almanac_Strain = "Strain: Walker"
-		self.ToTU_Almanac_Toughness = "Toughness: Undying"
-		self.ToTU_Almanac_Damage = "Damage: Strong"
-		self.ToTU_Almanac_Notes = "The suit protects him from bullets."
-		self.ToTU_Almanac_Notes2 = "The suit completely covers him."
-
-		local randflavortext = math.random(1,4)
-		if randflavortext == 1 then
-			self.ToTU_Almanac_FlavorText = "Had a drinking contest with the Bulk Detonator."
-		elseif randflavortext == 2 then
-			self.ToTU_Almanac_FlavorText = "Originally the idea of getting to wear a juggernaut suit sounded amazing, but now?, not so much."
-		elseif randflavortext == 3 then
-			self.ToTU_Almanac_FlavorText = "Taking the suit on and off is a complete nightmare, even with help."
-		elseif randflavortext == 4 then
-			self.ToTU_Almanac_FlavorText = "If those eyeholes were any smaller he'd be practically blind."
-		end
-
-	end
-
-	if
-		self.MilZ_Det_IsDetonator or
-		self:GetClass() == "npc_vj_totu_milzomb_tank"
-	then return end
-
-	local gear = math.random(1,2)
-
-	if self:GetClass() == "npc_vj_totu_milzomb_bulldozer" then
-
-		if gear == 1 then
-
-			self:SetBodygroup(1,math.random(0,2))
-
-		else
-
-			self:SetBodygroup(1,math.random(4,6))
-
-		end
-
-	else
-
-		if !self.MiLZ_Ghille_IsGhille then
-
-			if gear == 1 then
-
-				self:SetBodygroup(2,math.random(0,2))
-			
-			else
-
-				self:SetBodygroup(2,math.random(4,6))
-
-			end
-
-		end
-
-	end
-
-	if self.MiLZ_Ghille_IsGhille then
-
-		self:SetBodygroup(2,math.random(1,2))
-		self:SetBodygroup(3,math.random(0,2))
-		self:SetBodygroup(4,math.random(0,3))
-
-	end
-
-	-- Should sleeves be rolled up?
-	if math.random(1,4) == 1 && !self.MiLZ_Ghille_IsGhille then
-
-		if self:GetClass() == "npc_vj_totu_milzomb_bulldozer" then
-
-			self:SetBodygroup(2,1)
-
-		else
-
-			self:SetBodygroup(3,1)
-
-		end
-
-	end
-
-	if self.MilZ_HasFlakSuit == true then
-
-		if self:GetClass() == "npc_vj_totu_milzomb_bulldozer" then
-
-			self:SetBodygroup(1,3)
-
-		else
-
-			self:SetBodygroup(2,3)
-
-		end
-
-	end
-
-	if self.MiLZ_Ghille_IsGhille then
-	
-		self.ToTU_Almanac_Name = "-= Ghille =-"
-		if self.LNR_Infected then
 			self.ToTU_Almanac_Strain = "Strain: Infected"
 		else
 			self.ToTU_Almanac_Strain = "Strain: Walker"
 		end
 		self.ToTU_Almanac_Toughness = "Toughness: Above-Average"
 		self.ToTU_Almanac_Damage = "Damage: Average"
-		self.ToTU_Almanac_Notes = "Crawls at target, stands up when close."
-		self.ToTU_Almanac_Notes2 = "Returns to crawling if target gets too far."
-		self.ToTU_Almanac_Notes3 = "Igniting it will force it to stand."
-		
-		local randflavortext = math.random(1,6)
-		if randflavortext == 1 then
-			self.ToTU_Almanac_FlavorText = "Once sat in a bush for several hours straight."
-		elseif randflavortext == 2 then
-			self.ToTU_Almanac_FlavorText = "Pretends to understand what bushmans rules are."
-		elseif randflavortext == 3 then
-			self.ToTU_Almanac_FlavorText = "He's not a crazed gunman, he's an assassin. Or, he was, atleast."
-		elseif randflavortext == 4 then
-			self.ToTU_Almanac_FlavorText = "Likes to hide in the grass and jump out at everyone."
-		elseif randflavortext == 5 then
-			self.ToTU_Almanac_FlavorText = "Had a Nightkin encounter while camping."
-		elseif randflavortext == 6 then
-			self.ToTU_Almanac_FlavorText = "He kinda likes the Detonator. He's not sure why, but he just does."
-		end
-
-	end
-	
-	if self.MiLZ_Ghille_IsGhille then return end
-
-	if self.MilZ_HasGasmask == false && self:GetClass() != "npc_vj_totu_milzomb_bulldozer" then
-
-		self:SetBodygroup(4,math.random(1,6))
-
-		if self.LNR_Biter == false then
-
-			self:SetBodygroup(1,math.random(0,1))
-
-		end
-
 	end
 
-	if self.MilZ_Ghost_IsGhost then
-
-		self:SetBodygroup(4,5)
-		self:SetBodygroup(1,1)
-
-	end
-	
-	if self:GetClass() == "npc_vj_totu_fon_juggernaut" then
-		self.MilZ_HasFlakSuit = true
-		self:SetSkin(2)
-		self:SetBodygroup(1,1)
-		self:SetBodygroup(2,3)
-		self:SetBodygroup(3,0)
-		self:SetBodygroup(4,2)
-		self.AnimTbl_Walk = {ACT_WALK_AIM}
-		self.AnimTbl_Run = {ACT_WALK_AIM}
-	end
-	if self:GetClass() == "npc_vj_totu_fon_bulldozer" then
-		self.MilZ_HasFlakSuit = true
-		self:SetSkin(2)
-		self:SetBodygroup(1,3)
-		self:SetBodygroup(2,0)
-		-- self.AnimTbl_Walk = {ACT_WALK_AIM}
-		-- self.AnimTbl_Run = {ACT_WALK_AIM}
-	end
-
-	if self:GetClass() == "npc_vj_totu_milzomb_juggernaut" then
-
-		self.ToTU_Almanac_Name = "-= Juggernaut =-"
-		self.ToTU_Almanac_Strain = "Strain: Walker"
-		self.ToTU_Almanac_Toughness = "Toughness: Dense"
-		self.ToTU_Almanac_Damage = "Damage: Strong"
-		self.ToTU_Almanac_Notes = "The vest and helmet protect him from bullets."
-		self.ToTU_Almanac_Notes2 = "The helmet will break if it takes enough damage."
-		self.ToTU_Almanac_Notes3 = "His helmet has 3x the health of a Grunt helmet."
-
-		local randflavortext = math.random(1,6)
-		if randflavortext == 1 then
-			self.ToTU_Almanac_FlavorText = "Secretly has a crush on PI's Grenadier, but is too shy to ask him out."
-		elseif randflavortext == 2 then
-			self.ToTU_Almanac_FlavorText = "Doesn't know what squad tactics or aiming is, just knows how to spray lead in the enemies general direction."
-		elseif randflavortext == 3 then
-			self.ToTU_Almanac_FlavorText = "Though his squadmates think he took the support gunner role due to his size, in reality he just did it because he wanted to use a big gun."
-		elseif randflavortext == 4 then
-			self.ToTU_Almanac_FlavorText = "Sometimes thinks about and gets confused over how he's called the Juggernaut, but the Tank wears a juggernaut suit."
-		elseif randflavortext == 5 then
-			self.ToTU_Almanac_FlavorText = "Likes candy."
-		elseif randflavortext == 6 then
-			self.ToTU_Almanac_FlavorText = "When asked about how the lack of face skin feels, he replied with 'I don't really think of it much, it just kinda itches every now and then, but that's it really.'"
-		end
-
-	elseif self:GetClass() == "npc_vj_totu_milzomb_bulldozer" then
-	
-		self.ToTU_Almanac_Name = "-= Bulldozer =-"
-		self.ToTU_Almanac_Strain = "Strain: Infected"
-		self.ToTU_Almanac_Toughness = "Toughness: Dense"
-		self.ToTU_Almanac_Damage = "Damage: Strong"
-		self.ToTU_Almanac_Notes = "The vest protects him from bullets."
-
-		local randflavortext = math.random(1,6)
-		if randflavortext == 1 then
-			self.ToTU_Almanac_FlavorText = "Says everything looks red. While it's probably due to the infection messing with his vision, it's more likely because he got blood in his eye."
-		elseif randflavortext == 2 then
-			self.ToTU_Almanac_FlavorText = "Says he was the best shot in the support gunner unit, when in reality he was too busy getting frustrated with his machine gun to even shoot anything."
-		elseif randflavortext == 3 then
-			self.ToTU_Almanac_FlavorText = "Has been going to anger management classes. They haven't been working."
-		elseif randflavortext == 4 then
-			self.ToTU_Almanac_FlavorText = "Not sure why or what he's doing here, but knows one thing; He's going to kill."
-		elseif randflavortext == 5 then
-			self.ToTU_Almanac_FlavorText = "Does not like candy."
-		elseif randflavortext == 6 then
-			self.ToTU_Almanac_FlavorText = "Frequently adjusts his gear even though nothing's wrong with it."
-		end
-
-	elseif self.MilZ_Ghost_IsGhost then
-	
-		self.ToTU_Almanac_Name = "-= Ghost =-"
-		if self.LNR_Infected then
-			self.ToTU_Almanac_Strain = "Strain: Infected"
-		else
-			self.ToTU_Almanac_Strain = "Strain: Walker"
-		end
-		self.ToTU_Almanac_Toughness = "Toughness: Above-Average"
-		self.ToTU_Almanac_Damage = "Damage: Average"
-		self.ToTU_Almanac_Notes = ""
-		self.ToTU_Almanac_Notes2 = "Uses a cloak device to sneak up on you."
-		self.ToTU_Almanac_Notes3 = "Damaging him enough will temporarily disable the cloak."
-		self.ToTU_Almanac_Gimmicks = ""
-
-	end
-
-	if
-		self:GetClass() == "npc_vj_totu_milzomb_juggernaut" or
-		self:GetClass() == "npc_vj_totu_fon_juggernaut" or
-		self:GetClass() == "npc_vj_totu_fon_bulldozer" or
-		self:GetClass() == "npc_vj_totu_milzomb_bulldozer" or
-		self.MilZ_Ghost_IsGhost
-	then return end
-	
-	if math.random(1,GetConVar("VJ_ToTU_MilZ_Weapons_Chance"):GetInt()) == 1 && !self.LNR_Crawler && !self.LNR_Biter then
-
-		self:ZombieWeapons()
-
-	end
-
-	if GetConVar("VJ_ToTU_MilZ_Grenades"):GetInt() == 1 then
-
-		if math.random(1,GetConVar("VJ_ToTU_MilZ_Grenades_Chance"):GetInt()) == 1 && !self.LNR_Crawler && !self.MilZ_CanShuutDeGun then
-
-			self.HasRangeAttack = true
-			self.RangeAttackEntityToSpawn = "obj_vj_totu_milzgren"
-			self.RangeAttackAnimationFaceEnemy = true
-			self.AnimTbl_RangeAttack = {"vjseq_throw_right"}
-			self.RangeDistance = 750 
-			self.RangeToMeleeDistance = 1 
-			self.RangeAttackAngleRadius = 100
-			self.TimeUntilRangeAttackProjectileRelease = 1.6
-			self.NextRangeAttackTime = math.random(15,20)
-			self.RangeUseAttachmentForPos = true 
-			self.RangeUseAttachmentForPosID = "anim_attachment_RH"
-			self.RangeAttackPos_Forward = 20
-			self.RangeAttackPos_Up = 20
-
-			self.MilZ_HasGrenades = true
-
-			if GetConVar("VJ_ToTU_MilZ_Grenades_Ammount"):GetInt() == -1 then
-
-				self.MilZ_Grenades = math.random(1,3)
-
-			elseif GetConVar("VJ_ToTU_MilZ_Grenades_Ammount"):GetInt() == 0 then
-
-				-- i mean what did you expect?
-				self.MilZ_Grenades = 0
-				self.HasRangeAttack = false
-
-			elseif GetConVar("VJ_ToTU_MilZ_Grenades_Ammount"):GetInt() != -1 then
-
-				self.MilZ_Grenades = GetConVar("VJ_ToTU_MilZ_Grenades_Ammount"):GetInt()
-
-			end
-
-			if GetConVar("VJ_ToTU_MilZ_Grenades_Ammount"):GetInt() == -1 or GetConVar("VJ_ToTU_MilZ_Grenades_Ammount"):GetInt() != -1 then
-			self.ItemDropsOnDeath_EntityList = {
-				"item_ammo_pistol",
-				"item_ammo_357",
-				"item_ammo_smg1",
-				"item_ammo_ar2",
-				"item_box_buckshot",
-				"weapon_frag",
-				"weapon_frag",
-				"obj_vj_totu_milzgren",
-			}
-			end
-
-			if self.ToTU_WeHaveAWeapon then
-
-				self.AnimTbl_RangeAttack = {"vjseq_throw_left"}
-				self.RangeUseAttachmentForPosID = "anim_attachment_LH"
-
-			end
-
-		end
-
-	end
-
-	if self.MilZ_Corpsman && self.ToTU_WeHaveAWeapon then
-		self.AnimTbl_Medic_GiveHealth = {"vjseq_nz_attack_stand_ad_2-3"}
-		self.Medic_TimeUntilHeal = 0.6
-		self.Medic_SpawnPropOnHealAttachment = "anim_attachment_LH"
-	end
 
 	if self.MilZ_Grunt_IsGrunt then
 
@@ -971,6 +571,423 @@ function ENT:Zombie_CustomOnInitialize()
 
 	end
 
+
+	if self.MiLZ_Ghillie_IsGhillie then
+
+		self.ToTU_Almanac_Name = "-= Ghillie =-"
+		if self.LNR_Infected then
+			self.ToTU_Almanac_Strain = "Strain: Infected"
+		else
+			self.ToTU_Almanac_Strain = "Strain: Walker"
+		end
+		self.ToTU_Almanac_Toughness = "Toughness: Above-Average"
+		self.ToTU_Almanac_Damage = "Damage: Average"
+		self.ToTU_Almanac_Notes = "Crawls at target, stands up when close."
+		self.ToTU_Almanac_Notes2 = "Returns to crawling if target gets too far."
+		self.ToTU_Almanac_Notes3 = "Igniting it will force it to stand."
+		self.ToTU_Almanac_Notes4 = "The vest will protect him from bullets."
+
+		local randflavortext = math.random(1,6)
+		if randflavortext == 1 then
+			self.ToTU_Almanac_FlavorText = "Once sat in a bush for several hours straight."
+		elseif randflavortext == 2 then
+			self.ToTU_Almanac_FlavorText = "Pretends to understand what bushmans rules are."
+		elseif randflavortext == 3 then
+			self.ToTU_Almanac_FlavorText = "He's not a crazed gunman, he's an assassin. Or, he was, atleast."
+		elseif randflavortext == 4 then
+			self.ToTU_Almanac_FlavorText = "Likes to hide in the grass and jump out at everyone."
+		elseif randflavortext == 5 then
+			self.ToTU_Almanac_FlavorText = "Had a Nightkin encounter while camping."
+		elseif randflavortext == 6 then
+			self.ToTU_Almanac_FlavorText = "He kinda likes the Detonator. He's not sure why, but he just does."
+		end
+
+	end
+
+	if self:GetClass() == "npc_vj_totu_milzomb_juggernaut" then
+
+		self.ToTU_Almanac_Name = "-= Juggernaut =-"
+		self.ToTU_Almanac_Strain = "Strain: Walker"
+		self.ToTU_Almanac_Toughness = "Toughness: Dense"
+		self.ToTU_Almanac_Damage = "Damage: Strong"
+		self.ToTU_Almanac_Notes = "The vest and helmet protect him from bullets."
+		self.ToTU_Almanac_Notes2 = "The helmet will break if it takes enough damage."
+		self.ToTU_Almanac_Notes3 = "His helmet has 3x the health of a Grunt helmet."
+
+		local randflavortext = math.random(1,6)
+		if randflavortext == 1 then
+			self.ToTU_Almanac_FlavorText = "Secretly has a crush on PI's Grenadier, but is too shy to ask him out."
+		elseif randflavortext == 2 then
+			self.ToTU_Almanac_FlavorText = "Doesn't know what squad tactics or aiming is, just knows how to spray lead in the enemies general direction."
+		elseif randflavortext == 3 then
+			self.ToTU_Almanac_FlavorText = "Though his squadmates think he took the support gunner role due to his size, in reality he just did it because he wanted to use a big gun."
+		elseif randflavortext == 4 then
+			self.ToTU_Almanac_FlavorText = "Sometimes thinks about and gets confused over how he's called the Juggernaut, but the Tank wears a juggernaut suit."
+		elseif randflavortext == 5 then
+			self.ToTU_Almanac_FlavorText = "Likes candy."
+		elseif randflavortext == 6 then
+			self.ToTU_Almanac_FlavorText = "When asked about how the lack of face skin feels, he replied with 'I don't really think of it much, it just kinda itches every now and then, but that's it really.'"
+		end
+
+	end
+
+	if self:GetClass() == "npc_vj_totu_milzomb_bulldozer" then
+
+		self.ToTU_Almanac_Name = "-= Bulldozer =-"
+		self.ToTU_Almanac_Strain = "Strain: Infected"
+		self.ToTU_Almanac_Toughness = "Toughness: Dense"
+		self.ToTU_Almanac_Damage = "Damage: Strong"
+		self.ToTU_Almanac_Notes = "The vest protects him from bullets."
+
+		local randflavortext = math.random(1,6)
+		if randflavortext == 1 then
+			self.ToTU_Almanac_FlavorText = "Says everything looks red. While it's probably due to the infection messing with his vision, it's more likely because he got blood in his eye."
+		elseif randflavortext == 2 then
+			self.ToTU_Almanac_FlavorText = "Says he was the best shot in the support gunner unit, when in reality he was too busy getting frustrated with his machine gun to even shoot anything."
+		elseif randflavortext == 3 then
+			self.ToTU_Almanac_FlavorText = "Has been going to anger management classes. They haven't been working."
+		elseif randflavortext == 4 then
+			self.ToTU_Almanac_FlavorText = "Not sure why or what he's doing here, but knows one thing; He's going to kill."
+		elseif randflavortext == 5 then
+			self.ToTU_Almanac_FlavorText = "Does not like candy."
+		elseif randflavortext == 6 then
+			self.ToTU_Almanac_FlavorText = "Frequently adjusts his gear even though nothing's wrong with it."
+		end
+
+	end
+
+	if self.MilZ_Ghost_IsGhost then
+
+		self.ToTU_Almanac_Name = "-= Ghost =-"
+		if self.LNR_Infected then
+			self.ToTU_Almanac_Strain = "Strain: Infected"
+		else
+			self.ToTU_Almanac_Strain = "Strain: Walker"
+		end
+		self.ToTU_Almanac_Toughness = "Toughness: Above-Average"
+		self.ToTU_Almanac_Damage = "Damage: Average"
+		self.ToTU_Almanac_Notes = "Uses a cloak device to sneak up on you."
+		self.ToTU_Almanac_Notes2 = "Damaging him enough will temporarily disable the cloak."
+
+	end
+
+	if self:GetClass() == "npc_vj_totu_milzomb_tank" then
+
+		self.ToTU_Almanac_Name = "-= Tank =-"
+		self.ToTU_Almanac_Strain = "Strain: Walker"
+		self.ToTU_Almanac_Toughness = "Toughness: Undying"
+		self.ToTU_Almanac_Damage = "Damage: Strong"
+		self.ToTU_Almanac_Notes = "The suit protects him from bullets."
+		self.ToTU_Almanac_Notes2 = "The suit completely covers him."
+
+		local randflavortext = math.random(1,4)
+		if randflavortext == 1 then
+			self.ToTU_Almanac_FlavorText = "Considers himself to be the heavy weapons guy, but is more just the really heavy guy."
+		elseif randflavortext == 2 then
+			self.ToTU_Almanac_FlavorText = "Originally the idea of getting to wear a juggernaut suit sounded amazing, but now?, not so much."
+		elseif randflavortext == 3 then
+			self.ToTU_Almanac_FlavorText = "Taking the suit on and off is a complete nightmare, even with help."
+		elseif randflavortext == 4 then
+			self.ToTU_Almanac_FlavorText = "If those eyeholes were any smaller he'd be practically blind."
+		end
+
+	end
+
+	if self.MilZ_Det_IsDetonator then
+
+		self.ToTU_Almanac_Damage = "Damage: Lethal"
+		self.ToTU_Almanac_Notes = "Attacks by blowing himself up."
+		self.ToTU_Almanac_Notes2 = "The suit protects him from explosions."
+		self.ToTU_Almanac_Notes4 = "Shooting the bomb enough wil cause it to explode."
+
+		if self:GetClass() == "npc_vj_totu_milzomb_detonator" then
+
+			self.ToTU_Almanac_Name = "-= Detonator =-"
+			self.ToTU_Almanac_Strain = "Strain: Infected"
+			self.ToTU_Almanac_Toughness = "Toughness: Above-Average"
+			self.ToTU_Almanac_Notes3 = "The faceplate can block a bullet or two."
+
+			local randflavortext = math.random(1,6)
+			if randflavortext == 1 then
+				self.ToTU_Almanac_FlavorText = "What makes him a good demoman? Good question, we're not sure either."
+			elseif randflavortext == 2 then
+				self.ToTU_Almanac_FlavorText = "Not even sure how a bomb got strapped to him, he just woke up and boom there it was."
+			elseif randflavortext == 3 then
+				self.ToTU_Almanac_FlavorText = "He'd take the helmet off but he's self conscious about how he looks with it off."
+			elseif randflavortext == 4 then
+				self.ToTU_Almanac_FlavorText = "Thinks running around in that suit is good exercise."
+			elseif randflavortext == 5 then
+				self.ToTU_Almanac_FlavorText = "He's a real blast at parties, or so we've heard."
+			elseif randflavortext == 6 then
+				self.ToTU_Almanac_FlavorText = "One crossed wire, one wayward pinch of potassium chlorate, one errant twitch.. aND KABLOOIE-"
+			end
+
+			if self.MiLZ_Det_Hector then
+				self.ToTU_Almanac_FlavorText = "Has a deep-seated hatred for someone named Gustavo."
+			end
+
+		elseif self:GetClass() == "npc_vj_totu_milzomb_detonator_bulk" then
+
+			self.ToTU_Almanac_Name = "-= Bulk Detonator =-"
+			self.ToTU_Almanac_Strain = "Strain: Walker"
+			self.ToTU_Almanac_Toughness = "Toughness: Undying"
+			self.ToTU_Almanac_Notes3 = "The faceplate has 3x the health of a normal Detonators."
+
+			local randflavortext = math.random(1,5)
+			if randflavortext == 1 then
+				self.ToTU_Almanac_FlavorText = "If he goes off, they'll be burying what's left of ye in a soup can."
+			elseif randflavortext == 2 then
+				self.ToTU_Almanac_FlavorText = "The bomb was strapped to him as part of a dare."
+			elseif randflavortext == 3 then
+				self.ToTU_Almanac_FlavorText = "Tends to tease the Detonator infront of the others."
+			elseif randflavortext == 4 then
+				self.ToTU_Almanac_FlavorText = "He originally was going to get a black suit, but took the tan one due to not wanting to heatstroke."
+			elseif randflavortext == 5 then
+				self.ToTU_Almanac_FlavorText = "Likes grilled cheese sandwiches."
+			end
+
+		end
+
+	end
+
+
+end
+---------------------------------------------------------------------------------------------------------------------------------------------
+function ENT:Zombie_CustomOnInitialize()
+
+	if self.MilZ_Airman_IsAirman then return end
+
+	if self:GetClass() == "npc_vj_totu_fon_juggernaut" then
+		self.HasRangeAttack = true
+		self.RangeAttackEntityToSpawn = "obj_vj_totu_milzgren"
+		self.RangeAttackAnimationFaceEnemy = true
+		self.AnimTbl_RangeAttack = {"vjseq_throw_right"}
+		self.RangeDistance = 750 
+		self.RangeToMeleeDistance = 1 
+		self.RangeAttackAngleRadius = 100
+		self.TimeUntilRangeAttackProjectileRelease = 1.6
+		self.NextRangeAttackTime = math.random(15,20)
+		self.RangeUseAttachmentForPos = true 
+		self.RangeUseAttachmentForPosID = "anim_attachment_RH"
+		self.RangeAttackPos_Forward = 20
+		self.RangeAttackPos_Up = 20
+	end
+
+	if
+		self:GetClass() == "npc_vj_totu_milzomb_juggernaut" or 
+		self:GetClass() == "npc_vj_totu_fon_juggernaut" or 
+		self:GetClass() == "npc_vj_totu_fon_bulldozer" or 
+		self:GetClass() == "npc_vj_totu_milzomb_bulldozer" or 
+		self:GetClass() == "npc_vj_totu_milzomb_detonator_bulk" or
+		self:GetClass() == "npc_vj_totu_milzomb_tank"
+	then
+
+		self:SetCollisionBounds(Vector(13, 13, 68), Vector(-13, -13, 0))
+
+	end
+
+	if self:GetClass() == "npc_vj_totu_milzomb_tank" then
+
+		-- remove or reduce this?
+		self.MeleeAttackDistance = 25
+		self.MeleeAttackDamageDistance = 50
+
+	end
+
+	if
+		self.MilZ_Det_IsDetonator or
+		self:GetClass() == "npc_vj_totu_milzomb_tank"
+	then return end
+
+	if self.MiLZ_Ghillie_IsGhillie then 
+
+		self:SetBodygroup(2,math.random(1,2))
+		self:SetBodygroup(3,math.random(0,2))
+		self:SetBodygroup(4,math.random(0,3))
+
+	return end
+
+	local gear = math.random(1,2)
+
+	if self:GetClass() == "npc_vj_totu_milzomb_bulldozer" then
+
+		if gear == 1 then
+
+			self:SetBodygroup(1,math.random(0,2))
+
+		else
+
+			self:SetBodygroup(1,math.random(4,6))
+
+		end
+
+	else
+
+		if !self.MiLZ_Ghille_IsGhillie then
+
+			if gear == 1 then
+
+				self:SetBodygroup(2,math.random(0,2))
+
+			else
+
+				self:SetBodygroup(2,math.random(4,6))
+
+			end
+
+		end
+
+	end
+
+	-- Should sleeves be rolled up?
+	if math.random(1,4) == 1 && !self.MiLZ_Ghille_IsGhillie then
+
+		if self:GetClass() == "npc_vj_totu_milzomb_bulldozer" then
+
+			self:SetBodygroup(2,1)
+
+		else
+
+			self:SetBodygroup(3,1)
+
+		end
+
+	end
+
+	if self.MilZ_HasFlakSuit == true then
+
+		if self:GetClass() == "npc_vj_totu_milzomb_bulldozer" then
+
+			self:SetBodygroup(1,3)
+
+		else
+
+			self:SetBodygroup(2,3)
+
+		end
+
+	end
+
+	if self.MilZ_HasGasmask == false && self:GetClass() != "npc_vj_totu_milzomb_bulldozer" then
+
+		self:SetBodygroup(4,math.random(1,6))
+
+		if self.LNR_Biter == false then
+
+			self:SetBodygroup(1,math.random(0,1))
+
+		end
+
+	end
+
+	if self.MilZ_Ghost_IsGhost then
+
+		self:SetBodygroup(4,5)
+		self:SetBodygroup(1,1)
+
+	end
+
+	if self:GetClass() == "npc_vj_totu_fon_juggernaut" then
+		self.MilZ_HasFlakSuit = true
+		self:SetSkin(2)
+		self:SetBodygroup(1,1)
+		self:SetBodygroup(2,3)
+		self:SetBodygroup(3,0)
+		self:SetBodygroup(4,2)
+		self.AnimTbl_Walk = {ACT_WALK_AIM}
+		self.AnimTbl_Run = {ACT_WALK_AIM}
+	end
+
+	if self:GetClass() == "npc_vj_totu_fon_bulldozer" then
+		self.MilZ_HasFlakSuit = true
+		self:SetSkin(2)
+		self:SetBodygroup(1,3)
+		self:SetBodygroup(2,0)
+	end
+
+	if
+		self:GetClass() == "npc_vj_totu_milzomb_juggernaut" or
+		self:GetClass() == "npc_vj_totu_fon_juggernaut" or
+		self:GetClass() == "npc_vj_totu_fon_bulldozer" or
+		self:GetClass() == "npc_vj_totu_milzomb_bulldozer" or
+		self.MilZ_Ghost_IsGhost
+	then return end
+
+	if math.random(1,GetConVar("VJ_ToTU_MilZ_Weapons_Chance"):GetInt()) == 1 && !self.LNR_Crippled && !self.LNR_Biter then
+
+		self:ZombieWeapons()
+
+	end
+
+	if GetConVar("VJ_ToTU_MilZ_Grenades"):GetInt() == 1 then
+
+		if math.random(1,GetConVar("VJ_ToTU_MilZ_Grenades_Chance"):GetInt()) == 1 && !self.LNR_Crippled && !self.MilZ_CanShuutDeGun then
+
+			self.HasRangeAttack = true
+			self.RangeAttackEntityToSpawn = "obj_vj_totu_milzgren"
+			self.RangeAttackAnimationFaceEnemy = true
+			self.AnimTbl_RangeAttack = {"vjseq_throw_right"}
+			self.RangeDistance = 750 
+			self.RangeToMeleeDistance = 1 
+			self.RangeAttackAngleRadius = 100
+			self.TimeUntilRangeAttackProjectileRelease = 1.6
+			self.NextRangeAttackTime = math.random(15,20)
+			self.RangeUseAttachmentForPos = true 
+			self.RangeUseAttachmentForPosID = "anim_attachment_RH"
+			self.RangeAttackPos_Forward = 20
+			self.RangeAttackPos_Up = 20
+
+			self.MilZ_HasGrenades = true
+
+			if GetConVar("VJ_ToTU_MilZ_Grenades_Ammount"):GetInt() == -1 then
+
+				self.MilZ_Grenades = math.random(1,3)
+
+			elseif GetConVar("VJ_ToTU_MilZ_Grenades_Ammount"):GetInt() == 0 then
+
+				-- i mean what did you expect?
+				self.MilZ_Grenades = 0
+				self.HasRangeAttack = false
+
+			elseif GetConVar("VJ_ToTU_MilZ_Grenades_Ammount"):GetInt() != -1 then
+
+				self.MilZ_Grenades = GetConVar("VJ_ToTU_MilZ_Grenades_Ammount"):GetInt()
+
+			end
+
+			if
+				(GetConVar("VJ_ToTU_MilZ_Grenades_Ammount"):GetInt() == -1 or GetConVar("VJ_ToTU_MilZ_Grenades_Ammount"):GetInt() != -1) &&
+				GetConVar("VJ_ToTU_MilZ_Grenades_Ammount"):GetInt() != 0
+			then
+				self.ItemDropsOnDeath_EntityList = {
+					"item_ammo_pistol",
+					"item_ammo_357",
+					"item_ammo_smg1",
+					"item_ammo_ar2",
+					"item_box_buckshot",
+					"weapon_frag",
+					"weapon_frag",
+					"obj_vj_totu_milzgren",
+				}
+			end
+
+			if self.ToTU_WeHaveAWeapon then
+
+				self.AnimTbl_RangeAttack = {"vjseq_throw_left"}
+				self.RangeUseAttachmentForPosID = "anim_attachment_LH"
+
+			end
+
+		end
+
+	end
+
+	if self.MilZ_Corpsman && self.ToTU_WeHaveAWeapon then
+		self.AnimTbl_Medic_GiveHealth = {"vjseq_nz_attack_stand_ad_2-3"}
+		self.Medic_TimeUntilHeal = 0.6
+		self.Medic_SpawnPropOnHealAttachment = "anim_attachment_LH"
+	end
+
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:MilZ_GiveGasmaskSounds()
@@ -1049,7 +1066,7 @@ function ENT:Zombie_Difficulty()
 	elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 2 then
 
 		self.StartHealth = 125
-			self.MeleeAttackDamage = math.Rand(10,15)
+		self.MeleeAttackDamage = math.Rand(10,15)
 
 	elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 3 then
 
@@ -1065,6 +1082,11 @@ function ENT:Zombie_Difficulty()
 
 		self.StartHealth = 275
 		self.MeleeAttackDamage = math.Rand(25,30)
+
+	else
+
+		self.StartHealth = 125
+		self.MeleeAttackDamage = math.Rand(10,15)
 
 	end
 
@@ -1094,8 +1116,12 @@ function ENT:Zombie_Difficulty()
 
 		end
 
+	else
+
+		self.LNR_LegHP = 25
+
 	end
-	
+
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:CustomOnRangeAttack_AfterStartTimer(seed)
@@ -1103,13 +1129,14 @@ function ENT:CustomOnRangeAttack_AfterStartTimer(seed)
 	if self.MilZ_CanShuutDeGun == true then return end
 
 	if self.MilZ_Grunt_IsGrunt then
-	
+
 		if self.MilZ_Grenades == 1 or self.MilZ_Grenades > 1 then
 
 			self.MilZ_Grenades = self.MilZ_Grenades - 1
-					if self.VJ_IsBeingControlled then
-						self.VJ_TheController:ChatPrint("Grenades left: "..self.MilZ_Grenades.."")
-					end
+
+			if self.VJ_IsBeingControlled then
+				self.VJ_TheController:ChatPrint("Grenades left: "..self.MilZ_Grenades.."")
+			end
 
 		end
 
@@ -1170,25 +1197,25 @@ function ENT:Zombie_CustomOnThink_AIEnabled()
 
 	end
 
-	if self.MiLZ_Ghille_IsGhille then
+	if self.MiLZ_Ghillie_IsGhillie then
 
-		if self:IsOnFire() && !self.MilZ_Ghille_IsOnFire && !LNR_Crippled && !LNR_Crawler then
+		if self:IsOnFire() && !self.MilZ_Ghillie_IsOnFire && !LNR_Crippled then
 
-			if self.MilZ_Ghille_PlayChangeStateAnim == 2 then
+			if self.MilZ_Ghillie_PlayChangeStateAnim == 2 then
 
-				local anim = {"vjseq_Run_Stumble_01"}				
+				local anim = {"vjseq_Run_Stumble_01"}
 				self:VJ_ACT_PLAYACTIVITY(anim,true,false,false)
 
 			end
 
-			self:ToTU_Ghille_StartBurning()
-			self.MilZ_Ghille_IsOnFire = true
+			self:ToTU_Ghillie_StartBurning()
+			self.MilZ_Ghillie_IsOnFire = true
 
 		end
 
-		if !self:IsOnFire() && self.MilZ_Ghille_IsOnFire && !LNR_Crippled && !LNR_Crawler then
+		if !self:IsOnFire() && self.MilZ_Ghillie_IsOnFire && !LNR_Crippled then
 
-			self:ToTU_Ghille_StopBurning()
+			self:ToTU_Ghillie_StopBurning()
 
 		end
 
@@ -1197,7 +1224,6 @@ function ENT:Zombie_CustomOnThink_AIEnabled()
 			local enemydist = self:GetPos():Distance(self:GetEnemy():GetPos())
 
 			if
-				self.LNR_Crawler or
 				self.LNR_Crippled or
 				self.ToTU_Crawling or
 				self:GetActivity() == ACT_STEP_BACK or
@@ -1236,17 +1262,18 @@ function ENT:Zombie_CustomOnThink_AIEnabled()
 				self:IsOnFire()
 			then return end
 
-			if enemydist >= 150 && self.MilZ_Ghille_PlayChangeStateAnim == 1 && CurTime() > self.MilZ_Ghille_PlayChangeStateAnim_T then
+			-- increase the distance on this
+			if enemydist >= 350 && self.MilZ_Ghillie_PlayChangeStateAnim == 1 && CurTime() > self.MilZ_Ghillie_PlayChangeStateAnim_T then
 
-				self:ToTU_Ghille_StartCrawling()
-				self.MilZ_Ghille_PlayChangeStateAnim_T = CurTime() + (3)
+				self:ToTU_Ghillie_StartCrawling()
+				self.MilZ_Ghillie_PlayChangeStateAnim_T = CurTime() + (0.5)
 				local anim = {"vjseq_Stand_to_crouch"}
 				self:VJ_ACT_PLAYACTIVITY(anim,true,false,false)
 
-			elseif enemydist <= 149 && self.MilZ_Ghille_PlayChangeStateAnim == 2 && CurTime() > self.MilZ_Ghille_PlayChangeStateAnim_T then
+			elseif enemydist <= 150 && self.MilZ_Ghillie_PlayChangeStateAnim == 2 && CurTime() > self.MilZ_Ghillie_PlayChangeStateAnim_T then
 
-				self:ToTU_Ghille_GetTheUp()
-				self.MilZ_Ghille_PlayChangeStateAnim_T = CurTime() + (3)
+				self:ToTU_Ghillie_GetTheUp()
+				self.MilZ_Ghillie_PlayChangeStateAnim_T = CurTime() + (0.5)
 				local anim = {"vjseq_Crouch_to_stand"}				
 				self:VJ_ACT_PLAYACTIVITY(anim,true,false,false)
 				VJ_EmitSound(self,{"fx/ghille_rustling_"..math.random(1,3)..".mp3"},60,100)
@@ -1399,10 +1426,16 @@ function ENT:MilZ_FoN_SummonHelp()
 	return ally
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
-function ENT:ToTU_Ghille_StartCrawling()
+function ENT:ToTU_Ghillie_StartCrawling()
 
 	self.CanTurnWhileStationary = false
 	self.HasIdleSounds = false
+	if self.LNR_Walker then
+		self.FootStepSoundLevel = 55
+	else
+		self.FootStepSoundLevel = 65
+	end
+	self.HasMeleeAttack = false
 
 	self.AnimTbl_IdleStand = {ACT_CROUCHIDLE}
 	self.AnimTbl_Walk = {ACT_WALK_CROUCH_AIM}
@@ -1424,17 +1457,20 @@ function ENT:ToTU_Ghille_StartCrawling()
 		FirstP_Offset = Vector(5, 0, -1),
 	}
 
-	-- self:CapabilitiesRemove(bit.bor(CAP_MOVE_JUMP))
-	-- self:CapabilitiesRemove(bit.bor(CAP_MOVE_CLIMB))
 	self.HasDeathAnimation = false
-	self.MilZ_Ghille_PlayChangeStateAnim = 2
+	self.MilZ_Ghillie_PlayChangeStateAnim = 2
 
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
-function ENT:ToTU_Ghille_GetTheUp()
+function ENT:ToTU_Ghillie_GetTheUp()
 
 	self.CanTurnWhileStationary = true
-	self.HasIdleSounds = true
+	self.FootStepSoundLevel = 70
+	self.HasMeleeAttack = true
+
+	timer.Simple(2,function() if IsValid(self) then
+		self.HasIdleSounds = true
+	end end)
 
 	self.AnimTbl_IdleStand = {ACT_IDLE}
 	if self.LNR_UsingRelaxedIdle == true then
@@ -1461,16 +1497,11 @@ function ENT:ToTU_Ghille_GetTheUp()
 	}
 
 	self.HasDeathAnimation = true
-	self.MilZ_Ghille_PlayChangeStateAnim = 1
-
-	-- if GetConVar("VJ_LNR_JumpClimb"):GetInt() == 0 or self.LNR_Crawler or self.LNR_Crippled then return end
-
-	-- self:CapabilitiesAdd(bit.bor(CAP_MOVE_JUMP))
-	-- self:CapabilitiesAdd(bit.bor(CAP_MOVE_CLIMB))
+	self.MilZ_Ghillie_PlayChangeStateAnim = 1
 
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
-function ENT:ToTU_Ghille_StartBurning()
+function ENT:ToTU_Ghillie_StartBurning()
 
 	self.IdleAlwaysWander = true
 
@@ -1494,8 +1525,8 @@ function ENT:ToTU_Ghille_StartBurning()
 		FirstP_Offset = Vector(5, 0, -1),
 	}
 
-	self.MilZ_Ghille_PlayChangeStateAnim = 1
-	self.MilZ_Ghille_IsOnFire = true
+	self.MilZ_Ghillie_PlayChangeStateAnim = 1
+	self.MilZ_Ghillie_IsOnFire = true
 
 	if GetConVar("vj_npc_noidleparticle"):GetInt() == 0 then
 
@@ -1527,11 +1558,11 @@ function ENT:ToTU_Ghille_StartBurning()
 
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
-function ENT:ToTU_Ghille_StopBurning()
+function ENT:ToTU_Ghillie_StopBurning()
 
 	self.IdleAlwaysWander = false
-	self.MilZ_Ghille_PlayChangeStateAnim = 1
-	self.MilZ_Ghille_IsOnFire = false
+	self.MilZ_Ghillie_PlayChangeStateAnim = 1
+	self.MilZ_Ghillie_IsOnFire = false
 
 	self:StopParticles()
 	self.Light1:Fire("Kill", "", 0)
@@ -1553,7 +1584,7 @@ function ENT:ToTU_Ghille_StopBurning()
 
 	end
 
-	self.MilZ_Ghille_PlayChangeStateAnim = 1
+	self.MilZ_Ghillie_PlayChangeStateAnim = 1
 
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
@@ -1569,12 +1600,15 @@ function ENT:CustomRangeAttackCode()
 
 	if self.MilZ_HasGun == false or self.MilZ_CanShuutDeGun == false then return end
 
-    if (self:GetActivity() == ACT_WALK_PISTOL or self:GetActivity() == ACT_RUN_PISTOL or self:GetActivity() == ACT_RUN_AIM_PISTOL) && (!self.VJ_IsBeingControlled or self.VJ_IsBeingControlled && self.VJ_TheController:KeyDown(IN_ATTACK2)) then
+    if
+		(self:GetActivity() == ACT_WALK_PISTOL or self:GetActivity() == ACT_RUN_PISTOL or self:GetActivity() == ACT_RUN_AIM_PISTOL) &&
+		(!self.VJ_IsBeingControlled or self.VJ_IsBeingControlled && self.VJ_TheController:KeyDown(IN_ATTACK2))
+	then
 
 		if self.MilZ_GunAmmo >= 0  then
 
 			VJ_EmitSound(self, "vj_weapons/dryfire_pistol.wav", 70, 100)
-			
+
 		end
 
 		if self.MilZ_GunAmmo < 18 and self.MilZ_GunAmmo > 0 then
@@ -1648,7 +1682,12 @@ function ENT:ArmorDamage(dmginfo,hitgroup)
 
 	if self.MilZ_HasFlakSuit == true then
 
-		if dmginfo:IsExplosionDamage() then
+		if
+			dmginfo:IsExplosionDamage() or
+			dmginfo:IsDamageType(DMG_BLAST_SURFACE) or
+			dmginfo:IsDamageType(DMG_MISSILEDEFENSE) or
+			dmginfo:IsDamageType(DMG_ALWAYSGIB)
+		then
 
 			dmginfo:ScaleDamage(0.50)
 
@@ -1656,12 +1695,17 @@ function ENT:ArmorDamage(dmginfo,hitgroup)
 
 	end
 
-	if hitgroup == HITGROUP_GENERIC && (dmginfo:IsDamageType(DMG_CLUB) or dmginfo:IsDamageType(DMG_SLASH) or dmginfo:IsDamageType(DMG_GENERIC)) then
+	if
+		hitgroup == HITGROUP_GENERIC &&
+		(dmginfo:IsDamageType(DMG_CLUB) or
+		dmginfo:IsDamageType(DMG_SLASH) or
+		dmginfo:IsDamageType(DMG_GENERIC))
+	then
 
 		-- didn't hit a bodygroup, assume they sometimes hit the armor
 		-- don't run this for houndeyes and stuff
 
-		if math.random(1,3) != 1 then
+		if math.random(1,2) == 1 then
 
 			dmginfo:ScaleDamage(0.35)
 
@@ -1676,7 +1720,7 @@ function ENT:ArmorDamage(dmginfo,hitgroup)
 		self:GetClass() != "npc_vj_totu_milzomb_bulldozer" &&
 		self:GetClass() != "npc_vj_totu_fon_bulldozer" &&
 		!self.MilZ_HelmetBroken &&
-		!self.MiLZ_Ghille_IsGhille
+		!self.MiLZ_Ghillie_IsGhillie
 	then
 
 		if GetConVar("VJ_ToTU_MilZ_Helmet_Breakable"):GetInt() == 1 then
@@ -1689,9 +1733,9 @@ function ENT:ArmorDamage(dmginfo,hitgroup)
 
 				if self.VJ_IsBeingControlled then
 					self.VJ_TheController:ChatPrint("Your helmet broke!")
-	local badtotheboner = CreateSound(self.VJ_TheController, "common/warning.wav")
-	badtotheboner:SetSoundLevel(0)
-	badtotheboner:Play()
+					local badtotheboner = CreateSound(self.VJ_TheController, "common/warning.wav")
+					badtotheboner:SetSoundLevel(0)
+					badtotheboner:Play()
 				end
 
 				if self.HasSounds && self.HasImpactSounds then VJ_EmitSound(self,{"physics/wood/wood_box_break1.wav","physics/wood/wood_box_break2.wav"},70) end
@@ -1727,12 +1771,17 @@ function ENT:ArmorDamage(dmginfo,hitgroup)
 		return end
 
 		end
-	
+
 		if self.HasSounds && self.HasImpactSounds then VJ_EmitSound(self,"fx/armor/bhit_helmet-1.wav",70) end
 
 		self.Bleeds = false
 
-		if dmginfo:IsBulletDamage() or dmginfo:IsDamageType(DMG_BUCKSHOT) or dmginfo:IsDamageType(DMG_SLASH) or dmginfo:IsDamageType(DMG_CLUB) then
+		if
+			dmginfo:IsBulletDamage() or
+			dmginfo:IsDamageType(DMG_BUCKSHOT) or
+			dmginfo:IsDamageType(DMG_SLASH) or
+			dmginfo:IsDamageType(DMG_CLUB)
+		then
 
 			dmginfo:ScaleDamage(0.005)
 
@@ -1756,7 +1805,12 @@ function ENT:ArmorDamage(dmginfo,hitgroup)
 	
 		self.Bleeds = true
 
-		if dmginfo:IsBulletDamage() or dmginfo:IsDamageType(DMG_BUCKSHOT) or dmginfo:IsDamageType(DMG_SLASH) then
+		if
+			dmginfo:IsBulletDamage() or
+			dmginfo:IsDamageType(DMG_BUCKSHOT) or
+			dmginfo:IsDamageType(DMG_SLASH) or
+			dmginfo:IsDamageType(DMG_CLUB)
+		then
 
 			if self.HasSounds && self.HasImpactSounds then VJ_EmitSound(self,"fx/armor/bhit_helmet-1.wav",70) end
 
@@ -1784,18 +1838,12 @@ function ENT:ArmorDamage(dmginfo,hitgroup)
 
 		end
 
-		if dmginfo:IsDamageType(DMG_CLUB) then
-
-			dmginfo:ScaleDamage(0.35)
-
-		end		
-
 	end
 
-	if self.MilZ_HasFlakSuit == false then return end
+	if !self.MilZ_HasFlakSuit then return end
 
 	if hitgroup == HITGROUP_LEFTARM or hitgroup == HITGROUP_RIGHTARM or hitgroup == HITGROUP_LEFTLEG or hitgroup == HITGROUP_RIGHTLEG then
-		
+
 		self.Bleeds = true
 
 		if dmginfo:IsBulletDamage() or dmginfo:IsDamageType(DMG_BUCKSHOT) or dmginfo:IsDamageType(DMG_SLASH) then

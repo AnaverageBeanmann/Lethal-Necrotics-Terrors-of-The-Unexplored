@@ -57,8 +57,6 @@ ENT.LNR_Walker = true
 ENT.LNR_Biter = false
 ENT.LNR_Runner = false
 ENT.LNR_Infected = false
--- merge crawler with crippled at some point
-ENT.LNR_Crawler = false
 ENT.LNR_AllowedToStumble = true
 ENT.LNR_NextStumbleT = 0
 ENT.LNR_NextShoveT = 0
@@ -377,6 +375,7 @@ function ENT:CustomOnPreInitialize()
 	end
 
 	self:Zombie_CustomOnPreInitialize()
+	self:Zombie_UpdateAlmanacStuff()
 
 	if
 		self:GetClass() == "npc_vj_totu_fon_juggernaut" or
@@ -491,6 +490,8 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:Zombie_CustomOnPreInitialize() end
 ---------------------------------------------------------------------------------------------------------------------------------------------
+function ENT:Zombie_UpdateAlmanacStuff() end
+---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:CustomOnInitialize()
 
 	-- kills the zombie after half a second
@@ -522,7 +523,7 @@ function ENT:CustomOnInitialize()
 
 		if math.random(1,GetConVar("VJ_ToTU_General_Crawler_Chance"):GetInt()) == 1 then
 
-			self.LNR_Crawler = true
+			self.LNR_Crippled = true
 			self:Cripple()
 
 		end
@@ -549,7 +550,7 @@ function ENT:CustomOnInitialize()
 		util.AddNetworkString("vj_lnr_walker_hud")
 	end
 
-	if !self.LNR_Crawler then
+	if !self.LNR_Crippled then
 
 		if
 			math.random(1,3) == 1 &&
@@ -2388,7 +2389,7 @@ function ENT:CustomOnAcceptInput(key,activator,caller,data)
 		if
 			self.MilZ_IsMilZ &&
 			!self.MilZ_Det_IsDetonator &&
-			self.MilZ_Ghille_PlayChangeStateAnim != 2 &&
+			self.MilZ_Ghillie_PlayChangeStateAnim != 2 &&
 			!self.MilZ_Airman_IsAirman
 		then
 
@@ -2933,7 +2934,7 @@ function ENT:CustomOnThink()
 
 	if
 		GetConVar("VJ_LNR_BreakDoors"):GetInt() == 0 or
-		self.LNR_Crawler or self.LNR_Crippled or
+		self.LNR_Crippled or
 		self.Dead or
 		self.DeathAnimationCodeRan or
 		self.Flinching or
@@ -3105,7 +3106,7 @@ end
 */
 	self:Zombie_CustomOnThink_AIEnabled()
 
-	if self.ToTU_CanDodge && !self.LNR_Crawler && !self.LNR_Crippled then
+	if self.ToTU_CanDodge && !self.LNR_Crippled then
 
 		if
 			self.MeleeAttacking or
@@ -3113,7 +3114,6 @@ end
 			self.LeapAttacking or
 			self.Dead or
 			self:GetEnemy() == nil or
-			self.LNR_Crawler or
 			self.LNR_Crippled or
 			self.ToTU_Crawling or
 			self:GetActivity() == ACT_STEP_BACK or
@@ -3216,8 +3216,7 @@ end
 		self.VJ_IsBeingControlled &&
 		self.VJ_TheController:KeyDown(IN_ZOOM) &&
 		self.ToTU_CanJumpT < CurTime() &&
-		!self.LNR_Crippled &&
-		!self.LNR_Crawler
+		!self.LNR_Crippled
 	then
 
 		local doot = CreateSound(self.VJ_TheController, "hl1/fvox/blip.wav")
@@ -3561,11 +3560,11 @@ function ENT:ToTU_Mutate_PainSound()
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:CustomOnChangeActivity(newAct)
-    if self.LNR_Crippled or self.LNR_Crawler or self.VJ_IsBeingControlled then self.NextIdleStandTime = 0 end 
+    if self.LNR_Crippled or self.VJ_IsBeingControlled then self.NextIdleStandTime = 0 end 
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:CustomOnChangeMovementType(movType)
-	if GetConVar("VJ_LNR_JumpClimb"):GetInt() == 0 or self.LNR_Crawler or self.LNR_Crippled then
+	if GetConVar("VJ_LNR_JumpClimb"):GetInt() == 0 or self.LNR_Crippled then
         self:CapabilitiesRemove(bit.bor(CAP_MOVE_JUMP))
 	    self:CapabilitiesRemove(bit.bor(CAP_MOVE_CLIMB)) 
 	end
@@ -3579,7 +3578,7 @@ function ENT:CustomOn_PoseParameterLookingCode(pitch,yaw,roll)
 
 	if self.ToTU_Weaponized_IsHL2Zomb then return end
 
-    if self.LNR_Crawler or self.LNR_Crippled then
+    if self.LNR_Crippled then
 		self:SetPoseParameter("aim_pitch",0) 
 		self:SetPoseParameter("spine_yaw",0)
 		self.PoseParameterLooking_Names = {pitch={"head_pitch"}, yaw={"head_yaw"}, roll={}}
@@ -3681,7 +3680,14 @@ function ENT:CustomOnAlert(ent)
 
 	end
 
-	if self.VJ_IsBeingControlled or self.LNR_Crawler or self.LNR_Crippled or self.ToTU_Weaponized_IsHL2Zomb then return end
+	if self.MiLZ_Ghillie_IsGhillie && self.MilZ_Ghillie_PlayChangeStateAnim == 1 then
+		self:ToTU_Ghillie_StartCrawling()
+		self.MilZ_Ghillie_PlayChangeStateAnim_T = CurTime() + (0.5)
+		local anim = {"vjseq_Stand_to_crouch"}
+		self:VJ_ACT_PLAYACTIVITY(anim,true,false,false)
+	end
+
+	if self.VJ_IsBeingControlled or self.LNR_Crippled or self.ToTU_Weaponized_IsHL2Zomb then return end
 
 	self.ToTU_NextDodgeT = CurTime() + math.random(5,10)
 
@@ -3707,7 +3713,7 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:CustomOnResetEnemy()
 
-	if self.VJ_IsBeingControlled or self.LNR_Crawler or self.LNR_Crippled or self.ToTU_Weaponized_IsHL2Zomb then return end
+	if self.VJ_IsBeingControlled or self.LNR_Crippled or self.ToTU_Weaponized_IsHL2Zomb then return end
 
 	if self.LNR_Infected then
 
@@ -3845,7 +3851,7 @@ function ENT:CustomOnMeleeAttack_Miss()
 
 	end
 
-	if self.LNR_Infected && !self:IsMoving() && !self.LNR_Crippled && !self.LNR_Crawler then
+	if self.LNR_Infected && !self:IsMoving() && !self.LNR_Crippled then
 
 		self.PlayingAttackAnimation = false
 		self:StopAttacks(false)
@@ -3952,7 +3958,7 @@ function ENT:CustomOnMeleeAttack_BeforeStartTimer(seed)
 	end
 
 	-- When Crawling or Crippled --
-    if (self.LNR_Crawler or self.LNR_Crippled) then
+    if self.LNR_Crippled then
 		if self.LNR_Walker then
 			self.AnimTbl_MeleeAttack = {"vjseq_crawl_attack"}	
 		elseif self.LNR_Infected then
@@ -3960,10 +3966,10 @@ function ENT:CustomOnMeleeAttack_BeforeStartTimer(seed)
 		end
 	end
 
-	if self.LNR_Crawler or self.LNR_Crippled then return end
+	if self.LNR_Crippled then return end
 
 	-- When Dismembered or for Biters --
-	if self.LNR_Biter && !self.LNR_Crippled && !self.LNR_Crawler then
+	if self.LNR_Biter && !self.LNR_Crippled then
 
 		if self:IsMoving() then
 		
@@ -3973,7 +3979,7 @@ function ENT:CustomOnMeleeAttack_BeforeStartTimer(seed)
 			self.HasMeleeAttackKnockBack = false 	
 			self.SlowPlayerOnMeleeAttack = false
 			
-		elseif !self:IsMoving() && !self.LNR_Crippled && !self.LNR_Crawler then
+		elseif !self:IsMoving() && !self.LNR_Crippled then
 		
 			self.MeleeAttackAnimationAllowOtherTasks = false
 			self.AnimTbl_MeleeAttack = {"vjseq_Choke_Eating"}	
@@ -3991,7 +3997,7 @@ function ENT:CustomOnMeleeAttack_BeforeStartTimer(seed)
 
 	end
 
-    if !self.LNR_Crawler or !self.LNR_Crippled or !self.LNR_Biter or !self.ToTU_Crawling then
+    if !self.LNR_Crippled or !self.LNR_Biter or !self.ToTU_Crawling then
 
 		-- When Standing --
 		if !self:IsMoving() && !self.LNR_Biter then
@@ -4036,7 +4042,7 @@ function ENT:CustomOnMeleeAttack_BeforeStartTimer(seed)
 		end
 
 		-- When Walking --
-		if self:IsMoving() && !self.LNR_Crawler && !self.LNR_Crippled && !self.LNR_Biter && self.ToTU_CanUseMovingAttacks then
+		if self:IsMoving() && !self.LNR_Crippled && !self.LNR_Biter && self.ToTU_CanUseMovingAttacks then
 
 			self.MeleeAttackAnimationAllowOtherTasks = true
 
@@ -4065,8 +4071,8 @@ function ENT:CustomOnMeleeAttack_BeforeStartTimer(seed)
 					self:GetActivity() == ACT_WALK_PISTOL 
 				then
 					self.AnimTbl_MeleeAttack = {
-					"vjges_nz_attack_walk_ad_right_only_1",
-					"vjgesnz_attack_walk_au_right_only_1"
+						"vjges_nz_attack_walk_ad_right_only_1",
+						"vjgesnz_attack_walk_au_right_only_1"
 					}
 				end
 			end
@@ -4123,7 +4129,6 @@ function ENT:CustomOnFlinch_BeforeFlinch(dmginfo,hitgroup)
 
 	if
 		GetConVar("VJ_ToTU_General_Stumbling_Disable"):GetInt() == 1 or
-		self.LNR_Crawler or
 		self.LNR_Crippled or
 		self.ToTU_Crawling or
 		self:GetClass() == "npc_vj_totu_weaponized_cyst" or
@@ -4190,7 +4195,7 @@ function ENT:CustomOnFlinch_BeforeFlinch(dmginfo,hitgroup)
 		}
 	end
 
-	if self.ToTU_CanDoTheFunny == false or self.LNR_Crawler or self.LNR_Crippled or self:GetActivity() == ACT_GLIDE then return end
+	if self.ToTU_CanDoTheFunny == false or self.LNR_Crippled or self:GetActivity() == ACT_GLIDE then return end
 
 	-- melee stumbles
 	if
@@ -4468,7 +4473,6 @@ function ENT:CustomOnTakeDamage_AfterDamage(dmginfo,hitgroup)
 	then
 		if
 			GetConVar("VJ_ToTU_General_Stumbling_Disable"):GetInt() == 1 or
-			self.LNR_Crawler or
 			self.LNR_Crippled or
 			self.ToTU_Crawling or
 			self:GetActivity() == ACT_BIG_FLINCH or
@@ -4541,15 +4545,19 @@ end
 function ENT:Cripple()
 
 	if self.VJ_IsBeingControlled then
+
 		self.VJ_TheController:ChatPrint("Your legs have been crippled!")
+
 		local badtotheboner = CreateSound(self.VJ_TheController, "common/warning.wav")
 		badtotheboner:SetSoundLevel(0)
 		badtotheboner:Play()
+
 		local badtomyballs = CreateSound(self.VJ_TheController,"physics/body/body_medium_break"..math.random(2,4)..".wav")
 		badtomyballs:SetSoundLevel(40)
 		badtomyballs:Play()
+
 	end
-	
+
 	if self:GetClass() == "npc_vj_totu_weaponized_carcass" or self:GetClass() == "npc_vj_totu_weaponized_cazador" then
 		self.AnimTbl_IdleStand = {ACT_IDLE_STIMULATED}
 		self.AnimTbl_Walk = {ACT_IDLE_STIMULATED}
@@ -4594,7 +4602,11 @@ function ENT:Cripple()
 	self:CapabilitiesRemove(bit.bor(CAP_MOVE_CLIMB))
 	self.HasDeathAnimation = false
 
-	if self:GetClass() == "npc_vj_totu_milzomb_juggernaut" or self:GetClass() == "npc_vj_totu_milzomb_bulldozer" or self:GetClass() == "npc_vj_totu_milzomb_tank" then
+	if
+		self:GetClass() == "npc_vj_totu_milzomb_juggernaut" or
+		self:GetClass() == "npc_vj_totu_milzomb_bulldozer" or
+		self:GetClass() == "npc_vj_totu_milzomb_tank"
+	then
 		if GetConVar("VJ_LNR_Difficulty"):GetInt() == 1 then
 			self.MeleeAttackDamage = math.Rand(10,15)
 		elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 2 then
@@ -4620,6 +4632,10 @@ function ENT:Cripple()
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:CustomOnPriorToKilled(dmginfo, hitgroup)
+
+	if self.MilZ_Ghost_IsGhost && !self.MilZ_Ghost_CloakBroke then
+		self:ToTU_Ghost_BreakCloak()
+	end
 
 	if self.ToTU_Weaponized_Carcass_Exploder == true then
 		VJ_EmitSound(self,"physics/body/body_medium_break"..math.random(2,4)..".wav",100,math.random(100,95))
@@ -4660,7 +4676,6 @@ function ENT:CustomOnPriorToKilled(dmginfo, hitgroup)
 	end
 
 	if
-		self.LNR_Crawler or
 		self.LNR_Crippled or
 		self.ToTU_Crawling or
 		self:GetActivity() == ACT_SMALL_FLINCH or
@@ -4676,7 +4691,7 @@ function ENT:CustomOnPriorToKilled(dmginfo, hitgroup)
 	self.CanFlinch = 0
 	self:DropTheFuckignWeaponGoddamn()
 
-	if self:GetClass() == "npc_vj_totu_milzomb_detonator" or self:GetClass() == "npc_vj_totu_milzomb_detonator_bulk" then
+	if self.MilZ_Det_IsDetonator then
 		if !self.MilZ_Det_DeathExplosionAllowed then
 			self:CreateGibEntity("prop_physics",self.bobm:GetModel(),{Pos=self:GetAttachment(self:LookupAttachment("bobomb")).Pos,Ang=self:GetAngles()}) self.bobm:SetMaterial("lnr/bonemerge") self.bobm:DrawShadow(false) self.ToTU_WeHaveAWeapon = false
 			self.bobm:Remove()	
@@ -4690,7 +4705,7 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:CustomDeathAnimationCode(dmginfo,hitgroup)
 
-	if self.LNR_Crawler or self:GetClass() == "npc_vj_totu_weaponized_cyst" then return end
+	if self.LNR_Crippled or self:GetClass() == "npc_vj_totu_weaponized_cyst" then return end
 	
 	if self:IsMoving() && GetConVar("VJ_ToTU_General_MovingDeathAnimations"):GetInt() == 1 && !self.ToTU_GiantZombie && !self.ToTU_IsFreakOfNature then
 
@@ -4745,7 +4760,7 @@ function ENT:CustomDeathAnimationCode(dmginfo,hitgroup)
 
 	if self.ToTU_GiantZombie then
 
-		if dmginfo:GetDamage() >= 210 or dmginfo:GetDamageForce():Length() >= 48000 then
+		if dmginfo:GetDamage() >= 420 or dmginfo:GetDamageForce():Length() >= 96000 then
 
 			self.AnimTbl_Death = {
 				"vjseq_nz_death_expl_f_1",
@@ -4758,7 +4773,7 @@ function ENT:CustomDeathAnimationCode(dmginfo,hitgroup)
 
 	elseif self.ToTU_BigZombie then
 
-		if dmginfo:GetDamage() >= 70 or dmginfo:GetDamageForce():Length() >= 16000 then
+		if dmginfo:GetDamage() >= 210 or dmginfo:GetDamageForce():Length() >= 32000 then
 		
 			self.AnimTbl_Death = {
 				"vjseq_nz_death_expl_f_1",
@@ -4772,7 +4787,7 @@ function ENT:CustomDeathAnimationCode(dmginfo,hitgroup)
 	else
 
 		if
-			(dmginfo:GetDamage() >= 55 or dmginfo:GetDamageForce():Length() >= 8000) or
+			(dmginfo:GetDamage() >= 110 or dmginfo:GetDamageForce():Length() >= 16000) or
 			bit.band(dmginfo:GetDamageType(), DMG_BUCKSHOT) != 0
 		then
 

@@ -115,10 +115,9 @@ function ENT:ZombieSounds_Custom()
 		self.PainSoundPitch = VJ_Set(50, 55)
 		self.DeathSoundPitch = VJ_Set(50, 55)	
 	end
-	
+
 	if
-		GetConVar("VJ_ToTU_MilZ_Bull_Voice"):GetInt() == 1
-	or
+		GetConVar("VJ_ToTU_MilZ_Bull_Voice"):GetInt() == 1 or
 		(GetConVar("VJ_ToTU_MilZ_Bull_Voice"):GetInt() == 2 && math.random(1,2) == 1)
 	then
 
@@ -225,7 +224,7 @@ function ENT:ZombieSounds_Custom()
 			self.PainSoundPitch = VJ_Set(50, 55)
 			self.DeathSoundPitch = VJ_Set(50, 55)	
 		end
-		
+
 	end
 
 end

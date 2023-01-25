@@ -96,7 +96,7 @@ function ENT:ZombieSounds_Custom()
 		"voices/det/pain_5.mp3",
 		"voices/det/pain_6.mp3"
 	}
-		
+
     self.SoundTbl_Death = {
 		"voices/det/death_1.mp3",
 		"voices/det/death_2.mp3",
@@ -139,14 +139,15 @@ function ENT:Zombie_CustomOnThink_AIEnabled()
 				else
 
 					VJ_EmitSound(self,{"fx/egg/kamikaze_yell2.wav"},65,100)
-					
+
 				end
 
 			else
 
 				VJ_EmitSound(self,{"fx/detonator_beep.mp3"},65,100)
+
 			end
-		
+
 		end
 
 		if GetConVar("VJ_ToTU_MilZ_Det_BombLights"):GetInt() == 1 or GetConVar("VJ_ToTU_MilZ_Det_BombLights"):GetInt() == 2 then
@@ -190,11 +191,11 @@ function ENT:Zombie_CustomOnThink_AIEnabled()
 			if self.Dead == false && self:GetEnemy() != nil && self.VJ_IsBeingControlled == false then
 
 				local EnemyDistance = self:VJ_GetNearestPointToEntityDistance(self:GetEnemy(),self:GetPos():Distance(self:GetEnemy():GetPos()))
-				
+
 				if self.MilZ_Det_Kamikaze then
 
 					self.MilZ_Det_Beep_BeepT = CurTime() + 0.719
-					
+
 				else
 
 					if EnemyDistance <= 300 then
@@ -240,7 +241,7 @@ function ENT:Zombie_CustomOnMeleeAttack_BeforeStartTimer()
 		self.HasMeleeAttack = false
 		self.MilZ_Det_Beep_CanBeep = false
 
-		if self.LNR_Crippled or self.LNR_Crawler then
+		if self.LNR_Crippled then
 
 			if self:GetClass() == "npc_vj_totu_milzomb_detonator_bulk" then
 
@@ -318,25 +319,25 @@ function ENT:Zombie_CustomOnMeleeAttack_BeforeStartTimer()
 			end
 
 		end
-		
+
 			timer.Simple(2,function() if IsValid(self) && !self.Dead then
-			
+
 				self:ToTU_Detonator_CommitDie()
-				
+
 			end	end)
-			
+
 		else
-		
+
 			timer.Simple(1.25,function() if IsValid(self) && !self.Dead then
-			
+
 				self:ToTU_Detonator_CommitDie()
-				
+
 			end	end)
-			
+
 		end
-		
+
 	end
-	
+
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:ToTU_Detonator_CommitDie()		
@@ -362,6 +363,7 @@ function ENT:ToTU_Detonator_CommitDie()
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:ToTU_Detonator_BombHitExplode()
+
 	self.GodMode = false
 	self.MilZ_Det_DeathExplosionAllowed = true
 	self.HasDeathRagdoll = false
@@ -374,41 +376,47 @@ function ENT:ToTU_Detonator_BombHitExplode()
 		self.LNR_VirusInfection = false
 	end
 
-	-- local d = DamageInfo()
-	-- d:SetDamage(self:GetMaxHealth())
-	-- d:SetAttacker(self)
-	-- d:SetDamageType(DMG_GENERIC) 
-	-- self:TakeDamageInfo(d)
-
-
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:ArmorDamage(dmginfo,hitgroup)
 
 	if hitgroup == HITGROUP_GEAR then
-				local spark = ents.Create("env_spark")
-				spark:SetKeyValue("Magnitude","1")
-				spark:SetKeyValue("Spark Trail Length","1")
-				spark:SetPos(dmginfo:GetDamagePosition())
-				spark:SetAngles(self:GetAngles())
-				spark:SetParent(self)
-				spark:Spawn()
-				spark:Activate()
-				spark:Fire("StartSpark","",0)
-				spark:Fire("StopSpark","",0.001)
-				self:DeleteOnRemove(spark)
+
+		local spark = ents.Create("env_spark")
+		spark:SetKeyValue("Magnitude","1")
+		spark:SetKeyValue("Spark Trail Length","1")
+		spark:SetPos(dmginfo:GetDamagePosition())
+		spark:SetAngles(self:GetAngles())
+		spark:SetParent(self)
+		spark:Spawn()
+		spark:Activate()
+		spark:Fire("StartSpark","",0)
+		spark:Fire("StopSpark","",0.001)
+		self:DeleteOnRemove(spark)
+
 		if GetConVar("VJ_ToTU_MilZ_Det_Bomb_Bustable"):GetInt() == 1 then
-		self.MilZ_Det_BombHealth = self.MilZ_Det_BombHealth -dmginfo:GetDamage()
-		if self.MilZ_Det_BombHealth <= 0 then
-			self:ToTU_Detonator_BombHitExplode()
-			dmginfo:ScaleDamage(999999999999)
+
+			self.MilZ_Det_BombHealth = self.MilZ_Det_BombHealth -dmginfo:GetDamage()
+
+			if self.MilZ_Det_BombHealth <= 0 then
+
+				self:ToTU_Detonator_BombHitExplode()
+				dmginfo:ScaleDamage(999999999999)
+
+			end
+		
 		end
-		end
+
 	end
 
 	if GetConVar("VJ_ToTU_General_Armor_Allow"):GetInt() == 0 then return end
 
-	if dmginfo:IsExplosionDamage() then
+	if
+		dmginfo:IsExplosionDamage() or
+		dmginfo:IsDamageType(DMG_BLAST_SURFACE) or
+		dmginfo:IsDamageType(DMG_MISSILEDEFENSE) or
+		dmginfo:IsDamageType(DMG_ALWAYSGIB)
+	then
 
 		dmginfo:ScaleDamage(0.20)
 
@@ -507,14 +515,14 @@ function ENT:ArmorDamage(dmginfo,hitgroup)
 					self.PainSoundPitch = VJ_Set(90, 80)
 					self.DeathSoundPitch = VJ_Set(90, 80)
 
-					if self.LNR_Runner then
-		
+					if self.LNR_Runner or self.ToTU_Rusher then
+
 						self.SoundTbl_Alert = {
 							"voices/mil_jugg/run_start_1.mp3",
 							"voices/mil_jugg/run_start_2.mp3",
 							"voices/mil_jugg/run_start_3.mp3"
 						}
-		
+
 						self.SoundTbl_CombatIdle = {
 							"voices/mil_jugg/cidle_1.mp3",
 							"voices/mil_jugg/cidle_2.mp3"
@@ -532,26 +540,27 @@ function ENT:ArmorDamage(dmginfo,hitgroup)
 			effectData:SetOrigin(dmginfo:GetDamagePosition())
 			effectData:SetScale(1)
 			util.Effect("GlassImpact", effectData)
-				
+
 			self:SetBodygroup(1,2)
 			self.Bleeds = true
-				
+
 			return end
+
 		end
 
 		if self.HasSounds && self.HasImpactSounds then VJ_EmitSound(self,"physics/glass/glass_impact_bullet"..math.random(1,4)..".wav",70) end
 
 		self.Bleeds = false
 
-		if
-			dmginfo:IsBulletDamage() or
-			dmginfo:IsDamageType(DMG_BUCKSHOT) or
-			dmginfo:IsDamageType(DMG_SNIPER) or
-			dmginfo:IsDamageType(DMG_SLASH) or
-			dmginfo:IsDamageType(DMG_CLUB)
-		then
+		-- if
+			-- dmginfo:IsBulletDamage() or
+			-- dmginfo:IsDamageType(DMG_BUCKSHOT) or
+			-- dmginfo:IsDamageType(DMG_SNIPER) or
+			-- dmginfo:IsDamageType(DMG_SLASH) or
+			-- dmginfo:IsDamageType(DMG_CLUB)
+		-- then
 			dmginfo:ScaleDamage(0)
-		end
+		-- end
 
 	end
 
@@ -579,20 +588,21 @@ function ENT:CustomOnKilled(dmginfo,hitgroup)
 
 			ParticleEffect("explosion_huge",self:GetPos() + self:GetUp()*20,Angle(0,0,0),nil)
 
-			if GetConVar("VJ_ToTU_MilZ_Det_ExplosionSetup"):GetInt() == true then
-			util.VJ_SphereDamage(self, self, self:GetPos(), 100, 75, DMG_BLAST, true, true, {Force=100})
-			util.VJ_SphereDamage(self, self, self:GetPos(), 200, 75, DMG_BLAST, true, true, {Force=100})
-			util.VJ_SphereDamage(self, self, self:GetPos(), 300, 75, DMG_BLAST, true, true, {Force=100})
-			util.VJ_SphereDamage(self, self, self:GetPos(), 400, 75, DMG_BLAST, true, true, {Force=100})
-			util.VJ_SphereDamage(self, self, self:GetPos(), 500, 75, DMG_BLAST, true, true, {Force=100})
-			util.VJ_SphereDamage(self, self, self:GetPos(), 600, 75, DMG_BLAST, true, true, {Force=100})
-			util.VJ_SphereDamage(self, self, self:GetPos(), 700, 75, DMG_BLAST, true, true, {Force=100})
-			util.VJ_SphereDamage(self, self, self:GetPos(), 800, 75, DMG_BLAST, true, true, {Force=100})
-			util.VJ_SphereDamage(self, self, self:GetPos(), 900, 75, DMG_BLAST, true, true, {Force=100})
-			util.VJ_SphereDamage(self, self, self:GetPos(), 1000, 75, DMG_BLAST, true, true, {Force=100})
+			if GetConVar("VJ_ToTU_MilZ_Det_ExplosionSetup"):GetInt() == 1 then
+				util.VJ_SphereDamage(self, self, self:GetPos(), 100, 75, DMG_BLAST, true, true, {Force=100})
+				util.VJ_SphereDamage(self, self, self:GetPos(), 200, 75, DMG_BLAST, true, true, {Force=100})
+				util.VJ_SphereDamage(self, self, self:GetPos(), 300, 75, DMG_BLAST, true, true, {Force=100})
+				util.VJ_SphereDamage(self, self, self:GetPos(), 400, 75, DMG_BLAST, true, true, {Force=100})
+				util.VJ_SphereDamage(self, self, self:GetPos(), 500, 75, DMG_BLAST, true, true, {Force=100})
+				util.VJ_SphereDamage(self, self, self:GetPos(), 600, 75, DMG_BLAST, true, true, {Force=100})
+				util.VJ_SphereDamage(self, self, self:GetPos(), 700, 75, DMG_BLAST, true, true, {Force=100})
+				util.VJ_SphereDamage(self, self, self:GetPos(), 800, 75, DMG_BLAST, true, true, {Force=100})
+				util.VJ_SphereDamage(self, self, self:GetPos(), 900, 75, DMG_BLAST, true, true, {Force=100})
+				util.VJ_SphereDamage(self, self, self:GetPos(), 1000, 75, DMG_BLAST, true, true, {Force=100})
 			else
-			util.VJ_SphereDamage(self, self, self:GetPos(), 1000, 750, DMG_BLAST, true, true, {Force=100})
+				util.VJ_SphereDamage(self, self, self:GetPos(), 1000, 750, DMG_BLAST, true, true, {Force=100})
 			end
+
 			util.ScreenShake(self:GetPos(), 300, 1000, 5, 2400)
 
 			VJ_EmitSound(self,"ambient/explosions/explode_"..math.random(1,9)..".wav",180)
@@ -612,16 +622,16 @@ function ENT:CustomOnKilled(dmginfo,hitgroup)
 		else
 
 			if GetConVar("VJ_ToTU_MilZ_Det_ExplosionSetup"):GetInt() == true then
-			util.VJ_SphereDamage(self, self, self:GetPos(), 40, 25, DMG_BLAST, true, true, {Force=70})
-			util.VJ_SphereDamage(self, self, self:GetPos(), 80, 25, DMG_BLAST, true, true, {Force=70})
-			util.VJ_SphereDamage(self, self, self:GetPos(), 120, 25, DMG_BLAST, true, true, {Force=70})
-			util.VJ_SphereDamage(self, self, self:GetPos(), 160, 25, DMG_BLAST, true, true, {Force=70})
-			util.VJ_SphereDamage(self, self, self:GetPos(), 200, 25, DMG_BLAST, true, true, {Force=70})
+				util.VJ_SphereDamage(self, self, self:GetPos(), 40, 25, DMG_BLAST, true, true, {Force=70})
+				util.VJ_SphereDamage(self, self, self:GetPos(), 80, 25, DMG_BLAST, true, true, {Force=70})
+				util.VJ_SphereDamage(self, self, self:GetPos(), 120, 25, DMG_BLAST, true, true, {Force=70})
+				util.VJ_SphereDamage(self, self, self:GetPos(), 160, 25, DMG_BLAST, true, true, {Force=70})
+				util.VJ_SphereDamage(self, self, self:GetPos(), 200, 25, DMG_BLAST, true, true, {Force=70})
 			else
-			util.VJ_SphereDamage(self, self, self:GetPos(), 200, 125, DMG_BLAST, true, true, {Force=70})
+				util.VJ_SphereDamage(self, self, self:GetPos(), 200, 125, DMG_BLAST, true, true, {Force=70})
 			end
 			util.ScreenShake(self:GetPos(), 300, 500, 1.6, 1200)
-			
+
 		end
 
 	end
