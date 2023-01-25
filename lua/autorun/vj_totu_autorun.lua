@@ -105,12 +105,6 @@ end
 	/*
 	ask doofus if he can tweak the stalker idles so the left arm doesn't clip through the left leg
 	
-	sounds to add into the pack
-	- css knife slash/stab
-	- l4d shove sounds
-	- l4d tank sounds
-	- css helmet/kevlar hit sounds
-	
 	Gameplay first, realism second!
 			
 	add browncoat zombies
@@ -177,7 +171,6 @@ end
 		Laticauda
 	Unsure
 		Meathead
-		Cloaker (Walker)
 		Degenerate
 		Exploder (Infected)
 		Fiend
@@ -240,30 +233,18 @@ end
 
 		- Add cripple support for all current zombies
 		- make it so ghosts cloak device is only broken if you hit the chest?
-		- make it so detonators don't have itemdrops
-		- add og gasmask sounds
 		
 		- add needed sounds
-		* css knife slash/stab
-		* l4d shove sounds
-		* l4d tank sounds
-		* css helmet/kevlar hit sounds
 		* nightkin sounds
 	
-		- try giving milzombs the gibbed head thing from nh2 zombs
-		- experiment with walker varient of ghost
-		- add fast zombie leap attack animations
+
 		- add ghost leap attack fnaf jumpscare egg
-		- add detonator serious sam kamikaze sound easter egg
 		- Make sure all convars work
 		- Get non-working convars working
-		- add tf2 headshot + fire death animations?
 		- scientist carcass can do a zombine and pull out a virus vile?
-		- give carcass zombine run animations
 		- proofread convar descriptions, update if needed
 		- make it so emp's and shit can short cirquit detonator bombs and ghost cloak devices
 		- make it so detonators can attack and break apart barricades
-		- experiment with removing the ci proportions thing from hunter and with animations to see if they look better
 		- for the creeper use drg creature sounds and retextured the barbed wire to be leaves and shit
 		- add void-black scragg model as Something Wicked
 		- add sitting and lying behavior to nightkin
@@ -290,24 +271,18 @@ end
 		  ("merry christmas, ho ho hooo!" or just the merry christmas part for bulk)
 		  use spongebob christmas who end scene for this sound
 		
-		
-		- add some kinda in-game manual thing that tells info about zombies?
+
 		- horde mentality?
 		* if enough zombies are near eachother, they'll start moving faster
 		
 		nightkin
 		- add sitting/lying behavior
-		- finish cutting up howler sounds for shrieker
 		- get sounds in
 		- decomp original model for skin stuff
 		* https://steamcommunity.com/sharedfiles/filedetails/?id=257870201&searchtext=feeder
 		
 		- add warks hla zomb anims for degenerate
-		
-		- add some kind of big zombie in a juggernaut suit?
-		* lies on the floor for a sec if kicked over, then sluggishly gets back up
-		* super tanky but walker only(?) and cannot run or can run short distances then gets tired + falls over if he misses an attack
-		* name ideas: Oppressor, Shellback, Turtle
+
 		
 		- make sure all zombs have controller support
 		
@@ -317,25 +292,11 @@ end
 		* Iceberg Juggernaut
 		* Snowdozer
 		
-		- worker zombs
-		* Roughneck (basic zomb)
-		* Sledgehammer (big guy)
-		* Jackhammer (big guy but runs)
-		* Foreman (summons help like shriekers)
-		give the sledgehammer a fucking brick as a weapon and also make it throw bricks
-		add seperate right hand only ci melee anims for this
-		
 		- Backcounty zombies
 		* commons in stuff like overalls/flannels/generic countryside clothing
 		* monster boys (call them wendigos)
 		
-		- reconsider flora idea?
-		* Ghillie zombie who lays there until something gets near
-		* gets up and attacks when target's near
-		
 		convars to do
-		- squaller iron will chance
-		- squallers having iron will
 		- shrieker spawn frequency
 		
 		- add entrenchment shovel to milzomb weapon pool?
@@ -351,18 +312,66 @@ end
 		todo
 		- convar for failsafe doorsound options (sound used if it doesn't detect a doortype)
 		- fix up possession
-		
+
+		update video
+			* doorbreak sound system
+			* new climbout animations
+			* new glide anims
+			* new moving death animations
+			* new l4d com standing attack anims
+			* new default voices
+			* ghillie burning and crawl updates
+			* bulk det new bomb stuff
+			* detonator bomb going off if you shoot it
+			* airman
+
 		for nightkin showcase vid
-		- map: necro forest
+		- opening: show off a nightkin den with slow zooms
+			* show a squaller sitting alone at the end
+			* use "As the Wall Protecs, So Must We" as the music (Postal Brain Damaged soundtrack)
+		- map: necro forest?
 		- weapons: urban coalition
-		- playermodels: hunter-looking dudes
-		- senseless violcence part: shitty gmod realism section
+			* Glock 17
+			* M1911
+			* Model 329PD
+			* Mini-14
+			* Remington 870
+			* IZh-58
+		- playermodels: hunter-looking dudes or monster boys
+		- senseless violence part: shitty gmod realism section
+		- for the squaller bit:
+		* do a sudden cut to where it would be standing, but nothing's there
+		* camera is completely still
+		* cut to black, then cut to shaky cam pov
+		* guy is running from a squaller and hiding
+		* at the end, show the squallers face and freeze-frame + glitch sounds
+		* move onto the next zomb like nothing happened
+		
+		for cepheus strain showcase vid
+		- map: boreas indoor areas
+		- weapons: mw2019
+		- playermodels: uhhh
+		- senseless violence part: gmod realism again
+		
+		cepheus release trailer/teaser
+		- slow zooms in boreas
+		- use Flatline by Scattle (Hotline Miami 1 OST)
+		- show shadows of the guys
+		- don't explicitly show them until the end
+
+		deimos release trailer/teaser
+		- slow zooms around boreas
+		- death and destruction everywhere
+		- use We're Sorry by Life Companions (Hotline Miami 2 OST) or Wading Through The Bodies (Killing Floor 1 OST)
 		
 		- get text addon (like 3d/2d text or something) for future sets
 		
 		trailer music contenders
 		- https://youtu.be/ICjD3f-8SXE
 		- https://youtu.be/QEUS4uh4c4Y
+		- https://youtu.be/yBm4K00SMEk
+		- Miami by Jasper Byrne (Hotline Miami 1 OST)
+		- As the Wall Protects, So Must We (Postal: Brain Damaged OST)
 		
 		- add convar for tank moving attacks
 		
@@ -406,20 +415,18 @@ end
 		DMG_SLOWBURN			  - In an oven
 		
 		DMG_BLAST				  - Explosion damage like grenades, helicopter bombs, combine mines, Will be ignored by most vehicle passengers.
+		- use dmginfo:IsExplosionDamage() for this
 		DMG_BLAST_SURFACE		  - This won't hurt the player underwater
 		DMG_MISSILEDEFENSE		  - Damage from npc_missiledefense, npc_combinegunship, or monster_mortar
 		DMG_ALWAYSGIB			  - Always create gibs
 		
 		DMG_POISON				  - Poison damage used by Antlion Workers & Poison Headcrabs.
 		DMG_PARALYZE			  - Same as DMG_POISON
-		DMG_NERVEGAS			  - Neurotoxin damage
 		
 		DMG_SHOCK				  - Electrical damage, shows smoke at the damage position and its used by Stalkers & Vortigaunts
 		DMG_ENERGYBEAM			  - Laser damage
 		DMG_PLASMA				  - Plasma damage
 		DMG_DISSOLVE			  - Forces the entity to dissolve on death. This is what the combine ball uses when it hits a target.
-		
-		DMG_RADIATION			  - Radiation damage & it will be ignored by most vehicle passengers
 		
 		DMG_ACID				  - Toxic chemical or acid burn damage used by the Antlion Workers
 		
@@ -428,7 +435,35 @@ end
 		DMG_DROWN				  - Drown damage
 		DMG_DROWNRECOVER		  - Damage applied to the player to restore health after drowning
 		DMG_REMOVENORAGDOLL		  - Don't create a ragdoll on death
+		
+		- they're immune so these don't apply
+		DMG_NERVEGAS			  - Neurotoxin damage
+		DMG_RADIATION			  - Radiation damage & it will be ignored by most vehicle passengers
 
+		collapse LNR_Crippled and LNR_Crawler into 1 variable
+		- make sure all existing zombies don't have LNR_Crawler in them
+		re-add feeding behavior for nightkin?
+		add lying and sitting behavior
+		add more spawners
+		- standard (5)
+		- large (10)
+		- extra large (20)
+		- small (3)
+		- single (1)
+		- random zombie
+		
+		do varients for walker only, infected only, and both
+		see if you can use spawners as a base for spawners
+		
+		april 1st
+		- upload bbbos to the workshop
+
+		june 7th
+		- upload whatever's polished to the workshop as a w.i.p. early access thing
+		- update it with a new group when the group is all ready
+		- edit the og one so it's like "hey this is the old one check out the new one"
+		- continue working on it till it's all ready
+		- when it's finished unlist the old one
 	*/
 
 	-- [] = done
@@ -443,7 +478,7 @@ end
 		VJ.AddNPC("Base Cepheus Gunner Zombie Guy Dude Thing","npc_vj_totu_base_cstrain",vCat1)
 		-- ()
 	
-	-- Military
+	-- MilZombs
 		VJ.AddNPC("Grunt (Walker)","npc_vj_totu_milzomb_walker",vCat2)
 		-- []
 		VJ.AddNPC("Grunt (Infected)","npc_vj_totu_milzomb_infected",vCat2)
@@ -493,7 +528,7 @@ end
 		-- ()
 		-- basically ghost but nightkin
 		-- say it's an anomaly
-		-- base it on blackscary in c;r?
+		-- base it on blackscary in clr?
 		
 		VJ.AddNPC("Scourge","npc_vj_totu_nightkin_spitballer",vCat3)
 		-- {}
@@ -503,17 +538,6 @@ end
 		VJ.AddNPC("Scylla","npc_vj_totu_nightkin_scylla",vCat3)
 		-- {}
 		-- get it its own model
-		
-	-- Spawners
-		VJ.AddNPC("Spawner","sent_vj_totu_spawner",vCat8)
-		VJ.AddNPC("Spawner (Nightkin)","sent_vj_totu_spawner_nightkin",vCat8)
-		VJ.AddNPC("Spawner (MilZombs)","sent_vj_totu_spawner_milzombs",vCat8)
-		VJ.AddNPC("Spawner (Weaponized/Lab Specimens)","sent_vj_totu_spawner_weaponized",vCat8)
-		VJ.AddNPC("Spawner (Backcounty)","sent_vj_totu_spawner_backcounty",vCat8)
-		VJ.AddNPC("Spawner (Water Critters)","sent_vj_totu_spawner_watercritters",vCat8)
-		VJ.AddNPC("Spawner (The Rotten)","sent_vj_totu_spawner_rotten",vCat8)
-		-- VJ.AddNPC("Spawner (Zombified Morti Staff)","sent_vj_totu_spawner_morti_zombified",vCat)
-		-- VJ.AddNPC("Spawner (Morti Staff)","sent_vj_totu_spawner_morti",vCat)
 		
 	-- Tundra Wastes
 		-- general gimmick
@@ -525,12 +549,15 @@ end
 		-- super sprinting - sprinting
 		-- rushing - super sprinting
 		VJ.AddNPC("Frostbitten Grunt (Walker)","npc_vj_totu_milzomb_walker_snowy",vCat9)
+		-- rename to snow grunt?
 		-- ()
 		VJ.AddNPC("Frostbitten Grunt (Infected)","npc_vj_totu_milzomb_infected_snowy",vCat9)
 		-- ()
 		VJ.AddNPC("Frostbitten Juggernaut","npc_vj_totu_milzomb_juggernaut_snowy",vCat9)
+		-- rename to snowgernaut
 		-- ()
 		VJ.AddNPC("Frostdozer","npc_vj_totu_milzomb_bulldozer_snowy",vCat9)
+		-- rename to snowdozer
 		-- ()
 		VJ.AddNPC("Frostbitten","npc_vj_totu_tundra_frostbite",vCat9)
 		-- walkers that like to bite you
@@ -543,6 +570,7 @@ end
 		
 		-- guys in heavy winter coats/clothing (rust model in mind)
 		
+		-- VJ.AddNPC("Scavenger","npc_vj_totu_tundra_scavenger",vCat9)
 		-- some kind of ravager copy but cold
 		-- name it scavenger?
 	
@@ -593,6 +621,10 @@ end
 		-- slow but can run occasionally
 		-- ()
 		
+		-- VJ.AddNPC("Redead (Armored)","npc_vj_totu_weaponized_redead_grunt",vCat4)
+		-- deimos drone
+		-- ()
+		
 		VJ.AddNPC("Smog","npc_vj_totu_weaponized_smog",vCat4)
 		-- []
 		-- add friendly version
@@ -616,11 +648,11 @@ end
 		-- ()
 		VJ.AddNPC("Morti Hazmat Agent (Hostile)","npc_vj_totu_morti_hazmat_hostile",vCat)
 		-- ()
-		VJ.AddNPC("Morti N.O.R.U. (Friendly)","npc_vj_totu_morti_noru",vCat)
+		VJ.AddNPC("Morti N.O.R.U. Agent (Friendly)","npc_vj_totu_morti_noru",vCat)
 		-- ()
-		VJ.AddNPC("Morti N.O.R.U. (Hostile)","npc_vj_totu_morti_noru_hostile",vCat)
+		VJ.AddNPC("Morti N.O.R.U. Agent (Hostile)","npc_vj_totu_morti_noru_hostile",vCat)
 		-- ()
-		VJ.AddNPC("Morti N.O.R.U. (Code 4)","npc_vj_totu_morti_noru_nosurvivors",vCat)
+		VJ.AddNPC("Morti N.O.R.U. Agent (Code 4)","npc_vj_totu_morti_noru_nosurvivors",vCat)
 		-- ()
 		-- VJ.AddNPC("","npc_vj_totu_morti_",vCat)
 		*/
@@ -709,9 +741,6 @@ end
 		-- make it have no corpse on death (see if it's possible to make it fade out of reality)
 		-- easter egg: 1 in 100 chance to have corpse, play fart sound when corpse is made
 		
-		VJ.AddNPC("Filth","npc_vj_totu_backcounty_filth",vCat5)
-		-- ()
-		-- zombie cleaners
 		
 		VJ.AddNPC("Creeper","npc_vj_totu_backcounty_creeper",vCat5)
 		-- ()
@@ -724,10 +753,6 @@ end
 		-- monster boys
 		-- they crawl at you
 		
-		VJ.AddNPC("Funnyman","npc_vj_totu_backcounty_clown",vCat5)
-		-- ()
-		-- is clown
-		-- shoe go honk honk haha
 		
 		VJ.AddNPC("Worker Zombie (Walker)","npc_vj_totu_backcounty_roughneck_walker",vCat5)
 		-- {}
@@ -737,6 +762,7 @@ end
 		-- for heavier weapons use re5 executioner anims or bogeyman anims
 		-- add hammer and sledgehammer to weapon list
 		-- brick
+		-- rename to roughneck
 		
 	-- The Rotten
 		VJ.AddNPC("Degenerate","npc_vj_totu_rotten_degenerate",vCat6)
@@ -778,6 +804,9 @@ end
 		
 		VJ.AddNPC("Swarm","npc_vj_totu_rotten_swarm",vCat6)
 		-- ()
+		VJ.AddNPC("Filth","npc_vj_totu_backcounty_filth",vCat5)
+		-- ()
+		-- zombie cleaners
 		
 		
 		
@@ -844,11 +873,27 @@ end
 
 		-- VJ.AddNPC("Kromling","npc_vj_totu_bonus_kromer",vCat8)
 		
+		VJ.AddNPC("Funnyman","npc_vj_totu_backcounty_clown",vCat5)
+		-- ()
+		-- is clown
+		-- shoe go honk honk haha
+		
 		-- obese male?
 		-- https://steamcommunity.com/sharedfiles/filedetails/?id=1199974271
 		
 		-- VJ.AddNPC("","npc_vj_totu_bonus_",vCat)
 	
+	-- Spawners
+		VJ.AddNPC("Spawner","sent_vj_totu_spawner",vCat8)
+		VJ.AddNPC("Spawner (Nightkin)","sent_vj_totu_spawner_nightkin",vCat8)
+		VJ.AddNPC("Spawner (MilZombs)","sent_vj_totu_spawner_milzombs",vCat8)
+		VJ.AddNPC("Spawner (Weaponized/Lab Specimens)","sent_vj_totu_spawner_weaponized",vCat8)
+		VJ.AddNPC("Spawner (Backcounty)","sent_vj_totu_spawner_backcounty",vCat8)
+		VJ.AddNPC("Spawner (Water Critters)","sent_vj_totu_spawner_watercritters",vCat8)
+		VJ.AddNPC("Spawner (The Rotten)","sent_vj_totu_spawner_rotten",vCat8)
+		-- VJ.AddNPC("Spawner (Zombified Morti Staff)","sent_vj_totu_spawner_morti_zombified",vCat)
+		-- VJ.AddNPC("Spawner (Morti Staff)","sent_vj_totu_spawner_morti",vCat)
+		
 	-- Freaks of Nature
 		VJ.AddNPC("Skullcrusher","npc_vj_totu_fon_juggernaut",vCat11)
 		VJ.AddNPC("Wrath","npc_vj_totu_fon_bulldozer",vCat11)
@@ -953,8 +998,6 @@ end
 	AddConvars["VJ_ToTU_Weaponized_Smog_Bloody"] = 2
 	AddConvars["VJ_ToTU_MilZ_Grunt_Corpsman_Allow"] = 1
 	AddConvars["VJ_ToTU_MilZ_Grunt_Corpsman_Chance"] = 4
-	
-	-- get these working
 	AddConvars["VJ_ToTU_MilZ_Tank_NMRIHWalks"] = 1
 	AddConvars["VJ_ToTU_MilZ_Det_Bulk_NMRIHWalks"] = 1
 	AddConvars["VJ_ToTU_MilZ_Tank_SubtypeBlacklisted"] = 1
@@ -963,7 +1006,7 @@ end
 	AddConvars["VJ_ToTU_General_Stumbling_Disable"] = 0
 	AddConvars["VJ_ToTU_MilZ_Det_Bomb_Bustable"] = 1
 	AddConvars["VJ_ToTU_MilZ_Det_Bomb_Health"] = 10
-	AddConvars["VJ_ToTU_MilZ_Det_ExplosionSetup"] = 1
+	AddConvars["VJ_ToTU_MilZ_Det_ExplosionSetup"] = 0
 	AddConvars["VJ_ToTU_General_DefaultVoices_AltInfected"] = 1
 	AddConvars["VJ_ToTU_General_DefaultVoices_AltWalker"] = 1
 
@@ -1092,7 +1135,7 @@ end
 			VJ_ToTU_General_Stumbling_Disable = "0",
 			VJ_ToTU_MilZ_Det_Bomb_Bustable = "1",
 			VJ_ToTU_MilZ_Det_Bomb_Health = "10",
-			VJ_ToTU_MilZ_Det_ExplosionSetup = "1",
+			VJ_ToTU_MilZ_Det_ExplosionSetup = "0",
 			VJ_ToTU_General_DefaultVoices_AltInfected = "1",
 			VJ_ToTU_General_DefaultVoices_AltWalker = "1",
 			-- VJ_ToTU_MilZ_Det_ = "",
