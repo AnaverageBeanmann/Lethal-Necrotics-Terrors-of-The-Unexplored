@@ -1305,6 +1305,88 @@ function ENT:ZombieSounds()
 		"player/spitter/voice/die/spitter_death_02.wav",
 		}
 		
+	elseif self:GetClass() == "npc_vj_totu_nightkin_spectre" then
+	
+		self.SoundTbl_Idle = {
+			"voices/nightkin/spectre/flesher_bark_generic_01.mp3",
+			"voices/nightkin/spectre/flesher_bark_generic_02.mp3",
+			"voices/nightkin/spectre/flesher_bark_generic_03.mp3",
+			"voices/nightkin/spectre/flesher_bark_generic_04.mp3",
+			"voices/nightkin/spectre/flesher_bark_generic_05.mp3",
+			"voices/nightkin/spectre/flesher_bark_generic_06.mp3",
+			"voices/nightkin/spectre/flesher_bark_generic_07.mp3",
+			"voices/nightkin/spectre/flesher_bark_generic_08.mp3",
+			"voices/nightkin/spectre/flesher_bark_generic_09.mp3",
+			"voices/nightkin/spectre/flesher_bark_generic_10.mp3",
+			"voices/nightkin/spectre/flesher_bark_generic_11.mp3",
+			"voices/nightkin/spectre/flesher_bark_generic_12.mp3",
+			"voices/nightkin/spectre/flesher_bark_generic_13.mp3",
+			"voices/nightkin/spectre/flesher_bark_generic_14.mp3",
+			"voices/nightkin/spectre/flesher_bark_generic_15.mp3",
+			"voices/nightkin/spectre/flesher_bark_generic_16.mp3",
+			"voices/nightkin/spectre/flesher_bark_generic_21.mp3",
+			"voices/nightkin/spectre/flesher_bark_generic_22.mp3",
+			"voices/nightkin/spectre/flesher_bark_generic_23.mp3",
+			"voices/nightkin/spectre/flesher_bark_generic_25.mp3",
+			"voices/nightkin/spectre/flesher_bark_generic_28.mp3",
+			"voices/nightkin/spectre/flesher_bark_generic_29.mp3",
+			"voices/nightkin/spectre/flesher_bark_generic_30.mp3",
+			"voices/nightkin/spectre/flesher_bark_generic_30.mp3",
+			"voices/nightkin/spectre/flesher_bark_generic_32.mp3",
+			"voices/nightkin/spectre/flesher_bark_generic_33.mp3",
+			"voices/nightkin/spectre/flesher_bark_generic_34.mp3"
+		}
+
+		self.SoundTbl_Alert = {
+			"voices/nightkin/spectre/flesher_see_shriek_01.mp3",
+			"voices/nightkin/spectre/flesher_see_shriek_02.mp3",
+			"voices/nightkin/spectre/flesher_see_shriek_03.mp3",
+			"voices/nightkin/spectre/flesher_see_shriek_04.mp3",
+			"voices/nightkin/spectre/flesher_see_shriek_05.mp3",
+			"voices/nightkin/spectre/flesher_see_shriek_06.mp3",
+			"voices/nightkin/spectre/flesher_see_shriek_07.mp3",
+			"voices/nightkin/spectre/flesher_see_shriek_08.mp3"
+		}
+
+		self.SoundTbl_CombatIdle = {
+			"voices/nightkin/spectre/flesher_searching_01.mp3",
+			"voices/nightkin/spectre/flesher_searching_02.mp3",
+			"voices/nightkin/spectre/flesher_searching_03.mp3",
+			"voices/nightkin/spectre/flesher_searching_04.mp3",
+			"voices/nightkin/spectre/flesher_searching_05.mp3",
+			"voices/nightkin/spectre/flesher_searching_06.mp3",
+			"voices/nightkin/spectre/flesher_searching_07.mp3",
+			"voices/nightkin/spectre/flesher_searching_08.mp3",
+			"voices/nightkin/spectre/flesher_searching_09.mp3",
+			"voices/nightkin/spectre/flesher_searching_10.mp3",
+			"voices/nightkin/spectre/flesher_searching_11.mp3"
+		}
+
+		self.SoundTbl_BeforeMeleeAttack = {
+			"voices/nightkin/spectre/flesher_see_shriek_01.mp3",
+			"voices/nightkin/spectre/flesher_see_shriek_02.mp3",
+			"voices/nightkin/spectre/flesher_see_shriek_03.mp3",
+			"voices/nightkin/spectre/flesher_see_shriek_04.mp3",
+			"voices/nightkin/spectre/flesher_see_shriek_05.mp3",
+			"voices/nightkin/spectre/flesher_see_shriek_06.mp3",
+			"voices/nightkin/spectre/flesher_see_shriek_07.mp3",
+			"voices/nightkin/spectre/flesher_see_shriek_08.mp3"
+		}
+
+		self.SoundTbl_Pain = {
+			"voices/nightkin/spectre/flesher_bark_generic_17.mp3",
+			"voices/nightkin/spectre/flesher_bark_generic_18.mp3",
+			"voices/nightkin/spectre/flesher_bark_generic_19.mp3",
+			"voices/nightkin/spectre/flesher_bark_generic_26.mp3",
+			"voices/nightkin/spectre/flesher_bark_generic_27.mp3"
+		}
+
+    	self.SoundTbl_Death = {
+			"voices/nightkin/spectre/flesher_bark_generic_20.mp3",
+			"voices/nightkin/spectre/flesher_bark_generic_24.mp3"
+			
+		}
+		
 	elseif self:GetClass() == "npc_vj_totu_weaponized_carcass" or self:GetClass() == "npc_vj_totu_weaponized_carcass_torso" then
 	
 		self.SoundTbl_Idle = {
@@ -2593,9 +2675,9 @@ function ENT:CustomOnAcceptInput(key,activator,caller,data)
 					door:GetSkin() == 13
 				then
 					if self.ToTU_BigZombie or self.ToTU_GiantZombie then
-						VJ_EmitSound(door,"fx/doorhit/wood_heavy_"..math.random(1,3)..".mp3",100,100)
+						VJ_EmitSound(door,"fx/doorhit/wood_heavy_"..math.random(1,3)..".mp3",75,100)
 					else
-						VJ_EmitSound(door,"fx/doorhit/wood_weak_"..math.random(1,3)..".mp3",100,100)
+						VJ_EmitSound(door,"fx/doorhit/wood_weak_"..math.random(1,3)..".mp3",75,100)
 					end					
 				elseif
 					door:GetSkin() == 4 or
@@ -2608,9 +2690,9 @@ function ENT:CustomOnAcceptInput(key,activator,caller,data)
 				then
 					VJ_EmitSound(door,"fx/doorhit/metal_heavy_"..math.random(1,3)..".mp3",100,100)
 					if self.ToTU_BigZombie or self.ToTU_GiantZombie then
-						VJ_EmitSound(door,"fx/doorhit/train_wagon_heavy_"..math.random(1,4)..".mp3",100,100)
+						VJ_EmitSound(door,"fx/doorhit/train_wagon_heavy_"..math.random(1,4)..".mp3",75,100)
 					else
-						VJ_EmitSound(door,"fx/doorhit/train_wagon_weak_"..math.random(1,3)..".mp3",100,100)
+						VJ_EmitSound(door,"fx/doorhit/train_wagon_weak_"..math.random(1,3)..".mp3",75,100)
 					end
 				end
 			elseif
@@ -2625,9 +2707,9 @@ function ENT:CustomOnAcceptInput(key,activator,caller,data)
 				door:GetModel() == "models/props_downtown/door_interior_112_01.mdl"
 			then
 				if self.ToTU_BigZombie or self.ToTU_GiantZombie then
-					VJ_EmitSound(door,"fx/doorhit/wood_heavy_"..math.random(1,3)..".mp3",100,100)
+					VJ_EmitSound(door,"fx/doorhit/wood_heavy_"..math.random(1,3)..".mp3",75,100)
 				else
-					VJ_EmitSound(door,"fx/doorhit/wood_weak_"..math.random(1,3)..".mp3",100,100)
+					VJ_EmitSound(door,"fx/doorhit/wood_weak_"..math.random(1,3)..".mp3",75,100)
 				end
 			elseif 
 				door:GetModel() == "models/props_c17/door01_left.mdl" or
@@ -2662,53 +2744,62 @@ function ENT:CustomOnAcceptInput(key,activator,caller,data)
 					door:GetModel() == "models/props_doors/doormainmetalwindowsmall01.mdl" or
 					door:GetModel() == "models/props_downtown/metal_door_112.mdl"
 				then
-					VJ_EmitSound(door,"fx/doorhit/metal_heavy_"..math.random(1,3)..".mp3",100,100)
+					VJ_EmitSound(door,"fx/doorhit/metal_heavy_"..math.random(1,3)..".mp3",65,100)
 					if self.ToTU_BigZombie or self.ToTU_GiantZombie then
-						VJ_EmitSound(door,"fx/doorhit/train_wagon_heavy_"..math.random(1,4)..".mp3",100,100)
+						VJ_EmitSound(door,"fx/doorhit/train_wagon_heavy_"..math.random(1,4)..".mp3",70,100)
+						VJ_EmitSound(door,"fx/doorhit/train_wagon_heavy_"..math.random(1,4)..".mp3",65,100)
+						VJ_EmitSound(door,"fx/doorhit/train_wagon_heavy_"..math.random(1,4)..".mp3",65,100)
+						VJ_EmitSound(door,"fx/doorhit/train_wagon_heavy_"..math.random(1,4)..".mp3",65,100)
 					else
-						VJ_EmitSound(door,"fx/doorhit/train_wagon_weak_"..math.random(1,3)..".mp3",100,100)
+						VJ_EmitSound(door,"fx/doorhit/train_wagon_weak_"..math.random(1,3)..".mp3",65,100)
+						VJ_EmitSound(door,"fx/doorhit/train_wagon_weak_"..math.random(1,3)..".mp3",65,100)
 					end
 				end
 			elseif 
 				door:GetModel() == "models/props_lab/elevatordoor.mdl" or
 				door:GetModel() == "models/props_mining/elevator01_cagedoor.mdl"
 			then
-				VJ_EmitSound(door,"fx/doorhit/wire_heavy_"..math.random(1,3)..".mp3",100,100)
-				VJ_EmitSound(door,"fx/doorhit/grid_metal_heavy_"..math.random(1,4)..".mp3",100,100)
+				VJ_EmitSound(door,"fx/doorhit/wire_heavy_"..math.random(1,3)..".mp3",65,100)
+				VJ_EmitSound(door,"fx/doorhit/grid_metal_heavy_"..math.random(1,4)..".mp3",65,100)
 			elseif 
 				door:GetModel() == "models/props_mining/techgate01.mdl" or
 				door:GetModel() == "models/props_doors/checkpoint_door_01.mdl" or
 				door:GetModel() == "models/props_doors/checkpoint_door_-01.mdl" 
 			then
-				VJ_EmitSound(door,"fx/doorhit/grid_metal_heavy_"..math.random(1,4)..".mp3",100,100)
-				VJ_EmitSound(door,"fx/doorhit/metal_heavy_"..math.random(1,3)..".mp3",100,100)
+				VJ_EmitSound(door,"fx/doorhit/grid_metal_heavy_"..math.random(1,4)..".mp3",65,100)
+				VJ_EmitSound(door,"fx/doorhit/metal_heavy_"..math.random(1,3)..".mp3",65,100)
+				VJ_EmitSound(door,"fx/doorhit/metal_heavy_"..math.random(1,3)..".mp3",65,100)
 				if self.ToTU_BigZombie or self.ToTU_GiantZombie then
-					VJ_EmitSound(door,"fx/doorhit/train_wagon_heavy_"..math.random(1,4)..".mp3",100,100)
+					VJ_EmitSound(door,"fx/doorhit/train_wagon_heavy_"..math.random(1,4)..".mp3",65,100)
+					VJ_EmitSound(door,"fx/doorhit/train_wagon_heavy_"..math.random(1,4)..".mp3",65,100)
+					VJ_EmitSound(door,"fx/doorhit/train_wagon_heavy_"..math.random(1,4)..".mp3",65,100)
+					VJ_EmitSound(door,"fx/doorhit/train_wagon_heavy_"..math.random(1,4)..".mp3",65,100)
 				else
-					VJ_EmitSound(door,"fx/doorhit/train_wagon_weak_"..math.random(1,3)..".mp3",100,100)
+					VJ_EmitSound(door,"fx/doorhit/train_wagon_weak_"..math.random(1,3)..".mp3",65,100)
+					VJ_EmitSound(door,"fx/doorhit/train_wagon_weak_"..math.random(1,3)..".mp3",65,100)
 				end
 			elseif 
 				door:GetModel() == "models/props_doors/door_rotate_112.mdl"
 			then
 				if self.ToTU_BigZombie or self.ToTU_GiantZombie then
-					VJ_EmitSound(door,"physics/glass/glass_impact_hard"..math.random(1,3)..".wav",100,100)
-					VJ_EmitSound(door,"physics/glass/glass_bottle_impact_hard"..math.random(1,3)..".wav",100,100)
-					VJ_EmitSound(door,"physics/glass/glass_sheet_impact_hard"..math.random(1,3)..".wav",100,100)
+					VJ_EmitSound(door,"physics/glass/glass_impact_hard"..math.random(1,3)..".wav",65,100)
+					VJ_EmitSound(door,"physics/glass/glass_bottle_impact_hard"..math.random(1,3)..".wav",65,100)
+					VJ_EmitSound(door,"physics/glass/glass_sheet_impact_hard"..math.random(1,3)..".wav",65,100)
 				else
-					VJ_EmitSound(door,"physics/glass/glass_sheet_impact_hard"..math.random(1,3)..".wav",100,100)
+					VJ_EmitSound(door,"physics/glass/glass_sheet_impact_hard"..math.random(1,3)..".wav",65,100)
 				end
 			elseif door:GetModel() == "models/props_doors/doorglassmain01.mdl" or
 				door:GetModel() == 	"models/props_doors/door_sliding_112.mdl" or
 				door:GetModel() == 	"models/props_doors/doorglassmain01_small.mdl" 
 			then
-				VJ_EmitSound(door,"fx/doorhit/wire_heavy_"..math.random(1,3)..".mp3",100,100)
+				VJ_EmitSound(door,"fx/doorhit/wire_heavy_"..math.random(1,3)..".mp3",65,100)
 				if self.ToTU_BigZombie or self.ToTU_GiantZombie then
-					VJ_EmitSound(door,"fx/doorhit/train_wagon_heavy_"..math.random(1,4)..".mp3",100,100)
+					VJ_EmitSound(door,"fx/doorhit/train_wagon_heavy_"..math.random(1,4)..".mp3",65,100)
 				else
-					VJ_EmitSound(door,"fx/doorhit/train_wagon_weak_"..math.random(1,3)..".mp3",100,100)
+					VJ_EmitSound(door,"fx/doorhit/train_wagon_weak_"..math.random(1,3)..".mp3",65,100)
 				end
 			else
-				VJ_EmitSound(door,"physics/wood/wood_panel_impact_hard1.wav",75,100)
+				VJ_EmitSound(door,"physics/wood/wood_panel_impact_hard1.wav",65,100)
 			end
 
 			if 
@@ -3687,11 +3778,18 @@ function ENT:CustomOnAlert(ent)
 		self:VJ_ACT_PLAYACTIVITY(anim,true,false,false)
 	end
 
+	if self:GetClass() == "npc_vj_totu_nightkin_skitter" && self.ToTU_Nightkin_Skitter_PlayChangeStateAnim == 1 then
+		self:ToTU_Skitter_StartCrawling()
+		self.ToTU_Nightkin_Skitter_PlayChangeStateAnimT = CurTime() + (0.5)
+		local anim = {"vjseq_Stand_to_crouch"}
+		self:VJ_ACT_PLAYACTIVITY(anim,true,false,false)
+	end
+
 	if self.VJ_IsBeingControlled or self.LNR_Crippled or self.ToTU_Weaponized_IsHL2Zomb then return end
 
 	self.ToTU_NextDodgeT = CurTime() + math.random(5,10)
 
-	if self.LNR_Infected then
+	if self.LNR_Infected && self:GetClass() != "npc_vj_totu_nightkin_spectre" then
 
 		if self:GetClass() == "npc_vj_totu_milzomb_ghost" then
 
@@ -5052,6 +5150,8 @@ function ENT:CustomOnDeath_AfterCorpseSpawned(dmginfo,hitgroup,GetCorpse)
 			RevivedSquall:SetModel(GetCorpse:GetModel())
 			RevivedSquall:SetSkin(GetCorpse:GetSkin())
 			RevivedSquall:SetBodygroup(1,GetCorpse:GetBodygroup(1))
+			RevivedSquall:SetBodygroup(2,GetCorpse:GetBodygroup(2))
+			RevivedSquall:SetBodygroup(3,GetCorpse:GetBodygroup(3))
 
 			if math.random(1,100) == 1 && GetConVar("VJ_ToTU_General_EasterEggs"):GetInt() == 1 then
 				VJ_EmitSound(RevivedSquall,"player/survivor/voice/biker/gettingrevived14.wav",80,100)
@@ -5090,6 +5190,38 @@ function ENT:CustomOnDeath_AfterCorpseSpawned(dmginfo,hitgroup,GetCorpse)
 		end end)
 
     end
+
+	if self:GetClass() == "npc_vj_totu_nightkin_spitballer" && IsValid(GetCorpse) then
+
+		local LightGlow = ents.Create("light_dynamic")
+		LightGlow:SetKeyValue("brightness", "10")
+		LightGlow:SetKeyValue("distance", "30")
+		LightGlow:SetLocalPos(GetCorpse:GetPos() +GetCorpse:OBBCenter())
+		LightGlow:SetLocalAngles(GetCorpse:GetAngles())
+		LightGlow:Fire("Color", "93 0 255 255")
+		LightGlow:SetParent(GetCorpse)
+		LightGlow:Spawn()
+		LightGlow:Activate()
+		LightGlow:Fire("SetParentAttachment","legs_gib")
+		LightGlow:Fire("TurnOn", "", 0)
+		GetCorpse:DeleteOnRemove(LightGlow)
+		GetCorpse.LightGlow = LightGlow
+
+		local LightGlow = ents.Create("light_dynamic")
+		LightGlow:SetKeyValue("brightness", "5")
+		LightGlow:SetKeyValue("distance", "30")
+		LightGlow:SetLocalPos(GetCorpse:GetPos() +GetCorpse:OBBCenter())
+		LightGlow:SetLocalAngles(GetCorpse:GetAngles())
+		LightGlow:Fire("Color", "93 0 255 255")
+		LightGlow:SetParent(GetCorpse)
+		LightGlow:Spawn()
+		LightGlow:Activate()
+		LightGlow:Fire("SetParentAttachment","chest")
+		LightGlow:Fire("TurnOn", "", 0)
+		GetCorpse:DeleteOnRemove(LightGlow)
+		GetCorpse.LightGlow = LightGlow
+
+	end
 
 	if self.ToTU_Weaponized_Carcass_Exploder == true then
 

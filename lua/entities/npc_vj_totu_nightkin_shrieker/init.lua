@@ -8,69 +8,71 @@ include('shared.lua')
 function ENT:Zombie_Difficulty()
 
 	if GetConVar("VJ_LNR_Difficulty"):GetInt() == 1 then
-	
+
 		self.StartHealth = 50
 		self.MeleeAttackDamage = math.Rand(5,10)
-		
+
 	elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 2 then
-	
+
 		self.StartHealth = 100
 		self.MeleeAttackDamage = math.Rand(10,15)
-		
+
 	elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 3 then
-	
+
 		self.StartHealth = 150
 		self.MeleeAttackDamage = math.Rand(15,20)
-		
+
 	elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 4 then
-	
+
 		self.StartHealth = 200
 		self.MeleeAttackDamage = math.Rand(20,25)
-		
+
 	elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 5 then
-	
+
 		self.StartHealth = 250
 		self.MeleeAttackDamage = math.Rand(25,30)
-		
+
 	end
-			
-        self:SetHealth(self.StartHealth)	
-		
-		if GetConVar("VJ_ToTU_General_LegHealthScalesWithDifficulty"):GetInt() == 1 then
-		
-			if GetConVar("VJ_LNR_Difficulty"):GetInt() == 1 then
-			
-				self.LNR_LegHP = 10
-				
-			elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 2 then
-			
-				self.LNR_LegHP = 25
-				
-			elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 3 then
-			
-				self.LNR_LegHP = 40
-				
-			elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 4 then
-			
-				self.LNR_LegHP = 55
-				
-			elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 5 then
-			
-				self.LNR_LegHP = 60
-				
-			end
-			
+
+	self:SetHealth(self.StartHealth)	
+
+	if GetConVar("VJ_ToTU_General_LegHealthScalesWithDifficulty"):GetInt() == 1 then
+
+		if GetConVar("VJ_LNR_Difficulty"):GetInt() == 1 then
+
+			self.LNR_LegHP = 10
+
+		elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 2 then
+
+			self.LNR_LegHP = 20
+
+		elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 3 then
+
+			self.LNR_LegHP = 30
+
+		elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 4 then
+
+			self.LNR_LegHP = 40
+
+		elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 5 then
+
+			self.LNR_LegHP = 50
+
 		end
+
+	end
+
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:Zombie_CustomOnMeleeAttack_BeforeStartTimer()
 
-	if self.ToTU_Nightkin_Shrieker_CanShriek then
+	if self.ToTU_Nightkin_Shrieker_CanShriek && !self.LNR_Crippled then
+
 		self.AnimTbl_MeleeAttack = {"vjseq_nz_sonic_attack_1"}
 		self.NextMeleeAttackTime = 5
 		VJ_EmitSound(self,{"voices/nightkin/shrieker/helpmeambiencebutstereo.mp3"},125,100)
 		VJ_EmitSound(self,"voices/nightkin/shrieker/helpme"..math.random(1,2)..".mp3",90,100)
-		
+
 		timer.Simple(5,function() if IsValid(self) && !self.Dead then
 			self.MeleeAttackDistance = 40
 			self.NextMeleeAttackTime = 0
@@ -78,6 +80,7 @@ function ENT:Zombie_CustomOnMeleeAttack_BeforeStartTimer()
 			self.ToTU_Nightkin_Shrieker_ShriekCoolDownT = CurTime() + math.random(5,10)
 			self.ToTU_Nightkin_Shrieker_CanSpawnHelp = false
 		end end)
+
 	end
 
 end
@@ -85,10 +88,13 @@ end
 function ENT:Zombie_CustomOnThink_AIEnabled()
 
 	if self.MeleeAttacking && self.ToTU_Nightkin_Shrieker_CanShriek then
-		if self.ToTU_Nightkin_Shrieker_ShriekRingT < CurTime() && IsValid(self) && !self.Dead then 
+
+		if self.ToTU_Nightkin_Shrieker_ShriekRingT < CurTime() && IsValid(self) && !self.Dead then
+
 			effects.BeamRingPoint(self:GetPos(), 0.3, 2, 100, 15, 0, Color(255, 255, 255), {material="sprites/physbeama", framerate=20})
 			effects.BeamRingPoint(self:GetPos(), 0.3, 2, 300, 10, 0, Color(255, 255, 255), {material="sprites/physbeama", framerate=20})
 			effects.BeamRingPoint(self:GetPos(), 0.3, 2, 500, 5, 0, Color(255, 255, 255), {material="sprites/physbeama", framerate=20})
+
 			local effectData = EffectData()
 			effectData:SetOrigin(self:GetPos())
 			effectData:SetScale(500)
@@ -97,19 +103,28 @@ function ENT:Zombie_CustomOnThink_AIEnabled()
 			util.VJ_SphereDamage(self, self, pos, 50, 5, DMG_SONIC, true, true, {DisableVisibilityCheck=true, Force=5})
 			util.VJ_SphereDamage(self, self, pos, 90, 5, DMG_SONIC, true, true, {DisableVisibilityCheck=true, Force=5})
 			util.VJ_SphereDamage(self, self, pos, 150, 5, DMG_SONIC, true, true, {DisableVisibilityCheck=true, Force=5})
+
 		end
+
 		self.ToTU_Nightkin_Shrieker_CanSpawnHelp = true
+
 	else
+
 		self.ToTU_Nightkin_Shrieker_CanSpawnHelp = false
+
 	end
-	
+
 	if self.ToTU_Nightkin_Shrieker_CanSpawnHelp && self.ToTU_Nightkin_Shrieker_SpawnCoolDownT < CurTime() then
+
 		self:ToTU_Nightkin_Shrieker_SummonHelp_Spawn()
+
 	end
-	
-	if self.ToTU_Nightkin_Shrieker_ShriekCoolDownT < CurTime() && !self.ToTU_Nightkin_Shrieker_CanShriek then
+
+	if self.ToTU_Nightkin_Shrieker_ShriekCoolDownT < CurTime() && !self.ToTU_Nightkin_Shrieker_CanShriek && !self.LNR_Crippled then
+
 		self.ToTU_Nightkin_Shrieker_CanShriek = true
 		self.MeleeAttackDistance = 10000
+
 	end
 
 end
@@ -151,6 +166,7 @@ function ENT:ToTU_Nightkin_Shrieker_SummonHelp_Spawn()
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:ToTU_Nightkin_Shrieker_SummonHelp()
+
 	local randnest = math.random(1,100)
 	if randnest == 1 then
 		self.KinT = "npc_vj_totu_nightkin_shrieker"
@@ -167,6 +183,7 @@ function ENT:ToTU_Nightkin_Shrieker_SummonHelp()
 	else
 		self.KinT = "npc_vj_totu_nightkin_scragg"
 	end
+
 	local tr = util.TraceLine({
 		start = self:GetPos(),
 		endpos = self:GetPos() + self:GetForward() * math.Rand(-700, -400) + self:GetRight() * math.Rand(-700, 700) + self:GetUp() * 60,

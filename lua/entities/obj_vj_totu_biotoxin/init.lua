@@ -9,6 +9,8 @@ ENT.Model = {"models/spitball_small.mdl"}
 ENT.RemoveOnHit = false
 ENT.DecalTbl_DeathDecals = {"VJ_Blood_Oil"}
 -- ENT.SoundTbl_Idle = {"vj_acid/acid_idle1.wav"}
+ENT.LNR_VirusInfection = true
+ENT.LNR_Infected = true
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:CustomPhysicsObjectOnInitialize(phys)
 	phys:Wake()

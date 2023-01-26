@@ -38,16 +38,24 @@ function ENT:Zombie_Difficulty()
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:RangeAttackCode_GetShootPos(projectile)
-	return (self:GetEnemy():GetPos() - self:LocalToWorld(Vector(80,0,0)))*2.5 + self:GetUp()*120
 	
+	if self:GetSequence() == self:LookupSequence("ThrowWarning") then
+	return (self:GetEnemy():GetPos() - self:LocalToWorld(Vector(80,0,0)))*2.5 + self:GetUp()*120
+	end
+	if self:GetSequence() == self:LookupSequence("releasecrab") then
+	return (self:GetEnemy():GetPos() - self:LocalToWorld(Vector(math.random(-200,100),math.random(50,-50),math.random(-100,100)))) + self:GetUp()*120
+	end
+
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:CustomRangeAttackCode_AfterProjectileSpawn(projectile)
+	if GetConVar("VJ_ToTU_Weaponized_Cyst_HurtOnRanged"):GetInt() == 1 then
 	local d = DamageInfo()
 	d:SetDamage(math.random(25,30))
 	d:SetAttacker(self)
 	d:SetDamageType(DMG_GENERIC) 
-	self:TakeDamageInfo(d)	
+	self:TakeDamageInfo(d)
+	end
 end
 /*-----------------------------------------------
 	*** Copyright (c) 2012-2019 by DrVrej, All rights reserved. ***

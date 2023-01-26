@@ -10,7 +10,7 @@ ENT.DecalTbl_DeathDecals = {"VJ_Blood_Red"}
 ENT.SoundTbl_Idle = {"vj_acid/acid_idle1.wav"}
 ENT.SoundTbl_OnCollide = {"vj_acid/alien_acid.wav"}
 ENT.DoesRadiusDamage = true 
-ENT.RadiusDamageRadius = 45
+ENT.RadiusDamageRadius = 75
 ENT.RadiusDamageUseRealisticRadius = true
 ENT.RadiusDamageType = DMG_ACID
 ---------------------------------------------------------------------------------------------------------------------------------------------
@@ -54,6 +54,7 @@ function ENT:DeathEffects(data,phys)
 			effectData:SetOrigin(self:GetPos())
 			effectData:SetScale(1)
 			util.Effect("BloodImpact", effectData)
+	ParticleEffectAttach("blood_impact_red_01", PATTACH_ABSORIGIN_FOLLOW, self, 0)
 	-- ParticleEffect("antlion_gib_02_floaters", data.HitPos, Angle(0,0,0), nil)
 	-- ParticleEffect("antlion_gib_01_juice", data.HitPos, Angle(0,0,0), nil)
 end
