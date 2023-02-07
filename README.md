@@ -15,6 +15,8 @@ NOTICE: You need the following addons for this to work properly!
 
 Half-Life 2: Episode 2 is also needed for some particle effects, but can be left out otherwise.
 
+Info on zombies : https://github.com/AnaverageBeanmann/Lethal-Necrotics-Terrors-of-The-Unexplored/wiki/==-Necrotic-Database-==
+
 Trello : https://trello.com/c/S8utZd7l/12-project-cephalgia
 
 Youtube : https://www.youtube.com/@anaveragebeanmann
