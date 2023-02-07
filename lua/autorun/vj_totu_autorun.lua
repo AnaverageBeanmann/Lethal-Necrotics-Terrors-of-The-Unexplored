@@ -276,10 +276,7 @@ end
 		* if enough zombies are near eachother, they'll start moving faster
 		
 		nightkin
-		- add sitting/lying behavior
 		- get sounds in
-		- decomp original model for skin stuff
-		* https://steamcommunity.com/sharedfiles/filedetails/?id=257870201&searchtext=feeder
 		
 		- add warks hla zomb anims for degenerate
 
@@ -313,22 +310,16 @@ end
 		- convar for failsafe doorsound options (sound used if it doesn't detect a doortype)
 		- fix up possession
 
-		update video
-			* doorbreak sound system
-			* new climbout animations
-			* new glide anims
-			* new moving death animations
-			* new l4d com standing attack anims
-			* new default voices
-			* ghillie burning and crawl updates
-			* bulk det new bomb stuff
-			* detonator bomb going off if you shoot it
-			* airman
+		find voice for spectre
+		- SOMA Flesher - could work
+		
+		make it so spectre corpse floats up and then vanishes
 
 		for nightkin showcase vid
 		- opening: show off a nightkin den with slow zooms
 			* show a squaller sitting alone at the end
-			* use "As the Wall Protecs, So Must We" as the music (Postal Brain Damaged soundtrack)
+			* use "As the Wall Protects, So Must We" as the music (Postal Brain Damaged soundtrack)
+		- show of giant zomb stomp move, hazmats, and resting behavior beforehand
 		- map: necro forest?
 		- weapons: urban coalition
 			* Glock 17
@@ -442,8 +433,8 @@ end
 
 		collapse LNR_Crippled and LNR_Crawler into 1 variable
 		- make sure all existing zombies don't have LNR_Crawler in them
-		re-add feeding behavior for nightkin?
 		add lying and sitting behavior
+		- update animations to include events
 		add more spawners
 		- standard (5)
 		- large (10)
@@ -455,6 +446,11 @@ end
 		do varients for walker only, infected only, and both
 		see if you can use spawners as a base for spawners
 		
+try giving exploder carcs/cysts the antlion_gib_02_gas or antlion_spit_02 or antlion_spit_03 particle
+
+add eating system using modified code from this
+https://github.com/VJ-HLR-Developers/Half-Life-Zombie-Edition-SNPCs/blob/master/lua/entities/npc_vj_hlrze_zombie/init.lua
+
 		april 1st
 		- upload bbbos to the workshop
 
@@ -464,6 +460,10 @@ end
 		- edit the og one so it's like "hey this is the old one check out the new one"
 		- continue working on it till it's all ready
 		- when it's finished unlist the old one
+		
+		add nmrih crawler biting anim for eating crawlers
+		
+		add these to milzombs? https://steamcommunity.com/sharedfiles/filedetails/?id=2926996172&searchtext=
 	*/
 
 	-- [] = done
@@ -504,6 +504,10 @@ end
 		VJ.AddNPC("Airman (Walker)","npc_vj_totu_milzomb_airman",vCat2)
 		-- []
 		VJ.AddNPC("Airman (Infected)","npc_vj_totu_milzomb_airman_infected",vCat2)
+		-- []
+		VJ.AddNPC("Hazmat (Walker)","npc_vj_totu_milzomb_hazmat",vCat2)
+		-- []
+		VJ.AddNPC("Hazmat (Infected)","npc_vj_totu_milzomb_hazmat_infected",vCat2)
 		-- []
 		
 	-- Nightkin
@@ -1009,6 +1013,7 @@ end
 	AddConvars["VJ_ToTU_MilZ_Det_ExplosionSetup"] = 0
 	AddConvars["VJ_ToTU_General_DefaultVoices_AltInfected"] = 1
 	AddConvars["VJ_ToTU_General_DefaultVoices_AltWalker"] = 1
+	AddConvars["VJ_ToTU_General_RestingSystem"] = 1
 
 	-- AddConvars["VJ_ToTU_General_TF2Mode"] = 0
 	-- AddConvars["VJ_ToTU_Weaponized_Carcass_"] = 
@@ -1138,6 +1143,7 @@ end
 			VJ_ToTU_MilZ_Det_ExplosionSetup = "0",
 			VJ_ToTU_General_DefaultVoices_AltInfected = "1",
 			VJ_ToTU_General_DefaultVoices_AltWalker = "1",
+			VJ_ToTU_General_RestingSystem = "0",
 			-- VJ_ToTU_MilZ_Det_ = "",
 			
 			
@@ -1175,7 +1181,7 @@ end
 	
 	Panel:AddControl("Checkbox", {Label = "", Command = ""})
 	
-	Panel:AddControl("Slider", {Label = "", Command = "", Min = 0, Max = 100})
+	Panel:AddControl("Slider", {Label = "", Command = "", Min = 1, Max = 10000})
 
 	local example_combobox = {Options = {}, CVars = {}, Label = "", MenuButton = "0"}
 	example_combobox.Options["Default"] = {convar_name = 1}
@@ -1198,6 +1204,10 @@ end
 	Panel:AddControl("Checkbox", {Label = "Enable easter eggs?", Command = "VJ_ToTU_General_EasterEggs"})
 	
 	Panel:AddControl("Checkbox", {Label = "Disable the stumbling system?", Command = "VJ_ToTU_General_Stumbling_Disable"})
+	
+	Panel:AddControl("Checkbox", {Label = "Enable the resting system?", Command = "VJ_ToTU_General_RestingSystem"})
+	Panel:ControlHelp("If enabled, zombies can occasionally sit or lye down.")
+	Panel:ControlHelp("Disabled by default due to oddities that can occour.")
 	
 	Panel:AddControl("Checkbox", {Label = "Global digouts?", Command = "VJ_ToTU_Spawn_UniversalDig"})
 	Panel:ControlHelp("If enabled, zombies can do dig-out animations no matter what the ground type is.")
