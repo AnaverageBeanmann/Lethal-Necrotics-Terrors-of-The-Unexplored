@@ -34,14 +34,16 @@ function ENT:Zombie_CustomOnPreInitialize()
 		self.Model = {"models/totu/scragg.mdl"}
 	elseif self:GetClass() == "npc_vj_totu_nightkin_skitter" then
 		self.Model = {"models/totu/skitter.mdl"}
-	elseif self:GetClass() == "npc_vj_totu_nightkin_shrieker" or self:GetClass() == "npc_vj_totu_nightkin_spectre" then
-		self.Model = {"models/totu/screamer.mdl"}
+	elseif self:GetClass() == "npc_vj_totu_nightkin_shrieker" then
+		self.Model = {"models/totu/shrieker.mdl"}
 	elseif self:GetClass() == "npc_vj_totu_nightkin_squaller" then
 		self.Model = {"models/totu/squaller.mdl"}
 	elseif self:GetClass() == "npc_vj_totu_nightkin_spitballer" then
-		self.Model = {"models/totu/spitballer.mdl"}
+		self.Model = {"models/totu/scourge.mdl"}
 	elseif self:GetClass() == "npc_vj_totu_nightkin_scylla" then
 		self.Model = {"models/totu/scylla.mdl"}
+	elseif self:GetClass() == "npc_vj_totu_nightkin_spectre" then
+		self.Model = {"models/totu/spectre.mdl"}
 	end
 
 end
@@ -49,7 +51,7 @@ end
 function ENT:Zombie_CustomOnInitialize()
 
 	self:SetBodygroup(6,1)
-	self:SetSkin(math.random(0,1))
+	self:SetSkin(math.random(0,3))
 	self:SetBodygroup(1,math.random(0,1))
 	self:SetBodygroup(2,math.random(0,1))
 	self:SetBodygroup(3,math.random(0,1))
@@ -128,7 +130,7 @@ function ENT:Zombie_CustomOnInitialize()
 			self:DeleteOnRemove(IronWillLight2)
 
 			-- increase this time?
-			timer.Simple(12,function() if IsValid(self) then
+			timer.Simple(16,function() if IsValid(self) then
 				self.ToTU_Nightkin_Squaller_IronWillDamageResistance = false
 				IronWillLight1:Fire("Kill", "", 0.07)
 				IronWillLight2:Fire("Kill", "", 0.07)
@@ -212,6 +214,7 @@ function ENT:Zombie_CustomOnInitialize()
 
 	elseif self:GetClass() == "npc_vj_totu_nightkin_spectre" then
 
+		self:SetModelScale(1.13)
 		self:SetMaterial("models/shiny")
 		self:SetColor(Color(9,10,13,5))
 		-- self:SetColor(Color(174,199,255,29))
@@ -220,18 +223,29 @@ function ENT:Zombie_CustomOnInitialize()
 	self:SetBodygroup(2,0)
 		self:SetBodygroup(6,2)
 
-	self.IdleSoundLevel = 45
-	self.BeforeMeleeAttackSoundLevel = 45
-	self.AlertSoundLevel = 50
-	self.CombatIdleSoundLevel = 50
-	self.DeathSoundLevel = 50
-	self.PainSoundLevel = 50
+	self.IdleSoundLevel = 70
+	self.AlertSoundLevel = 75
+	self.CombatIdleSoundLevel = 75
 
     self:SetSolid(SOLID_NONE)
     self:AddFlags(FL_NOTARGET)
 	self.HasMeleeAttack = false
 	self.FootStepSoundLevel = 45
 		self.ToTU_Nightkin_Spectre_HideT = CurTime() + math.random(3,10)
+		
+		self.RangeAttackEntityToSpawn = "obj_vj_totu_spectreball"
+		self.RangeAttackAnimationFaceEnemy = true
+		self.AnimTbl_RangeAttack = {"vjseq_nz_sonic_attack_2"}
+		-- self.RangeDistance = 750 
+		self.RangeToMeleeDistance = 1 
+		self.RangeAttackAngleRadius = 100
+		self.TimeUntilRangeAttackProjectileRelease = 1
+		self.NextRangeAttackTime = math.random(15,20)
+		self.RangeUseAttachmentForPos = true 
+		self.RangeUseAttachmentForPosID = "chest"
+		self.RangeAttackPos_Forward = 20
+		self.RangeAttackPos_Up = 20
+		self.RangeAttackSoundLevel = 80
 	end
 
 end

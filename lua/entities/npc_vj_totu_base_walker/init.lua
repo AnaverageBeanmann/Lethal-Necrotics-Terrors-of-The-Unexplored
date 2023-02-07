@@ -16,6 +16,7 @@ ENT.VJC_Data = {
 ---------------------------------------------------------------------------------------------------------------------------------------------
 ENT.VJ_NPC_Class = {"CLASS_ZOMBIE"}
 ENT.AnimTbl_Run = {ACT_WALK}
+ENT.CanEat = true
 ---------------------------------------------------------------------------------------------------------------------------------------------
 ENT.CustomBlood_Particle = {"lnr_bullet_impact_01","lnr_bullet_impact_02","lnr_bullet_impact_03","lnr_bullet_impact_04"}
 ENT.CustomBlood_Decal = {"VJ_LNR_Blood_Red"}
@@ -88,6 +89,12 @@ ENT.ToTU_CanJumpT = 0
 ENT.ToTU_IsFreakOfNature = false
 ENT.ToTU_Digout_DelayVis = false
 ENT.ToTU_InstantDigout = false
+ENT.ToTU_NextRestT = 0
+ENT.ToTU_Resting = 0
+	-- 0 = Not Resting
+	-- 1 = Sitting
+	-- 2 = Lying
+ENT.ToTU_CanRest = false
 
 ENT.ToTU_NextDodgeT = 0
 ENT.ToTU_CanDodge = false
@@ -374,6 +381,12 @@ function ENT:CustomOnPreInitialize()
 
 	end
 
+	if GetConVar("VJ_ToTU_General_RestingSystem"):GetInt() == 1 then
+
+		self.ToTU_CanRest = true
+
+	end
+
 	self:Zombie_CustomOnPreInitialize()
 	self:Zombie_UpdateAlmanacStuff()
 
@@ -413,6 +426,7 @@ function ENT:CustomOnPreInitialize()
 		self:GetClass() == "npc_vj_totu_milzomb_ghillie" or
 		self:GetClass() == "npc_vj_totu_milzomb_airman_infected" or
 		self:GetClass() == "npc_vj_totu_fon_bulldozer" or
+		self:GetClass() == "npc_vj_totu_milzomb_hazmat_infected" or
 		self.ToTU_Nightkin_IsKin
 	then
 		self.AnimTbl_Walk = {ACT_RUN}
@@ -514,6 +528,8 @@ function ENT:CustomOnInitialize()
 		self:Zombie_Difficulty()
 
 	return end
+
+	self.ToTU_NextRestT = CurTime() + math.random(10,120)
 
 	if !self.LNR_Infected then
 		self.AnimTbl_Walk = {ACT_WALK_RELAXED}
@@ -1307,85 +1323,136 @@ function ENT:ZombieSounds()
 		
 	elseif self:GetClass() == "npc_vj_totu_nightkin_spectre" then
 	
-		self.SoundTbl_Idle = {
-			"voices/nightkin/spectre/flesher_bark_generic_01.mp3",
-			"voices/nightkin/spectre/flesher_bark_generic_02.mp3",
-			"voices/nightkin/spectre/flesher_bark_generic_03.mp3",
-			"voices/nightkin/spectre/flesher_bark_generic_04.mp3",
-			"voices/nightkin/spectre/flesher_bark_generic_05.mp3",
-			"voices/nightkin/spectre/flesher_bark_generic_06.mp3",
-			"voices/nightkin/spectre/flesher_bark_generic_07.mp3",
-			"voices/nightkin/spectre/flesher_bark_generic_08.mp3",
-			"voices/nightkin/spectre/flesher_bark_generic_09.mp3",
-			"voices/nightkin/spectre/flesher_bark_generic_10.mp3",
-			"voices/nightkin/spectre/flesher_bark_generic_11.mp3",
-			"voices/nightkin/spectre/flesher_bark_generic_12.mp3",
-			"voices/nightkin/spectre/flesher_bark_generic_13.mp3",
-			"voices/nightkin/spectre/flesher_bark_generic_14.mp3",
-			"voices/nightkin/spectre/flesher_bark_generic_15.mp3",
-			"voices/nightkin/spectre/flesher_bark_generic_16.mp3",
-			"voices/nightkin/spectre/flesher_bark_generic_21.mp3",
-			"voices/nightkin/spectre/flesher_bark_generic_22.mp3",
-			"voices/nightkin/spectre/flesher_bark_generic_23.mp3",
-			"voices/nightkin/spectre/flesher_bark_generic_25.mp3",
-			"voices/nightkin/spectre/flesher_bark_generic_28.mp3",
-			"voices/nightkin/spectre/flesher_bark_generic_29.mp3",
-			"voices/nightkin/spectre/flesher_bark_generic_30.mp3",
-			"voices/nightkin/spectre/flesher_bark_generic_30.mp3",
-			"voices/nightkin/spectre/flesher_bark_generic_32.mp3",
-			"voices/nightkin/spectre/flesher_bark_generic_33.mp3",
-			"voices/nightkin/spectre/flesher_bark_generic_34.mp3"
-		}
+		-- self.SoundTbl_Idle = {
+			-- "voices/nightkin/spectre/flesher_bark_generic_01.mp3",
+			-- "voices/nightkin/spectre/flesher_bark_generic_02.mp3",
+			-- "voices/nightkin/spectre/flesher_bark_generic_03.mp3",
+			-- "voices/nightkin/spectre/flesher_bark_generic_04.mp3",
+			-- "voices/nightkin/spectre/flesher_bark_generic_05.mp3",
+			-- "voices/nightkin/spectre/flesher_bark_generic_06.mp3",
+			-- "voices/nightkin/spectre/flesher_bark_generic_07.mp3",
+			-- "voices/nightkin/spectre/flesher_bark_generic_08.mp3",
+			-- "voices/nightkin/spectre/flesher_bark_generic_09.mp3",
+			-- "voices/nightkin/spectre/flesher_bark_generic_10.mp3",
+			-- "voices/nightkin/spectre/flesher_bark_generic_11.mp3",
+			-- "voices/nightkin/spectre/flesher_bark_generic_12.mp3",
+			-- "voices/nightkin/spectre/flesher_bark_generic_13.mp3",
+			-- "voices/nightkin/spectre/flesher_bark_generic_14.mp3",
+			-- "voices/nightkin/spectre/flesher_bark_generic_15.mp3",
+			-- "voices/nightkin/spectre/flesher_bark_generic_16.mp3",
+			-- "voices/nightkin/spectre/flesher_bark_generic_21.mp3",
+			-- "voices/nightkin/spectre/flesher_bark_generic_22.mp3",
+			-- "voices/nightkin/spectre/flesher_bark_generic_23.mp3",
+			-- "voices/nightkin/spectre/flesher_bark_generic_25.mp3",
+			-- "voices/nightkin/spectre/flesher_bark_generic_28.mp3",
+			-- "voices/nightkin/spectre/flesher_bark_generic_29.mp3",
+			-- "voices/nightkin/spectre/flesher_bark_generic_30.mp3",
+			-- "voices/nightkin/spectre/flesher_bark_generic_30.mp3",
+			-- "voices/nightkin/spectre/flesher_bark_generic_32.mp3",
+			-- "voices/nightkin/spectre/flesher_bark_generic_33.mp3",
+			-- "voices/nightkin/spectre/flesher_bark_generic_34.mp3"
+		-- }
 
-		self.SoundTbl_Alert = {
-			"voices/nightkin/spectre/flesher_see_shriek_01.mp3",
-			"voices/nightkin/spectre/flesher_see_shriek_02.mp3",
-			"voices/nightkin/spectre/flesher_see_shriek_03.mp3",
-			"voices/nightkin/spectre/flesher_see_shriek_04.mp3",
-			"voices/nightkin/spectre/flesher_see_shriek_05.mp3",
-			"voices/nightkin/spectre/flesher_see_shriek_06.mp3",
-			"voices/nightkin/spectre/flesher_see_shriek_07.mp3",
-			"voices/nightkin/spectre/flesher_see_shriek_08.mp3"
-		}
+		-- self.SoundTbl_Alert = {
+			-- "voices/nightkin/spectre/flesher_see_shriek_01.mp3",
+			-- "voices/nightkin/spectre/flesher_see_shriek_02.mp3",
+			-- "voices/nightkin/spectre/flesher_see_shriek_03.mp3",
+			-- "voices/nightkin/spectre/flesher_see_shriek_04.mp3",
+			-- "voices/nightkin/spectre/flesher_see_shriek_05.mp3",
+			-- "voices/nightkin/spectre/flesher_see_shriek_06.mp3",
+			-- "voices/nightkin/spectre/flesher_see_shriek_07.mp3",
+			-- "voices/nightkin/spectre/flesher_see_shriek_08.mp3"
+		-- }
 
-		self.SoundTbl_CombatIdle = {
-			"voices/nightkin/spectre/flesher_searching_01.mp3",
-			"voices/nightkin/spectre/flesher_searching_02.mp3",
-			"voices/nightkin/spectre/flesher_searching_03.mp3",
-			"voices/nightkin/spectre/flesher_searching_04.mp3",
-			"voices/nightkin/spectre/flesher_searching_05.mp3",
-			"voices/nightkin/spectre/flesher_searching_06.mp3",
-			"voices/nightkin/spectre/flesher_searching_07.mp3",
-			"voices/nightkin/spectre/flesher_searching_08.mp3",
-			"voices/nightkin/spectre/flesher_searching_09.mp3",
-			"voices/nightkin/spectre/flesher_searching_10.mp3",
-			"voices/nightkin/spectre/flesher_searching_11.mp3"
-		}
+		-- self.SoundTbl_CombatIdle = {
+			-- "voices/nightkin/spectre/flesher_searching_01.mp3",
+			-- "voices/nightkin/spectre/flesher_searching_02.mp3",
+			-- "voices/nightkin/spectre/flesher_searching_03.mp3",
+			-- "voices/nightkin/spectre/flesher_searching_04.mp3",
+			-- "voices/nightkin/spectre/flesher_searching_05.mp3",
+			-- "voices/nightkin/spectre/flesher_searching_06.mp3",
+			-- "voices/nightkin/spectre/flesher_searching_07.mp3",
+			-- "voices/nightkin/spectre/flesher_searching_08.mp3",
+			-- "voices/nightkin/spectre/flesher_searching_09.mp3",
+			-- "voices/nightkin/spectre/flesher_searching_10.mp3",
+			-- "voices/nightkin/spectre/flesher_searching_11.mp3"
+		-- }
 
-		self.SoundTbl_BeforeMeleeAttack = {
-			"voices/nightkin/spectre/flesher_see_shriek_01.mp3",
-			"voices/nightkin/spectre/flesher_see_shriek_02.mp3",
-			"voices/nightkin/spectre/flesher_see_shriek_03.mp3",
-			"voices/nightkin/spectre/flesher_see_shriek_04.mp3",
-			"voices/nightkin/spectre/flesher_see_shriek_05.mp3",
-			"voices/nightkin/spectre/flesher_see_shriek_06.mp3",
-			"voices/nightkin/spectre/flesher_see_shriek_07.mp3",
-			"voices/nightkin/spectre/flesher_see_shriek_08.mp3"
-		}
+		-- self.SoundTbl_BeforeMeleeAttack = {
+			-- "voices/nightkin/spectre/flesher_see_shriek_01.mp3",
+			-- "voices/nightkin/spectre/flesher_see_shriek_02.mp3",
+			-- "voices/nightkin/spectre/flesher_see_shriek_03.mp3",
+			-- "voices/nightkin/spectre/flesher_see_shriek_04.mp3",
+			-- "voices/nightkin/spectre/flesher_see_shriek_05.mp3",
+			-- "voices/nightkin/spectre/flesher_see_shriek_06.mp3",
+			-- "voices/nightkin/spectre/flesher_see_shriek_07.mp3",
+			-- "voices/nightkin/spectre/flesher_see_shriek_08.mp3"
+		-- }
 
-		self.SoundTbl_Pain = {
-			"voices/nightkin/spectre/flesher_bark_generic_17.mp3",
-			"voices/nightkin/spectre/flesher_bark_generic_18.mp3",
-			"voices/nightkin/spectre/flesher_bark_generic_19.mp3",
-			"voices/nightkin/spectre/flesher_bark_generic_26.mp3",
-			"voices/nightkin/spectre/flesher_bark_generic_27.mp3"
-		}
+		-- self.SoundTbl_Pain = {
+			-- "voices/nightkin/spectre/flesher_bark_generic_17.mp3",
+			-- "voices/nightkin/spectre/flesher_bark_generic_18.mp3",
+			-- "voices/nightkin/spectre/flesher_bark_generic_19.mp3",
+			-- "voices/nightkin/spectre/flesher_bark_generic_26.mp3",
+			-- "voices/nightkin/spectre/flesher_bark_generic_27.mp3"
+		-- }
 
-    	self.SoundTbl_Death = {
-			"voices/nightkin/spectre/flesher_bark_generic_20.mp3",
-			"voices/nightkin/spectre/flesher_bark_generic_24.mp3"
+    	-- self.SoundTbl_Death = {
+			-- "voices/nightkin/spectre/flesher_bark_generic_20.mp3",
+			-- "voices/nightkin/spectre/flesher_bark_generic_24.mp3"
 			
-		}
+		-- }
+			self.SoundTbl_Idle = {
+		"ambient/levels/citadel/strange_talk5.wav",
+		"ambient/levels/citadel/strange_talk6.wav",
+		"ambient/levels/citadel/strange_talk7.wav",
+		"ambient/levels/citadel/strange_talk8.wav",
+	}
+
+	self.SoundTbl_Alert = {
+		"ambient/levels/citadel/strange_talk1.wav",
+		"ambient/levels/citadel/strange_talk3.wav",
+		"ambient/levels/citadel/strange_talk9.wav",
+		"ambient/levels/streetwar/gunship_distant2.wav",
+	}
+
+	self.SoundTbl_CombatIdle = {
+		"ambient/levels/citadel/strange_talk10.wav",
+		"ambient/levels/citadel/strange_talk11.wav",
+		"ambient/levels/citadel/strange_talk4.wav",
+	}
+
+	self.SoundTbl_BeforeMeleeAttack = {
+		""
+	}
+
+	self.SoundTbl_BeforeRangeAttack = {
+		"voices/nightkin/spectre/flesher_see_shriek_01.mp3",
+		"voices/nightkin/spectre/flesher_see_shriek_02.mp3",
+		"voices/nightkin/spectre/flesher_see_shriek_03.mp3",
+		"voices/nightkin/spectre/flesher_see_shriek_04.mp3",
+		"voices/nightkin/spectre/flesher_see_shriek_05.mp3",
+		"voices/nightkin/spectre/flesher_see_shriek_06.mp3",
+		"voices/nightkin/spectre/flesher_see_shriek_07.mp3",
+		"voices/nightkin/spectre/flesher_see_shriek_08.mp3"
+	}
+
+	self.SoundTbl_RangeAttack = {
+		"ambient/levels/citadel/portal_beam_shoot1.wav",
+		"ambient/levels/citadel/portal_beam_shoot2.wav",
+		"ambient/levels/citadel/portal_beam_shoot3.wav",
+		"ambient/levels/citadel/portal_beam_shoot4.wav",
+		"ambient/levels/citadel/portal_beam_shoot5.wav",
+		"ambient/levels/citadel/portal_beam_shoot6.wav",
+	}
+
+	self.SoundTbl_Pain = {
+		""
+	}
+
+    self.SoundTbl_Death = {
+		""
+	}
 		
 	elseif self:GetClass() == "npc_vj_totu_weaponized_carcass" or self:GetClass() == "npc_vj_totu_weaponized_carcass_torso" then
 	
@@ -1433,46 +1500,95 @@ function ENT:ZombieSounds()
 		self.CombatIdleSoundLevel = 60
 		
 	elseif self:GetClass() == "npc_vj_totu_nightkin_scylla" then
+		-- self.SoundTbl_Idle = {
+		-- "voices/nightkin/scylla/idle_1.mp3",
+		-- "voices/nightkin/scylla/idle_2.mp3",
+		-- "voices/nightkin/scylla/idle_3.mp3",
+		-- "voices/nightkin/scylla/idle_4.mp3",
+		-- }
+			
+		-- self.SoundTbl_Alert = {
+		-- "voices/nightkin/scylla/long_scream_1.mp3",
+		-- "voices/nightkin/scylla/long_scream_2.mp3",
+		-- "voices/nightkin/scylla/long_scream_3.mp3",
+		-- "voices/nightkin/scylla/long_scream_4.mp3",
+		-- }
+		
+		-- self.SoundTbl_CombatIdle = {
+		-- "voices/nightkin/scylla/howl_1.mp3",
+		-- "voices/nightkin/scylla/howl_2.mp3",
+		-- "voices/nightkin/scylla/howl_3.mp3",
+		-- "voices/nightkin/scylla/howl_4.mp3",
+		-- }
+		
+		-- self.SoundTbl_BeforeMeleeAttack = {
+		-- "voices/nightkin/scylla/long_scream_1.mp3",
+		-- "voices/nightkin/scylla/long_scream_2.mp3",
+		-- "voices/nightkin/scylla/long_scream_3.mp3",
+		-- "voices/nightkin/scylla/long_scream_4.mp3",
+		-- }
+		
+		-- self.SoundTbl_Pain = {
+		-- "voices/nightkin/scylla/pain_1.mp3",
+		-- "voices/nightkin/scylla/pain_2.mp3",
+		-- "voices/nightkin/scylla/pain_3.mp3",
+		-- "voices/nightkin/scylla/pain_4.mp3",
+		-- "voices/nightkin/scylla/pain_5.mp3",
+		-- }
+		
+    	-- self.SoundTbl_Death = {
+		-- "voices/nightkin/scylla/death.mp3"
+		-- }
+		
 		self.SoundTbl_Idle = {
-		"voices/nightkin/scylla/idle_1.mp3",
-		"voices/nightkin/scylla/idle_2.mp3",
-		"voices/nightkin/scylla/idle_3.mp3",
-		"voices/nightkin/scylla/idle_4.mp3",
+		"monsters/suitor/amb_idle01.wav",
+		"monsters/suitor/amb_idle02.wav",
+		"monsters/suitor/amb_idle03.wav",
+		"monsters/suitor/amb_idle04.wav",
+		"monsters/suitor/amb_idle05.wav",
+		"monsters/suitor/amb_alert01.wav",
+		"monsters/suitor/amb_alert02.wav",
+		"monsters/suitor/amb_alert03.wav"
 		}
 			
 		self.SoundTbl_Alert = {
-		"voices/nightkin/scylla/long_scream_1.mp3",
-		"voices/nightkin/scylla/long_scream_2.mp3",
-		"voices/nightkin/scylla/long_scream_3.mp3",
-		"voices/nightkin/scylla/long_scream_4.mp3",
+		"monsters/suitor/enabled01.wav",
+		"monsters/suitor/enabled02.wav",
+		"monsters/suitor/enabled03.wav"
 		}
 		
 		self.SoundTbl_CombatIdle = {
-		"voices/nightkin/scylla/howl_1.mp3",
-		"voices/nightkin/scylla/howl_2.mp3",
-		"voices/nightkin/scylla/howl_3.mp3",
-		"voices/nightkin/scylla/howl_4.mp3",
+		"monsters/suitor/amb_idle_scratch01.wav",
+		"monsters/suitor/amb_idle_scratch02.wav",
+		"monsters/suitor/amb_idle_scratch03.wav",
+		"monsters/suitor/amb_idle_scratch04.wav"
 		}
 		
 		self.SoundTbl_BeforeMeleeAttack = {
-		"voices/nightkin/scylla/long_scream_1.mp3",
-		"voices/nightkin/scylla/long_scream_2.mp3",
-		"voices/nightkin/scylla/long_scream_3.mp3",
-		"voices/nightkin/scylla/long_scream_4.mp3",
+		"monsters/suitor/attack_claw01.wav",
+		"monsters/suitor/attack_claw02.wav",
+		"monsters/suitor/attack_launch01.wav",
+		"monsters/suitor/attack_launch02.wav"
 		}
-		
 		self.SoundTbl_Pain = {
-		"voices/nightkin/scylla/pain_1.mp3",
-		"voices/nightkin/scylla/pain_2.mp3",
-		"voices/nightkin/scylla/pain_3.mp3",
-		"voices/nightkin/scylla/pain_4.mp3",
-		"voices/nightkin/scylla/pain_5.mp3",
+		"monsters/suitor/notice01.wav",
+		"monsters/suitor/notice02.wav",
+		"monsters/suitor/notice03.wav",
+		"monsters/suitor/notice_long01.wav",
+		"monsters/suitor/notice_long02.wav"
 		}
 		
     	self.SoundTbl_Death = {
-		"voices/nightkin/scylla/death.mp3"
+		"monsters/suitor/amb_idle_whimp01.wav",
+		"monsters/suitor/amb_idle_whimp02.wav",
 		}
-		
+
+		self.IdleSoundPitch = VJ_Set(70, 60)
+		self.AlertSoundPitch = VJ_Set(80, 70)
+		self.CombatIdleSoundPitch = VJ_Set(70, 60)
+		self.BeforeMeleeAttackSoundPitch = VJ_Set(70, 60)
+		self.PainSoundPitch = VJ_Set(70, 60)
+		self.DeathSoundPitch = VJ_Set(70, 60)
 	elseif self:GetClass() == "npc_vj_totu_weaponized_cyst" then
 		self.SoundTbl_Idle = {
 		"zombies/coastline/whale/idle_1.mp3",
@@ -2472,7 +2588,8 @@ function ENT:CustomOnAcceptInput(key,activator,caller,data)
 			self.MilZ_IsMilZ &&
 			!self.MilZ_Det_IsDetonator &&
 			self.MilZ_Ghillie_PlayChangeStateAnim != 2 &&
-			!self.MilZ_Airman_IsAirman
+			!self.MilZ_Airman_IsAirman &&
+			!self.MilZ_Hazmat_IsHazmat
 		then
 
 			if
@@ -2570,6 +2687,18 @@ function ENT:CustomOnAcceptInput(key,activator,caller,data)
 		self:RangeAttackCode() 
 	end
 
+	if key == "attack_stomp" then
+	
+		local effectdata = EffectData()
+		effectdata:SetOrigin(self:GetPos())
+		effectdata:SetScale( 500 )
+		util.Effect( "ThumperDust", effectdata )
+		util.ScreenShake(self:GetPos(), self.WorldShakeOnMoveAmplitude, self.WorldShakeOnMoveFrequency, self.WorldShakeOnMoveDuration, self.WorldShakeOnMoveRadius)
+		util.VJ_SphereDamage(self, self, self:GetPos(), 190, math.Rand(10,15), DMG_VEHICLE, true, true, {Force=100})
+		VJ_EmitSound(self,"zombies/countryside/behemoth/step_"..math.random(1,4)..".mp3",75,100)
+
+	end
+
 	if key == "drop_weapon" then
 		self:DropTheFuckignWeaponGoddamn()
 	end
@@ -2582,7 +2711,7 @@ function ENT:CustomOnAcceptInput(key,activator,caller,data)
 
 		if self.MilZ_IsMilZ then
 
-			if !self.MilZ_Det_IsDetonator && !self.MilZ_Airman_IsAirman then
+			if !self.MilZ_Det_IsDetonator && !self.MilZ_Airman_IsAirman && !self.MilZ_Hazmat_IsHazmat then
 				VJ_EmitSound(self,"vj_lnrhl2/zombine/gear"..math.random(1,3)..".wav",self.FootStepSoundLevel,self:VJ_DecideSoundPitch(self.FootStepPitch.a,self.FootStepPitch.b))
 			end
 
@@ -3196,7 +3325,94 @@ if self.VJ_IsBeingControlled or GetConVar("VJ_ToTU_General_CanEat"):GetInt() == 
 end
 */
 	self:Zombie_CustomOnThink_AIEnabled()
+-- /*
+-- ENT.ToTU_NextRestT = 0
+-- ENT.ToTU_Resting = 0
+	-- 0 = Not Resting
+	-- 1 = Sitting
+	-- 2 = Lying
+	if !self.ToTU_Weaponized_IsHL2Zomb && !self.LNR_Crippled && !self.VJ_IsBeingControlled && self.ToTU_CanRest then
+		if
+			!self.Alerted &&
+			!IsValid(self:GetEnemy()) &&
+			!self:IsMoving() &&
+			CurTime() > self.ToTU_NextRestT &&
+			self.ToTU_Resting != 1 &&
+			self.ToTU_Resting != 2 &&
+			!self:IsBusy()
+		then
+			local sleept = math.Rand(15, 30) -- How long it should sleep
+			if math.random(1,2) == 1 then
+				self.ToTU_Resting = 1
+				self.AnimTbl_IdleStand = {ACT_BUSY_SIT_GROUND}
+				self:VJ_ACT_PLAYACTIVITY(ACT_BUSY_SIT_GROUND_ENTRY, true, false, false)
+			else
+				self.ToTU_Resting = 2
+				self.AnimTbl_IdleStand = {ACT_BUSY_SIT_CHAIR}
+				self:VJ_ACT_PLAYACTIVITY(ACT_HL2MP_ZOMBIE_SLUMP_RISE, true, false, false)
+			end
+			self.DisableWandering = true
+			self.CanTurnWhileStationary = false
+			self.TurningSpeed = 0
+			-- self:SetState(VJ_STATE_ONLY_ANIMATION, sleept)
 
+			timer.Simple(sleept, function() -- Reset after sleept seconds
+
+				if IsValid(self) && (self.ToTU_Resting == 1 or self.ToTU_Resting == 2)then
+					if math.random(1,2) == 1 then
+						if self.ToTU_Resting == 1 then
+							self:VJ_ACT_PLAYACTIVITY(ACT_GMOD_TAUNT_PERSISTENCE, true, false, false)
+							self.AnimTbl_IdleStand = {ACT_BUSY_SIT_CHAIR}
+							self.ToTU_Resting = 2
+						elseif self.ToTU_Resting == 2 then
+							self:VJ_ACT_PLAYACTIVITY(ACT_BUSY_SIT_CHAIR_ENTRY, true, false, false)
+							self.AnimTbl_IdleStand = {ACT_BUSY_SIT_GROUND}
+							self.ToTU_Resting = 1
+						end
+						local sleept2 = math.random(15,30)
+						timer.Simple(sleept2, function()
+							if IsValid(self) then
+								if self.ToTU_Resting == 1 then
+									self:VJ_ACT_PLAYACTIVITY(ACT_BUSY_SIT_GROUND_EXIT, true, false, false)
+								elseif self.ToTU_Resting == 2 then
+									self:VJ_ACT_PLAYACTIVITY(ACT_BUSY_QUEUE, true, false, false)
+								end
+								self.ToTU_Resting = 0
+								self.ToTU_NextRestT = CurTime() + math.Rand(30, 180)
+								if GetConVar("vj_npc_nowandering"):GetInt() != 1 then
+									self.DisableWandering = false
+								end
+								self.CanTurnWhileStationary = true
+								self.TurningSpeed = 15
+								self.AnimTbl_IdleStand = {ACT_IDLE}
+								if self.LNR_UsingRelaxedIdle == true then
+									self.AnimTbl_IdleStand = {ACT_IDLE_RELAXED}
+								end
+							end
+						end)
+					else
+						if self.ToTU_Resting == 1 then
+							self:VJ_ACT_PLAYACTIVITY(ACT_BUSY_SIT_GROUND_EXIT, true, false, false)
+						elseif self.ToTU_Resting == 2 then
+							self:VJ_ACT_PLAYACTIVITY(ACT_BUSY_QUEUE, true, false, false)
+						end
+						self.ToTU_Resting = 0
+						self.ToTU_NextRestT = CurTime() + math.Rand(30, 180)
+						if GetConVar("vj_npc_nowandering"):GetInt() != 1 then
+							self.DisableWandering = false
+						end
+						self.CanTurnWhileStationary = true
+						self.TurningSpeed = 15
+						self.AnimTbl_IdleStand = {ACT_IDLE}
+						if self.LNR_UsingRelaxedIdle == true then
+							self.AnimTbl_IdleStand = {ACT_IDLE_RELAXED}
+						end
+					end
+				end
+			end)
+		end
+	end
+-- */
 	if self.ToTU_CanDodge && !self.LNR_Crippled then
 
 		if
@@ -3329,6 +3545,46 @@ end
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:Zombie_CustomOnThink_AIEnabled()
+end
+---------------------------------------------------------------------------------------------------------------------------------------------
+function ENT:CustomOnEat(status, statusInfo)
+	if status == "CheckFood" then
+		return self:Health() != self:GetMaxHealth()
+	elseif status == "BeginEating" then
+		self:SetIdleAnimation({ACT_HL2MP_IDLE_CROUCH_ZOMBIE_01}, true)
+		local anim = {"vjseq_Stand_to_crouch"}
+		return
+			self:VJ_ACT_PLAYACTIVITY(anim,true,false,false)
+	elseif status == "Eat" then
+		-- VJ_EmitSound(self, "vj_hlr/hl1_npc/bullchicken/bc_bite"..math.random(1, 3)..".wav", 100) --more accurate to the mod - epicplayer
+		-- Health changes
+		local food = self.EatingData.Ent
+		local damage = 5
+		local foodHP = food:Health()
+		self:SetHealth(math.Clamp(self:Health() + ((damage > foodHP and foodHP) or damage), self:Health(), self:GetMaxHealth()))
+		food:SetHealth(foodHP - damage)
+		local bloodData = food.BloodData
+		if bloodData then
+			local bloodPos = food:GetPos() + food:OBBCenter()
+			local bloodParticle = VJ_PICK(bloodData.Particle)
+			if bloodParticle then
+				ParticleEffect(bloodParticle, bloodPos, self:GetAngles())
+			end
+			local bloodDecal = VJ_PICK(bloodData.Decal)
+			if bloodDecal then
+				-- local tr = util.TraceLine({start = bloodPos, endpos = bloodPos + vecZ50, filter = {food, self}})
+				-- util.Decal(bloodDecal, tr.HitPos + tr.HitNormal + Vector(math.random(-45, 45), math.random(-45, 45), 0), tr.HitPos - tr.HitNormal, food)
+			end
+		end
+		return 1
+	elseif status == "StopEating" then
+		if statusInfo != "Dead" && self.EatingData.AnimStatus != "None" then
+			local anim = {"vjseq_Crouch_to_stand"}				
+			return
+				self:VJ_ACT_PLAYACTIVITY(anim,true,false,false)
+		end
+	end
+	return 0
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:IsDirtGround(pos)
@@ -3481,30 +3737,40 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:RiseFromGround_Instant()
 
-	self:VJ_ACT_PLAYACTIVITY({
-		"vjseq_Climb120_00_InPlace",
-		"vjseq_Climb120_00a_InPlace",
-		"vjseq_Climb120_03_InPlace",
-		"vjseq_Climb120_03a_InPlace",
-		"vjseq_Climb120_04_InPlace",
-		"vjseq_Climb144_00_InPlace",
-		"vjseq_Climb144_00a_InPlace",
-		"vjseq_Climb144_01_InPlace",
-		"vjseq_Climb144_03_InPlace",
-		"vjseq_Climb144_03a_InPlace",
-		"vjseq_Climb144_04_InPlace",
-		"vjseq_Climb72_03_InPlace",
-		"vjseq_Climb72_04_InPlace",
-		"vjseq_Climb72_05_InPlace",
-		"vjseq_Climb72_06_InPlace",
-		"vjseq_Climb72_07_InPlace",
-		"vjseq_Climb96_00_InPlace",
-		"vjseq_Climb96_00a_InPlace",
-		"vjseq_Climb96_03_InPlace",
-		"vjseq_Climb96_03a_InPlace",
-		"vjseq_Climb96_04a_InPlace",
-		"vjseq_Climb96_05_InPlace"
-	},true,false,false)
+		if math.random(1,100) == 1 && GetConVar("VJ_ToTU_General_EasterEggs"):GetInt() == 1 then
+			self:VJ_ACT_PLAYACTIVITY({"vjseq_reanimated"},true,false,false)
+		else
+			if math.random(1,11) == 1 then
+				self:VJ_ACT_PLAYACTIVITY({"vjseq_nz_spawn_climbout_fast","vjseq_nz_spawn_jump"},true,false,false)
+			else
+				self:VJ_ACT_PLAYACTIVITY({
+					"vjseq_Climb120_00_InPlace",
+					"vjseq_Climb120_00a_InPlace",
+					"vjseq_Climb120_03_InPlace",
+					"vjseq_Climb120_03a_InPlace",
+					"vjseq_Climb120_04_InPlace",
+					"vjseq_Climb144_00_InPlace",
+					"vjseq_Climb144_00a_InPlace",
+					"vjseq_Climb144_01_InPlace",
+					"vjseq_Climb144_03_InPlace",
+					"vjseq_Climb144_03a_InPlace",
+					"vjseq_Climb144_04_InPlace",
+					"vjseq_Climb72_03_InPlace",
+					"vjseq_Climb72_04_InPlace",
+					"vjseq_Climb72_05_InPlace",
+					"vjseq_Climb72_06_InPlace",
+					"vjseq_Climb72_07_InPlace",
+					"vjseq_Climb96_00_InPlace",
+					"vjseq_Climb96_00a_InPlace",
+					"vjseq_Climb96_03_InPlace",
+					"vjseq_Climb96_03a_InPlace",
+					"vjseq_Climb96_04a_InPlace",
+					"vjseq_Climb96_05_InPlace"
+					},true,false,false)
+				self.ToTU_Digout_DelayVis = true
+				self.CanTurnWhileStationary = false
+			end
+		end
 	VJ_EmitSound(self,"vj_lnrhl2/shared/dirtintro"..math.random(1,2)..".wav",75,100)
 	ParticleEffect("advisor_plat_break",self:GetPos(),self:GetAngles(),self)
 	ParticleEffect("advisor_plat_break",self:GetPos()+self:GetUp()*50,self:GetAngles(),self)
@@ -3757,6 +4023,28 @@ function ENT:Controller_Initialize(ply)
 
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
+function ENT:CustomOnInvestigate(ent)
+
+	if self.ToTU_Resting != 0 then
+		if self.ToTU_Resting == 1 then
+			self:VJ_ACT_PLAYACTIVITY(ACT_BUSY_SIT_CHAIR_EXIT, true, false, false)
+		elseif self.ToTU_Resting == 2 then
+			self:VJ_ACT_PLAYACTIVITY(ACT_BUSY_STAND, true, false, false)
+		end
+		self.ToTU_Resting = 0
+		self.ToTU_NextRestT = CurTime() + math.Rand(30, 180)
+		if GetConVar("vj_npc_nowandering"):GetInt() != 1 then
+			self.DisableWandering = false
+		end
+		self.CanTurnWhileStationary = true
+		self.TurningSpeed = 15
+		self.AnimTbl_IdleStand = {ACT_IDLE}
+		if self.LNR_UsingRelaxedIdle == true then
+			self.AnimTbl_IdleStand = {ACT_IDLE_RELAXED}
+		end
+	end
+end
+---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:CustomOnAlert(ent)
 
 	if self:GetClass() == "npc_vj_totu_weaponized_carcass" or self:GetClass() == "npc_vj_totu_weaponized_carcass_torso" then
@@ -3770,6 +4058,26 @@ function ENT:CustomOnAlert(ent)
 		self.ToTU_Weaponized_Carcass_NextZombineRunT = CurTime() + math.random(7,15)
 
 	end
+
+	if self.ToTU_Resting != 0 then
+		if self.ToTU_Resting == 1 then
+			self:VJ_ACT_PLAYACTIVITY(ACT_BUSY_SIT_CHAIR_EXIT, true, false, false)
+		elseif self.ToTU_Resting == 2 then
+			self:VJ_ACT_PLAYACTIVITY(ACT_BUSY_STAND, true, false, false)
+		end
+		self.ToTU_Resting = 0
+		self.ToTU_NextRestT = CurTime() + math.Rand(30, 180)
+		if GetConVar("vj_npc_nowandering"):GetInt() != 1 then
+			self.DisableWandering = false
+		end
+		self.CanTurnWhileStationary = true
+		self.TurningSpeed = 15
+		self.AnimTbl_IdleStand = {ACT_IDLE}
+		if self.LNR_UsingRelaxedIdle == true then
+			self.AnimTbl_IdleStand = {ACT_IDLE_RELAXED}
+		end
+	end
+
 
 	if self.MiLZ_Ghillie_IsGhillie && self.MilZ_Ghillie_PlayChangeStateAnim == 1 then
 		self:ToTU_Ghillie_StartCrawling()
@@ -4111,113 +4419,135 @@ function ENT:CustomOnMeleeAttack_BeforeStartTimer(seed)
 
 			else
 			
-				if self.LNR_Infected then
+			if self.LNR_Infected then
 
-					self.AnimTbl_MeleeAttack = {
+				self.AnimTbl_MeleeAttack = {
 					"vjseq_CI_Standing_Melee_1",
 					"vjseq_CI_Standing_Melee_2",
 					"vjseq_CI_Standing_Melee_3",
 					"vjseq_CI_Standing_Melee_4"
-					}
+				}
 
-				else
+			else
 
-					self.AnimTbl_MeleeAttack = {
-						"vjseq_nz_attack_stand_ad_1",
-						"vjseq_nz_attack_stand_ad_2-2",
-						"vjseq_nz_attack_stand_ad_2-3",
-						"vjseq_nz_attack_stand_ad_2-4",
-						"vjseq_nz_attack_stand_au_1",
-						"vjseq_nz_attack_stand_au_2-2",
-						"vjseq_nz_attack_stand_au_2-3",
-						"vjseq_nz_attack_stand_au_2-4"
-					}
+				self.AnimTbl_MeleeAttack = {
+					"vjseq_nz_attack_stand_ad_1",
+					"vjseq_nz_attack_stand_ad_2-2",
+					"vjseq_nz_attack_stand_ad_2-3",
+					"vjseq_nz_attack_stand_ad_2-4",
+					"vjseq_nz_attack_stand_au_1",
+					"vjseq_nz_attack_stand_au_2-2",
+					"vjseq_nz_attack_stand_au_2-3",
+					"vjseq_nz_attack_stand_au_2-4"
+				}
 
-				end
+			end
 
+			if self.ToTU_GiantZombie && math.random(1,3) == 1 then -- your fat ass slows you down
+				self.AnimTbl_MeleeAttack = {"vjseq_attack_jumpstomp"}
 			end
 
 		end
 
-		-- When Walking --
-		if self:IsMoving() && !self.LNR_Crippled && !self.LNR_Biter && self.ToTU_CanUseMovingAttacks then
+	end
 
-			self.MeleeAttackAnimationAllowOtherTasks = true
+	if self:IsMoving() && !self.LNR_Crippled && self:GetClass() == "npc_vj_totu_milzomb_tank" then
+		self.MeleeAttackAnimationAllowOtherTasks = false
+		if math.random(1,3) == 1 then
+			self.AnimTbl_MeleeAttack = {"vjseq_attack_jumpstomp"}
+		else
+			self.AnimTbl_MeleeAttack = {
+				"vjseq_nz_attack_stand_ad_1",
+				"vjseq_nz_attack_stand_ad_2-2",
+				"vjseq_nz_attack_stand_ad_2-3",
+				"vjseq_nz_attack_stand_ad_2-4",
+				"vjseq_nz_attack_stand_au_1",
+				"vjseq_nz_attack_stand_au_2-2",
+				"vjseq_nz_attack_stand_au_2-3",
+				"vjseq_nz_attack_stand_au_2-4"
+			}
+		end
+	end
+	
+	-- When Walking --
+	if self:IsMoving() && !self.LNR_Crippled && !self.LNR_Biter && self.ToTU_CanUseMovingAttacks then
 
-			if self.ToTU_WeHaveAWeapon == true then
+		self.MeleeAttackAnimationAllowOtherTasks = true
 
-				if 
-					self:GetActivity() == ACT_RUN or
-					self:GetActivity() == ACT_SPRINT or
-					self:GetActivity() == ACT_RUN_PISTOL or
-					self:GetActivity() == ACT_RUN_AIM_PISTOL or
-					self:GetActivity() == ACT_RUN_AIM or
-					self:GetActivity() == ACT_RUN_RELAXED or
-					self:GetActivity() == ACT_RUN_ON_FIRE
-				then
-					self.AnimTbl_MeleeAttack = {
-						"vjges_nz_attack_run_ad_right_only_1",
-						"vjges_nz_attack_run_ad_right_only_2",
-						"vjges_nz_attack_run_ad_right_only_4",
-						"vjges_nz_attack_run_au_right_only_1",
-						"vjges_nz_attack_run_au_right_only_2",
-						"vjges_nz_attack_run_au_right_only_4"
-					}
-				elseif
-					self:GetActivity() == ACT_WALK or
-					self:GetActivity() == ACT_WALK_AIM or
-					self:GetActivity() == ACT_WALK_PISTOL 
-				then
-					self.AnimTbl_MeleeAttack = {
-						"vjges_nz_attack_walk_ad_right_only_1",
-						"vjgesnz_attack_walk_au_right_only_1"
-					}
-				end
-			end
+		if self.ToTU_WeHaveAWeapon == true then
 
-			if self.ToTU_UseCIAttacks && !self.ToTU_WeHaveAWeapon then
+			if 
+				self:GetActivity() == ACT_RUN or
+				self:GetActivity() == ACT_SPRINT or
+				self:GetActivity() == ACT_RUN_PISTOL or
+				self:GetActivity() == ACT_RUN_AIM_PISTOL or
+				self:GetActivity() == ACT_RUN_AIM or
+				self:GetActivity() == ACT_RUN_RELAXED or
+				self:GetActivity() == ACT_RUN_ON_FIRE
+			then
 				self.AnimTbl_MeleeAttack = {
-					"vjges_CI_Melee_Moving01",
-					"vjges_CI_Melee_Moving02",
-					"vjges_CI_Melee_Moving03",
-					"vjges_CI_Melee_Moving04",
-					"vjges_CI_Melee_Moving05",
-					"vjges_CI_Melee_Moving06"
+					"vjges_nz_attack_run_ad_right_only_1",
+					"vjges_nz_attack_run_ad_right_only_2",
+					"vjges_nz_attack_run_ad_right_only_4",
+					"vjges_nz_attack_run_au_right_only_1",
+					"vjges_nz_attack_run_au_right_only_2",
+					"vjges_nz_attack_run_au_right_only_4"
+				}
+			elseif
+				self:GetActivity() == ACT_WALK or
+				self:GetActivity() == ACT_WALK_AIM or
+				self:GetActivity() == ACT_WALK_PISTOL 
+			then
+				self.AnimTbl_MeleeAttack = {
+					"vjges_nz_attack_walk_ad_right_only_1",
+					"vjges_nz_attack_walk_au_right_only_1"
 				}
 			end
+		end
 
-			if !self.ToTU_WeHaveAWeapon && !self.ToTU_UseCIAttacks then
-				if self:GetActivity() == ACT_RUN or
-					self:GetActivity() == ACT_RUN_AIM or
-					self:GetActivity() == ACT_SPRINT or
-					self:GetActivity() == ACT_RUN_RELAXED or
-					self:GetActivity() == ACT_RUN_ON_FIRE
-				then
-					self.AnimTbl_MeleeAttack = {
-						"vjges_nz_attack_run_ad_1",
-						"vjges_nz_attack_run_ad_2",
-						"vjges_nz_attack_run_ad_3",
-						"vjges_nz_attack_run_ad_4",
-						"vjges_nz_attack_run_au_1",
-						"vjges_nz_attack_run_au_2",
-						"vjges_nz_attack_run_au_3",
-						"vjges_nz_attack_run_au_4"
-						}
-				else
-					self.AnimTbl_MeleeAttack = {
-						"vjges_nz_attack_walk_ad_1",
-						"vjges_nz_attack_walk_ad_2",
-						"vjges_nz_attack_walk_ad_3",
-						"vjges_nz_attack_walk_ad_4",
-						"vjges_nz_attack_walk_au_1",
-						"vjges_nz_attack_walk_au_2",
-						"vjges_nz_attack_walk_au_3",
-						"vjges_nz_attack_walk_au_4"
+		if self.ToTU_UseCIAttacks && !self.ToTU_WeHaveAWeapon then
+			self.AnimTbl_MeleeAttack = {
+				"vjges_CI_Melee_Moving01",
+				"vjges_CI_Melee_Moving02",
+				"vjges_CI_Melee_Moving03",
+				"vjges_CI_Melee_Moving04",
+				"vjges_CI_Melee_Moving05",
+				"vjges_CI_Melee_Moving06"
+			}
+		end
+
+		if !self.ToTU_WeHaveAWeapon && !self.ToTU_UseCIAttacks then
+			if self:GetActivity() == ACT_RUN or
+				self:GetActivity() == ACT_RUN_AIM or
+				self:GetActivity() == ACT_SPRINT or
+				self:GetActivity() == ACT_RUN_RELAXED or
+				self:GetActivity() == ACT_RUN_ON_FIRE
+			then
+				self.AnimTbl_MeleeAttack = {
+					"vjges_nz_attack_run_ad_1",
+					"vjges_nz_attack_run_ad_2",
+					"vjges_nz_attack_run_ad_3",
+					"vjges_nz_attack_run_ad_4",
+					"vjges_nz_attack_run_au_1",
+					"vjges_nz_attack_run_au_2",
+					"vjges_nz_attack_run_au_3",
+					"vjges_nz_attack_run_au_4"
 					}
-				end
+			else
+				self.AnimTbl_MeleeAttack = {
+					"vjges_nz_attack_walk_ad_1",
+					"vjges_nz_attack_walk_ad_2",
+					"vjges_nz_attack_walk_ad_3",
+					"vjges_nz_attack_walk_ad_4",
+					"vjges_nz_attack_walk_au_1",
+					"vjges_nz_attack_walk_au_2",
+					"vjges_nz_attack_walk_au_3",
+					"vjges_nz_attack_walk_au_4"
+				}
 			end
 		end
-    end
+	 end
+   end
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:Zombie_CustomOnMeleeAttack_BeforeStartTimer(seed)
@@ -4265,7 +4595,10 @@ function ENT:CustomOnFlinch_BeforeFlinch(dmginfo,hitgroup)
 		self:GetSequence() == self:LookupSequence("Climb96_03a_InPlace") or
 		self:GetSequence() == self:LookupSequence("Climb96_04a_InPlace") or
 		self:GetSequence() == self:LookupSequence("Climb96_05_InPlace") or
-		self:GetSequence() == self:LookupSequence("Run_Stumble_01")
+		self:GetSequence() == self:LookupSequence("Run_Stumble_01") or
+		self:GetSequence() == self:LookupSequence("attack_jumpstomp") or
+		self.ToTU_Resting == 1 or
+		self.ToTU_Resting == 2
 	then
 		self:ToTU_ResetFlinchHitgroups()
 	return end
@@ -4293,7 +4626,7 @@ function ENT:CustomOnFlinch_BeforeFlinch(dmginfo,hitgroup)
 		}
 	end
 
-	if self.ToTU_CanDoTheFunny == false or self.LNR_Crippled or self:GetActivity() == ACT_GLIDE then return end
+	if self.ToTU_CanDoTheFunny == false or self.LNR_Crippled or self:GetActivity() == ACT_GLIDE or self.ToTU_Resting != 0 then return end
 
 	-- melee stumbles
 	if
@@ -4307,7 +4640,7 @@ function ENT:CustomOnFlinch_BeforeFlinch(dmginfo,hitgroup)
 		dmginfo:IsDamageType(DMG_PHYSGUN) or
 		dmginfo:IsDamageType(DMG_CRUSH)
 	then	
-		if self:GetSequence() != self:LookupSequence(ACT_BIG_FLINCH) && self:GetSequence() != self:LookupSequence(ACT_GMOD_SHOWOFF_STAND_01) then
+		if self:GetSequence() != self:LookupSequence(ACT_BIG_FLINCH) && self:GetSequence() != self:LookupSequence(ACT_GMOD_SHOWOFF_STAND_01) && self.ToTU_Resting == 0 then
 			if self.ToTU_GiantZombie then
 				if dmginfo:GetDamage() >= 150 or dmginfo:GetDamageForce():Length() >= 45000 then
 					if self.LNR_NextShoveT < CurTime() then
@@ -4562,12 +4895,32 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:CustomOnTakeDamage_AfterDamage(dmginfo,hitgroup)
 
+	if self.ToTU_Resting != 0 then
+		if self.ToTU_Resting == 1 then
+			self:VJ_ACT_PLAYACTIVITY(ACT_BUSY_SIT_CHAIR_EXIT, true, false, false)
+		elseif self.ToTU_Resting == 2 then
+			self:VJ_ACT_PLAYACTIVITY(ACT_BUSY_STAND, true, false, false)
+		end
+		self.ToTU_Resting = 0
+		self.ToTU_NextRestT = CurTime() + math.Rand(30, 180)
+		if GetConVar("vj_npc_nowandering"):GetInt() != 1 then
+			self.DisableWandering = false
+		end
+		self.CanTurnWhileStationary = true
+		self.TurningSpeed = 15
+		self.AnimTbl_IdleStand = {ACT_IDLE}
+		if self.LNR_UsingRelaxedIdle == true then
+			self.AnimTbl_IdleStand = {ACT_IDLE_RELAXED}
+		end
+	end
+
 	-- explosion stumbles
 	if
-		dmginfo:IsExplosionDamage() or
+		(dmginfo:IsExplosionDamage() or
 		dmginfo:IsDamageType(DMG_BLAST_SURFACE) or
 		dmginfo:IsDamageType(DMG_MISSILEDEFENSE) or
-		dmginfo:IsDamageType(DMG_ALWAYSGIB)
+		dmginfo:IsDamageType(DMG_ALWAYSGIB)) &&
+		self.ToTU_Resting == 0
 	then
 		if
 			GetConVar("VJ_ToTU_General_Stumbling_Disable"):GetInt() == 1 or
@@ -4581,6 +4934,7 @@ function ENT:CustomOnTakeDamage_AfterDamage(dmginfo,hitgroup)
 		then return end
 
 		if self.ToTU_NextSplodeStumbleT < CurTime() then
+			if self.ToTU_Resting != 0 then return end
 			if math.random(1,2) == 1 then
 				if math.random(1,2) == 1 then
 					self:VJ_ACT_PLAYACTIVITY("vjseq_Run_Stumble_01",true,false,false)
@@ -4600,7 +4954,8 @@ function ENT:CustomOnTakeDamage_AfterDamage(dmginfo,hitgroup)
 			if
 				self:GetActivity() != ACT_GLIDE or
 				self:GetActivity() != ACT_BIG_FLINCH or
-				self:GetActivity() != ACT_GMOD_SHOWOFF_STAND_01
+				self:GetActivity() != ACT_GMOD_SHOWOFF_STAND_01 or
+				self.ToTU_Resting == 0
 			then
 				self.LNR_LegHP = self.LNR_LegHP -dmginfo:GetDamage()
 			end
@@ -4642,6 +4997,8 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:Cripple()
 
+	self.CanEat = false
+
 	if self.VJ_IsBeingControlled then
 
 		self.VJ_TheController:ChatPrint("Your legs have been crippled!")
@@ -4671,6 +5028,7 @@ function ENT:Cripple()
 	self.MeleeAttackDistance = 15
 	self.MeleeAttackDamageDistance = 45	
 
+
 	self.HasLeapAttack = false 
 
 	self.CanTurnWhileStationary = false
@@ -4686,6 +5044,14 @@ function ENT:Cripple()
 		self.AnimTbl_Walk = {ACT_WALK_AGITATED}
 		self.AnimTbl_Run = {ACT_WALK_AGITATED}
 	end
+
+	-- if self:GetClass() == "npc_vj_totu_nightkin_squaller" then
+
+	-- self.AnimTbl_IdleStand = {ACT_CROUCHIDLE}
+	-- self.AnimTbl_Walk = {ACT_WALK_CROUCH_AIM}
+
+	-- self.AnimTbl_Run = {ACT_RUN_STEALTH}
+	-- end
 
 	self:SetCollisionBounds(Vector(13,13,20),Vector(-13,-13,0))
 
@@ -4803,7 +5169,7 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:CustomDeathAnimationCode(dmginfo,hitgroup)
 
-	if self.LNR_Crippled or self:GetClass() == "npc_vj_totu_weaponized_cyst" then return end
+	if self.LNR_Crippled or self.ToTU_Resting == 1 or self.ToTU_Resting == 2 or self:GetClass() == "npc_vj_totu_weaponized_cyst" then return end
 	
 	if self:IsMoving() && GetConVar("VJ_ToTU_General_MovingDeathAnimations"):GetInt() == 1 && !self.ToTU_GiantZombie && !self.ToTU_IsFreakOfNature then
 
@@ -4817,21 +5183,26 @@ function ENT:CustomDeathAnimationCode(dmginfo,hitgroup)
 			self:GetActivity() == ACT_RUN_AIM_PISTOL
 		then
 
-			self.AnimTbl_Death = {
-				"vjseq_DeathRunning_01",
-				"vjseq_DeathRunning_03",
-				"vjseq_DeathRunning_04",
-				"vjseq_DeathRunning_05",
-				"vjseq_DeathRunning_06",
-				"vjseq_DeathRunning_07",
-				"vjseq_DeathRunning_08",
-				"vjseq_DeathRunning_11a",
-				"vjseq_DeathRunning_11b",
-				"vjseq_DeathRunning_11c",
-				"vjseq_DeathRunning_11e",
-				"vjseq_DeathRunning_11f",
-				"vjseq_DeathRunning_11g",
-			}
+			if hitgroup == HITGROUP_STOMACH then
+				self.AnimTbl_Death = {
+					"vjseq_DeathRunning_03",
+					"vjseq_DeathRunning_05"
+				}
+			else
+				self.AnimTbl_Death = {
+					"vjseq_DeathRunning_01",
+					"vjseq_DeathRunning_04",
+					"vjseq_DeathRunning_06",
+					"vjseq_DeathRunning_07",
+					"vjseq_DeathRunning_08",
+					"vjseq_DeathRunning_11a",
+					"vjseq_DeathRunning_11b",
+					"vjseq_DeathRunning_11c",
+					"vjseq_DeathRunning_11e",
+					"vjseq_DeathRunning_11f",
+					"vjseq_DeathRunning_11g",
+				}
+			end
 
 		else
 
@@ -4856,6 +5227,7 @@ function ENT:CustomDeathAnimationCode(dmginfo,hitgroup)
 
 	end
 
+	/*
 	if self.ToTU_GiantZombie then
 
 		if dmginfo:GetDamage() >= 420 or dmginfo:GetDamageForce():Length() >= 96000 then
@@ -4869,7 +5241,7 @@ function ENT:CustomDeathAnimationCode(dmginfo,hitgroup)
 
 		end
 
-	elseif self.ToTU_BigZombie then
+	elseif self.ToTU_BigZombie && !self.ToTU_Nightkin_Squaller_UsingIronWill then
 
 		if dmginfo:GetDamage() >= 210 or dmginfo:GetDamageForce():Length() >= 32000 then
 		
@@ -4897,6 +5269,7 @@ function ENT:CustomDeathAnimationCode(dmginfo,hitgroup)
 		end
 
 	end
+	*/
 
 	if dmginfo:IsDamageType(DMG_BURN) or dmginfo:IsDamageType(DMG_SLOWBURN) then
 
@@ -5131,13 +5504,14 @@ function ENT:CustomOnDeath_AfterCorpseSpawned(dmginfo,hitgroup,GetCorpse)
 
 			local RevivedSquall = ents.Create("npc_vj_totu_nightkin_squaller")			
 			RevivedSquall.CanFlinch = 0
+			RevivedSquall.CanInvestigate = false
 			RevivedSquall.HasDeathAnimation = false
-			RevivedSquall.HasPoseParameterLooking = false
-			RevivedSquall.DisableFindEnemy = true		
-			RevivedSquall.DisableMakingSelfEnemyToNPCs = true
-			RevivedSquall.CallForHelp = false
+			-- RevivedSquall.HasPoseParameterLooking = false
+			-- RevivedSquall.DisableFindEnemy = true
+			-- RevivedSquall.DisableMakingSelfEnemyToNPCs = true
+			-- RevivedSquall.CallForHelp = false
 			RevivedSquall.ToTU_Nightkin_Squaller_UsingIronWill = true
-			RevivedSquall.MovementType = VJ_MOVETYPE_STATIONARY
+			-- RevivedSquall.MovementType = VJ_MOVETYPE_STATIONARY
 			RevivedSquall.CanTurnWhileStationary = false								
 			RevivedSquall:SetPos(GetCorpse:GetPos())
 			RevivedSquall:SetAngles(GetCorpse:GetAngles())
@@ -5145,9 +5519,9 @@ function ENT:CustomOnDeath_AfterCorpseSpawned(dmginfo,hitgroup,GetCorpse)
 			RevivedSquall:Activate()
 			undo.ReplaceEntity(self,RevivedSquall)
 			RevivedSquall:SetHealth(RevSqSpawnH)
-			RevivedSquall:SetMaterial("lnr/bonemerge")
+			-- RevivedSquall:SetMaterial("lnr/bonemerge")
 			RevivedSquall:SetMaterial()
-			RevivedSquall:SetModel(GetCorpse:GetModel())
+			-- RevivedSquall:SetModel(GetCorpse:GetModel())
 			RevivedSquall:SetSkin(GetCorpse:GetSkin())
 			RevivedSquall:SetBodygroup(1,GetCorpse:GetBodygroup(1))
 			RevivedSquall:SetBodygroup(2,GetCorpse:GetBodygroup(2))
@@ -5174,15 +5548,16 @@ function ENT:CustomOnDeath_AfterCorpseSpawned(dmginfo,hitgroup,GetCorpse)
 				end
 
 				timer.Simple(AnimTime,function() if IsValid(RevivedSquall) then
-					RevivedSquall:DoChangeMovementType(VJ_MOVETYPE_GROUND)
+					-- RevivedSquall:DoChangeMovementType(VJ_MOVETYPE_GROUND)
 					RevivedSquall.CanFlinch = 1
-					RevivedSquall.HasSounds = true	
+					-- RevivedSquall.HasSounds = true	
 					RevivedSquall.HasDeathAnimation = true
-					RevivedSquall.HasPoseParameterLooking = true
-					RevivedSquall.DisableFindEnemy = false		
-					RevivedSquall.DisableMakingSelfEnemyToNPCs = false
-					RevivedSquall.CallForHelp = true	
+					-- RevivedSquall.HasPoseParameterLooking = true
+					-- RevivedSquall.DisableFindEnemy = false		
+					-- RevivedSquall.DisableMakingSelfEnemyToNPCs = false
+					-- RevivedSquall.CallForHelp = true	
 					RevivedSquall.ToTU_Nightkin_Squaller_HasIronWill = false
+					RevivedSquall.CanInvestigate = true
 				end end)
 
 			end end)
@@ -5280,6 +5655,55 @@ function ENT:CustomOnDeath_AfterCorpseSpawned(dmginfo,hitgroup,GetCorpse)
 		end
 
 		util.ScreenShake(GetCorpse:GetPos(), 5, 500, 1.6, 1200)
+
+	end
+
+	if self:GetClass() == "npc_vj_totu_nightkin_spectre" && IsValid(GetCorpse) then
+
+		timer.Simple(3,function() if IsValid(GetCorpse) then
+
+			effects.BeamRingPoint(GetCorpse:GetPos(), 0.25, 2, 150, 10, 0, Color(0, 69, 255), {material="sprites/physgbeamb", framerate=20})
+			effects.BeamRingPoint(GetCorpse:GetPos()+GetCorpse:GetUp()*15, 0.25, 2, 115, 10, 0, Color(0, 69, 255), {material="sprites/physgbeamb", framerate=20})
+			effects.BeamRingPoint(GetCorpse:GetPos()+GetCorpse:GetUp()*30, 0.25, 2, 80, 10, 0, Color(0, 69, 255), {material="sprites/physgbeamb", framerate=20})
+			effects.BeamRingPoint(GetCorpse:GetPos()+GetCorpse:GetUp()*45, 0.25, 2, 45, 10, 0, Color(0, 69, 255), {material="sprites/physgbeamb", framerate=20})
+			effects.BeamRingPoint(GetCorpse:GetPos()+GetCorpse:GetUp()*60, 0.25, 2, 10, 10, 0, Color(0, 69, 255), {material="sprites/physgbeamb", framerate=20})
+
+			effects.BeamRingPoint(GetCorpse:GetPos(), 1.03, 2, 50, 35, 0, Color(0, 69, 255), {material="sprites/physgbeamb", framerate=20})
+			effects.BeamRingPoint(GetCorpse:GetPos()+GetCorpse:GetUp()*15, 1.03, 2, 50, 35, 0, Color(0, 69, 255), {material="sprites/physgbeamb", framerate=20})
+			effects.BeamRingPoint(GetCorpse:GetPos()+GetCorpse:GetUp()*30, 1.03, 2, 50, 35, 0, Color(0, 69, 255), {material="sprites/physgbeamb", framerate=20})
+			effects.BeamRingPoint(GetCorpse:GetPos()+GetCorpse:GetUp()*45, 1.03, 2, 50, 35, 0, Color(0, 69, 255), {material="sprites/physgbeamb", framerate=20})
+			effects.BeamRingPoint(GetCorpse:GetPos()+GetCorpse:GetUp()*60, 1.03, 2, 50, 35, 0, Color(0, 69, 255), {material="sprites/physgbeamb", framerate=20})
+
+			local bomblight = ents.Create("light_dynamic")
+			bomblight:SetKeyValue("brightness", "7")
+			bomblight:SetKeyValue("distance", "75")
+			bomblight:SetParent(GetCorpse)
+			bomblight:Fire("Color", "0 69 125")
+			bomblight:Fire("SetParentAttachment","legs_gib")
+			bomblight:Spawn()
+			bomblight:Activate()
+			bomblight:Fire("Kill", "", 0.4)
+			GetCorpse:DeleteOnRemove(bomblight)
+
+			local bombglow = ents.Create("env_sprite")
+			bombglow:SetKeyValue("model","vj_base/sprites/vj_glow1.vmt")
+			bombglow:SetKeyValue("scale", "0.75")
+			bombglow:SetKeyValue("rendermode","5")
+			bombglow:SetKeyValue("rendercolor","0 69 125")
+			bombglow:SetKeyValue("spawnflags","1") -- If animated
+			bombglow:SetParent(GetCorpse)
+			bombglow:Fire("SetParentAttachment", "legs_gib")
+			bombglow:Spawn()
+			bombglow:Activate()
+			bombglow:Fire("Kill", "", 0.35)
+			GetCorpse:DeleteOnRemove(bombglow)
+
+			VJ_EmitSound(GetCorpse,"voices/nightkin/spectre/time_glitch_hit_0"..math.random(1,4)..".mp3",80,math.random(100,95))
+			VJ_EmitSound(GetCorpse,"ambient/levels/labs/teleport_postblast_thunder1.wav",80,math.random(100,95))
+
+			GetCorpse:Remove()
+
+		end end)
 
 	end
 

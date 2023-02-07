@@ -52,6 +52,10 @@ ENT.MilZ_Airman_IsAirman = false
 ENT.MilZ_FoN_Rage = false
 ENT.MilZ_FoN_CanSpawnHelp = true
 ENT.MilZ_FoN_SpawnCoolDownT = 5
+
+ENT.MilZ_Hazmat_IsHazmat = false
+ENT.MilZ_Hazmat_TankHealth = 5
+ENT.MilZ_Hazmat_TankHit = false
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:Zombie_CustomOnPreInitialize()
 
@@ -174,6 +178,13 @@ function ENT:Zombie_CustomOnPreInitialize()
 	end
 
 	if
+		self:GetClass() == "npc_vj_totu_milzomb_hazmat" or
+		self:GetClass() == "npc_vj_totu_milzomb_hazmat_infected"
+	then
+		self.MilZ_Hazmat_IsHazmat = true
+	end
+
+	if
 		!self.MilZ_Ghost_IsGhost &&
 		!self.MiLZ_Ghillie_IsGhillie
 	then
@@ -201,15 +212,15 @@ function ENT:Zombie_CustomOnPreInitialize()
 
 			-- move these to the fx folder and put them on the github
 			self.SoundTbl_Breath = {
-				"zombies/military/radio/1/radio_1.mp3",
-				"zombies/military/radio/1/radio_2.mp3",
-				"zombies/military/radio/1/radio_3.mp3",
-				"zombies/military/radio/1/radio_4.mp3",
-				"zombies/military/radio/1/radio_5.mp3",
-				"zombies/military/radio/1/radio_6.mp3",
-				"zombies/military/radio/1/radio_7.mp3",
-				"zombies/military/radio/1/radio_8.mp3",
-				"zombies/military/radio/1/radio_9.mp3"
+				"fx/radio/1/radio_1.mp3",
+				"fx/radio/1/radio_2.mp3",
+				"fx/radio/1/radio_3.mp3",
+				"fx/radio/1/radio_4.mp3",
+				"fx/radio/1/radio_5.mp3",
+				"fx/radio/1/radio_6.mp3",
+				"fx/radio/1/radio_7.mp3",
+				"fx/radio/1/radio_8.mp3",
+				"fx/radio/1/radio_9.mp3"
 			}
 
 		end
@@ -217,35 +228,35 @@ function ENT:Zombie_CustomOnPreInitialize()
 		if math.random(1,7) == 1 then
 
 			self.SoundTbl_Breath = {
-				"zombies/military/radio/2/beep.mp3",
-				"zombies/military/radio/2/radio_1.mp3",
-				"zombies/military/radio/2/radio_2.mp3",
-				"zombies/military/radio/2/radio_3.mp3",
-				"zombies/military/radio/2/radio_4.mp3",
-				"zombies/military/radio/2/radio_5.mp3",
-				"zombies/military/radio/2/radio_6.mp3",
-				"zombies/military/radio/2/radio_7.mp3",
-				"zombies/military/radio/2/radio_8.mp3",
-				"zombies/military/radio/2/radio_9.mp3",
-				"zombies/military/radio/2/radio_10.mp3",
-				"zombies/military/radio/2/radio_11.mp3",
-				"zombies/military/radio/2/radio_12.mp3",
-				"zombies/military/radio/2/radio_13.mp3",
-				"zombies/military/radio/2/radio_14.mp3",
-				"zombies/military/radio/2/radio_15.mp3",
-				"zombies/military/radio/2/radio_16.mp3",
-				"zombies/military/radio/2/radio_17.mp3",
-				"zombies/military/radio/2/radio_18.mp3",
-				"zombies/military/radio/2/radio_19.mp3",
-				"zombies/military/radio/2/radio_20.mp3",
-				"zombies/military/radio/2/radio_21.mp3",
-				"zombies/military/radio/2/radio_22.mp3",
-				"zombies/military/radio/2/radio_23.mp3",
-				"zombies/military/radio/2/radio_24.mp3",
-				"zombies/military/radio/2/radio_25.mp3",
-				"zombies/military/radio/2/radio_26.mp3",
-				"zombies/military/radio/2/radio_27.mp3",
-				"zombies/military/radio/2/radio_28.mp3"
+				"fx/radio/2/beep.mp3",
+				"fx/radio/2/radio_1.mp3",
+				"fx/radio/2/radio_2.mp3",
+				"fx/radio/2/radio_3.mp3",
+				"fx/radio/2/radio_4.mp3",
+				"fx/radio/2/radio_5.mp3",
+				"fx/radio/2/radio_6.mp3",
+				"fx/radio/2/radio_7.mp3",
+				"fx/radio/2/radio_8.mp3",
+				"fx/radio/2/radio_9.mp3",
+				"fx/radio/2/radio_10.mp3",
+				"fx/radio/2/radio_11.mp3",
+				"fx/radio/2/radio_12.mp3",
+				"fx/radio/2/radio_13.mp3",
+				"fx/radio/2/radio_14.mp3",
+				"fx/radio/2/radio_15.mp3",
+				"fx/radio/2/radio_16.mp3",
+				"fx/radio/2/radio_17.mp3",
+				"fx/radio/2/radio_18.mp3",
+				"fx/radio/2/radio_19.mp3",
+				"fx/radio/2/radio_20.mp3",
+				"fx/radio/2/radio_21.mp3",
+				"fx/radio/2/radio_22.mp3",
+				"fx/radio/2/radio_23.mp3",
+				"fx/radio/2/radio_24.mp3",
+				"fx/radio/2/radio_25.mp3",
+				"fx/radio/2/radio_26.mp3",
+				"fx/radio/2/radio_27.mp3",
+				"fx/radio/2/radio_28.mp3"
 			}
 
 		end
@@ -292,6 +303,8 @@ function ENT:Zombie_CustomOnPreInitialize()
 
 		self.Model = {"models/totu/detonator.mdl"}
 
+		self.CanEat = false
+
 		if GetConVar("VJ_ToTU_General_EasterEggs"):GetInt() == 1 then
 
 			if math.random(1,100) == 1 then
@@ -314,37 +327,71 @@ function ENT:Zombie_CustomOnPreInitialize()
 
 		self.Model = {"models/totu/detonator_bulk.mdl"}
 
+		self.CanEat = false
+
 	elseif self:GetClass() == "npc_vj_totu_milzomb_ghost" then
 
 		self.Model = {"models/totu/ghost.mdl"}
+
+		self.CanEat = false
 
 	elseif self:GetClass() == "npc_vj_totu_milzomb_ghost_walker" then
 
 		self.Model = {"models/totu/ghost_walker.mdl"}
 
+		self.CanEat = false
+
 	elseif self:GetClass() == "npc_vj_totu_milzomb_tank" then
 
 		self.Model = {"models/totu/tank.mdl"}
+
+		self.CanEat = false
 
 	elseif self:GetClass() == "npc_vj_totu_milzomb_ghillie" then
 
 		self.Model = {"models/totu/ghille.mdl"}
 
+		self.CanEat = false
+
 	elseif self:GetClass() == "npc_vj_totu_milzomb_ghillie_walker" then
 
 		self.Model = {"models/totu/ghille_walker.mdl"}
-		
+
+		self.CanEat = false
+
 	elseif self:GetClass() == "npc_vj_totu_milzomb_airman" then
 
 		self.Model = {"models/totu/airman.mdl"}
+
+		self.CanEat = false
 
 	elseif self:GetClass() == "npc_vj_totu_milzomb_airman_infected" then
 
 		self.Model = {"models/totu/airman_infected.mdl"}
 
+		self.CanEat = false
+
+	elseif self:GetClass() == "npc_vj_totu_milzomb_hazmat" then
+
+		self.Model = {"models/totu/milhaz_walker.mdl"}
+
+		self.CanEat = false
+
+	elseif self:GetClass() == "npc_vj_totu_milzomb_hazmat_infected" then
+
+		self.Model = {"models/totu/milhaz.mdl"}
+
+		self.CanEat = false
+
 	end
 
-	if self.MilZ_Airman_IsAirman then return end
+	if self.MilZ_Hazmat_IsHazmat then
+		if math.random(1,5) == 1 then
+			self:SetSkin(1)
+		end
+	end
+
+	if self.MilZ_Airman_IsAirman or self.MilZ_Hazmat_IsHazmat then return end
 
 	if 
 		self:GetClass() == "npc_vj_totu_milzomb_juggernaut" or 
@@ -442,6 +489,7 @@ function ENT:Zombie_CustomOnPreInitialize()
 		!self.MilZ_Det_IsDetonator
 	then
 		self.MilZ_HasGasmask = true
+		self.CanEat = false
 	end
 
 	if 
@@ -874,7 +922,12 @@ function ENT:Zombie_CustomOnInitialize()
 
 		if self.LNR_Biter == false then
 
-			self:SetBodygroup(1,math.random(0,1))
+			if math.random(1,2) == 1 then
+				self:SetBodygroup(1,1)
+				self.CanEat = false
+			else
+				self:SetBodygroup(1,0)
+			end
 
 		end
 
@@ -1504,6 +1557,8 @@ end
 function ENT:ToTU_Ghillie_StartBurning()
 
 	self.IdleAlwaysWander = true
+	self.FootStepSoundLevel = 70
+	self.HasMeleeAttack = true
 
 	self.AnimTbl_IdleStand = {ACT_IDLE}
 	self.AnimTbl_Walk = {ACT_WALK_ON_FIRE}

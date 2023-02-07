@@ -73,6 +73,46 @@ function ENT:Zombie_CustomOnThink_AIEnabled()
 
 	if self.Dead == false && self:GetEnemy() != nil && self.VJ_IsBeingControlled == false && !self.LNR_Crippled then
 		local enemydist = self:GetPos():Distance(self:GetEnemy():GetPos())
+		
+		if
+			self.LNR_Crippled or
+			self.ToTU_Crawling or
+			self.LeapAttacking or
+			self:GetActivity() == ACT_STEP_BACK or
+			self:GetActivity() == ACT_STEP_FORE or
+			self:GetActivity() == ACT_SMALL_FLINCH or
+			self:GetActivity() == ACT_BIG_FLINCH or
+			self:GetActivity() == ACT_FLINCH_STOMACH or
+			self:GetActivity() == ACT_GMOD_SHOWOFF_STAND_01 or
+			self:GetActivity() == ACT_VM_DEPLOYED_FIRE or
+			self:GetSequence() == self:LookupSequence("jump_attack") or
+			self:GetSequence() == self:LookupSequence("nz_spawn_jump") or
+			self:GetSequence() == self:LookupSequence("nz_spawn_climbout_fast") or
+			self:GetSequence() == self:LookupSequence("Run_Stumble_01") or
+			self:GetSequence() == self:LookupSequence("Climb120_00_InPlace") or
+			self:GetSequence() == self:LookupSequence("Climb120_00a_InPlace") or
+			self:GetSequence() == self:LookupSequence("Climb120_03_InPlace") or
+			self:GetSequence() == self:LookupSequence("Climb120_03a_InPlace") or
+			self:GetSequence() == self:LookupSequence("Climb120_04_InPlace") or
+			self:GetSequence() == self:LookupSequence("Climb144_00_InPlace") or
+			self:GetSequence() == self:LookupSequence("Climb144_00a_InPlace") or
+			self:GetSequence() == self:LookupSequence("Climb144_01_InPlace") or
+			self:GetSequence() == self:LookupSequence("Climb144_03_InPlace") or
+			self:GetSequence() == self:LookupSequence("Climb144_03a_InPlace") or
+			self:GetSequence() == self:LookupSequence("Climb144_04_InPlace") or
+			self:GetSequence() == self:LookupSequence("Climb72_03_InPlace") or
+			self:GetSequence() == self:LookupSequence("Climb72_04_InPlace") or
+			self:GetSequence() == self:LookupSequence("Climb72_05_InPlace") or
+			self:GetSequence() == self:LookupSequence("Climb72_06_InPlace") or
+			self:GetSequence() == self:LookupSequence("Climb72_07_InPlace") or
+			self:GetSequence() == self:LookupSequence("Climb96_00_InPlace") or
+			self:GetSequence() == self:LookupSequence("Climb96_00a_InPlace") or
+			self:GetSequence() == self:LookupSequence("Climb96_03_InPlace") or
+			self:GetSequence() == self:LookupSequence("Climb96_03a_InPlace") or
+			self:GetSequence() == self:LookupSequence("Climb96_04a_InPlace") or
+			self:GetSequence() == self:LookupSequence("Climb96_05_InPlace")
+		then return end
+
 		if
 			enemydist >= 350 &&
 			self.ToTU_Nightkin_Skitter_PlayChangeStateAnim == 1 &&

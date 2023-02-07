@@ -8,7 +8,7 @@ include("shared.lua")
 ENT.Model = {"models/spitball_small.mdl"}
 ENT.DecalTbl_DeathDecals = {"VJ_Blood_Red"}
 ENT.SoundTbl_Idle = {"vj_acid/acid_idle1.wav"}
-ENT.SoundTbl_OnCollide = {"vj_acid/alien_acid.wav"}
+ENT.SoundTbl_OnCollide = {"vj_acid/acid_blood.wav"}
 ENT.DoesRadiusDamage = true 
 ENT.RadiusDamageRadius = 75
 ENT.RadiusDamageUseRealisticRadius = true

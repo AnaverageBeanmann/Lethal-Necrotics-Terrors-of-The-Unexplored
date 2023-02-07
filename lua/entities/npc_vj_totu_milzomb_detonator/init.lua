@@ -451,6 +451,7 @@ function ENT:ArmorDamage(dmginfo,hitgroup)
 				self.MilZ_Det_Faceplate_Broken = true
 				self:StopAllCommonSounds()
 				self.BreathSoundLevel = 60
+				self.CanEat = true
 
 				if self.HasSounds && self.HasImpactSounds then VJ_EmitSound(self,{"physics/glass/glass_sheet_break"..math.random(1,3)..".wav"},70) end
 				if self.HasSounds && self.HasImpactSounds then VJ_EmitSound(self,{"physics/glass/glass_pottery_break"..math.random(1,3)..".wav"},70) end

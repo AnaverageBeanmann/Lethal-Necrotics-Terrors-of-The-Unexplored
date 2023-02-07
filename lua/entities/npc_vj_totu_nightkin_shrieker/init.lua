@@ -120,11 +120,30 @@ function ENT:Zombie_CustomOnThink_AIEnabled()
 
 	end
 
-	if self.ToTU_Nightkin_Shrieker_ShriekCoolDownT < CurTime() && !self.ToTU_Nightkin_Shrieker_CanShriek && !self.LNR_Crippled then
+	if self.ToTU_Nightkin_Shrieker_ShriekCoolDownT < CurTime() && !self.ToTU_Nightkin_Shrieker_CanShriek && !self.LNR_Crippled && self:GetActivity() != ACT_GLIDE then
 
 		self.ToTU_Nightkin_Shrieker_CanShriek = true
 		self.MeleeAttackDistance = 10000
 
+	end
+
+	if
+		self.Dead == false &&
+		self:GetEnemy() != nil &&
+		self.VJ_IsBeingControlled == false &&
+		self.ToTU_Nightkin_Shrieker_CanShriek == false &&
+		!self.LNR_Crippled
+	then
+		local enemydist = self:GetPos():Distance(self:GetEnemy():GetPos())
+		if enemydist >= 450 then
+			self.Behavior = VJ_BEHAVIOR_PASSIVE
+		else
+			self.Behavior = VJ_BEHAVIOR_AGGRESIVE
+		end
+	end
+
+	if self.ToTU_Nightkin_Shrieker_CanShriek && self.Behavior == VJ_BEHAVIOR_PASSIVE then
+		self.Behavior = VJ_BEHAVIOR_AGGRESIVE
 	end
 
 end
@@ -190,15 +209,15 @@ function ENT:ToTU_Nightkin_Shrieker_SummonHelp()
 		filter = {self},
 		mask = MASK_ALL,
 	})
-	local spawnpos = tr.HitPos + tr.HitNormal*300
+	local spawnpos = tr.HitPos + tr.HitNormal*-150
 	local ally = ents.Create(self.KinT)
 	ally:SetPos(spawnpos)
 	ally:SetAngles(self:GetAngles())
 	ally:Spawn()
 	ally:Activate()
 	ally.VJ_NPC_Class = self.VJ_NPC_Class
-	ally:RiseFromGround_Instant()
-	self.ToTU_Nightkin_Shrieker_SpawnCoolDownT = CurTime() + 1
+	ally:RiseFromGround()
+	self.ToTU_Nightkin_Shrieker_SpawnCoolDownT = CurTime() + 0.75
 	return ally
 end
 /*-----------------------------------------------
