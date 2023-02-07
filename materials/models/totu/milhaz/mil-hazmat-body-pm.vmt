@@ -1,0 +1,65 @@
+"VertexlitGeneric"
+{
+	"$basetexture" "models/dnzlgg/tlour/militaryhazmat/mil-hazmat-a-lowres-color"
+	"$bumpmap" "models/dnzlgg/tlour/militaryhazmat/mil-hazmat-a-lowres-normal"
+	//"$color2" "[0.8 0.8 0.8]"
+	//"$blendTintByBaseAlpha"	"1"
+
+
+	"$blendtintbybasealpha" "1"
+	"$blendtintcoloroverbase" "0"
+	Proxies
+	{
+		PlayerColor
+		{
+			resultVar	$color2
+			default     0.75 0.75 0.75
+		}
+	}
+
+	//"$PhongDisableHalfLambert" "1"
+
+
+	//"$phongtint" "[///RGB_VALUE///]"	
+
+	//TRANSPARENCY AND AO:
+
+	//"$additive" "1"
+	//"$translucent" "1"
+	//"$alphatest" "1"
+	//"$alphatestreference" "0.3"
+
+	//"$ambientocclusion" "0"
+
+	//SELFILLUMINATION:
+
+	//"$selfillumtint" "[2 2 2]"
+	//"$selfillum" "1"
+	//"$selfillummask" "models/dnzlgg/tlour/militaryhazmat/base"
+
+	//MISC:
+
+	"$nocull" "1"	
+
+	//"$normalmapalphaenvmapmask" "1" 	
+	//"$envmap" "env_cubemap"					
+	//"$envmaptint" "[0.04 0.04 0.04]"				
+ 	//"$envmapFresnel"  "[1.0] "
+
+	$lightwarptexture "models/dnzlgg/tlour/militaryhazmat/lightwarp_soft"
+	//"$phongwarptexture"		""
+	"$phongexponent" "1"	
+
+	"$rimlight" "1"
+	"$rimlightboost" "0.35"
+	//"$rimmask" "1"
+
+	//IMPORTANT:
+
+	"$phong" "1"						
+	"$phongboost"	"1" 		
+	//"$phongexponenttexture" "models/dnzlgg/tlour/militaryhazmat/green"  ///UV88, 0.8
+	"$phongfresnelranges"	"[0.015 0.15 0.2]"					
+	//"$PhongAlbedoTint" "1"
+
+}

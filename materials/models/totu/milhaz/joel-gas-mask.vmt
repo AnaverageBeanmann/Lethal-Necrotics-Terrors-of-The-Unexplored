@@ -1,0 +1,21 @@
+"VertexlitGeneric"
+{
+	"$basetexture" "models/totu/milhaz/joel-gas-mask-color"
+	"$bumpmap" "models/totu/milhaz/joel-gas-mask-normal"
+
+	"$nocull" "1"	
+
+	$lightwarptexture "models/totu/milhaz/lightwarp_soft"
+	"$phongexponent" "1"	
+
+	"$rimlight" "1"
+	"$rimlightboost" "0.35"
+
+	"$phong" "1"						
+	"$phongboost"	"1" 		
+	"$phongfresnelranges"	"[0.015 0.15 0.2]"
+                  $detail models\totu\detail\ci_detail_dirt
+                  $detailscale 7.74
+                  $detailblendfactor 0.8
+                  $detailblendmode 0
+}

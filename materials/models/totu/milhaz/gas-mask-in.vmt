@@ -1,0 +1,17 @@
+"VertexlitGeneric"
+{
+	"$basetexture" "models/totu/milhaz/gas-mask-color"
+	"$bumpmap" "models/totu/milhaz/gas-mask-normal"
+
+	"$nocull" "1"
+
+	$lightwarptexture "models/totu/milhaz/lightwarp_soft"
+	"$phongexponent" "1"	
+
+	"$rimlight" "1"
+	"$rimlightboost" "0.35"
+
+	"$phong" "1"						
+	"$phongboost"	"1" 
+	"$phongfresnelranges"	"[0.015 0.15 0.2]"					
+}

@@ -1,0 +1,24 @@
+"VertexlitGeneric"
+{
+	"$basetexture" "models/totu/milhaz/mil-hazmat-gloves-color"
+	"$bumpmap" "models/totu/milhaz/mil-hazmat-gloves-normal"
+	"$color2" "[1.2 1.1 1.1]"
+
+	"$PhongDisableHalfLambert" "1"
+
+	"$nocull" "1"	
+
+	$lightwarptexture "models/totu/milhaz/coach_head_wrp"
+
+	"$rimlightboost" "0.35"
+
+	"$phong" "1"						
+	"$phongboost"	"0.5" 		
+	"$phongexponenttexture" "models/totu/milhaz/mil_arms_mask"  ///UV88, 0.8
+	"$phongfresnelranges"	"[0.1 1 5.75]"
+	"$PhongTint" "[1.1 1 1]"
+                  $detail models\lnrhl2\hunter_01_detail
+                  $detailscale 0.15
+                  $detailblendfactor 0.75
+                  $detailblendmode 0
+}
