@@ -12,7 +12,7 @@ NOTICE: You need the following addons for this to work properly!
 * Needed code is in here.
 - Amnesia SNPCs (https://steamcommunity.com/sharedfiles/filedetails/?id=160134938&searchtext=amnesia)
 * Needed for sounds, will eventually no longer be a required item.
-* 
+
 Half-Life 2: Episode 2 is also needed for some particle effects, but can be left out otherwise.
 
 Trello : https://trello.com/c/S8utZd7l/12-project-cephalgia
