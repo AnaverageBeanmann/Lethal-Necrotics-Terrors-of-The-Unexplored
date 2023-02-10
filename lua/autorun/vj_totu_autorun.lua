@@ -309,9 +309,6 @@ end
 		todo
 		- convar for failsafe doorsound options (sound used if it doesn't detect a doortype)
 		- fix up possession
-
-		find voice for spectre
-		- SOMA Flesher - could work
 		
 		make it so spectre corpse floats up and then vanishes
 
@@ -337,7 +334,38 @@ end
 		* guy is running from a squaller and hiding
 		* at the end, show the squallers face and freeze-frame + glitch sounds
 		* move onto the next zomb like nothing happened
+
+		script for nightkin showcase video
+		- fade to necro forest
+		- show the store by the train tracks or the bunker behind the barn
+		- have a scragg bust through the door (and run off?) and put up the "hey welcome" text
+		- explain we have some things to show rq first
+		- show off resting behavior
+		- show stomp attack using tank
+		- show hazmat
+		- for stomp and hazmat hop back on to de_secretcamp
+		- do a shitty pizza tower character swap thing with the scragg (have it say "back to that guy")
+		- show the zomb standing there then fade into the demonstration
+		- show off the scragg
+		- show off the skitter
+		- show off the scourge
+		- show off the squaller
+		- show off scylla
+		- show off the spectre
+		- show off the shrieker
+		- show off the convars for these
+		- senseless violence bit
+		* fade into a view of the church
+		* show death everywhere
+		* have a priest guy shoot a zombie out a door
+		* have him go on a rampage shooting down nightkin before leaving
+		* have a duel with scylla at the end
+		- deimos teaser
+		* fade into boreas lab place
+		* show death around the place
+		* have a cazador run past the camera before fading to black
 		
+
 		for cepheus strain showcase vid
 		- map: boreas indoor areas
 		- weapons: mw2019
@@ -451,7 +479,7 @@ try giving exploder carcs/cysts the antlion_gib_02_gas or antlion_spit_02 or ant
 add eating system using modified code from this
 https://github.com/VJ-HLR-Developers/Half-Life-Zombie-Edition-SNPCs/blob/master/lua/entities/npc_vj_hlrze_zombie/init.lua
 
-		april 1st
+		april 20th
 		- upload bbbos to the workshop
 
 		june 7th
@@ -1014,6 +1042,8 @@ https://github.com/VJ-HLR-Developers/Half-Life-Zombie-Edition-SNPCs/blob/master/
 	AddConvars["VJ_ToTU_General_DefaultVoices_AltInfected"] = 1
 	AddConvars["VJ_ToTU_General_DefaultVoices_AltWalker"] = 1
 	AddConvars["VJ_ToTU_General_RestingSystem"] = 1
+	AddConvars["VJ_ToTU_Nightkin_Spectre_RangeAttack"] = 1
+	AddConvars["VJ_ToTU_Nightkin_Scylla_SubtypeBlacklisted"] = 1
 
 	-- AddConvars["VJ_ToTU_General_TF2Mode"] = 0
 	-- AddConvars["VJ_ToTU_Weaponized_Carcass_"] = 
@@ -1144,6 +1174,8 @@ https://github.com/VJ-HLR-Developers/Half-Life-Zombie-Edition-SNPCs/blob/master/
 			VJ_ToTU_General_DefaultVoices_AltInfected = "1",
 			VJ_ToTU_General_DefaultVoices_AltWalker = "1",
 			VJ_ToTU_General_RestingSystem = "0",
+			VJ_ToTU_Nightkin_Spectre_RangeAttack = "1",
+			VJ_ToTU_Nightkin_Scylla_SubtypeBlacklisted = "1",
 			-- VJ_ToTU_MilZ_Det_ = "",
 			
 			
@@ -1474,11 +1506,17 @@ https://github.com/VJ-HLR-Developers/Half-Life-Zombie-Edition-SNPCs/blob/master/
 	Panel:ControlHelp("+ It cannot be crippled.")
 	Panel:ControlHelp("= It will gain a glow effect.")
 	Panel:ControlHelp("- It will be reduced to Super Sprinting instead of Rushing.")
-	Panel:ControlHelp("- It will die after 12 seconds.")
-	
+	Panel:ControlHelp("- It will die after 16 seconds.")
+
 	Panel:AddControl("Slider", {Label = "Squaller Iron Will chance.", Command = "VJ_ToTU_Nightkin_Squaller_IronWill_Chance", Min = 1, Max = 10000})
 	Panel:ControlHelp("Chance that a Squaller will spawn with Iron Will.")
 	Panel:ControlHelp("Default chance is 3.")
+
+	Panel:AddControl("Checkbox", {Label = "Spectre has ranged attack?", Command = "VJ_ToTU_Nightkin_Spectre_RangeAttack"})
+	Panel:ControlHelp("If enabled, Spectres can shoot balls of Anomalic Energy at their enemies.")
+
+	Panel:AddControl("Checkbox", {Label = "Blacklist Scylla subtypes?", Command = "VJ_ToTU_Nightkin_Scylla_SubtypeBlacklisted"})
+	Panel:ControlHelp("If enabled, Scyllas cannot spawn as Super Sprinters or Rushers.")
 	
 	Panel:ControlHelp("--------------------------------------------------------")
 	Panel:AddControl( "Label", {Text = "Weaponized/Lab Specimens"})
