@@ -60,7 +60,92 @@ function ENT:Zombie_Difficulty()
 
 		end
 
+	else
+
+		self.LNR_LegHP = 20
+
 	end
+
+end
+---------------------------------------------------------------------------------------------------------------------------------------------
+function ENT:ZombieSounds_Custom()
+
+	self.SoundTbl_Idle = {
+		"voices/nightkin/shrieker/idle_1.mp3",
+		"voices/nightkin/shrieker/idle_2.mp3",
+		"voices/nightkin/shrieker/idle_3.mp3",
+		"voices/nightkin/shrieker/idle_4.mp3",
+		"voices/nightkin/shrieker/idle_5.mp3",
+		"voices/nightkin/shrieker/idle_6.mp3",
+		"voices/nightkin/shrieker/idle_7.mp3",
+		"voices/nightkin/shrieker/idle_8.mp3",
+		"voices/nightkin/shrieker/idle_9.mp3",
+		"voices/nightkin/shrieker/idle_10.mp3",
+		"voices/nightkin/shrieker/idle_11.mp3",
+		"voices/nightkin/shrieker/idle_12.mp3",
+		"voices/nightkin/shrieker/idle_13.mp3",
+		"voices/nightkin/shrieker/idle_14.mp3",
+	}
+
+	self.SoundTbl_Alert = {
+		"voices/nightkin/shrieker/alert_1.mp3",
+		"voices/nightkin/shrieker/alert_2.mp3",
+		"voices/nightkin/shrieker/alert_3.mp3",
+		"voices/nightkin/shrieker/alert_4.mp3",
+		"voices/nightkin/shrieker/alert_5.mp3",
+		"voices/nightkin/shrieker/alert_6.mp3",
+		"voices/nightkin/shrieker/alert_7.mp3",
+		"voices/nightkin/shrieker/alert_8.mp3",
+		"voices/nightkin/shrieker/alert_9.mp3",
+		"voices/nightkin/shrieker/alert_10.mp3",
+	}
+
+	self.SoundTbl_CombatIdle = {
+		"voices/nightkin/shrieker/cidle_1.mp3",
+		"voices/nightkin/shrieker/cidle_2.mp3",
+		"voices/nightkin/shrieker/cidle_3.mp3",
+		"voices/nightkin/shrieker/cidle_4.mp3",
+		"voices/nightkin/shrieker/cidle_5.mp3",
+	}
+
+	self.SoundTbl_BeforeMeleeAttack = {
+		"voices/nightkin/shrieker/melee_1.mp3",
+		"voices/nightkin/shrieker/melee_2.mp3",
+		"voices/nightkin/shrieker/melee_3.mp3",
+		"voices/nightkin/shrieker/melee_4.mp3",
+		"voices/nightkin/shrieker/melee_5.mp3",
+	}
+
+	self.SoundTbl_Pain = {
+		"voices/nightkin/shrieker/pain_1.mp3",
+		"voices/nightkin/shrieker/pain_2.mp3",
+		"voices/nightkin/shrieker/pain_3.mp3",
+		"voices/nightkin/shrieker/pain_4.mp3",
+		"voices/nightkin/shrieker/pain_5.mp3",
+		"voices/nightkin/shrieker/pain_6.mp3",
+		"voices/nightkin/shrieker/pain_7.mp3",
+		"voices/nightkin/shrieker/pain_8.mp3",
+		"voices/nightkin/shrieker/pain_9.mp3",
+		"voices/nightkin/shrieker/pain_10.mp3",
+		"voices/nightkin/shrieker/pain_11.mp3",
+		"voices/nightkin/shrieker/pain_12.mp3",
+		"voices/nightkin/shrieker/pain_13.mp3",
+		"voices/nightkin/shrieker/pain_14.mp3",
+		"voices/nightkin/shrieker/pain_15.mp3",
+		"voices/nightkin/shrieker/pain_16.mp3",
+		"voices/nightkin/shrieker/pain_16.mp3",
+		"voices/nightkin/shrieker/pain_17.mp3",
+		"voices/nightkin/shrieker/pain_18.mp3",
+		"voices/nightkin/shrieker/pain_19.mp3",
+		"voices/nightkin/shrieker/pain_20.mp3",
+		"voices/nightkin/shrieker/pain_21.mp3",
+	}
+
+	self.SoundTbl_Death = {
+		"voices/nightkin/shrieker/death_1.mp3",
+		"voices/nightkin/shrieker/death_2.mp3",
+		"voices/nightkin/shrieker/death_3.mp3",
+	}
 
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------

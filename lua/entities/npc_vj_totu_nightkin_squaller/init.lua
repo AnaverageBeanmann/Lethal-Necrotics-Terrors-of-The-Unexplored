@@ -74,10 +74,95 @@ function ENT:Zombie_Difficulty()
 
 	else
 
-		self.LNR_LegHP = 60
+		self.LNR_LegHP = 90
 
 	end
 
+end
+---------------------------------------------------------------------------------------------------------------------------------------------
+function ENT:ZombieSounds_Custom()
+
+	-- update these for the new sound location
+	self.SoundTbl_Idle = {
+		"voices/nightkin/squaller/idle_close_1.mp3",
+		"voices/nightkin/squaller/idle_close_2.mp3",
+		"voices/nightkin/squaller/idle_close_3.mp3",
+		"voices/nightkin/squaller/idle_close_4.mp3",
+		"voices/nightkin/squaller/idle_close_5.mp3",
+		"voices/nightkin/squaller/idle_close_6.mp3",
+		"voices/nightkin/squaller/idle_close_7.mp3",
+		"voices/nightkin/squaller/idle_close_8.mp3",
+		"voices/nightkin/squaller/idle_close_9.mp3",
+		"voices/nightkin/squaller/idle_close_10.mp3",
+		"voices/nightkin/squaller/lost_close_3.mp3",
+		"voices/nightkin/squaller/lost_close_4.mp3",
+		"voices/nightkin/squaller/lost_close_5.mp3",
+		"voices/nightkin/squaller/lost_close_6.mp3",
+	}
+
+	self.SoundTbl_Alert = {
+		"voices/nightkin/squaller/spot_player_2.mp3",
+		"voices/nightkin/squaller/spot_player_3.mp3",
+		"voices/nightkin/squaller/spot_player_5.mp3",
+		"voices/nightkin/squaller/spot_player_6.mp3",
+	}
+
+	self.SoundTbl_CombatIdle = {
+		"voices/nightkin/squaller/hunt_1.mp3",
+		"voices/nightkin/squaller/hunt_2.mp3",
+		"voices/nightkin/squaller/hunt_3.mp3",
+		"voices/nightkin/squaller/hunt_4.mp3",
+		"voices/nightkin/squaller/hunt_5.mp3",
+		"voices/nightkin/squaller/hunt_6.mp3",
+		"voices/nightkin/squaller/spot_player_1.mp3",
+		"voices/nightkin/squaller/spot_player_4.mp3"
+	}
+
+	self.SoundTbl_Pain = {
+		"voices/nightkin/squaller/search_extra_1.mp3",
+		"voices/nightkin/squaller/search_extra_2.mp3",
+		"voices/nightkin/squaller/search_extra_3.mp3",
+		"voices/nightkin/squaller/search_extra_4.mp3",
+		"voices/nightkin/squaller/search_extra_5.mp3",
+		"voices/nightkin/squaller/search_extra_6.mp3",
+		"voices/nightkin/squaller/search_extra_7.mp3",
+		"voices/nightkin/squaller/search_extra_8.mp3",
+		"voices/nightkin/squaller/search_extra_9.mp3",
+		"voices/nightkin/squaller/search_extra_10.mp3",
+	}
+
+	self.SoundTbl_Death = {
+		"voices/nightkin/squaller/start_search_close_1.mp3",
+		"voices/nightkin/squaller/start_search_close_2.mp3",
+		"voices/nightkin/squaller/start_search_close_3.mp3",
+		"voices/nightkin/squaller/start_search_close_4.mp3",
+		"voices/nightkin/squaller/start_search_close_5.mp3",
+		"voices/nightkin/squaller/start_search_close_6.mp3",
+		"voices/nightkin/squaller/start_search_close_7.mp3",
+		"voices/nightkin/squaller/start_search_close_8.mp3",
+	}
+
+end
+---------------------------------------------------------------------------------------------------------------------------------------------
+function ENT:Zombie_CustomOnMeleeAttack_BeforeStartTimer(seed)
+	if self:IsMoving() then
+		self.SoundTbl_BeforeMeleeAttack = {
+			"voices/nightkin/squaller/lost_close_1.mp3",
+			"voices/nightkin/squaller/lost_close_2.mp3",
+			"voices/nightkin/squaller/hunt_2.mp3",
+		}
+	else
+		self.SoundTbl_BeforeMeleeAttack = {
+			"voices/nightkin/squaller/hunt_1.mp3",
+			"voices/nightkin/squaller/hunt_2.mp3",
+			"voices/nightkin/squaller/hunt_3.mp3",
+			"voices/nightkin/squaller/hunt_4.mp3",
+			"voices/nightkin/squaller/hunt_5.mp3",
+			"voices/nightkin/squaller/hunt_6.mp3",
+			"voices/nightkin/squaller/spot_player_1.mp3",
+			"voices/nightkin/squaller/spot_player_4.mp3"
+		}
+	end
 end
 /*-----------------------------------------------
 	*** Copyright (c) 2012-2019 by DrVrej, All rights reserved. ***

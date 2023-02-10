@@ -64,54 +64,126 @@ function ENT:Zombie_Difficulty()
 			self.LNR_LegHP = 55
 
 		end
+	
+	else
+
+		self.LNR_LegHP = 25
 
 	end
 
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
+function ENT:ZombieSounds_Custom()
+
+	self.SoundTbl_Idle = {
+		"voices/nightkin/skitter/idle_1.mp3",
+		"voices/nightkin/skitter/idle_2.mp3",
+		"voices/nightkin/skitter/idle_3.mp3",
+		"voices/nightkin/skitter/idle_4.mp3",
+		"voices/nightkin/skitter/idle_5.mp3",
+		"voices/nightkin/skitter/idle_6.mp3",
+		"voices/nightkin/skitter/idle_7.mp3",
+		"voices/nightkin/skitter/idle_8.mp3",
+		"voices/nightkin/skitter/idle_9.mp3",
+		"voices/nightkin/skitter/idle_10.mp3"
+	}
+
+	self.SoundTbl_Alert = {
+		"voices/nightkin/skitter/attack_1.mp3",
+		"voices/nightkin/skitter/attack_2.mp3",
+		"voices/nightkin/skitter/attack_3.mp3",
+		"voices/nightkin/skitter/attack_4.mp3",
+		"voices/nightkin/skitter/attack_5.mp3",
+		"voices/nightkin/skitter/attack_6.mp3",
+		"voices/nightkin/skitter/attack_7.mp3"
+	}
+
+	self.SoundTbl_CombatIdle = {
+		"voices/nightkin/skitter/cidle_1.mp3",
+		"voices/nightkin/skitter/cidle_2.mp3",
+		"voices/nightkin/skitter/cidle_3.mp3",
+		"voices/nightkin/skitter/cidle_4.mp3"
+	}
+
+	self.SoundTbl_BeforeMeleeAttack = {
+		"voices/nightkin/skitter/attack_1.mp3",
+		"voices/nightkin/skitter/attack_2.mp3",
+		"voices/nightkin/skitter/attack_3.mp3",
+		"voices/nightkin/skitter/attack_4.mp3",
+		"voices/nightkin/skitter/attack_5.mp3",
+		"voices/nightkin/skitter/attack_6.mp3",
+		"voices/nightkin/skitter/attack_7.mp3"
+	}
+
+	self.SoundTbl_Pain = {
+		"voices/nightkin/skitter/pain_1.mp3",
+		"voices/nightkin/skitter/pain_2.mp3",
+		"voices/nightkin/skitter/pain_3.mp3",
+		"voices/nightkin/skitter/pain_4.mp3",
+		"voices/nightkin/skitter/pain_5.mp3",
+		"voices/nightkin/skitter/pain_6.mp3",
+		"voices/nightkin/skitter/pain_7.mp3",
+		"voices/nightkin/skitter/pain_8.mp3",
+		"voices/nightkin/skitter/pain_9.mp3",
+		"voices/nightkin/skitter/pain_10.mp3",
+		"voices/nightkin/skitter/pain_12.mp3",
+		"voices/nightkin/skitter/pain_13.mp3",
+		"voices/nightkin/skitter/pain_14.mp3"
+	}
+
+	self.SoundTbl_Death = {
+		"voices/nightkin/skitter/death_1.mp3",
+		"voices/nightkin/skitter/death_2.mp3",
+		"voices/nightkin/skitter/death_3.mp3",
+		"voices/nightkin/skitter/death_4.mp3"
+	}
+
+end
+---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:Zombie_CustomOnThink_AIEnabled()
 
+	if
+		self.LNR_Crippled or
+		self.ToTU_Crawling or
+		self.LeapAttacking or
+		self:GetActivity() == ACT_STEP_BACK or
+		self:GetActivity() == ACT_STEP_FORE or	
+		self:GetActivity() == ACT_SMALL_FLINCH or
+		self:GetActivity() == ACT_BIG_FLINCH or
+		self:GetActivity() == ACT_FLINCH_STOMACH or
+		self:GetActivity() == ACT_GMOD_SHOWOFF_STAND_01 or
+		self:GetActivity() == ACT_VM_DEPLOYED_FIRE or
+		self:GetSequence() == self:LookupSequence("jump_attack") or
+		self:GetSequence() == self:LookupSequence("nz_spawn_jump") or
+		self:GetSequence() == self:LookupSequence("nz_spawn_climbout_fast") or
+		self:GetSequence() == self:LookupSequence("Run_Stumble_01") or
+		self:GetSequence() == self:LookupSequence("Climb120_00_InPlace") or
+		self:GetSequence() == self:LookupSequence("Climb120_00a_InPlace") or
+		self:GetSequence() == self:LookupSequence("Climb120_03_InPlace") or
+		self:GetSequence() == self:LookupSequence("Climb120_03a_InPlace") or
+		self:GetSequence() == self:LookupSequence("Climb120_04_InPlace") or
+		self:GetSequence() == self:LookupSequence("Climb144_00_InPlace") or
+		self:GetSequence() == self:LookupSequence("Climb144_00a_InPlace") or
+		self:GetSequence() == self:LookupSequence("Climb144_01_InPlace") or	
+		self:GetSequence() == self:LookupSequence("Climb144_03_InPlace") or
+		self:GetSequence() == self:LookupSequence("Climb144_03a_InPlace") or
+		self:GetSequence() == self:LookupSequence("Climb144_04_InPlace") or
+		self:GetSequence() == self:LookupSequence("Climb72_03_InPlace") or
+		self:GetSequence() == self:LookupSequence("Climb72_04_InPlace") or
+		self:GetSequence() == self:LookupSequence("Climb72_05_InPlace") or
+		self:GetSequence() == self:LookupSequence("Climb72_06_InPlace") or
+		self:GetSequence() == self:LookupSequence("Climb72_07_InPlace") or
+		self:GetSequence() == self:LookupSequence("Climb96_00_InPlace") or
+		self:GetSequence() == self:LookupSequence("Climb96_00a_InPlace") or
+		self:GetSequence() == self:LookupSequence("Climb96_03_InPlace") or
+		self:GetSequence() == self:LookupSequence("Climb96_03a_InPlace") or
+		self:GetSequence() == self:LookupSequence("Climb96_04a_InPlace") or
+		self:GetSequence() == self:LookupSequence("Climb96_05_InPlace")
+	then return end
+
 	if self.Dead == false && self:GetEnemy() != nil && self.VJ_IsBeingControlled == false && !self.LNR_Crippled then
+
 		local enemydist = self:GetPos():Distance(self:GetEnemy():GetPos())
-		
-		if
-			self.LNR_Crippled or
-			self.ToTU_Crawling or
-			self.LeapAttacking or
-			self:GetActivity() == ACT_STEP_BACK or
-			self:GetActivity() == ACT_STEP_FORE or
-			self:GetActivity() == ACT_SMALL_FLINCH or
-			self:GetActivity() == ACT_BIG_FLINCH or
-			self:GetActivity() == ACT_FLINCH_STOMACH or
-			self:GetActivity() == ACT_GMOD_SHOWOFF_STAND_01 or
-			self:GetActivity() == ACT_VM_DEPLOYED_FIRE or
-			self:GetSequence() == self:LookupSequence("jump_attack") or
-			self:GetSequence() == self:LookupSequence("nz_spawn_jump") or
-			self:GetSequence() == self:LookupSequence("nz_spawn_climbout_fast") or
-			self:GetSequence() == self:LookupSequence("Run_Stumble_01") or
-			self:GetSequence() == self:LookupSequence("Climb120_00_InPlace") or
-			self:GetSequence() == self:LookupSequence("Climb120_00a_InPlace") or
-			self:GetSequence() == self:LookupSequence("Climb120_03_InPlace") or
-			self:GetSequence() == self:LookupSequence("Climb120_03a_InPlace") or
-			self:GetSequence() == self:LookupSequence("Climb120_04_InPlace") or
-			self:GetSequence() == self:LookupSequence("Climb144_00_InPlace") or
-			self:GetSequence() == self:LookupSequence("Climb144_00a_InPlace") or
-			self:GetSequence() == self:LookupSequence("Climb144_01_InPlace") or
-			self:GetSequence() == self:LookupSequence("Climb144_03_InPlace") or
-			self:GetSequence() == self:LookupSequence("Climb144_03a_InPlace") or
-			self:GetSequence() == self:LookupSequence("Climb144_04_InPlace") or
-			self:GetSequence() == self:LookupSequence("Climb72_03_InPlace") or
-			self:GetSequence() == self:LookupSequence("Climb72_04_InPlace") or
-			self:GetSequence() == self:LookupSequence("Climb72_05_InPlace") or
-			self:GetSequence() == self:LookupSequence("Climb72_06_InPlace") or
-			self:GetSequence() == self:LookupSequence("Climb72_07_InPlace") or
-			self:GetSequence() == self:LookupSequence("Climb96_00_InPlace") or
-			self:GetSequence() == self:LookupSequence("Climb96_00a_InPlace") or
-			self:GetSequence() == self:LookupSequence("Climb96_03_InPlace") or
-			self:GetSequence() == self:LookupSequence("Climb96_03a_InPlace") or
-			self:GetSequence() == self:LookupSequence("Climb96_04a_InPlace") or
-			self:GetSequence() == self:LookupSequence("Climb96_05_InPlace")
-		then return end
 
 		if
 			enemydist >= 350 &&
@@ -122,6 +194,7 @@ function ENT:Zombie_CustomOnThink_AIEnabled()
 			self.AnimTbl_Run = {ACT_RUN_STEALTH}
 			self:ToTU_Skitter_StartCrawling()
 			self.ToTU_Nightkin_Skitter_PlayChangeStateAnimT = CurTime() + (0.5)
+
 			local anim = {"vjseq_Stand_to_crouch"}
 			self:VJ_ACT_PLAYACTIVITY(anim,true,false,false)
 		elseif
@@ -138,6 +211,22 @@ function ENT:Zombie_CustomOnThink_AIEnabled()
 			self:VJ_ACT_PLAYACTIVITY(anim,true,false,false)
 		end
 
+	end
+
+	if !self.Dead && self.VJ_IsBeingControlled && !self.LNR_Crippled then
+		if self.VJ_TheController:KeyDown(IN_JUMP) then
+			if self.ToTU_Nightkin_Skitter_PlayChangeStateAnim == 1 && CurTime() > self.ToTU_Nightkin_Skitter_PlayChangeStateAnimT then
+				self:ToTU_Skitter_StartCrawling()
+				self.ToTU_Nightkin_Skitter_PlayChangeStateAnimT = CurTime() + (0.5)
+				local anim = {"vjseq_Stand_to_crouch"}
+				self:VJ_ACT_PLAYACTIVITY(anim,true,false,false)
+			elseif self.ToTU_Nightkin_Skitter_PlayChangeStateAnim == 2 && CurTime() > self.ToTU_Nightkin_Skitter_PlayChangeStateAnimT then
+				self:ToTU_Skitter_GetTheUp()
+				self.ToTU_Nightkin_Skitter_PlayChangeStateAnimT = CurTime() + (0.5)
+				local anim = {"vjseq_Crouch_to_stand"}				
+				self:VJ_ACT_PLAYACTIVITY(anim,true,false,false)
+			end
+		end
 	end
 
 end

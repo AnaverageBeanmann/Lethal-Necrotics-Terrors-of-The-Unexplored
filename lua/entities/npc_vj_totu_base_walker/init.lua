@@ -640,15 +640,15 @@ function ENT:CustomOnInitialize()
 
 			if 
 				GetConVar("VJ_LNR_SuperSprinter"):GetInt() == 1 &&
-				self:GetClass() != "npc_vj_totu_nightkin_squaller" && 
-				self:GetClass() != "npc_vj_totu_nightkin_scylla" && 
+				self:GetClass() != "npc_vj_totu_nightkin_squaller" &&
 				self:GetClass() != "npc_vj_totu_fon_bulldozer" && 
 				!self.ToTU_IsFreakOfNature 
 			then 
 				if math.random(1,GetConVar("VJ_ToTU_General_SuperSprinters_Chance"):GetInt()) == 1 then
 					if
-						self:GetClass() != "npc_vj_totu_milzomb_detonator" or
-						(self:GetClass() == "npc_vj_totu_milzomb_detonator" && GetConVar("VJ_ToTU_MilZ_Det_SubtypeBlacklisted"):GetInt() == 0)
+						(self:GetClass() != "npc_vj_totu_milzomb_detonator" && self:GetClass() != "npc_vj_totu_nightkin_scylla") or
+						(self:GetClass() == "npc_vj_totu_milzomb_detonator" && GetConVar("VJ_ToTU_MilZ_Det_SubtypeBlacklisted"):GetInt() == 0) or
+						(self:GetClass() == "npc_vj_totu_nightkin_scylla" && GetConVar("VJ_ToTU_Nightkin_Scylla_SubtypeBlacklisted"):GetInt() == 0)
 					then
 						self.LNR_SuperSprinter = true
 						self.AnimTbl_Walk = {ACT_RUN_AIM}
@@ -663,8 +663,9 @@ function ENT:CustomOnInitialize()
 			then
 				if math.random(1,GetConVar("VJ_ToTU_General_Rushers_Chance"):GetInt()) == 1 then
 					if
-						(self:GetClass() != "npc_vj_totu_milzomb_detonator" && self:GetClass() != "npc_vj_totu_fon_bulldozer") or
-						(self:GetClass() == "npc_vj_totu_milzomb_detonator" && GetConVar("VJ_ToTU_MilZ_Det_SubtypeBlacklisted"):GetInt() == 0)
+						(self:GetClass() != "npc_vj_totu_milzomb_detonator" && self:GetClass() != "npc_vj_totu_nightkin_scylla") or
+						(self:GetClass() == "npc_vj_totu_milzomb_detonator" && GetConVar("VJ_ToTU_MilZ_Det_SubtypeBlacklisted"):GetInt() == 0) or
+						(self:GetClass() == "npc_vj_totu_nightkin_scylla" && GetConVar("VJ_ToTU_Nightkin_Scylla_SubtypeBlacklisted"):GetInt() == 0)
 					then
 						self.AnimTbl_Walk = {ACT_SPRINT}
 						self.AnimTbl_Run = {ACT_RUN_RELAXED}
@@ -705,7 +706,7 @@ function ENT:CustomOnInitialize()
 	end
 
 	if self:GetClass() == "npc_vj_totu_milzomb_ghost" or self:GetClass() == "npc_vj_totu_nightkin_skitter" then
-	
+		if !self.LNR_Crippled then
 		self.SoundTbl_LeapAttackJump = {self.SoundTbl_BeforeMeleeAttack}
 
 		self.SoundTbl_LeapAttackDamage = {
@@ -736,6 +737,7 @@ function ENT:CustomOnInitialize()
 		self.NextAnyAttackTime_Leap = 2
 		self.LeapAttackVelocityForward = 100
 		self.LeapAttackVelocityUp = 250
+		end
 
 	end
 
@@ -910,550 +912,7 @@ function ENT:ZombieSounds()
 			"test/flower_3.mp3",
 			"test/flower_5.mp3"
 		}
-	-- resume cleanup here after nightkin are polished
-		
-	elseif self:GetClass() == "npc_vj_totu_nightkin_scragg" then
-	/*
-		self.SoundTbl_Idle = {
-			"vj_lnrspecials/butcher/groan1.mp3",
-			"vj_lnrspecials/butcher/groan2.mp3",
-			"vj_lnrspecials/butcher/groan3.mp3",
-			"vj_lnrspecials/butcher/groan4.mp3",
-			"vj_lnrspecials/butcher/groan5.mp3",
-			"vj_lnrspecials/butcher/groan6.mp3",
-			"vj_lnrspecials/butcher/groan7.mp3"
-		}
-			
-		self.SoundTbl_Alert = {
-			"vj_lnrspecials/butcher/snarl1.mp3",
-			"vj_lnrspecials/butcher/snarl2.mp3",
-			"vj_lnrspecials/butcher/getup1.mp3",
-			"vj_lnrspecials/butcher/getup2.mp3",
-			"vj_lnrspecials/butcher/getup3.mp3"
-		}
-		
-		self.SoundTbl_CombatIdle = {
-			"vj_lnrspecials/butcher/groan1.mp3",
-			"vj_lnrspecials/butcher/groan2.mp3",
-			"vj_lnrspecials/butcher/groan3.mp3",
-			"vj_lnrspecials/butcher/groan4.mp3",
-			"vj_lnrspecials/butcher/groan5.mp3",
-			"vj_lnrspecials/butcher/groan6.mp3",
-			"vj_lnrspecials/butcher/groan7.mp3"
-		}
-		
-		self.SoundTbl_BeforeMeleeAttack = {
-			"vj_lnrspecials/butcher/vo_att_180.mp3",
-			"vj_lnrspecials/butcher/vo_att1.mp3",
-			"vj_lnrspecials/butcher/vo_att2.mp3",
-			"vj_lnrspecials/butcher/vo_att3.mp3",
-			"vj_lnrspecials/butcher/vo_att4.mp3",
-			"vj_lnrspecials/butcher/vo_att5.mp3",
-			"vj_lnrspecials/butcher/vo_att6.mp3",
-			"vj_lnrspecials/butcher/vo_att7.mp3"
-		}
-		
-		self.SoundTbl_Pain = {
-			"vj_lnrspecials/butcher/hurt1.mp3",
-			"vj_lnrspecials/butcher/hurt2.mp3",
-			"vj_lnrspecials/butcher/hurt3.mp3",
-			"vj_lnrspecials/butcher/hurt4.mp3",
-			"vj_lnrspecials/butcher/hurt5.mp3",
-			"vj_lnrspecials/butcher/hurt6.mp3"
-		}
-		
-    	self.SoundTbl_Death = {
-			"vj_lnrspecials/butcher/death1.mp3",
-			"vj_lnrspecials/butcher/death2.mp3",
-			"vj_lnrspecials/butcher/death3.mp3",
-			"vj_lnrspecials/butcher/death4.mp3"
-		}
-	*/
-		self.SoundTbl_Idle = {
-			"monsters/grunt/amb_idle01.wav",
-			"monsters/grunt/amb_idle02.wav",
-			"monsters/grunt/amb_idle03.wav",
-			"monsters/grunt/amb_idle04.wav",
-			"monsters/grunt/amb_idle05.wav",
-			"monsters/grunt/amb_alert01.wav",
-			"monsters/grunt/amb_alert02.wav",
-			"monsters/grunt/amb_alert03.wav",
-		}
-			
-		self.SoundTbl_Alert = {
-			"monsters/grunt/enabled01.wav",
-			"monsters/grunt/enabled02.wav",
-			"monsters/grunt/enabled03.wav",
-			"monsters/grunt/notice01.wav",
-			"monsters/grunt/notice02.wav",
-			"monsters/grunt/notice03.wav",
-			"monsters/grunt/notice04.wav",
-			"monsters/grunt/notice_long01.wav",
-			"monsters/grunt/notice_long02.wav",
-			"monsters/grunt/notice_long03.wav",
-		}
-		
-		self.SoundTbl_CombatIdle = {
-			"monsters/grunt/amb_hunt01.wav",
-			"monsters/grunt/amb_hunt02.wav",
-			"monsters/grunt/amb_hunt03.wav",
-			"monsters/grunt/amb_hunt04.wav",
-			"monsters/grunt/amb_idle_scratch01.wav",
-			"monsters/grunt/amb_idle_scratch02.wav",
-			"monsters/grunt/amb_idle_scratch03.wav",
-		}
-		
-		self.SoundTbl_BeforeMeleeAttack = {
-			"monsters/grunt/attack_claw01.wav",
-			"monsters/grunt/attack_claw02.wav",
-			"monsters/grunt/attack_claw03.wav",
-		}
-		
-		self.SoundTbl_Pain = {
-			"monsters/grunt/attack_launch01.wav",
-			"monsters/grunt/attack_launch02.wav",
-			"monsters/grunt/attack_launch03.wav",
-		}
-		
-    	self.SoundTbl_Death = {
-			"monsters/grunt/amb_idle_whimp01.wav",
-			"monsters/grunt/amb_idle_whimp02.wav",
-		}
-		
-	elseif self:GetClass() == "npc_vj_totu_nightkin_skitter" then
 
-		self.SoundTbl_Idle = {
-			"zombies/countryside/onlookers/stalker/idle_1.mp3",
-			"zombies/countryside/onlookers/stalker/idle_2.mp3",
-			"zombies/countryside/onlookers/stalker/idle_3.mp3",
-			"zombies/countryside/onlookers/stalker/idle_4.mp3",
-			"zombies/countryside/onlookers/stalker/idle_5.mp3",
-			"zombies/countryside/onlookers/stalker/idle_6.mp3",
-			"zombies/countryside/onlookers/stalker/idle_7.mp3",
-			"zombies/countryside/onlookers/stalker/idle_8.mp3",
-			"zombies/countryside/onlookers/stalker/idle_9.mp3",
-			"zombies/countryside/onlookers/stalker/idle_10.mp3"
-		}
-
-		self.SoundTbl_Alert = {
-			"zombies/countryside/onlookers/stalker/attack_1.mp3",
-			"zombies/countryside/onlookers/stalker/attack_2.mp3",
-			"zombies/countryside/onlookers/stalker/attack_3.mp3",
-			"zombies/countryside/onlookers/stalker/attack_4.mp3",
-			"zombies/countryside/onlookers/stalker/attack_5.mp3",
-			"zombies/countryside/onlookers/stalker/attack_6.mp3",
-			"zombies/countryside/onlookers/stalker/attack_7.mp3"
-		}
-
-		self.SoundTbl_CombatIdle = {
-			"zombies/countryside/onlookers/stalker/cidle_1.mp3",
-			"zombies/countryside/onlookers/stalker/cidle_2.mp3",
-			"zombies/countryside/onlookers/stalker/cidle_3.mp3",
-			"zombies/countryside/onlookers/stalker/cidle_4.mp3"
-		}
-
-		self.SoundTbl_BeforeMeleeAttack = {
-			"zombies/countryside/onlookers/stalker/attack_1.mp3",
-			"zombies/countryside/onlookers/stalker/attack_2.mp3",
-			"zombies/countryside/onlookers/stalker/attack_3.mp3",
-			"zombies/countryside/onlookers/stalker/attack_4.mp3",
-			"zombies/countryside/onlookers/stalker/attack_5.mp3",
-			"zombies/countryside/onlookers/stalker/attack_6.mp3",
-			"zombies/countryside/onlookers/stalker/attack_7.mp3"
-		}
-
-		self.SoundTbl_Pain = {
-			"zombies/countryside/onlookers/stalker/pain_1.mp3",
-			"zombies/countryside/onlookers/stalker/pain_2.mp3",
-			"zombies/countryside/onlookers/stalker/pain_3.mp3",
-			"zombies/countryside/onlookers/stalker/pain_4.mp3",
-			"zombies/countryside/onlookers/stalker/pain_5.mp3",
-			"zombies/countryside/onlookers/stalker/pain_6.mp3",
-			"zombies/countryside/onlookers/stalker/pain_7.mp3",
-			"zombies/countryside/onlookers/stalker/pain_8.mp3",
-			"zombies/countryside/onlookers/stalker/pain_9.mp3",
-			"zombies/countryside/onlookers/stalker/pain_10.mp3",
-			"zombies/countryside/onlookers/stalker/pain_12.mp3",
-			"zombies/countryside/onlookers/stalker/pain_13.mp3",
-			"zombies/countryside/onlookers/stalker/pain_14.mp3"
-		}
-
-		self.SoundTbl_Death = {
-			"zombies/countryside/onlookers/stalker/death_1.mp3",
-			"zombies/countryside/onlookers/stalker/death_2.mp3",
-			"zombies/countryside/onlookers/stalker/death_3.mp3",
-			"zombies/countryside/onlookers/stalker/death_4.mp3"
-		}
-
-	elseif self:GetClass() == "npc_vj_totu_nightkin_shrieker" then
-
-		self.SoundTbl_Idle = {
-			"voices/nightkin/shrieker/idle_1.mp3",
-			"voices/nightkin/shrieker/idle_2.mp3",
-			"voices/nightkin/shrieker/idle_3.mp3",
-			"voices/nightkin/shrieker/idle_4.mp3",
-			"voices/nightkin/shrieker/idle_5.mp3",
-			"voices/nightkin/shrieker/idle_6.mp3",
-			"voices/nightkin/shrieker/idle_7.mp3",
-			"voices/nightkin/shrieker/idle_8.mp3",
-			"voices/nightkin/shrieker/idle_9.mp3",
-			"voices/nightkin/shrieker/idle_10.mp3",
-			"voices/nightkin/shrieker/idle_11.mp3",
-			"voices/nightkin/shrieker/idle_12.mp3",
-			"voices/nightkin/shrieker/idle_13.mp3",
-			"voices/nightkin/shrieker/idle_14.mp3",
-		}
-
-		self.SoundTbl_Alert = {
-			"voices/nightkin/shrieker/alert_1.mp3",
-			"voices/nightkin/shrieker/alert_2.mp3",
-			"voices/nightkin/shrieker/alert_3.mp3",
-			"voices/nightkin/shrieker/alert_4.mp3",
-			"voices/nightkin/shrieker/alert_5.mp3",
-			"voices/nightkin/shrieker/alert_6.mp3",
-			"voices/nightkin/shrieker/alert_7.mp3",
-			"voices/nightkin/shrieker/alert_8.mp3",
-			"voices/nightkin/shrieker/alert_9.mp3",
-			"voices/nightkin/shrieker/alert_10.mp3",
-		}
-
-		self.SoundTbl_CombatIdle = {
-			"voices/nightkin/shrieker/cidle_1.mp3",
-			"voices/nightkin/shrieker/cidle_2.mp3",
-			"voices/nightkin/shrieker/cidle_3.mp3",
-			"voices/nightkin/shrieker/cidle_4.mp3",
-			"voices/nightkin/shrieker/cidle_5.mp3",
-		}
-
-		self.SoundTbl_BeforeMeleeAttack = {
-			"voices/nightkin/shrieker/melee_1.mp3",
-			"voices/nightkin/shrieker/melee_2.mp3",
-			"voices/nightkin/shrieker/melee_3.mp3",
-			"voices/nightkin/shrieker/melee_4.mp3",
-			"voices/nightkin/shrieker/melee_5.mp3",
-		}
-
-		self.SoundTbl_Pain = {
-			"voices/nightkin/shrieker/pain_1.mp3",
-			"voices/nightkin/shrieker/pain_2.mp3",
-			"voices/nightkin/shrieker/pain_3.mp3",
-			"voices/nightkin/shrieker/pain_4.mp3",
-			"voices/nightkin/shrieker/pain_5.mp3",
-			"voices/nightkin/shrieker/pain_6.mp3",
-			"voices/nightkin/shrieker/pain_7.mp3",
-			"voices/nightkin/shrieker/pain_8.mp3",
-			"voices/nightkin/shrieker/pain_9.mp3",
-			"voices/nightkin/shrieker/pain_10.mp3",
-			"voices/nightkin/shrieker/pain_11.mp3",
-			"voices/nightkin/shrieker/pain_12.mp3",
-			"voices/nightkin/shrieker/pain_13.mp3",
-			"voices/nightkin/shrieker/pain_14.mp3",
-			"voices/nightkin/shrieker/pain_15.mp3",
-			"voices/nightkin/shrieker/pain_16.mp3",
-			"voices/nightkin/shrieker/pain_16.mp3",
-			"voices/nightkin/shrieker/pain_17.mp3",
-			"voices/nightkin/shrieker/pain_18.mp3",
-			"voices/nightkin/shrieker/pain_19.mp3",
-			"voices/nightkin/shrieker/pain_20.mp3",
-			"voices/nightkin/shrieker/pain_21.mp3",
-		}
-
-    	self.SoundTbl_Death = {
-			"voices/nightkin/shrieker/death_1.mp3",
-			"voices/nightkin/shrieker/death_2.mp3",
-			"voices/nightkin/shrieker/death_3.mp3",
-		}
-
-	elseif self:GetClass() == "npc_vj_totu_nightkin_squaller" then
-		self.SoundTbl_Idle = {
-		"zombies/countryside/onlookers/squaller/idle_1.wav",
-	"zombies/countryside/onlookers/squaller/idle_2.wav",
-	"zombies/countryside/onlookers/squaller/idle_3.wav",
-	"zombies/countryside/onlookers/squaller/idle_4.wav",
-	"zombies/countryside/onlookers/squaller/idle_5.wav",
-	"zombies/countryside/onlookers/squaller/idle_6.wav",
-	"zombies/countryside/onlookers/squaller/idle_7.wav",
-	"zombies/countryside/onlookers/squaller/idle_8.wav",
-	"zombies/countryside/onlookers/squaller/idle_9.wav",
-	"zombies/countryside/onlookers/squaller/idle_10.wav"
-		}
-			
-		self.SoundTbl_Alert = {
-		"zombies/countryside/onlookers/squaller/alert_1.wav",
-	"zombies/countryside/onlookers/squaller/alert_2.wav",
-	"zombies/countryside/onlookers/squaller/alert_3.wav",
-	"zombies/countryside/onlookers/squaller/alert_4.wav",
-	"zombies/countryside/onlookers/squaller/alert_5.wav",
-	"zombies/countryside/onlookers/squaller/alert_6.wav"
-		}
-		
-		self.SoundTbl_CombatIdle = {
-		"zombies/countryside/onlookers/squaller/combatidle_1.wav",
-	"zombies/countryside/onlookers/squaller/combatidle_2.wav",
-	"zombies/countryside/onlookers/squaller/combatidle_3.wav",
-	"zombies/countryside/onlookers/squaller/combatidle_4.wav",
-	"zombies/countryside/onlookers/squaller/combatidle_5.wav",
-	"zombies/countryside/onlookers/squaller/combatidle_6.wav",
-	"zombies/countryside/onlookers/squaller/alert_1.wav",
-	"zombies/countryside/onlookers/squaller/alert_2.wav",
-	"zombies/countryside/onlookers/squaller/alert_3.wav",
-	"zombies/countryside/onlookers/squaller/alert_4.wav",
-	"zombies/countryside/onlookers/squaller/alert_5.wav",
-	"zombies/countryside/onlookers/squaller/alert_6.wav"
-		}
-		
-		self.SoundTbl_BeforeMeleeAttack = {
-		"zombies/countryside/onlookers/squaller/combatidle_1.wav",
-	"zombies/countryside/onlookers/squaller/combatidle_2.wav",
-	"zombies/countryside/onlookers/squaller/combatidle_3.wav",
-	"zombies/countryside/onlookers/squaller/combatidle_4.wav",
-	"zombies/countryside/onlookers/squaller/combatidle_5.wav",
-	"zombies/countryside/onlookers/squaller/combatidle_6.wav",
-	"zombies/countryside/onlookers/squaller/alert_1.wav",
-	"zombies/countryside/onlookers/squaller/alert_2.wav",
-	"zombies/countryside/onlookers/squaller/alert_3.wav",
-	"zombies/countryside/onlookers/squaller/alert_4.wav",
-	"zombies/countryside/onlookers/squaller/alert_5.wav",
-	"zombies/countryside/onlookers/squaller/alert_6.wav"
-		}
-		
-		self.SoundTbl_Pain = {
-		"zombies/countryside/onlookers/squaller/pain_1.wav",
-	"zombies/countryside/onlookers/squaller/pain_2.wav",
-	"zombies/countryside/onlookers/squaller/pain_3.wav",
-	"zombies/countryside/onlookers/squaller/pain_4.wav",
-	"zombies/countryside/onlookers/squaller/pain_5.wav",
-	"zombies/countryside/onlookers/squaller/pain_6.wav",
-	"zombies/countryside/onlookers/squaller/pain_7.wav",
-	"zombies/countryside/onlookers/squaller/pain_8.wav",
-	"zombies/countryside/onlookers/squaller/pain_9.wav",
-	"zombies/countryside/onlookers/squaller/pain_10.wav",
-	"zombies/countryside/onlookers/squaller/pain_11.wav",
-	"zombies/countryside/onlookers/squaller/pain_12.wav",
-	"zombies/countryside/onlookers/squaller/pain_13.wav",
-	"zombies/countryside/onlookers/squaller/pain_14.wav"
-		}
-		
-    	self.SoundTbl_Death = {
-		"zombies/countryside/onlookers/squaller/death_1.wav",
-	"zombies/countryside/onlookers/squaller/death_2.wav",
-	"zombies/countryside/onlookers/squaller/death_3.wav",
-	"zombies/countryside/onlookers/squaller/death_4.wav",
-	"zombies/countryside/onlookers/squaller/death_5.wav",
-	"zombies/countryside/onlookers/squaller/death_6.wav"
-		}
-		
-	elseif self:GetClass() == "npc_vj_totu_nightkin_spitballer" then
-		self.SoundTbl_Idle = {
-		"player/spitter/voice/idle/spitter_lurk_01.wav",
-		"player/spitter/voice/idle/spitter_lurk_02.wav",
-		"player/spitter/voice/idle/spitter_lurk_03.wav",
-		"player/spitter/voice/idle/spitter_lurk_04.wav",
-		"player/spitter/voice/idle/spitter_lurk_05.wav",
-		"player/spitter/voice/idle/spitter_lurk_06.wav",
-		"player/spitter/voice/idle/spitter_lurk_07.wav",
-		"player/spitter/voice/idle/spitter_lurk_08.wav",
-		"player/spitter/voice/idle/spitter_lurk_09.wav",
-		"player/spitter/voice/idle/spitter_lurk_10.wav",
-		"player/spitter/voice/idle/spitter_lurk_11.wav",
-		"player/spitter/voice/idle/spitter_lurk_12.wav",
-		"player/spitter/voice/idle/spitter_lurk_14.wav",
-		"player/spitter/voice/idle/spitter_lurk_15.wav",
-		"player/spitter/voice/idle/spitter_lurk_16.wav",
-		"player/spitter/voice/idle/spitter_lurk_17.wav",
-		"player/spitter/voice/idle/spitter_lurk_18.wav",
-		"player/spitter/voice/idle/spitter_lurk_19.wav",
-		"player/spitter/voice/idle/spitter_lurk_20.wav",
-		}
-			
-		self.SoundTbl_Alert = {
-		"player/spitter/voice/idle/spitter_spotprey_01.wav",
-		"player/spitter/voice/idle/spitter_spotprey_02.wav",
-		"player/spitter/voice/idle/spitter_spotprey_03.wav",
-		"player/spitter/voice/idle/spitter_spotprey_04.wav",
-		"player/spitter/voice/idle/spitter_spotprey_05.wav",
-		"player/spitter/voice/idle/spitter_spotprey_06.wav",
-		"player/spitter/voice/alert/spitter_alert_01.wav",
-		"player/spitter/voice/alert/spitter_alert_02.wav",
-		}
-		
-		self.SoundTbl_CombatIdle = {
-		"player/spitter/voice/idle/spitter_lurk_01.wav",
-		"player/spitter/voice/idle/spitter_lurk_02.wav",
-		"player/spitter/voice/idle/spitter_lurk_03.wav",
-		"player/spitter/voice/idle/spitter_lurk_04.wav",
-		"player/spitter/voice/idle/spitter_lurk_05.wav",
-		"player/spitter/voice/idle/spitter_lurk_06.wav",
-		"player/spitter/voice/idle/spitter_lurk_07.wav",
-		"player/spitter/voice/idle/spitter_lurk_08.wav",
-		"player/spitter/voice/idle/spitter_lurk_09.wav",
-		"player/spitter/voice/idle/spitter_lurk_10.wav",
-		"player/spitter/voice/idle/spitter_lurk_11.wav",
-		"player/spitter/voice/idle/spitter_lurk_12.wav",
-		"player/spitter/voice/idle/spitter_lurk_14.wav",
-		"player/spitter/voice/idle/spitter_lurk_15.wav",
-		"player/spitter/voice/idle/spitter_lurk_16.wav",
-		"player/spitter/voice/idle/spitter_lurk_17.wav",
-		"player/spitter/voice/idle/spitter_lurk_18.wav",
-		"player/spitter/voice/idle/spitter_lurk_19.wav",
-		"player/spitter/voice/idle/spitter_lurk_20.wav",
-		}
-		
-		self.SoundTbl_BeforeMeleeAttack = {
-		}
-		
-		self.SoundTbl_BeforeRangeAttack = {
-		"player/spitter/voice/warn/spitter_spit_01.wav",
-		"player/spitter/voice/warn/spitter_spit_02.wav",
-		}
-		
-		self.SoundTbl_Pain = {
-		"player/spitter/voice/pain/spitter_pain_01.wav",
-		"player/spitter/voice/pain/spitter_pain_02.wav",
-		"player/spitter/voice/pain/spitter_pain_03.wav",
-		"player/spitter/voice/pain/spitter_painshort_01.wav",
-		"player/spitter/voice/pain/spitter_painshort_02.wav",
-		"player/spitter/voice/pain/spitter_painshort_03.wav",
-		}
-		
-    	self.SoundTbl_Death = {
-		"player/spitter/voice/die/spitter_death_01.wav",
-		"player/spitter/voice/die/spitter_death_02.wav",
-		}
-		
-	elseif self:GetClass() == "npc_vj_totu_nightkin_spectre" then
-	
-		-- self.SoundTbl_Idle = {
-			-- "voices/nightkin/spectre/flesher_bark_generic_01.mp3",
-			-- "voices/nightkin/spectre/flesher_bark_generic_02.mp3",
-			-- "voices/nightkin/spectre/flesher_bark_generic_03.mp3",
-			-- "voices/nightkin/spectre/flesher_bark_generic_04.mp3",
-			-- "voices/nightkin/spectre/flesher_bark_generic_05.mp3",
-			-- "voices/nightkin/spectre/flesher_bark_generic_06.mp3",
-			-- "voices/nightkin/spectre/flesher_bark_generic_07.mp3",
-			-- "voices/nightkin/spectre/flesher_bark_generic_08.mp3",
-			-- "voices/nightkin/spectre/flesher_bark_generic_09.mp3",
-			-- "voices/nightkin/spectre/flesher_bark_generic_10.mp3",
-			-- "voices/nightkin/spectre/flesher_bark_generic_11.mp3",
-			-- "voices/nightkin/spectre/flesher_bark_generic_12.mp3",
-			-- "voices/nightkin/spectre/flesher_bark_generic_13.mp3",
-			-- "voices/nightkin/spectre/flesher_bark_generic_14.mp3",
-			-- "voices/nightkin/spectre/flesher_bark_generic_15.mp3",
-			-- "voices/nightkin/spectre/flesher_bark_generic_16.mp3",
-			-- "voices/nightkin/spectre/flesher_bark_generic_21.mp3",
-			-- "voices/nightkin/spectre/flesher_bark_generic_22.mp3",
-			-- "voices/nightkin/spectre/flesher_bark_generic_23.mp3",
-			-- "voices/nightkin/spectre/flesher_bark_generic_25.mp3",
-			-- "voices/nightkin/spectre/flesher_bark_generic_28.mp3",
-			-- "voices/nightkin/spectre/flesher_bark_generic_29.mp3",
-			-- "voices/nightkin/spectre/flesher_bark_generic_30.mp3",
-			-- "voices/nightkin/spectre/flesher_bark_generic_30.mp3",
-			-- "voices/nightkin/spectre/flesher_bark_generic_32.mp3",
-			-- "voices/nightkin/spectre/flesher_bark_generic_33.mp3",
-			-- "voices/nightkin/spectre/flesher_bark_generic_34.mp3"
-		-- }
-
-		-- self.SoundTbl_Alert = {
-			-- "voices/nightkin/spectre/flesher_see_shriek_01.mp3",
-			-- "voices/nightkin/spectre/flesher_see_shriek_02.mp3",
-			-- "voices/nightkin/spectre/flesher_see_shriek_03.mp3",
-			-- "voices/nightkin/spectre/flesher_see_shriek_04.mp3",
-			-- "voices/nightkin/spectre/flesher_see_shriek_05.mp3",
-			-- "voices/nightkin/spectre/flesher_see_shriek_06.mp3",
-			-- "voices/nightkin/spectre/flesher_see_shriek_07.mp3",
-			-- "voices/nightkin/spectre/flesher_see_shriek_08.mp3"
-		-- }
-
-		-- self.SoundTbl_CombatIdle = {
-			-- "voices/nightkin/spectre/flesher_searching_01.mp3",
-			-- "voices/nightkin/spectre/flesher_searching_02.mp3",
-			-- "voices/nightkin/spectre/flesher_searching_03.mp3",
-			-- "voices/nightkin/spectre/flesher_searching_04.mp3",
-			-- "voices/nightkin/spectre/flesher_searching_05.mp3",
-			-- "voices/nightkin/spectre/flesher_searching_06.mp3",
-			-- "voices/nightkin/spectre/flesher_searching_07.mp3",
-			-- "voices/nightkin/spectre/flesher_searching_08.mp3",
-			-- "voices/nightkin/spectre/flesher_searching_09.mp3",
-			-- "voices/nightkin/spectre/flesher_searching_10.mp3",
-			-- "voices/nightkin/spectre/flesher_searching_11.mp3"
-		-- }
-
-		-- self.SoundTbl_BeforeMeleeAttack = {
-			-- "voices/nightkin/spectre/flesher_see_shriek_01.mp3",
-			-- "voices/nightkin/spectre/flesher_see_shriek_02.mp3",
-			-- "voices/nightkin/spectre/flesher_see_shriek_03.mp3",
-			-- "voices/nightkin/spectre/flesher_see_shriek_04.mp3",
-			-- "voices/nightkin/spectre/flesher_see_shriek_05.mp3",
-			-- "voices/nightkin/spectre/flesher_see_shriek_06.mp3",
-			-- "voices/nightkin/spectre/flesher_see_shriek_07.mp3",
-			-- "voices/nightkin/spectre/flesher_see_shriek_08.mp3"
-		-- }
-
-		-- self.SoundTbl_Pain = {
-			-- "voices/nightkin/spectre/flesher_bark_generic_17.mp3",
-			-- "voices/nightkin/spectre/flesher_bark_generic_18.mp3",
-			-- "voices/nightkin/spectre/flesher_bark_generic_19.mp3",
-			-- "voices/nightkin/spectre/flesher_bark_generic_26.mp3",
-			-- "voices/nightkin/spectre/flesher_bark_generic_27.mp3"
-		-- }
-
-    	-- self.SoundTbl_Death = {
-			-- "voices/nightkin/spectre/flesher_bark_generic_20.mp3",
-			-- "voices/nightkin/spectre/flesher_bark_generic_24.mp3"
-			
-		-- }
-			self.SoundTbl_Idle = {
-		"ambient/levels/citadel/strange_talk5.wav",
-		"ambient/levels/citadel/strange_talk6.wav",
-		"ambient/levels/citadel/strange_talk7.wav",
-		"ambient/levels/citadel/strange_talk8.wav",
-	}
-
-	self.SoundTbl_Alert = {
-		"ambient/levels/citadel/strange_talk1.wav",
-		"ambient/levels/citadel/strange_talk3.wav",
-		"ambient/levels/citadel/strange_talk9.wav",
-		"ambient/levels/streetwar/gunship_distant2.wav",
-	}
-
-	self.SoundTbl_CombatIdle = {
-		"ambient/levels/citadel/strange_talk10.wav",
-		"ambient/levels/citadel/strange_talk11.wav",
-		"ambient/levels/citadel/strange_talk4.wav",
-	}
-
-	self.SoundTbl_BeforeMeleeAttack = {
-		""
-	}
-
-	self.SoundTbl_BeforeRangeAttack = {
-		"voices/nightkin/spectre/flesher_see_shriek_01.mp3",
-		"voices/nightkin/spectre/flesher_see_shriek_02.mp3",
-		"voices/nightkin/spectre/flesher_see_shriek_03.mp3",
-		"voices/nightkin/spectre/flesher_see_shriek_04.mp3",
-		"voices/nightkin/spectre/flesher_see_shriek_05.mp3",
-		"voices/nightkin/spectre/flesher_see_shriek_06.mp3",
-		"voices/nightkin/spectre/flesher_see_shriek_07.mp3",
-		"voices/nightkin/spectre/flesher_see_shriek_08.mp3"
-	}
-
-	self.SoundTbl_RangeAttack = {
-		"ambient/levels/citadel/portal_beam_shoot1.wav",
-		"ambient/levels/citadel/portal_beam_shoot2.wav",
-		"ambient/levels/citadel/portal_beam_shoot3.wav",
-		"ambient/levels/citadel/portal_beam_shoot4.wav",
-		"ambient/levels/citadel/portal_beam_shoot5.wav",
-		"ambient/levels/citadel/portal_beam_shoot6.wav",
-	}
-
-	self.SoundTbl_Pain = {
-		""
-	}
-
-    self.SoundTbl_Death = {
-		""
-	}
-		
 	elseif self:GetClass() == "npc_vj_totu_weaponized_carcass" or self:GetClass() == "npc_vj_totu_weaponized_carcass_torso" then
 	
 		self.SoundTbl_Idle = {
@@ -1498,97 +957,7 @@ function ENT:ZombieSounds()
 		self.CombatIdleSoundChance = 4
 		self.IdleSoundLevel = 45
 		self.CombatIdleSoundLevel = 60
-		
-	elseif self:GetClass() == "npc_vj_totu_nightkin_scylla" then
-		-- self.SoundTbl_Idle = {
-		-- "voices/nightkin/scylla/idle_1.mp3",
-		-- "voices/nightkin/scylla/idle_2.mp3",
-		-- "voices/nightkin/scylla/idle_3.mp3",
-		-- "voices/nightkin/scylla/idle_4.mp3",
-		-- }
-			
-		-- self.SoundTbl_Alert = {
-		-- "voices/nightkin/scylla/long_scream_1.mp3",
-		-- "voices/nightkin/scylla/long_scream_2.mp3",
-		-- "voices/nightkin/scylla/long_scream_3.mp3",
-		-- "voices/nightkin/scylla/long_scream_4.mp3",
-		-- }
-		
-		-- self.SoundTbl_CombatIdle = {
-		-- "voices/nightkin/scylla/howl_1.mp3",
-		-- "voices/nightkin/scylla/howl_2.mp3",
-		-- "voices/nightkin/scylla/howl_3.mp3",
-		-- "voices/nightkin/scylla/howl_4.mp3",
-		-- }
-		
-		-- self.SoundTbl_BeforeMeleeAttack = {
-		-- "voices/nightkin/scylla/long_scream_1.mp3",
-		-- "voices/nightkin/scylla/long_scream_2.mp3",
-		-- "voices/nightkin/scylla/long_scream_3.mp3",
-		-- "voices/nightkin/scylla/long_scream_4.mp3",
-		-- }
-		
-		-- self.SoundTbl_Pain = {
-		-- "voices/nightkin/scylla/pain_1.mp3",
-		-- "voices/nightkin/scylla/pain_2.mp3",
-		-- "voices/nightkin/scylla/pain_3.mp3",
-		-- "voices/nightkin/scylla/pain_4.mp3",
-		-- "voices/nightkin/scylla/pain_5.mp3",
-		-- }
-		
-    	-- self.SoundTbl_Death = {
-		-- "voices/nightkin/scylla/death.mp3"
-		-- }
-		
-		self.SoundTbl_Idle = {
-		"monsters/suitor/amb_idle01.wav",
-		"monsters/suitor/amb_idle02.wav",
-		"monsters/suitor/amb_idle03.wav",
-		"monsters/suitor/amb_idle04.wav",
-		"monsters/suitor/amb_idle05.wav",
-		"monsters/suitor/amb_alert01.wav",
-		"monsters/suitor/amb_alert02.wav",
-		"monsters/suitor/amb_alert03.wav"
-		}
-			
-		self.SoundTbl_Alert = {
-		"monsters/suitor/enabled01.wav",
-		"monsters/suitor/enabled02.wav",
-		"monsters/suitor/enabled03.wav"
-		}
-		
-		self.SoundTbl_CombatIdle = {
-		"monsters/suitor/amb_idle_scratch01.wav",
-		"monsters/suitor/amb_idle_scratch02.wav",
-		"monsters/suitor/amb_idle_scratch03.wav",
-		"monsters/suitor/amb_idle_scratch04.wav"
-		}
-		
-		self.SoundTbl_BeforeMeleeAttack = {
-		"monsters/suitor/attack_claw01.wav",
-		"monsters/suitor/attack_claw02.wav",
-		"monsters/suitor/attack_launch01.wav",
-		"monsters/suitor/attack_launch02.wav"
-		}
-		self.SoundTbl_Pain = {
-		"monsters/suitor/notice01.wav",
-		"monsters/suitor/notice02.wav",
-		"monsters/suitor/notice03.wav",
-		"monsters/suitor/notice_long01.wav",
-		"monsters/suitor/notice_long02.wav"
-		}
-		
-    	self.SoundTbl_Death = {
-		"monsters/suitor/amb_idle_whimp01.wav",
-		"monsters/suitor/amb_idle_whimp02.wav",
-		}
 
-		self.IdleSoundPitch = VJ_Set(70, 60)
-		self.AlertSoundPitch = VJ_Set(80, 70)
-		self.CombatIdleSoundPitch = VJ_Set(70, 60)
-		self.BeforeMeleeAttackSoundPitch = VJ_Set(70, 60)
-		self.PainSoundPitch = VJ_Set(70, 60)
-		self.DeathSoundPitch = VJ_Set(70, 60)
 	elseif self:GetClass() == "npc_vj_totu_weaponized_cyst" then
 		self.SoundTbl_Idle = {
 		"zombies/coastline/whale/idle_1.mp3",
@@ -2630,11 +1999,11 @@ function ENT:CustomOnAcceptInput(key,activator,caller,data)
 		end
 
 		if self:GetClass() == "npc_vj_totu_nightkin_squaller" && self.ToTU_Nightkin_Squaller_UsingIronWill then
-			VJ_EmitSound(self,"zombies/countryside/onlookers/squaller/step_"..math.random(1,9)..".wav",self.FootStepSoundLevel,self:VJ_DecideSoundPitch(self.FootStepPitch.a,self.FootStepPitch.b))
+			VJ_EmitSound(self,"fx/footsteps/squal/step_"..math.random(1,9)..".mp3",self.FootStepSoundLevel,self:VJ_DecideSoundPitch(self.FootStepPitch.a,self.FootStepPitch.b))
 		end
 
 		if self:GetClass() == "npc_vj_totu_nightkin_scylla" then
-			VJ_EmitSound(self,"zombies/countryside/goliath/step_"..math.random(1,5)..".wav",75,self:VJ_DecideSoundPitch(self.FootStepPitch.a,self.FootStepPitch.b))
+			VJ_EmitSound(self,"fx/footsteps/gol/step_"..math.random(1,5)..".wav",75,self:VJ_DecideSoundPitch(self.FootStepPitch.a,self.FootStepPitch.b))
 		end
 
 		if self:GetClass() == "npc_vj_totu_weaponized_smog" then
@@ -2695,7 +2064,7 @@ function ENT:CustomOnAcceptInput(key,activator,caller,data)
 		util.Effect( "ThumperDust", effectdata )
 		util.ScreenShake(self:GetPos(), self.WorldShakeOnMoveAmplitude, self.WorldShakeOnMoveFrequency, self.WorldShakeOnMoveDuration, self.WorldShakeOnMoveRadius)
 		util.VJ_SphereDamage(self, self, self:GetPos(), 190, math.Rand(10,15), DMG_VEHICLE, true, true, {Force=100})
-		VJ_EmitSound(self,"zombies/countryside/behemoth/step_"..math.random(1,4)..".mp3",75,100)
+		VJ_EmitSound(self,"fx/footsteps/beh/step_"..math.random(1,4)..".mp3",75,100)
 
 	end
 
@@ -2741,11 +2110,11 @@ function ENT:CustomOnAcceptInput(key,activator,caller,data)
 		end
 
 		if self:GetClass() == "npc_vj_totu_nightkin_squaller" then
-			VJ_EmitSound(self,"zombies/countryside/onlookers/squaller/step_"..math.random(1,9)..".wav",self.FootStepSoundLevel,self:VJ_DecideSoundPitch(self.FootStepPitch.a,self.FootStepPitch.b))
+			VJ_EmitSound(self,"fx/footsteps/squal/step_"..math.random(1,9)..".mp3",self.FootStepSoundLevel,self:VJ_DecideSoundPitch(self.FootStepPitch.a,self.FootStepPitch.b))
 		end
 
 		if self:GetClass() == "npc_vj_totu_nightkin_scylla" then
-			VJ_EmitSound(self,"zombies/countryside/goliath/step_"..math.random(1,5)..".wav",75,self:VJ_DecideSoundPitch(self.FootStepPitch.a,self.FootStepPitch.b))
+			VJ_EmitSound(self,"fx/footsteps/gol/step_"..math.random(1,5)..".wav",75,self:VJ_DecideSoundPitch(self.FootStepPitch.a,self.FootStepPitch.b))
 			VJ_EmitSound(self,"zombies/weaponized/smog/step_"..math.random(1,5)..".wav",75,self:VJ_DecideSoundPitch(self.FootStepPitch.a,self.FootStepPitch.b))
 		end
 
@@ -3352,6 +2721,7 @@ end
 				self:VJ_ACT_PLAYACTIVITY(ACT_HL2MP_ZOMBIE_SLUMP_RISE, true, false, false)
 			end
 			self.DisableWandering = true
+			self.HasIdleSounds = false
 			self.CanTurnWhileStationary = false
 			self.TurningSpeed = 0
 			-- self:SetState(VJ_STATE_ONLY_ANIMATION, sleept)
@@ -3382,6 +2752,7 @@ end
 								if GetConVar("vj_npc_nowandering"):GetInt() != 1 then
 									self.DisableWandering = false
 								end
+								self.HasIdleSounds = true
 								self.CanTurnWhileStationary = true
 								self.TurningSpeed = 15
 								self.AnimTbl_IdleStand = {ACT_IDLE}
@@ -3401,6 +2772,7 @@ end
 						if GetConVar("vj_npc_nowandering"):GetInt() != 1 then
 							self.DisableWandering = false
 						end
+						self.HasIdleSounds = true
 						self.CanTurnWhileStationary = true
 						self.TurningSpeed = 15
 						self.AnimTbl_IdleStand = {ACT_IDLE}
@@ -3969,6 +3341,15 @@ function ENT:Controller_IntMsg(ply)
 		ply:ChatPrint("RMB: Throw Grenade")
 	end
 
+	if self:GetClass() == "npc_vj_totu_nightkin_skitter" or self.MiLZ_Ghillie_IsGhillie then
+		ply:ChatPrint("JUMP: Stand/Crouch.")
+	end
+
+	if self:GetClass() == "npc_vj_totu_nightkin_spectre" then
+		ply:ChatPrint("JUMP: Phase Toggle."
+	end
+
+	-- add this sound at some point
 	local badtotheboner = CreateSound(ply, "ui/pickup_guitarriff10.wav")
 	badtotheboner:SetSoundLevel(40)
 	badtotheboner:Play()
@@ -4036,6 +3417,7 @@ function ENT:CustomOnInvestigate(ent)
 		if GetConVar("vj_npc_nowandering"):GetInt() != 1 then
 			self.DisableWandering = false
 		end
+		self.HasIdleSounds = true
 		self.CanTurnWhileStationary = true
 		self.TurningSpeed = 15
 		self.AnimTbl_IdleStand = {ACT_IDLE}
@@ -4070,6 +3452,7 @@ function ENT:CustomOnAlert(ent)
 		if GetConVar("vj_npc_nowandering"):GetInt() != 1 then
 			self.DisableWandering = false
 		end
+		self.HasIdleSounds = true
 		self.CanTurnWhileStationary = true
 		self.TurningSpeed = 15
 		self.AnimTbl_IdleStand = {ACT_IDLE}
@@ -4079,14 +3462,14 @@ function ENT:CustomOnAlert(ent)
 	end
 
 
-	if self.MiLZ_Ghillie_IsGhillie && self.MilZ_Ghillie_PlayChangeStateAnim == 1 then
+	if self.MiLZ_Ghillie_IsGhillie && self.MilZ_Ghillie_PlayChangeStateAnim == 1 && !self.LNR_Crippled then
 		self:ToTU_Ghillie_StartCrawling()
 		self.MilZ_Ghillie_PlayChangeStateAnim_T = CurTime() + (0.5)
 		local anim = {"vjseq_Stand_to_crouch"}
 		self:VJ_ACT_PLAYACTIVITY(anim,true,false,false)
 	end
 
-	if self:GetClass() == "npc_vj_totu_nightkin_skitter" && self.ToTU_Nightkin_Skitter_PlayChangeStateAnim == 1 then
+	if self:GetClass() == "npc_vj_totu_nightkin_skitter" && self.ToTU_Nightkin_Skitter_PlayChangeStateAnim == 1 && !self.LNR_Crippled then
 		self:ToTU_Skitter_StartCrawling()
 		self.ToTU_Nightkin_Skitter_PlayChangeStateAnimT = CurTime() + (0.5)
 		local anim = {"vjseq_Stand_to_crouch"}
@@ -4906,6 +4289,7 @@ function ENT:CustomOnTakeDamage_AfterDamage(dmginfo,hitgroup)
 		if GetConVar("vj_npc_nowandering"):GetInt() != 1 then
 			self.DisableWandering = false
 		end
+		self.HasIdleSounds = true
 		self.CanTurnWhileStationary = true
 		self.TurningSpeed = 15
 		self.AnimTbl_IdleStand = {ACT_IDLE}
@@ -5069,7 +4453,8 @@ function ENT:Cripple()
 	if
 		self:GetClass() == "npc_vj_totu_milzomb_juggernaut" or
 		self:GetClass() == "npc_vj_totu_milzomb_bulldozer" or
-		self:GetClass() == "npc_vj_totu_milzomb_tank"
+		self:GetClass() == "npc_vj_totu_milzomb_tank" or
+		self:GetClass() == "npc_vj_totu_nightkin_scylla"
 	then
 		if GetConVar("VJ_LNR_Difficulty"):GetInt() == 1 then
 			self.MeleeAttackDamage = math.Rand(10,15)
@@ -5092,6 +4477,8 @@ function ENT:Cripple()
 		self.ToTU_Nightkin_Shrieker_CanSpawnHelp = false
 		self.ToTU_Nightkin_Shrieker_CanShriek = false
 	end
+	
+	
 
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
@@ -5503,6 +4890,7 @@ function ENT:CustomOnDeath_AfterCorpseSpawned(dmginfo,hitgroup,GetCorpse)
 			VJ_EmitSound(GetCorpse,"fx/ironwill_start.mp3",75,100)
 
 			local RevivedSquall = ents.Create("npc_vj_totu_nightkin_squaller")			
+			RevivedSquall.CanEat = false
 			RevivedSquall.CanFlinch = 0
 			RevivedSquall.CanInvestigate = false
 			RevivedSquall.HasDeathAnimation = false
@@ -5528,7 +4916,7 @@ function ENT:CustomOnDeath_AfterCorpseSpawned(dmginfo,hitgroup,GetCorpse)
 			RevivedSquall:SetBodygroup(3,GetCorpse:GetBodygroup(3))
 
 			if math.random(1,100) == 1 && GetConVar("VJ_ToTU_General_EasterEggs"):GetInt() == 1 then
-				VJ_EmitSound(RevivedSquall,"player/survivor/voice/biker/gettingrevived14.wav",80,100)
+				VJ_EmitSound(RevivedSquall,"fx/egg/gettingrevived14.wav",80,100)
 			end
 
 			timer.Simple(0.08,function() if IsValid(RevivedSquall) then

@@ -72,6 +72,61 @@ function ENT:Zombie_Difficulty()
 	end
 
 end
+---------------------------------------------------------------------------------------------------------------------------------------------
+function ENT:ZombieSounds_Custom()
+
+	self.SoundTbl_Idle = {
+		"voices/amnesia/suitor/amb_idle01.wav",
+		"voices/amnesia/suitor/amb_idle02.wav",
+		"voices/amnesia/suitor/amb_idle03.wav",
+		"voices/amnesia/suitor/amb_idle04.wav",
+		"voices/amnesia/suitor/amb_idle05.wav",
+		"voices/amnesia/suitor/amb_alert01.wav",
+		"voices/amnesia/suitor/amb_alert02.wav",
+		"voices/amnesia/suitor/amb_alert03.wav"
+	}
+
+	self.SoundTbl_Alert = {
+		"voices/amnesia/suitor/enabled01.wav",
+		"voices/amnesia/suitor/enabled02.wav",
+		"voices/amnesia/suitor/enabled03.wav"
+	}
+
+	self.SoundTbl_CombatIdle = {
+		"voices/amnesia/suitor/amb_idle_scratch01.wav",
+		"voices/amnesia/suitor/amb_idle_scratch02.wav",
+		"voices/amnesia/suitor/amb_idle_scratch03.wav",
+		"voices/amnesia/suitor/amb_idle_scratch04.wav"
+	}
+
+	self.SoundTbl_BeforeMeleeAttack = {
+		"voices/amnesia/suitor/attack_claw01.wav",
+		"voices/amnesia/suitor/attack_claw02.wav",
+		"voices/amnesia/suitor/attack_launch01.wav",
+		"voices/amnesia/suitor/attack_launch02.wav"
+	}
+
+	self.SoundTbl_Pain = {
+		"voices/amnesia/suitor/notice01.wav",
+		"voices/amnesia/suitor/notice02.wav",
+		"voices/amnesia/suitor/notice03.wav",
+		"voices/amnesia/suitor/notice_long01.wav",
+		"voices/amnesia/suitor/notice_long02.wav"
+	}
+
+	self.SoundTbl_Death = {
+		"voices/amnesia/suitor/amb_idle_whimp01.wav",
+		"voices/amnesia/suitor/amb_idle_whimp02.wav",
+	}
+
+	self.IdleSoundPitch = VJ_Set(70, 60)
+	self.AlertSoundPitch = VJ_Set(80, 70)
+	self.CombatIdleSoundPitch = VJ_Set(70, 60)
+	self.BeforeMeleeAttackSoundPitch = VJ_Set(70, 60)
+	self.PainSoundPitch = VJ_Set(70, 60)
+	self.DeathSoundPitch = VJ_Set(70, 60)
+
+end
 /*-----------------------------------------------
 	*** Copyright (c) 2012-2019 by DrVrej, All rights reserved. ***
 	No parts of this code or any of its contents may be reproduced, copied, modified or adapted,

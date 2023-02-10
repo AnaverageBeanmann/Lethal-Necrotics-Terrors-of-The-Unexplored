@@ -73,6 +73,56 @@ function ENT:Zombie_Difficulty()
 
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
+function ENT:ZombieSounds_Custom()
+
+	self.SoundTbl_Idle = {
+		"ambient/levels/citadel/strange_talk5.wav",
+		"ambient/levels/citadel/strange_talk6.wav",
+		"ambient/levels/citadel/strange_talk7.wav",
+		"ambient/levels/citadel/strange_talk8.wav",
+	}
+
+	self.SoundTbl_Alert = {
+		"ambient/levels/citadel/strange_talk1.wav",
+		"ambient/levels/citadel/strange_talk3.wav",
+		"ambient/levels/citadel/strange_talk9.wav",
+		"ambient/levels/streetwar/gunship_distant2.wav",
+	}
+
+	self.SoundTbl_CombatIdle = {
+		"ambient/levels/citadel/strange_talk10.wav",
+		"ambient/levels/citadel/strange_talk11.wav",
+		"ambient/levels/citadel/strange_talk4.wav",
+	}
+
+	self.SoundTbl_BeforeMeleeAttack = {""}
+
+	self.SoundTbl_BeforeRangeAttack = {
+		"voices/nightkin/spectre/flesher_see_shriek_01.mp3",
+		"voices/nightkin/spectre/flesher_see_shriek_02.mp3",
+		"voices/nightkin/spectre/flesher_see_shriek_03.mp3",
+		"voices/nightkin/spectre/flesher_see_shriek_04.mp3",
+		"voices/nightkin/spectre/flesher_see_shriek_05.mp3",
+		"voices/nightkin/spectre/flesher_see_shriek_06.mp3",
+		"voices/nightkin/spectre/flesher_see_shriek_07.mp3",
+		"voices/nightkin/spectre/flesher_see_shriek_08.mp3"
+	}
+
+	self.SoundTbl_RangeAttack = {
+		"ambient/levels/citadel/portal_beam_shoot1.wav",
+		"ambient/levels/citadel/portal_beam_shoot2.wav",
+		"ambient/levels/citadel/portal_beam_shoot3.wav",
+		"ambient/levels/citadel/portal_beam_shoot4.wav",
+		"ambient/levels/citadel/portal_beam_shoot5.wav",
+		"ambient/levels/citadel/portal_beam_shoot6.wav",
+	}
+
+	self.SoundTbl_Pain = {""}
+
+    self.SoundTbl_Death = {""}
+
+end
+---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:Zombie_CustomOnThink_AIEnabled()
 
 	if self.ToTU_Nightkin_Spectre_HideT < CurTime() then
@@ -103,13 +153,12 @@ function ENT:ToTU_Spectre_RevealSelfJumpscare()
 	self.HasMeleeAttack = true
 	self.MeleeAttackDamageDistance = 60
 	self.HasRangeAttack = true
+	self.ToTU_Nightkin_Spectre_HideT = CurTime() + math.random(1,10)
 
 	self:SetMaterial("")
 	self:DrawShadow(true)
 	self:SetColor(Color(74,117,150,29))
 	self:SetRenderMode( RENDERMODE_NORMAL )
-
-	self.ToTU_Nightkin_Spectre_HideT = CurTime() + math.random(1,10)
 
 	self:ToTU_Spectre_DoWarpEffects()
 
@@ -119,8 +168,10 @@ function ENT:ToTU_Spectre_RevealSelfJumpscare()
 
 	self.FootStepSoundLevel = 70
 	
-	util.VJ_SphereDamage(self, self, self:GetPos(), 5, 9999, DMG_SONIC, true, true, {Force=100})
-	util.VJ_SphereDamage(self, self, self:GetPos()+self:GetUp()*90, 5, 9999, DMG_SONIC, true, true, {Force=100})
+	self.LNR_VirusInfection = false
+	util.VJ_SphereDamage(self, self, self:GetPos(), 5, 9999, DMG_DISSOLVE, true, true, {Force=100})
+	util.VJ_SphereDamage(self, self, self:GetPos()+self:GetUp()*90, 5, 9999, DMG_DISSOLVE, true, true, {Force=100})
+	self.LNR_VirusInfection = true
 
 	self.SoundTbl_Idle = {
 		"voices/nightkin/spectre/flesher_bark_generic_01.mp3",
@@ -205,7 +256,6 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:ToTU_Spectre_Hide()
 
-	self:ToTU_Spectre_DoWarpEffects()
 
     self:AddFlags(FL_NOTARGET)
 	self.VJ_NoTarget = true
@@ -217,14 +267,15 @@ function ENT:ToTU_Spectre_Hide()
 	self:SetMaterial("models/shiny")
 	self:SetColor(Color(9,10,13,5))
 	self:SetRenderMode( RENDERMODE_TRANSCOLOR )
+	self:RemoveAllDecals()
+
+	self:ToTU_Spectre_DoWarpEffects()
 
 	self.IdleSoundLevel = 50
 	self.AlertSoundLevel = 55
 	self.CombatIdleSoundLevel = 55
 
 	self.FootStepSoundLevel = 45
-
-	self:RemoveAllDecals()
 
 	self.SoundTbl_Idle = {
 		"ambient/levels/citadel/strange_talk5.wav",

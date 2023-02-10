@@ -176,39 +176,45 @@ function ENT:Zombie_CustomOnInitialize()
 		self:DeleteOnRemove(LightGlow)
 		self.LightGlow = LightGlow
 
-		self.HasRangeAttack = true
-		self.RangeAttackEntityToSpawn = "obj_vj_totu_biolum"
-		self.AnimTbl_RangeAttack = {"vjseq_nz_taunt_7"}
-		self.RangeDistance = 1200 
-		self.RangeToMeleeDistance = 0
-		self.RangeAttackAngleRadius = 100
-		self.TimeUntilRangeAttackProjectileRelease = 0.6
-		self.NextRangeAttackTime = 6
-		self.NextAnyAttackTime_Range = 2
-		self.RangeUseAttachmentForPos = true 
-		self.RangeUseAttachmentForPosID = "mouth"
-		self.RangeAttackExtraTimers = nil
-		self.RangeAttackPos_Forward = 20
-		self.RangeAttackPos_Up = 20
+		if !self.LNR_Crippled then
+			self.HasRangeAttack = true
+			self.RangeAttackEntityToSpawn = "obj_vj_totu_biolum"
+			self.AnimTbl_RangeAttack = {"vjseq_nz_taunt_7"}
+			self.RangeDistance = 1200 
+			self.RangeToMeleeDistance = 0
+			self.RangeAttackAngleRadius = 100
+			self.TimeUntilRangeAttackProjectileRelease = 0.6
+			self.NextRangeAttackTime = 6
+			self.NextAnyAttackTime_Range = 2
+			self.RangeUseAttachmentForPos = true 
+			self.RangeUseAttachmentForPosID = "mouth"
+			self.RangeAttackExtraTimers = nil
+			self.RangeAttackPos_Forward = 20
+			self.RangeAttackPos_Up = 20
+		end
 
 	elseif self:GetClass() == "npc_vj_totu_nightkin_scylla" then
 
-		self:SetCollisionBounds(Vector(12, 13, 68), Vector(-13, -13, 0))
 		self:SetModelScale(1.60)
 		self:SetBodygroup(6,2)
-		self.AnimTbl_Death = {"vjseq_death_04"}
-		self.DeathAnimationChance = 1
 		self:SetKeyValue("rendercolor","122 62 53 255")
-		self.DeathAnimationChance = 1
+
+		self:SetCollisionBounds(Vector(12, 13, 68), Vector(-13, -13, 0))
 		self.HasWorldShakeOnMove = true
 		self.WorldShakeOnMoveAmplitude = 1
-		self.MeleeAttackDistance = 50
-		self.MeleeAttackDamageDistance = 70
-		self.HasMeleeAttackKnockBack = true
-		self.MeleeAttackKnockBack_Forward1 = 300
-		self.MeleeAttackKnockBack_Forward2 = 325
-		self.MeleeAttackKnockBack_Up1 = 175
-		self.MeleeAttackKnockBack_Up2 = 200
+
+		self.AnimTbl_Death = {"vjseq_death_04"}
+		self.DeathAnimationChance = 1
+
+		if !self.LNR_Crippled then
+			self.MeleeAttackDistance = 50
+			self.MeleeAttackDamageDistance = 70
+			self.HasMeleeAttackKnockBack = true
+			self.MeleeAttackKnockBack_Forward1 = 300
+			self.MeleeAttackKnockBack_Forward2 = 325
+			self.MeleeAttackKnockBack_Up1 = 175
+			self.MeleeAttackKnockBack_Up2 = 200
+		end
 
 		self.ExtraMeleeSoundPitch = VJ_Set(80, 90)
 
@@ -217,35 +223,36 @@ function ENT:Zombie_CustomOnInitialize()
 		self:SetModelScale(1.13)
 		self:SetMaterial("models/shiny")
 		self:SetColor(Color(9,10,13,5))
-		-- self:SetColor(Color(174,199,255,29))
 		self:SetRenderMode( RENDERMODE_TRANSCOLOR )
-	self:SetBodygroup(1,0)
-	self:SetBodygroup(2,0)
+		self:SetBodygroup(1,0)
+		self:SetBodygroup(2,0)
 		self:SetBodygroup(6,2)
 
-	self.IdleSoundLevel = 70
-	self.AlertSoundLevel = 75
-	self.CombatIdleSoundLevel = 75
-
-    self:SetSolid(SOLID_NONE)
-    self:AddFlags(FL_NOTARGET)
-	self.HasMeleeAttack = false
-	self.FootStepSoundLevel = 45
+		self:SetSolid(SOLID_NONE)
+		self:AddFlags(FL_NOTARGET)
+		self.HasMeleeAttack = false
+		self.FootStepSoundLevel = 45
 		self.ToTU_Nightkin_Spectre_HideT = CurTime() + math.random(3,10)
-		
-		self.RangeAttackEntityToSpawn = "obj_vj_totu_spectreball"
-		self.RangeAttackAnimationFaceEnemy = true
-		self.AnimTbl_RangeAttack = {"vjseq_nz_sonic_attack_2"}
-		-- self.RangeDistance = 750 
-		self.RangeToMeleeDistance = 1 
-		self.RangeAttackAngleRadius = 100
-		self.TimeUntilRangeAttackProjectileRelease = 1
-		self.NextRangeAttackTime = math.random(15,20)
-		self.RangeUseAttachmentForPos = true 
-		self.RangeUseAttachmentForPosID = "chest"
-		self.RangeAttackPos_Forward = 20
-		self.RangeAttackPos_Up = 20
-		self.RangeAttackSoundLevel = 80
+
+		self.IdleSoundLevel = 70
+		self.AlertSoundLevel = 75
+		self.CombatIdleSoundLevel = 75
+
+		if !self.LNR_Crippled && GetConVar("VJ_ToTU_Nightkin_Spectre_RangeAttack"):GetInt() == 1 then
+			self.RangeAttackEntityToSpawn = "obj_vj_totu_spectreball"
+			self.RangeAttackAnimationFaceEnemy = true
+			self.AnimTbl_RangeAttack = {"vjseq_nz_sonic_attack_2"}
+			self.RangeToMeleeDistance = 1 
+			self.RangeAttackAngleRadius = 100
+			self.TimeUntilRangeAttackProjectileRelease = 1
+			self.NextRangeAttackTime = math.random(15,20)
+			self.RangeUseAttachmentForPos = true 
+			self.RangeUseAttachmentForPosID = "chest"
+			self.RangeAttackPos_Forward = 20
+			self.RangeAttackPos_Up = 20
+			self.RangeAttackSoundLevel = 80
+		end
+
 	end
 
 end
@@ -284,7 +291,7 @@ function ENT:Zombie_Difficulty()
 
 	end
 
-        self:SetHealth(self.StartHealth)	
+	self:SetHealth(self.StartHealth)	
 
 	if GetConVar("VJ_ToTU_General_LegHealthScalesWithDifficulty"):GetInt() == 1 then
 
@@ -315,6 +322,61 @@ function ENT:Zombie_Difficulty()
 		self.LNR_LegHP = 30
 
 	end
+
+end
+---------------------------------------------------------------------------------------------------------------------------------------------
+function ENT:ZombieSounds_Custom()
+
+	self.SoundTbl_Idle = {
+		"voices/amnesia/grunt/amb_idle01.wav",
+		"voices/amnesia/grunt/amb_idle02.wav",
+		"voices/amnesia/grunt/amb_idle03.wav",
+		"voices/amnesia/grunt/amb_idle04.wav",
+		"voices/amnesia/grunt/amb_idle05.wav",
+		"voices/amnesia/grunt/amb_alert01.wav",
+		"voices/amnesia/grunt/amb_alert02.wav",
+		"voices/amnesia/grunt/amb_alert03.wav",
+	}
+
+	self.SoundTbl_Alert = {
+		"voices/amnesia/grunt/enabled01.wav",
+		"voices/amnesia/grunt/enabled02.wav",
+		"voices/amnesia/grunt/enabled03.wav",
+		"voices/amnesia/grunt/notice01.wav",
+		"voices/amnesia/grunt/notice02.wav",
+		"voices/amnesia/grunt/notice03.wav",
+		"voices/amnesia/grunt/notice04.wav",
+		"voices/amnesia/grunt/notice_long01.wav",
+		"voices/amnesia/grunt/notice_long02.wav",
+		"voices/amnesia/grunt/notice_long03.wav",
+	}
+
+	self.SoundTbl_CombatIdle = {
+		"voices/amnesia/grunt/amb_hunt01.wav",
+		"voices/amnesia/grunt/amb_hunt02.wav",
+		"voices/amnesia/grunt/amb_hunt03.wav",
+		"voices/amnesia/grunt/amb_hunt04.wav",
+		"voices/amnesia/grunt/amb_idle_scratch01.wav",
+		"voices/amnesia/grunt/amb_idle_scratch02.wav",
+		"voices/amnesia/grunt/amb_idle_scratch03.wav",
+	}
+
+	self.SoundTbl_BeforeMeleeAttack = {
+		"voices/amnesia/grunt/attack_claw01.wav",
+		"voices/amnesia/grunt/attack_claw02.wav",
+		"voices/amnesia/grunt/attack_claw03.wav",
+	}
+
+	self.SoundTbl_Pain = {
+		"voices/amnesia/grunt/attack_launch01.wav",
+		"voices/amnesia/grunt/attack_launch02.wav",
+		"voices/amnesia/grunt/attack_launch03.wav",
+	}
+
+	self.SoundTbl_Death = {
+		"voices/amnesia/grunt/amb_idle_whimp01.wav",
+		"voices/amnesia/grunt/amb_idle_whimp02.wav",
+	}
 
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------

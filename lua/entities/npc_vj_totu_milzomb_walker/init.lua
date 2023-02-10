@@ -1315,7 +1315,6 @@ function ENT:Zombie_CustomOnThink_AIEnabled()
 				self:IsOnFire()
 			then return end
 
-			-- increase the distance on this
 			if enemydist >= 350 && self.MilZ_Ghillie_PlayChangeStateAnim == 1 && CurTime() > self.MilZ_Ghillie_PlayChangeStateAnim_T then
 
 				self:ToTU_Ghillie_StartCrawling()
@@ -1336,6 +1335,26 @@ function ENT:Zombie_CustomOnThink_AIEnabled()
 
 			end
 
+		end
+
+		if !self.Dead && self.VJ_IsBeingControlled && !self.LNR_Crippled then
+			if self.VJ_TheController:KeyDown(IN_JUMP) then
+				if self.MilZ_Ghillie_PlayChangeStateAnim == 1 && CurTime() > self.MilZ_Ghillie_PlayChangeStateAnim_T then
+					self:ToTU_Ghillie_StartCrawling()
+					self.MilZ_Ghillie_PlayChangeStateAnim_T = CurTime() + (0.5)
+					local anim = {"vjseq_Stand_to_crouch"}
+					self:VJ_ACT_PLAYACTIVITY(anim,true,false,false)
+				elseif self.MilZ_Ghillie_PlayChangeStateAnim == 2 && CurTime() > self.MilZ_Ghillie_PlayChangeStateAnim_T then
+					self:ToTU_Ghillie_GetTheUp()
+					self.MilZ_Ghillie_PlayChangeStateAnim_T = CurTime() + (0.5)
+					local anim = {"vjseq_Crouch_to_stand"}				
+					self:VJ_ACT_PLAYACTIVITY(anim,true,false,false)
+					VJ_EmitSound(self,{"fx/ghille_rustling_"..math.random(1,3)..".mp3"},60,100)
+					VJ_EmitSound(self,{"fx/ghille_rustling_"..math.random(1,3)..".mp3"},60,100)
+					VJ_EmitSound(self,{"fx/ghille_rustling_"..math.random(1,3)..".mp3"},60,100)
+					VJ_EmitSound(self,{"fx/ghille_rustling_"..math.random(1,3)..".mp3"},60,100)
+				end
+			end
 		end
 
 	end
