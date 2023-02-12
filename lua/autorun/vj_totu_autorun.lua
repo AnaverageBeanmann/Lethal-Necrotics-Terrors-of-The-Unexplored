@@ -340,10 +340,11 @@ end
 		- show the store by the train tracks or the bunker behind the barn
 		- have a scragg bust through the door (and run off?) and put up the "hey welcome" text
 		- explain we have some things to show rq first
+		- go back to de_secretcamp
 		- show off resting behavior
 		- show stomp attack using tank
 		- show hazmat
-		- for stomp and hazmat hop back on to de_secretcamp
+		- return to forest
 		- do a shitty pizza tower character swap thing with the scragg (have it say "back to that guy")
 		- show the zomb standing there then fade into the demonstration
 		- show off the scragg
@@ -365,6 +366,9 @@ end
 		* show death around the place
 		* have a cazador run past the camera before fading to black
 		
+		shots to redo
+		- squaller 1v2
+		- show squaller has different attack sounds depending on if it's moving or not
 
 		for cepheus strain showcase vid
 		- map: boreas indoor areas
@@ -492,6 +496,8 @@ https://github.com/VJ-HLR-Developers/Half-Life-Zombie-Edition-SNPCs/blob/master/
 		add nmrih crawler biting anim for eating crawlers
 		
 		add these to milzombs? https://steamcommunity.com/sharedfiles/filedetails/?id=2926996172&searchtext=
+		
+		have wark help with the deimos showcase
 	*/
 
 	-- [] = done
