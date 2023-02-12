@@ -1050,6 +1050,7 @@ https://github.com/VJ-HLR-Developers/Half-Life-Zombie-Edition-SNPCs/blob/master/
 	AddConvars["VJ_ToTU_General_RestingSystem"] = 1
 	AddConvars["VJ_ToTU_Nightkin_Spectre_RangeAttack"] = 1
 	AddConvars["VJ_ToTU_Nightkin_Scylla_SubtypeBlacklisted"] = 1
+	AddConvars["VJ_ToTU_Nightkin_Shrieker_OriginalBehavior"] = 0
 
 	-- AddConvars["VJ_ToTU_General_TF2Mode"] = 0
 	-- AddConvars["VJ_ToTU_Weaponized_Carcass_"] = 
@@ -1182,6 +1183,7 @@ https://github.com/VJ-HLR-Developers/Half-Life-Zombie-Edition-SNPCs/blob/master/
 			VJ_ToTU_General_RestingSystem = "0",
 			VJ_ToTU_Nightkin_Spectre_RangeAttack = "1",
 			VJ_ToTU_Nightkin_Scylla_SubtypeBlacklisted = "1",
+			VJ_ToTU_Nightkin_Shrieker_OriginalBehavior = "0",
 			-- VJ_ToTU_MilZ_Det_ = "",
 			
 			
@@ -1524,6 +1526,10 @@ https://github.com/VJ-HLR-Developers/Half-Life-Zombie-Edition-SNPCs/blob/master/
 	Panel:AddControl("Checkbox", {Label = "Blacklist Scylla subtypes?", Command = "VJ_ToTU_Nightkin_Scylla_SubtypeBlacklisted"})
 	Panel:ControlHelp("If enabled, Scyllas cannot spawn as Super Sprinters or Rushers.")
 	
+	Panel:AddControl("Checkbox", {Label = "Original Shrieker behavior?", Command = "VJ_ToTU_Nightkin_Shrieker_OriginalBehavior"})
+	Panel:ControlHelp("If enabled, Shriekers will use their original behavior from the original ToTU, back when they were called Screamers.")
+	Panel:ControlHelp("Instead of running away and summoning allies, they will instead run at you and try to yell in your face.")
+
 	Panel:ControlHelp("--------------------------------------------------------")
 	Panel:AddControl( "Label", {Text = "Weaponized/Lab Specimens"})
 	Panel:ControlHelp("--------------------------------------------------------")
