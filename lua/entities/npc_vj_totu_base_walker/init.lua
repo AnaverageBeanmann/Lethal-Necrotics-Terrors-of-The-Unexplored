@@ -3346,7 +3346,7 @@ function ENT:Controller_IntMsg(ply)
 	end
 
 	if self:GetClass() == "npc_vj_totu_nightkin_spectre" then
-		ply:ChatPrint("JUMP: Phase Toggle."
+		ply:ChatPrint("JUMP: Phase Toggle.")
 	end
 
 	-- add this sound at some point

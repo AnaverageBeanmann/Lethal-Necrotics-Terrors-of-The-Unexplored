@@ -186,7 +186,8 @@ function ENT:Zombie_CustomOnPreInitialize()
 
 	if
 		!self.MilZ_Ghost_IsGhost &&
-		!self.MiLZ_Ghillie_IsGhillie
+		!self.MiLZ_Ghillie_IsGhillie &&
+		!self.MilZ_Hazmat_IsHazmat
 	then
 
 		self.SoundTbl_Breath = {

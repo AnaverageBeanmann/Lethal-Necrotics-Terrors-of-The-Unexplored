@@ -11,6 +11,7 @@ ENT.ToTU_Nightkin_Shrieker_SpawnCoolDownT = 0
 ENT.ToTU_Nightkin_Shrieker_ShriekCoolDownT = 0
 ENT.ToTU_Nightkin_Shrieker_CanShriek = true
 ENT.ToTU_Nightkin_Shrieker_ShriekRingT = 0
+ENT.ToTU_Nightkin_Shrieker_OriginalBehavior = false
 ENT.ToTU_Nightkin_Squaller_HasIronWill = false
 ENT.ToTU_Nightkin_Squaller_UsingIronWill = false
 ENT.ToTU_Nightkin_Squaller_IronWillDamageResistance = true
@@ -36,6 +37,10 @@ function ENT:Zombie_CustomOnPreInitialize()
 		self.Model = {"models/totu/skitter.mdl"}
 	elseif self:GetClass() == "npc_vj_totu_nightkin_shrieker" then
 		self.Model = {"models/totu/shrieker.mdl"}
+		if GetConVar("VJ_ToTU_Nightkin_Shrieker_OriginalBehavior"):GetInt() == 1 then
+			self.ToTU_Nightkin_Shrieker_OriginalBehavior = true
+			self.MeleeAttackDistance = 185
+		end
 	elseif self:GetClass() == "npc_vj_totu_nightkin_squaller" then
 		self.Model = {"models/totu/squaller.mdl"}
 	elseif self:GetClass() == "npc_vj_totu_nightkin_spitballer" then
@@ -75,7 +80,11 @@ function ENT:Zombie_CustomOnInitialize()
 		self:SetBodygroup(2,0)
 		self:SetBodygroup(6,0)
 		self:SetKeyValue("rendercolor","198 248 255 255")
-		self.MeleeAttackDistance = 10000
+		if !self.ToTU_Nightkin_Shrieker_OriginalBehavior then
+			self.MeleeAttackDistance = 10000
+		else
+			self.MeleeAttackDistance = 21
+		end
 		self:SetCollisionBounds(Vector(12, 13, 68), Vector(-13, -13, 0))
 
 	elseif self:GetClass() == "npc_vj_totu_nightkin_squaller" then

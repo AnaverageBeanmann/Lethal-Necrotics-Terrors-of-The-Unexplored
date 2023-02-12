@@ -159,11 +159,15 @@ function ENT:Zombie_CustomOnMeleeAttack_BeforeStartTimer()
 		VJ_EmitSound(self,"voices/nightkin/shrieker/helpme"..math.random(1,2)..".mp3",90,100)
 
 		timer.Simple(5,function() if IsValid(self) && !self.Dead then
-			self.MeleeAttackDistance = 40
-			self.NextMeleeAttackTime = 0
-			self.ToTU_Nightkin_Shrieker_CanShriek = false
-			self.ToTU_Nightkin_Shrieker_ShriekCoolDownT = CurTime() + math.random(5,10)
-			self.ToTU_Nightkin_Shrieker_CanSpawnHelp = false
+			if !self.ToTU_Nightkin_Shrieker_OriginalBehavior then
+				self.ToTU_Nightkin_Shrieker_CanShriek = false
+				self.ToTU_Nightkin_Shrieker_ShriekCoolDownT = CurTime() + math.random(5,10)
+				self.ToTU_Nightkin_Shrieker_CanSpawnHelp = false
+				self.MeleeAttackDistance = 40
+				self.NextMeleeAttackTime = 0
+			else
+				self.ToTU_Nightkin_Shrieker_ShriekCoolDownT = CurTime() + 1
+			end
 		end end)
 
 	end
@@ -191,7 +195,9 @@ function ENT:Zombie_CustomOnThink_AIEnabled()
 
 		end
 
-		self.ToTU_Nightkin_Shrieker_CanSpawnHelp = true
+		if !self.ToTU_Nightkin_Shrieker_OriginalBehavior then
+			self.ToTU_Nightkin_Shrieker_CanSpawnHelp = true
+		end
 
 	else
 
@@ -208,7 +214,9 @@ function ENT:Zombie_CustomOnThink_AIEnabled()
 	if self.ToTU_Nightkin_Shrieker_ShriekCoolDownT < CurTime() && !self.ToTU_Nightkin_Shrieker_CanShriek && !self.LNR_Crippled && self:GetActivity() != ACT_GLIDE then
 
 		self.ToTU_Nightkin_Shrieker_CanShriek = true
-		self.MeleeAttackDistance = 10000
+		if !self.ToTU_Nightkin_Shrieker_OriginalBehavior then
+			self.MeleeAttackDistance = 10000
+		end
 
 	end
 
