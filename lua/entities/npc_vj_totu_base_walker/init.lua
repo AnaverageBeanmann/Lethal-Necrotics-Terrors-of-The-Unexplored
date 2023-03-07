@@ -580,7 +580,8 @@ function ENT:CustomOnInitialize()
 		self.AnimTbl_Walk = {ACT_WALK_RELAXED}
 	end
 
-	if GetConVar("VJ_LNR_Crawl"):GetInt() == 1 && !self.ToTU_IsFreakOfNature then
+	if GetConVar("VJ_LNR_Crawl"):GetInt() == 1 && !self.ToTU_IsFreakOfNature && !self.ToTU_Deimos then
+	-- if GetConVar("VJ_LNR_Crawl"):GetInt() == 1 && !self.ToTU_IsFreakOfNature && (!self.ToTU_Deimos or self.ToTU_Deimos && (self:GetClass() == "npc_vj_totu_weaponized_redead" or self:GetClass() == "npc_vj_totu_weaponized_redead_grunt" or self:GetClass() == "npc_vj_totu_weaponized_revenant")) then
 
 		if math.random(1,GetConVar("VJ_ToTU_General_Crawler_Chance"):GetInt()) == 1 then
 
