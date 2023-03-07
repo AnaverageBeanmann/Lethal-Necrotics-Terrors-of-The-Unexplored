@@ -12,4 +12,9 @@
 	//"$phongexponenttexture" "Models/zombie_fast/fast_zombie_phong"
 	//"$phongalbedotint" "1"										
 	"$phongfresnelranges"	"[.2 .6 1]"
+
+	"$detail" "models\totu\detail\ci_detail_dirt"
+	"$detailscale" 5
+	"$detailblendfactor" 0.75
+	"$detailblendmode" 0
 }

@@ -10,4 +10,8 @@
 	"$phongexponenttexture" "models/totu/deimos/poisonzombie_phong"			
 	"$phongfresnelranges"	"[0 .5  1]"
 
+	"$detail" "models\totu\detail\ci_detail_dirt"
+	"$detailscale" 5
+	"$detailblendfactor" 0.75
+	"$detailblendmode" 0
 }

@@ -1,0 +1,5 @@
+"VertexlitGeneric"
+{
+	$basetexture "models/totu/deimos/grunt"
+	$halflambert 1
+}

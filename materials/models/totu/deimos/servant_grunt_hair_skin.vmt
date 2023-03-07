@@ -1,0 +1,8 @@
+patch
+{
+	include "materials/models/totu/deimos/servant_grunt_hair.vmt"
+	replace
+	{
+		$basetexture "models/totu/deimos/grunt_hair2"
+	}
+}

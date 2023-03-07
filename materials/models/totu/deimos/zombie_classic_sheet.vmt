@@ -19,4 +19,9 @@
 	//"$rimlightexponent" "24"
 	//"$rimlightboost" "1"
 
+	"$detail" "models\totu\detail\ci_detail_dirt"
+	"$detailscale" 5
+	"$detailblendfactor" 0.75
+	"$detailblendmode" 0
+
 }
