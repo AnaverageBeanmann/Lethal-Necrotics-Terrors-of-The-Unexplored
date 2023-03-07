@@ -1,0 +1,18 @@
+"vertexlitgeneric"
+{
+	"$baseTexture"		"models/totu/cepheumort/helmet_06"
+	"$bumpmap"		"models/totu/cepheumort/helmet_06_normal"
+
+ 	"$halflambert"		"1"
+
+	"$phong"			"1"
+	"$phongboost"		"1"
+	"$phongfresnelranges"	"[0.02]"
+	"$phongexponent"		"2"
+	"$phongalbedotint"		"1"
+
+	"$detail" "models\totu\detail\ci_detail_dirt"
+	"$detailscale" 7.74
+	"$detailblendfactor" 0.20
+	"$detailblendmode" 0
+}

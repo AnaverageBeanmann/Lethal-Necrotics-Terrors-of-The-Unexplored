@@ -1,0 +1,18 @@
+"vertexlitgeneric"
+{
+	"$baseTexture"		"models/totu/cepheumort/gear_03"
+	"$bumpmap"		"models/totu/cepheumort/gear_03_normal"
+
+ 	"$halflambert"		"1"
+
+	"$phong"			"1"
+	"$phongboost"		"1"
+	"$phongfresnelranges"	"[0.01]"
+	"$phongexponent"		"20"
+	"$phongalbedotint"		"1"
+
+	"$detail" "models\totu\detail\ci_detail_dirt"
+	"$detailscale" 7.74
+	"$detailblendfactor" 0.55
+	"$detailblendmode" 0
+}
