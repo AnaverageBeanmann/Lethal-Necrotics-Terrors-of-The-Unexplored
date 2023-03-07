@@ -104,6 +104,8 @@ function ENT:ZombieSounds_Custom()
 		"voices/det/death_4.mp3",
 		"voices/det/death_5.mp3"
 	}
+	
+	self.ToTU_Almanac_VoiceActor = "Gas Tank (Dying Light 1)"
 
 end
 /*-----------------------------------------------

@@ -55,6 +55,8 @@ function ENT:ZombieSounds_Custom()
 	self.SoundTbl_Death = {
 		"voices/mil_jugg/death_cutoff.mp3"
 	}
+		
+	self.ToTU_Almanac_VoiceActor = "Demolisher (Dying Light 1)"
 
 	self.MeleeAttackSoundPitch = VJ_Set(80, 75)
 	self.DeathSoundPitch = VJ_Set(100, 90)
@@ -88,59 +90,36 @@ end
 function ENT:Zombie_Difficulty()
 
 	if GetConVar("VJ_LNR_Difficulty"):GetInt() == 1 then
-	
+
 		self.StartHealth = 500
 		self.MeleeAttackDamage = math.Rand(20,25)
-		
+
 	elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 2 then
-	
+
 		self.StartHealth = 750
 		self.MeleeAttackDamage = math.Rand(25,30)
-		
+
 	elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 3 then
-	
+
 		self.StartHealth = 1000
 		self.MeleeAttackDamage = math.Rand(30,35)
-		
+
 	elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 4 then
-	
+
 		self.StartHealth = 1250
 		self.MeleeAttackDamage = math.Rand(35,40)
-		
+
 	elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 5 then
-	
+
 		self.StartHealth = 1500
 		self.MeleeAttackDamage = math.Rand(40,45)
-		
+
 	end
-			
-        self:SetHealth(self.StartHealth)	
-		
-		if GetConVar("VJ_ToTU_General_LegHealthScalesWithDifficulty"):GetInt() == 1 then
-		
-			if GetConVar("VJ_LNR_Difficulty"):GetInt() == 1 then
-			
-				self.LNR_LegHP = 100
-				
-			elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 2 then
-			
-				self.LNR_LegHP = 150
-				
-			elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 3 then
-			
-				self.LNR_LegHP = 200
-				
-			elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 4 then
-			
-				self.LNR_LegHP = 250
-				
-			elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 5 then
-			
-				self.LNR_LegHP = 300
-				
-			end
-			
-		end
+	
+	self:SetHealth(self.StartHealth)	
+
+	self.LNR_LegHP = self.StartHealth * 0.20
+
 end 
 /*-----------------------------------------------
 	*** Copyright (c) 2012-2019 by DrVrej, All rights reserved. ***

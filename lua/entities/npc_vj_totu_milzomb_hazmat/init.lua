@@ -104,6 +104,8 @@ function ENT:ZombieSounds_Custom()
 		"voices/det/death_4.mp3",
 		"voices/det/death_5.mp3"
 	}
+		
+	self.ToTU_Almanac_VoiceActor = "Gas Tank (Dying Light 1)"
 
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
@@ -113,16 +115,14 @@ function ENT:ToTU_Detonator_BombHitExplode()
 
 	timer.Simple(0.5,function() if IsValid(self) && !self.Dead then
 
-		if self.LNR_Infected then
-
-			self.AnimTbl_Walk = {ACT_SPRINT}
-			self.AnimTbl_Run = {ACT_RUN_RELAXED}
-
-		else
-
-			self.AnimTbl_Walk = {ACT_RUN}
-			self.AnimTbl_Run = {ACT_SPRINT}
-
+		if !self.LNR_Crippled then
+			if self.LNR_Infected then
+				self.AnimTbl_Walk = {ACT_SPRINT}
+				self.AnimTbl_Run = {ACT_RUN_RELAXED}
+			else
+				self.AnimTbl_Walk = {ACT_RUN}
+				self.AnimTbl_Run = {ACT_SPRINT}
+			end
 		end
 
 		self.PainSoundT = 0.5

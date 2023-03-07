@@ -95,6 +95,7 @@ ENT.ToTU_Resting = 0
 	-- 1 = Sitting
 	-- 2 = Lying
 ENT.ToTU_CanRest = false
+ENT.ToTU_Deimos = false
 
 ENT.ToTU_NextDodgeT = 0
 ENT.ToTU_CanDodge = false
@@ -143,6 +144,7 @@ ENT.ToTU_Almanac_Notes3 = ""
 ENT.ToTU_Almanac_Notes4 = ""
 ENT.ToTU_Almanac_Notes5 = ""
 ENT.ToTU_Almanac_Gimmicks = ""
+ENT.ToTU_Almanac_VoiceActor = "Father Grigori (Half-Life 2), Walter White (Breaking Bad)"
 -- leave blank if not applicable
 
 -- scourge
@@ -381,7 +383,7 @@ function ENT:CustomOnPreInitialize()
 
 	end
 
-	if GetConVar("VJ_ToTU_General_RestingSystem"):GetInt() == 1 then
+	if GetConVar("VJ_ToTU_General_RestingSystem"):GetInt() == 1 && !self.ToTU_Weaponized_IsHL2Zomb then
 
 		self.ToTU_CanRest = true
 
@@ -473,6 +475,7 @@ function ENT:CustomOnPreInitialize()
 		self.ToTU_Almanac_Strain = "Strain: Infected"
 		self.ToTU_Almanac_FlavorText = "ToTU's other code backbone, atleast until the Walker had all the code merged."
 		self.ToTU_Almanac_Notes = "Standard infected business."
+		self.ToTU_Almanac_VoiceActor = "Effect 4/Flower (RB's Two Faces Mod)"
 
 	end
 
@@ -506,6 +509,32 @@ function ENT:Zombie_CustomOnPreInitialize() end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:Zombie_UpdateAlmanacStuff() end
 ---------------------------------------------------------------------------------------------------------------------------------------------
+	function ENT:VJ_TOTU_Deimos_CreateBoneMerge(targEnt,oldModel,oldSkin,bg)
+		local creator = NULL
+		if targEnt:IsNPC() then
+			creator = IsValid(targEnt:GetCreator()) && targEnt:GetCreator()
+			targEnt:SetCollisionBounds(Vector(13,13,72),Vector(-13,-13,0))
+		end
+
+		local body = ents.Create("vj_lnr_infection")
+		body:SetModel(oldModel)
+		body:SetPos(targEnt:GetPos())
+		body:SetAngles(targEnt:GetAngles())
+		body.VJ_Owner = targEnt
+		body:Spawn()
+		body:SetParent(targEnt)
+		body:SetSkin(oldSkin)
+		body:SetColor(oldColor)
+		body:SetMaterial(oldMaterial)		
+		if bg then
+				for i = 0,18 do
+				--	body:SetBodygroup(i,bg[i])
+				end			
+			end
+		targEnt.Bonemerge = body
+		targEnt.BonemergeModel = oldModel						
+	end
+---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:CustomOnInitialize()
 
 	-- kills the zombie after half a second
@@ -521,6 +550,22 @@ function ENT:CustomOnInitialize()
 	end end)
 	*/
 
+	if
+		self:GetClass() == "npc_vj_totu_weaponized_carcass" or
+		self:GetClass() == "npc_vj_totu_weaponized_carcass_torso" or
+		self:GetClass() == "npc_vj_totu_weaponized_cazador" or
+		self:GetClass() == "npc_vj_totu_weaponized_cazador_torso" or
+		self:GetClass() == "npc_vj_totu_weaponized_cyst" or
+		self:GetClass() == "npc_vj_totu_weaponized_cancer" or
+		self:GetClass() == "npc_vj_totu_weaponized_revenant" or
+		self:GetClass() == "npc_vj_totu_weaponized_corrupt" or
+		self:GetClass() == "npc_vj_totu_weaponized_redead_grunt" or
+		self:GetClass() == "npc_vj_totu_weaponized_redead"
+	then
+		self.LNR_VirusInfection = false
+		self.ToTU_Deimos = true
+	end
+
 	if self.ToTU_Weaponized_IsHL2Zomb then
 
 		self:Zombie_CustomOnInitialize()
@@ -531,7 +576,7 @@ function ENT:CustomOnInitialize()
 
 	self.ToTU_NextRestT = CurTime() + math.random(10,120)
 
-	if !self.LNR_Infected then
+	if self.LNR_Walker then
 		self.AnimTbl_Walk = {ACT_WALK_RELAXED}
 	end
 
@@ -552,7 +597,9 @@ function ENT:CustomOnInitialize()
 		!self.ToTU_InstantDigout
 	then
 		if math.random(1,GetConVar("VJ_ToTU_Spawn_DigChance"):GetInt()) == 1 then
-			self:RiseFromGround()
+			if self:GetClass() != "npc_vj_totu_weaponized_redead" or (self:GetClass() == "npc_vj_totu_weaponized_redead" && !self.ToTU_Weaponized_Redead_Infectee) then
+				self:RiseFromGround()
+			end
 		end
 	end
 
@@ -583,7 +630,7 @@ function ENT:CustomOnInitialize()
 			self.MaxJumpLegalDistance = VJ_Set(5, 550)
 		end
 
-		if !self.LNR_Infected && !self.ToTU_IsFreakOfNature then
+		if self.LNR_Walker && !self.ToTU_IsFreakOfNature && !self.ToTU_Deimos then
 
 			if
 				GetConVar("VJ_LNR_Runner"):GetInt() == 1 &&
@@ -636,7 +683,7 @@ function ENT:CustomOnInitialize()
 			end
 		end
 
-		if self.LNR_Infected && !self.ToTU_IsFreakOfNature then
+		if self.LNR_Infected && !self.ToTU_IsFreakOfNature && !self.ToTU_Deimos then
 
 			if 
 				GetConVar("VJ_LNR_SuperSprinter"):GetInt() == 1 &&
@@ -953,10 +1000,12 @@ function ENT:ZombieSounds()
 			"zombies/weaponized/carcass/death_5.mp3"
 		}
 		
-		self.IdleSoundChance = 5
-		self.CombatIdleSoundChance = 4
-		self.IdleSoundLevel = 45
+		-- self.IdleSoundChance = 5
+		-- self.CombatIdleSoundChance = 4
+		self.IdleSoundLevel = 60
 		self.CombatIdleSoundLevel = 60
+		
+		self.ToTU_Almanac_VoiceActor = "Molded (Resident Evil 7)"
 
 	elseif self:GetClass() == "npc_vj_totu_weaponized_cyst" then
 		self.SoundTbl_Idle = {
@@ -1022,6 +1071,9 @@ function ENT:ZombieSounds()
 		"zombies/coastline/whale/death_3.mp3",
 		"zombies/coastline/whale/death_4.mp3",
 		}
+		
+		self.ToTU_Almanac_VoiceActor = "Fat Molded (Resident Evil 7)"
+
 	elseif self:GetClass() == "npc_vj_totu_weaponized_cazador" or self:GetClass() == "npc_vj_totu_weaponized_cazador_torso" then
 		self.SoundTbl_Idle = {
 		}
@@ -1063,6 +1115,8 @@ function ENT:ZombieSounds()
 		"npc/barnacle/neck_snap2.wav",
 		}
 		
+		self.ToTU_Almanac_VoiceActor = "Barnacle (Half-Life 2)"
+
 	elseif self:GetClass() == "npc_vj_totu_weaponized_smog" then
 	
 		self.SoundTbl_Idle = {
@@ -1294,6 +1348,8 @@ function ENT:ZombieSounds_GiveDefault()
 			"vj_lnrhl2/infected/zomb_runner_male1-death-20.wav"
 		}
 
+		self.ToTU_Almanac_VoiceActor = "Male Zombie (No More Room In Hell)"
+
 		if GetConVar("VJ_ToTU_General_DefaultVoices_AltInfected"):GetInt() == 1 then
 		
 		self.SoundTbl_Idle = {
@@ -1484,6 +1540,8 @@ function ENT:ZombieSounds_GiveDefault()
 			"voices/l4d/common/action/die/male/death_49.wav",
 		}
 
+		self.ToTU_Almanac_VoiceActor = "Common Infected (Left 4 Dead)"
+
 		end
 
 	else
@@ -1607,6 +1665,8 @@ function ENT:ZombieSounds_GiveDefault()
 			"vj_lnrhl2/walker_male/die05.wav"
 		}
 
+		self.ToTU_Almanac_VoiceActor = "Male Zombie (No More Room In Hell)"
+
 		if GetConVar("VJ_ToTU_General_DefaultVoices_AltWalker"):GetInt() == 1 then
 
 		self.SoundTbl_Idle = {
@@ -1705,6 +1765,8 @@ function ENT:ZombieSounds_GiveDefault()
 			"voices/dlbiter/death_4.mp3",
 			"voices/dlbiter/death_5.mp3",
 		}
+		
+		self.ToTU_Almanac_VoiceActor = "Biter (Dying Light)"
 
 		if self.LNR_Runner then
 			self.SoundTbl_CombatIdle = {
@@ -1913,35 +1975,7 @@ function ENT:Zombie_Difficulty()
 
 	self:SetHealth(self.StartHealth)	
 
-	if GetConVar("VJ_ToTU_General_LegHealthScalesWithDifficulty"):GetInt() == 1 then
-
-		if GetConVar("VJ_LNR_Difficulty"):GetInt() == 1 then
-
-			self.LNR_LegHP = 10
-
-		elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 2 then
-
-			self.LNR_LegHP = 20
-
-		elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 3 then
-
-			self.LNR_LegHP = 30
-
-		elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 4 then
-
-			self.LNR_LegHP = 40
-
-		elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 5 then
-
-			self.LNR_LegHP = 50
-
-		end
-
-	else
-
-		self.LNR_LegHP = 20
-
-	end
+	self.LNR_LegHP = self.StartHealth * 0.20
 
 end 
 ---------------------------------------------------------------------------------------------------------------------------------------------
@@ -2976,22 +3010,19 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:RiseFromGround()
 
-	if self.ToTU_InstantDigout then return end
-
-	-- add support for crawlers, cazadors, and cysts
-	-- modify the one in the carcass init for those last 2
+	if self.ToTU_InstantDigout or self:GetClass() == "npc_vj_totu_weaponized_corrupt" or (self:GetClass() == "npc_vj_totu_weaponized_redead" && self.ToTU_Weaponized_Redead_Infectee) then return end
 
 	if self.ToTU_Nightkin_Squaller_UsingIronWill or self:GetClass() == "npc_vj_totu_weaponized_cyst" then return end
 
-	self:SetMaterial("lnr/bonemerge")
+	self:SetMaterial("vj_lnr/bonemerge")
 
 	if IsValid(self.WeaponModel) then
-		self.WeaponModel:SetMaterial("lnr/bonemerge")
+		self.WeaponModel:SetMaterial("vj_lnr/bonemerge")
 		self.WeaponModel:DrawShadow(false)
 	end
 
 	if IsValid(self.bobm) then
-		self.bobm:SetMaterial("lnr/bonemerge")
+		self.bobm:SetMaterial("vj_lnr/bonemerge")
 		self.bobm:DrawShadow(false)
 	end
 
@@ -3441,6 +3472,17 @@ function ENT:CustomOnAlert(ent)
 
 	end
 
+	if
+		self:GetClass() == "npc_vj_totu_weaponized_redead" or
+		self:GetClass() == "npc_vj_totu_weaponized_corrupt" or
+		self:GetClass() == "npc_vj_totu_weaponized_redead_grunt" or
+		self:GetClass() == "npc_vj_totu_weaponized_cancer"
+	then
+
+		self.ToTU_Weaponized_Redead_RunT = CurTime() + math.random(3,7)
+
+	end
+
 	if self.ToTU_Resting != 0 then
 		if self.ToTU_Resting == 1 then
 			self:VJ_ACT_PLAYACTIVITY(ACT_BUSY_SIT_CHAIR_EXIT, true, false, false)
@@ -3480,7 +3522,7 @@ function ENT:CustomOnAlert(ent)
 
 	self.ToTU_NextDodgeT = CurTime() + math.random(5,10)
 
-	if self.LNR_Infected && self:GetClass() != "npc_vj_totu_nightkin_spectre" then
+	if self.LNR_Infected or (self.ToTU_Deimos && !self.ToTU_Weaponized_IsHL2Zomb && self:GetClass() != "npc_vj_totu_weaponized_corrupt") then
 
 		if self:GetClass() == "npc_vj_totu_milzomb_ghost" then
 
@@ -3504,7 +3546,7 @@ function ENT:CustomOnResetEnemy()
 
 	if self.VJ_IsBeingControlled or self.LNR_Crippled or self.ToTU_Weaponized_IsHL2Zomb then return end
 
-	if self.LNR_Infected then
+	if self.LNR_Infected or (self.ToTU_Deimos && !self.ToTU_Weaponized_IsHL2Zomb && self:GetClass() != "npc_vj_totu_weaponized_corrupt") then
 
 		if self.LNR_UsingRelaxedIdle then
 
@@ -3602,6 +3644,20 @@ function ENT:CustomOnMeleeAttack_AfterChecks(hitEnt, isProp)
 
 	end
 
+	if self:GetClass() == "npc_vj_totu_weaponized_corrupt" then
+			if hitEnt.IsVJBaseSNPC && VJ_PICK(hitEnt.CustomBlood_Particle) then
+
+			ParticleEffectAttach(VJ_PICK(hitEnt.CustomBlood_Particle),PATTACH_POINT_FOLLOW,self,self:LookupAttachment("bloodeffect"))
+			ParticleEffectAttach(VJ_PICK(hitEnt.CustomBlood_Particle),PATTACH_POINT_FOLLOW,self,self:LookupAttachment("bloodeffect"))
+
+		elseif (hitEnt:IsPlayer() or hitEnt:IsNPC() or hitEnt:IsNextBot()) then
+
+			ParticleEffectAttach("blood_impact_red_01",PATTACH_POINT_FOLLOW,self,self:LookupAttachment("bloodeffect"))
+			ParticleEffectAttach("blood_impact_red_01",PATTACH_POINT_FOLLOW,self,self:LookupAttachment("bloodeffect"))
+
+		end
+	end
+
     if hitEnt:IsPlayer() && hitEnt:Health() < self.MeleeAttackDamage + 1 then
        VJ_LNR_SetPlayerZombie(hitEnt,self,self)	
 	end
@@ -3640,7 +3696,7 @@ function ENT:CustomOnMeleeAttack_Miss()
 
 	end
 
-	if self.LNR_Infected && !self:IsMoving() && !self.LNR_Crippled then
+	if (self.LNR_Infected or self.ToTU_Deimos && !self.ToTU_Weaponized_IsHL2Zomb && self:GetClass() != "npc_vj_totu_weaponized_corrupt")&& !self:IsMoving() && !self.LNR_Crippled then
 
 		self.PlayingAttackAnimation = false
 		self:StopAttacks(false)
@@ -3658,7 +3714,9 @@ function ENT:CustomOnMeleeAttack_BeforeStartTimer(seed)
 	if
 		self.MilZ_Det_IsDetonator or
 		(self:GetClass() == "npc_vj_totu_nightkin_shrieker" && self.ToTU_Nightkin_Shrieker_CanShriek) or
-		self.ToTU_Weaponized_IsHL2Zomb then
+		self.ToTU_Weaponized_IsHL2Zomb or
+		self:GetClass() == "npc_vj_totu_weaponized_corrupt"
+		then
 	return end
 
 	-- Melee Sounds	--
@@ -3674,7 +3732,7 @@ function ENT:CustomOnMeleeAttack_BeforeStartTimer(seed)
 			""
 		}
 
-	elseif self.ToTU_Nightkin_IsKin then
+	elseif self.ToTU_Nightkin_IsKin or self.ToTU_Weaponized_IsHL2Zomb then
 
         self.SoundTbl_MeleeAttackExtra = {
 			"vj_lnrhl2/shared/melee/zombie_slice_1.wav",
@@ -3802,7 +3860,7 @@ function ENT:CustomOnMeleeAttack_BeforeStartTimer(seed)
 
 			else
 			
-			if self.LNR_Infected then
+			if self.LNR_Infected or self.ToTU_Deimos then
 
 				self.AnimTbl_MeleeAttack = {
 					"vjseq_CI_Standing_Melee_1",
@@ -3937,6 +3995,8 @@ function ENT:Zombie_CustomOnMeleeAttack_BeforeStartTimer(seed)
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:CustomOnFlinch_BeforeFlinch(dmginfo,hitgroup)
+
+	if self:GetClass() == "npc_vj_totu_weaponized_corrupt" then return end
 
 	if
 		GetConVar("VJ_ToTU_General_Stumbling_Disable"):GetInt() == 1 or
@@ -4508,6 +4568,10 @@ function ENT:CustomOnPriorToKilled(dmginfo, hitgroup)
 		end
 	end
 
+	if self:GetClass() == "npc_vj_totu_weaponized_cancer" && (dmginfo:IsDamageType(DMG_BURN) or dmginfo:IsDamageType(DMG_SLOWBURN) or self:IsOnFire() ) then
+		self.ToTU_Weaponized_Cancer_FireDeath = true
+	end
+
 	if self:GetClass() == "npc_vj_totu_weaponized_cyst" then return end
 
 	if 
@@ -4556,9 +4620,9 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:CustomDeathAnimationCode(dmginfo,hitgroup)
 
-	if self.LNR_Crippled or self.ToTU_Resting == 1 or self.ToTU_Resting == 2 or self:GetClass() == "npc_vj_totu_weaponized_cyst" then return end
+	if self.LNR_Crippled or self.ToTU_Resting == 1 or self.ToTU_Resting == 2 or self:GetClass() == "npc_vj_totu_weaponized_cyst" or self:GetClass() == "npc_vj_totu_weaponized_corrupt" then return end
 	
-	if self:IsMoving() && GetConVar("VJ_ToTU_General_MovingDeathAnimations"):GetInt() == 1 && !self.ToTU_GiantZombie && !self.ToTU_IsFreakOfNature then
+	if self:IsMoving() && GetConVar("VJ_ToTU_General_MovingDeathAnimations"):GetInt() == 1 && !self.ToTU_GiantZombie && !self.ToTU_IsFreakOfNature && !self.ToTU_Weaponized_IsHL2Zomb then
 
 		if
 			self:GetActivity() == ACT_RUN_STEALTH or
@@ -4611,6 +4675,26 @@ function ENT:CustomDeathAnimationCode(dmginfo,hitgroup)
 			}
 
 		end
+
+	end
+
+	if self:IsMoving() && GetConVar("VJ_ToTU_General_MovingDeathAnimations"):GetInt() == 1 && (self:GetClass() == "npc_vj_totu_weaponized_carcass" or self:GetClass() == "npc_vj_totu_weaponized_cazador") then
+
+		self.AnimTbl_Death = {
+			"vjseq_nz_death_f_1",
+			"vjseq_nz_death_f_2",
+			"vjseq_nz_death_f_3",
+			"vjseq_nz_death_f_4",
+			"vjseq_nz_death_f_5",
+			"vjseq_nz_death_f_6",
+			"vjseq_nz_death_f_7",
+			"vjseq_nz_death_f_8",
+			"vjseq_nz_death_f_9",
+			"vjseq_nz_death_f_10",
+			"vjseq_nz_death_f_11",
+			"vjseq_nz_death_f_12",
+			"vjseq_nz_death_f_13",
+		}
 
 	end
 
@@ -5002,7 +5086,7 @@ function ENT:CustomOnDeath_AfterCorpseSpawned(dmginfo,hitgroup,GetCorpse)
 
 		if self:GetClass() == "npc_vj_totu_weaponized_cyst" then
 			local bloodeffect = EffectData()
-			bloodeffect:SetOrigin(GetCorpse:GetPos() +self:GetUp(20))
+			bloodeffect:SetOrigin(GetCorpse:GetPos() +GetCorpse:GetUp()*40)
 			bloodeffect:SetColor(VJ_Color2Byte(Color(127,0,0,255)))
 			bloodeffect:SetScale(250)
 			util.Effect("VJ_Blood1",bloodeffect)
@@ -5095,6 +5179,225 @@ function ENT:CustomOnDeath_AfterCorpseSpawned(dmginfo,hitgroup,GetCorpse)
 
 	end
 
+	if self:GetClass() == "npc_vj_totu_weaponized_cancer" && IsValid(GetCorpse) && !self.ToTU_Weaponized_Cancer_FireDeath then
+
+		local AnimTime = VJ_GetSequenceDuration(self,"vjseq_infectionrise2")
+		local AnimTime2 = VJ_GetSequenceDuration(self,"vjseq_Lying_to_Standing_Alert03d")
+		local RevSqSpawnH = self.StartHealth * 0.10
+
+		local RandRevive = math.random(1,6)
+
+		timer.Simple(math.random(5,10),function() if IsValid(GetCorpse) then
+
+			if RandRevive == 1 then
+				local RevivedSquall = ents.Create("npc_vj_totu_weaponized_carcass")
+				RevivedSquall.CanFlinch = 0
+				RevivedSquall.CanInvestigate = false
+				RevivedSquall.HasDeathAnimation = false
+				RevivedSquall.CanTurnWhileStationary = false
+				
+				RevivedSquall:SetPos(GetCorpse:GetPos())
+				RevivedSquall:SetAngles(GetCorpse:GetAngles())
+				RevivedSquall:Spawn()
+				RevivedSquall:Activate()
+				undo.ReplaceEntity(self,RevivedSquall)
+
+				timer.Simple(0.01,function() if IsValid(RevivedSquall) then
+						RevivedSquall:EmitSound(Sound("zombies/anywhere/ghoul/hit_"..math.random(1,3)..".mp3",80,math.random(100,90)))
+											local bloodspray = EffectData()
+						bloodspray:SetOrigin(RevivedSquall:GetPos())
+						bloodspray:SetScale(10)
+						bloodspray:SetFlags(3)
+						bloodspray:SetColor(0)
+						util.Effect("bloodspray",bloodspray)
+						util.Effect("bloodspray",bloodspray)
+						
+						local bloodeffect = EffectData()
+						bloodeffect:SetOrigin(RevivedSquall:GetPos())
+						bloodeffect:SetColor(VJ_Color2Byte(Color(17,6,6,255)))
+						bloodeffect:SetScale(125)
+						util.Effect("VJ_Blood1",bloodeffect)
+					if math.random(1,2) == 1 then
+						if math.random(1,3) == 1 then
+							RevivedSquall:VJ_ACT_PLAYACTIVITY("vjseq_slumprise_a",true,false,false)
+						else
+							RevivedSquall:VJ_ACT_PLAYACTIVITY("vjseq_slumprise_a2",true,false,false)
+						end
+					else
+						RevivedSquall:VJ_ACT_PLAYACTIVITY("vjseq_slumprise_b",true,false,false)
+					end
+
+					RevivedSquall:SetPos(RevivedSquall:GetPos() + RevivedSquall:GetUp()*6)
+						
+					if IsValid(GetCorpse) then
+						GetCorpse:Remove()
+					end
+
+					timer.Simple(AnimTime,function() if IsValid(RevivedSquall) then
+						RevivedSquall.CanFlinch = 1
+						RevivedSquall.HasDeathAnimation = true
+						RevivedSquall.CanInvestigate = true
+						RevivedSquall.CanTurnWhileStationary = true
+						
+					end end)
+
+				end end)
+				
+				
+				
+				
+				
+				
+			elseif RandRevive == 2 then
+								local RevivedSquall = ents.Create("npc_vj_totu_weaponized_cazador")
+				RevivedSquall.CanFlinch = 0
+				RevivedSquall.CanInvestigate = false
+				RevivedSquall.HasDeathAnimation = false
+				RevivedSquall.CanTurnWhileStationary = false
+				
+				RevivedSquall:SetPos(GetCorpse:GetPos())
+				RevivedSquall:SetAngles(GetCorpse:GetAngles())
+				RevivedSquall:Spawn()
+				RevivedSquall:Activate()
+				undo.ReplaceEntity(self,RevivedSquall)
+
+				timer.Simple(0.01,function() if IsValid(RevivedSquall) then
+				
+						RevivedSquall:EmitSound(Sound("zombies/anywhere/ghoul/hit_"..math.random(1,3)..".mp3",80,math.random(100,90)))
+											local bloodspray = EffectData()
+						bloodspray:SetOrigin(RevivedSquall:GetPos())
+						bloodspray:SetScale(10)
+						bloodspray:SetFlags(3)
+						bloodspray:SetColor(0)
+						util.Effect("bloodspray",bloodspray)
+						util.Effect("bloodspray",bloodspray)
+						
+						local bloodeffect = EffectData()
+						bloodeffect:SetOrigin(RevivedSquall:GetPos())
+						bloodeffect:SetColor(VJ_Color2Byte(Color(17,6,6,255)))
+						bloodeffect:SetScale(125)
+						util.Effect("VJ_Blood1",bloodeffect)
+						
+					local RandCazRevAnims = math.random(1,3)
+					if RandCazRevAnims == 1 then
+						RevivedSquall:VJ_ACT_PLAYACTIVITY("vjseq_slumprise_b",true,false,false)
+					elseif RandCazRevAnims == 1 then
+						RevivedSquall:VJ_ACT_PLAYACTIVITY("vjseq_slumprise_c",true,false,false)
+					else
+						RevivedSquall:VJ_ACT_PLAYACTIVITY("vjseq_slumprise_a",true,false,false)
+					end
+
+					RevivedSquall:SetPos(RevivedSquall:GetPos() + RevivedSquall:GetUp()*6)
+						
+					if IsValid(GetCorpse) then
+						GetCorpse:Remove()
+					end
+
+					timer.Simple(AnimTime,function() if IsValid(RevivedSquall) then
+						RevivedSquall.CanFlinch = 1
+						RevivedSquall.HasDeathAnimation = true
+						RevivedSquall.CanInvestigate = true
+						RevivedSquall.CanTurnWhileStationary = true
+						
+					end end)
+
+				end end)
+			elseif RandRevive == 3 then
+
+								local RevivedSquall = ents.Create("npc_vj_totu_weaponized_cyst")
+				RevivedSquall.CanFlinch = 0
+				RevivedSquall.CanInvestigate = false
+				RevivedSquall.HasDeathAnimation = false
+				RevivedSquall.CanTurnWhileStationary = false
+				
+				RevivedSquall:SetPos(GetCorpse:GetPos())
+				RevivedSquall:SetAngles(GetCorpse:GetAngles())
+				RevivedSquall:Spawn()
+				RevivedSquall:Activate()
+				undo.ReplaceEntity(self,RevivedSquall)
+
+				timer.Simple(0.01,function() if IsValid(RevivedSquall) then
+								RevivedSquall:EmitSound(Sound("zombies/anywhere/ghoul/hit_"..math.random(1,3)..".mp3",80,math.random(100,90)))
+											local bloodspray = EffectData()
+						bloodspray:SetOrigin(RevivedSquall:GetPos())
+						bloodspray:SetScale(10)
+						bloodspray:SetFlags(3)
+						bloodspray:SetColor(0)
+						util.Effect("bloodspray",bloodspray)
+						util.Effect("bloodspray",bloodspray)
+						
+						local bloodeffect = EffectData()
+						bloodeffect:SetOrigin(RevivedSquall:GetPos())
+						bloodeffect:SetColor(VJ_Color2Byte(Color(17,6,6,255)))
+						bloodeffect:SetScale(125)
+						util.Effect("VJ_Blood1",bloodeffect)
+				RevivedSquall:VJ_ACT_PLAYACTIVITY("vjseq_slumprise_a",true,false,false)
+
+					RevivedSquall:SetPos(RevivedSquall:GetPos() + RevivedSquall:GetUp()*6)
+						
+					if IsValid(GetCorpse) then
+						GetCorpse:Remove()
+					end
+
+					timer.Simple(AnimTime,function() if IsValid(RevivedSquall) then
+						RevivedSquall.CanFlinch = 1
+						RevivedSquall.HasDeathAnimation = true
+						RevivedSquall.CanInvestigate = true
+						RevivedSquall.CanTurnWhileStationary = true
+						
+					end end)
+
+				end end)
+			else
+			
+				local RevivedSquall = ents.Create("npc_vj_totu_weaponized_cancer")
+				RevivedSquall.CanEat = false
+				RevivedSquall.CanFlinch = 0
+				RevivedSquall.CanInvestigate = false
+				RevivedSquall.HasDeathAnimation = false
+				RevivedSquall.CanTurnWhileStationary = false
+				
+				RevivedSquall:SetPos(GetCorpse:GetPos())
+				RevivedSquall:SetAngles(GetCorpse:GetAngles())
+				RevivedSquall:Spawn()
+				RevivedSquall:Activate()
+				undo.ReplaceEntity(self,RevivedSquall)
+				RevivedSquall:SetHealth(RevSqSpawnH)
+
+				timer.Simple(0.01,function() if IsValid(RevivedSquall) then
+
+					if math.random(1,2) == 1 then
+						RevivedSquall:VJ_ACT_PLAYACTIVITY("vjseq_infectionrise2",true,false,false)
+					else
+						RevivedSquall:VJ_ACT_PLAYACTIVITY("vjseq_Lying_to_Standing_Alert03d",true,false,false)
+					end
+
+					RevivedSquall:SetPos(RevivedSquall:GetPos() + RevivedSquall:GetUp()*6)
+						
+					if IsValid(GetCorpse) then
+						GetCorpse:Remove()
+					end
+
+					if math.random(1,100) == 1 && GetConVar("VJ_ToTU_General_EasterEggs"):GetInt() == 1 then
+						VJ_EmitSound(RevivedSquall,"fx/egg/igetup.mp3",100,100)
+					end
+
+					timer.Simple(AnimTime,function() if IsValid(RevivedSquall) then
+						RevivedSquall.CanFlinch = 1
+						RevivedSquall.HasDeathAnimation = true
+						RevivedSquall.CanInvestigate = true
+						RevivedSquall.CanEat = true
+						RevivedSquall.CanTurnWhileStationary = true
+						
+					end end)
+
+				end end)
+
+			end
+
+		end end)
+
+    end
 end
 /*-----------------------------------------------
 	*** Copyright (c) 2012-2019 by DrVrej, All rights reserved. ***

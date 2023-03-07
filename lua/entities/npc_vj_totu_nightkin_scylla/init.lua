@@ -10,66 +10,38 @@ function ENT:Zombie_Difficulty()
 	if GetConVar("VJ_LNR_Difficulty"):GetInt() == 1 then
 
 		self.StartHealth = 1000
-		self.MeleeAttackDamage = math.Rand(15,20)
+		self.MeleeAttackDamage = math.Rand(20,25)
 
 	elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 2 then
 
 		self.StartHealth = 1250
-		self.MeleeAttackDamage = math.Rand(20,25)
+		self.MeleeAttackDamage = math.Rand(25,30)
 
 	elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 3 then
 
 		self.StartHealth = 1500
-		self.MeleeAttackDamage = math.Rand(25,30)
+		self.MeleeAttackDamage = math.Rand(30,35)
 
 	elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 4 then
 
 		self.StartHealth = 1750
-		self.MeleeAttackDamage = math.Rand(30,35)
+		self.MeleeAttackDamage = math.Rand(35,40)
 
 	elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 5 then
 
 		self.StartHealth = 2000
-		self.MeleeAttackDamage = math.Rand(35,40)
+		self.MeleeAttackDamage = math.Rand(40,45)
 
 	else
 
 		self.StartHealth = 1250
-		self.MeleeAttackDamage = math.Rand(20,25)
+		self.MeleeAttackDamage = math.Rand(25,30)
 
 	end
 
 	self:SetHealth(self.StartHealth)	
 
-	if GetConVar("VJ_ToTU_General_LegHealthScalesWithDifficulty"):GetInt() == 1 then
-
-		if GetConVar("VJ_LNR_Difficulty"):GetInt() == 1 then
-
-			self.LNR_LegHP = 200
-
-		elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 2 then
-
-			self.LNR_LegHP = 250
-
-		elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 3 then
-
-			self.LNR_LegHP = 300
-
-		elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 4 then
-
-			self.LNR_LegHP = 350
-
-		elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 5 then
-
-			self.LNR_LegHP = 400
-
-		end
-
-	else
-
-		self.LNR_LegHP = 250
-
-	end
+	self.LNR_LegHP = self.StartHealth * 0.20
 
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
@@ -125,6 +97,8 @@ function ENT:ZombieSounds_Custom()
 	self.BeforeMeleeAttackSoundPitch = VJ_Set(70, 60)
 	self.PainSoundPitch = VJ_Set(70, 60)
 	self.DeathSoundPitch = VJ_Set(70, 60)
+
+	self.ToTU_Almanac_VoiceActor = "Servant Suitor (Amnesia: The Dark Descent)"
 
 end
 /*-----------------------------------------------

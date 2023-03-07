@@ -36,35 +36,7 @@ function ENT:Zombie_Difficulty()
 
 	self:SetHealth(self.StartHealth)	
 
-	if GetConVar("VJ_ToTU_General_LegHealthScalesWithDifficulty"):GetInt() == 1 then
-
-		if GetConVar("VJ_LNR_Difficulty"):GetInt() == 1 then
-
-			self.LNR_LegHP = 10
-
-		elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 2 then
-
-			self.LNR_LegHP = 20
-
-		elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 3 then
-
-			self.LNR_LegHP = 30
-
-		elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 4 then
-
-			self.LNR_LegHP = 40
-
-		elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 5 then
-
-			self.LNR_LegHP = 50
-
-		end
-
-	else
-
-		self.LNR_LegHP = 20
-
-	end
+	self.LNR_LegHP = self.StartHealth * 0.20
 
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
@@ -146,6 +118,8 @@ function ENT:ZombieSounds_Custom()
 		"voices/nightkin/shrieker/death_2.mp3",
 		"voices/nightkin/shrieker/death_3.mp3",
 	}
+
+	self.ToTU_Almanac_VoiceActor = "Howler (Dying Light 2)"
 
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------

@@ -48,35 +48,7 @@ function ENT:Zombie_Difficulty()
 
 	self:SetHealth(self.StartHealth)	
 
-	if GetConVar("VJ_ToTU_General_LegHealthScalesWithDifficulty"):GetInt() == 1 then
-
-		if GetConVar("VJ_LNR_Difficulty"):GetInt() == 1 then
-
-			self.LNR_LegHP = 60
-
-		elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 2 then
-
-			self.LNR_LegHP = 90
-
-		elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 3 then
-
-			self.LNR_LegHP = 120
-
-		elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 4 then
-
-			self.LNR_LegHP = 150
-
-		elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 5 then
-
-			self.LNR_LegHP = 180
-
-		end
-
-	else
-
-		self.LNR_LegHP = 90
-
-	end
+	self.LNR_LegHP = self.StartHealth * 0.20
 
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
@@ -141,6 +113,8 @@ function ENT:ZombieSounds_Custom()
 		"voices/nightkin/squaller/start_search_close_7.mp3",
 		"voices/nightkin/squaller/start_search_close_8.mp3",
 	}
+
+	self.ToTU_Almanac_VoiceActor = "Proxy (SOMA)"
 
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------

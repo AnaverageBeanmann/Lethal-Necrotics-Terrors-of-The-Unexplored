@@ -36,35 +36,7 @@ function ENT:Zombie_Difficulty()
 
 	self:SetHealth(self.StartHealth)
 
-	if GetConVar("VJ_ToTU_General_LegHealthScalesWithDifficulty"):GetInt() == 1 then
-
-		if GetConVar("VJ_LNR_Difficulty"):GetInt() == 1 then
-
-			self.LNR_LegHP = 200
-
-		elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 2 then
-
-			self.LNR_LegHP = 300
-
-		elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 3 then
-
-			self.LNR_LegHP = 400
-
-		elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 4 then
-
-			self.LNR_LegHP = 500
-
-		elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 5 then
-
-			self.LNR_LegHP = 600
-
-		end
-
-	else
-
-		self.LNR_LegHP = 300
-
-	end
+	self.LNR_LegHP = self.StartHealth * 0.20
 
 end 
 /*-----------------------------------------------

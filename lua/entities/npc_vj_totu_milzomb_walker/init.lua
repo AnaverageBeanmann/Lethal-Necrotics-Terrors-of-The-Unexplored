@@ -804,7 +804,7 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:Zombie_CustomOnInitialize()
 
-	if self.MilZ_Airman_IsAirman then return end
+	if self.MilZ_Airman_IsAirman or self.MilZ_Hazmat_IsHazmat then return end
 
 	if self:GetClass() == "npc_vj_totu_fon_juggernaut" then
 		self.HasRangeAttack = true
@@ -1108,6 +1108,8 @@ function ENT:MilZ_GiveGasmaskSounds()
 		self.DeathSoundPitch = VJ_Set(50, 60)
 	end
 
+	self.ToTU_Almanac_VoiceActor = "Security Zombie (Nightmare House 2)"
+
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:Zombie_Difficulty()
@@ -1146,35 +1148,7 @@ function ENT:Zombie_Difficulty()
 
 	self:SetHealth(self.StartHealth)	
 
-	if GetConVar("VJ_ToTU_General_LegHealthScalesWithDifficulty"):GetInt() == 1 then
-
-		if GetConVar("VJ_LNR_Difficulty"):GetInt() == 1 then
-
-			self.LNR_LegHP = 15
-
-		elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 2 then
-
-			self.LNR_LegHP = 25
-
-		elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 3 then
-
-			self.LNR_LegHP = 35
-
-		elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 4 then
-
-			self.LNR_LegHP = 45
-
-		elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 5 then
-
-			self.LNR_LegHP = 55
-
-		end
-
-	else
-
-		self.LNR_LegHP = 25
-
-	end
+	self.LNR_LegHP = self.StartHealth * 0.20
 
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
@@ -1210,7 +1184,7 @@ function ENT:Zombie_CustomOnThink_AIEnabled()
 
 		if self.MilZ_Corpsman then
 
-			for _,v in ipairs(ents.FindInSphere(self:GetPos(),100)) do
+			for _,v in ipairs(ents.FindInSphere(self:GetPos(),150)) do
 
 				if v:IsNPC() && v:Disposition(self) == D_LI then
 
@@ -1228,10 +1202,10 @@ function ENT:Zombie_CustomOnThink_AIEnabled()
 
 						end
 
-						effects.BeamRingPoint(self:GetPos(), 0.3, 2, 250, 16, 0, Color(33, 255, 0, 255), {material="sprites/orangelight1", framerate=20})
-						effects.BeamRingPoint(self:GetPos(), 0.3, 2, 125, 16, 0, Color(33, 255, 0, 255), {material="sprites/orangelight1", framerate=20})
+						effects.BeamRingPoint(self:GetPos(), 0.3, 2, 400, 16, 0, Color(33, 255, 0, 255), {material="sprites/orangelight1", framerate=20})
+						effects.BeamRingPoint(self:GetPos(), 0.3, 2, 200, 16, 0, Color(33, 255, 0, 255), {material="sprites/orangelight1", framerate=20})
 						VJ_EmitSound(self,{"items/smallmedkit1.wav"},100,math.random(100,95))
-						v:SetHealth(v:Health() +math.random(10,15))
+						v:SetHealth(v:Health() +math.random(30,35))
 
 						if v:Health() > v:GetMaxHealth() then
 

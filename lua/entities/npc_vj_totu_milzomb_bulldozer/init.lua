@@ -100,6 +100,8 @@ function ENT:ZombieSounds_Custom()
 		"voices/l4d/tank/die/tank_death_07.wav"
 	}
 
+	self.ToTU_Almanac_VoiceActor = "Tank (Left 4 Dead)"
+
 	self.IdleSoundPitch = VJ_Set(80, 70)
 	self.AlertSoundPitch = VJ_Set(75, 65)
 	self.CombatIdleSoundPitch = VJ_Set(75, 65)
@@ -224,6 +226,8 @@ function ENT:ZombieSounds_Custom()
 			self.PainSoundPitch = VJ_Set(50, 55)
 			self.DeathSoundPitch = VJ_Set(50, 55)	
 		end
+		
+		self.ToTU_Almanac_VoiceActor = "Charger (Left 4 Dead 2)"
 
 	end
 

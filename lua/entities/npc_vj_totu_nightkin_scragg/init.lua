@@ -302,35 +302,7 @@ function ENT:Zombie_Difficulty()
 
 	self:SetHealth(self.StartHealth)	
 
-	if GetConVar("VJ_ToTU_General_LegHealthScalesWithDifficulty"):GetInt() == 1 then
-
-		if GetConVar("VJ_LNR_Difficulty"):GetInt() == 1 then
-
-			self.LNR_LegHP = 20
-
-		elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 2 then
-
-			self.LNR_LegHP = 30
-
-		elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 3 then
-
-			self.LNR_LegHP = 40
-
-		elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 4 then
-
-			self.LNR_LegHP = 50
-
-		elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 5 then
-
-			self.LNR_LegHP = 60
-
-		end
-
-	else
-
-		self.LNR_LegHP = 30
-
-	end
+	self.LNR_LegHP = self.StartHealth * 0.20
 
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
@@ -386,6 +358,8 @@ function ENT:ZombieSounds_Custom()
 		"voices/amnesia/grunt/amb_idle_whimp01.wav",
 		"voices/amnesia/grunt/amb_idle_whimp02.wav",
 	}
+
+	self.ToTU_Almanac_VoiceActor = "Servant Grunt (Amnesia: The Dark Descent)"
 
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------

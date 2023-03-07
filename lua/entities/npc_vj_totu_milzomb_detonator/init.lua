@@ -114,6 +114,8 @@ function ENT:ZombieSounds_Custom()
 		self.DeathSoundPitch = VJ_Set(80, 70)	
 	end
 
+	self.ToTU_Almanac_VoiceActor = "Gas Tank (Dying Light 1)"
+
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:Zombie_CustomOnThink_AIEnabled()
@@ -509,6 +511,8 @@ function ENT:ArmorDamage(dmginfo,hitgroup)
 						"voices/mil_jugg/death_cutoff.mp3"
 					}
 
+					self.ToTU_Almanac_VoiceActor = "Demolisher (Dying Light 1)"
+	
 					self.IdleSoundPitch = VJ_Set(90, 80)
 					self.AlertSoundPitch = VJ_Set(90, 80)
 					self.CombatIdleSoundPitch = VJ_Set(90, 80)

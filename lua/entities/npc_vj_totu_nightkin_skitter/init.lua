@@ -41,35 +41,7 @@ function ENT:Zombie_Difficulty()
 
 	self:SetHealth(self.StartHealth)	
 
-	if GetConVar("VJ_ToTU_General_LegHealthScalesWithDifficulty"):GetInt() == 1 then
-
-		if GetConVar("VJ_LNR_Difficulty"):GetInt() == 1 then
-
-			self.LNR_LegHP = 15
-
-		elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 2 then
-
-			self.LNR_LegHP = 25
-
-		elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 3 then
-
-			self.LNR_LegHP = 35
-
-		elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 4 then
-
-			self.LNR_LegHP = 45
-
-		elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 5 then
-
-			self.LNR_LegHP = 55
-
-		end
-	
-	else
-
-		self.LNR_LegHP = 25
-
-	end
+	self.LNR_LegHP = self.StartHealth * 0.20
 
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
@@ -137,6 +109,8 @@ function ENT:ZombieSounds_Custom()
 		"voices/nightkin/skitter/death_3.mp3",
 		"voices/nightkin/skitter/death_4.mp3"
 	}
+
+	self.ToTU_Almanac_VoiceActor = "Gorefast (Killing Floor 1)"
 
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
