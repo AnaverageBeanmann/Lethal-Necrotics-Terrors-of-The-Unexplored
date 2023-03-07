@@ -1,0 +1,13 @@
+"vertexlitgeneric"
+{
+	"$baseTexture"		"models/totu/cepheus/sleeves"
+	"$bumpmap"		"models/totu/cepheus/sleeves_normal"
+
+ 	"$halflambert"		"1"
+
+	"$phong"			"1"
+	"$phongboost"		"1"
+	"$phongfresnelranges"	"[0.04]"
+	"$phongexponent"		"10"
+	"$phongalbedotint"		"1"
+}
