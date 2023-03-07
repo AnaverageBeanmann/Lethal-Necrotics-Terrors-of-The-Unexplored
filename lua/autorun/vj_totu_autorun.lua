@@ -8,7 +8,7 @@
 local PublicAddonName = "Lethal Necrotics: Terrors of The Unexplored"
 local AddonName = "Lethal Necrotics: Terrors of The Unexplored"
 local AddonType = "SNPC"
-local AutorunFile = "autorun/vj_lnrhl2_autorun.lua"
+local AutorunFile = "autorun/vj_totu_autorun.lua"
 -------------------------------------------------------
 local VJExists = file.Exists("lua/autorun/vj_base_autorun.lua","GAME")
 local LNRHL2Exists = file.Exists("lua/autorun/vj_lnrhl2_autorun.lua","GAME")
@@ -74,7 +74,7 @@ end
 	local vCat1 = "Lethal Necrotics: Terrors of The Unexplored - Base Zombies"
 	local vCat2 = "Lethal Necrotics: Terrors of The Unexplored - Military Zombies"
 	local vCat3 = "Lethal Necrotics: Terrors of The Unexplored - Nightkin"
-	local vCat4 = "Lethal Necrotics: Terrors of The Unexplored - Weaponized/Lab Specimens"
+	local vCat4 = "Lethal Necrotics: Terrors of The Unexplored - Deimos"
 	local vCat5 = "Lethal Necrotics: Terrors of The Unexplored - Backcounty"
 	local vCat6 = "Lethal Necrotics: Terrors of The Unexplored - The Rotten"
 	local vCat7 = "Lethal Necrotics: Terrors of The Unexplored - Water Critters"
@@ -82,6 +82,7 @@ end
 	local vCat9 = "Lethal Necrotics: Terrors of The Unexplored - Tundra Wastes"
 	local vCat10 = "Lethal Necrotics: Terrors of The Unexplored - Morti Labs"
 	local vCat11 = "Lethal Necrotics: Terrors of The Unexplored - Freaks of Nature"
+	local vCat12 = "Lethal Necrotics: Terrors of The Unexplored - Cepheus"
 	-- VJ.AddCategoryInfo("Lethal Necrotics: Terrors of The Unexplored", {Icon = "icons/totu_icon.png"})
 	-- VJ.AddCategoryInfo("Lethal Necrotics: Terrors of The Unexplored", {Icon = "icons/icon_new_16.png"})
 	-- VJ.AddCategoryInfo("Lethal Necrotics: Terrors of The Unexplored", {Icon = "icons/icon_new_32.png"})
@@ -99,6 +100,7 @@ end
 	VJ.AddCategoryInfo("Lethal Necrotics: Terrors of The Unexplored - Tundra Wastes", {Icon = "icons/symbolv3.png"})
 	VJ.AddCategoryInfo("Lethal Necrotics: Terrors of The Unexplored - Morti Labs", {Icon = "icons/symbolv3.png"})
 	VJ.AddCategoryInfo("Lethal Necrotics: Terrors of The Unexplored - Freaks of Nature", {Icon = "icons/symbolv3.png"})
+	VJ.AddCategoryInfo("Lethal Necrotics: Terrors of The Unexplored - Cepheus", {Icon = "icons/symbolv3.png"})
 	-- local vCat2 = "Lethal Necrotics: Terrors of The Unexplored - Misc & Spawners"
 	-- VJ.AddCategoryInfo("Lethal Necrotics: Terrors of The Unexplored - Misc & Spawners", {Icon = "icons/totu_icon.png"})
 	
@@ -551,7 +553,7 @@ https://github.com/VJ-HLR-Developers/Half-Life-Zombie-Edition-SNPCs/blob/master/
 		-- []
 		
 		VJ.AddNPC("Squaller","npc_vj_totu_nightkin_squaller",vCat3)
-		-- {}
+		-- []
 		-- edit texture to have blood tear streaks
 		-- have them beat the shit out of corpses that arnt kin?
 		-- mourn corpses of kin
@@ -559,23 +561,27 @@ https://github.com/VJ-HLR-Developers/Half-Life-Zombie-Edition-SNPCs/blob/master/
 		-- add easter egg of francis saying "phew.. good thing i'm indestructable" when activating iron will
 		
 		VJ.AddNPC("Shrieker","npc_vj_totu_nightkin_shrieker",vCat3)
-		-- {}
+		-- []
 		-- edit texture to make throat look all worn out
 		
 		VJ.AddNPC("Spectre","npc_vj_totu_nightkin_spectre",vCat3)
-		-- ()
+		-- []
 		-- basically ghost but nightkin
 		-- say it's an anomaly
 		-- base it on blackscary in clr?
 		
 		VJ.AddNPC("Scourge","npc_vj_totu_nightkin_spitballer",vCat3)
-		-- {}
+		-- []
 		-- make eyes purple
 		-- make corpse glow
 		
 		VJ.AddNPC("Scylla","npc_vj_totu_nightkin_scylla",vCat3)
-		-- {}
+		-- []
 		-- get it its own model
+		
+		-- VJ.AddNPC("S","npc_vj_totu_nightkin_s",vCat3)
+		-- add a passive one called Shyke?
+		-- voice acted by antlion grub
 		
 	-- Tundra Wastes
 		-- general gimmick
@@ -612,19 +618,7 @@ https://github.com/VJ-HLR-Developers/Half-Life-Zombie-Edition-SNPCs/blob/master/
 		-- some kind of ravager copy but cold
 		-- name it scavenger?
 	
-	-- Weaponized/Lab Specimens
-		VJ.AddNPC("Drone","npc_vj_totu_weaponized_drone",vCat4) -- stinky
-		-- ()
-		VJ.AddNPC("Razor","npc_vj_totu_weaponized_razor",vCat4)
-		-- ()
-		VJ.AddNPC("Sentinel","npc_vj_totu_weaponized_sentinel",vCat4)
-		-- ()
-		VJ.AddNPC("Peacekeeper","npc_vj_totu_weaponized_peacekeeper",vCat4)
-		-- ()
-		VJ.AddNPC("Caretaker","npc_vj_totu_weaponized_caretaker",vCat4)
-		-- ()
-		-- medic npc
-		-- voiced by this? https://youtu.be/YCk6AvqA95k
+	-- Deimos
 		
 		VJ.AddNPC("Carcass","npc_vj_totu_weaponized_carcass",vCat4)
 		-- []
@@ -651,21 +645,39 @@ https://github.com/VJ-HLR-Developers/Half-Life-Zombie-Edition-SNPCs/blob/master/
 		-- ()
 		-- new model idea: revived and rotting caretaker
 		
-		-- VJ.AddNPC("Redead","npc_vj_totu_weaponized_redead",vCat4)
+		VJ.AddNPC("Redead","npc_vj_totu_weaponized_redead",vCat4)
 		-- main revenant minion
 		-- rev can still spawn the c trio
 		-- purple glowing eyes
 		-- voiced by doom 2016 zombie
 		-- slow but can run occasionally
 		-- ()
+
+		VJ.AddNPC("Corrupt","npc_vj_totu_weaponized_corrupt",vCat4)
 		
-		-- VJ.AddNPC("Redead (Armored)","npc_vj_totu_weaponized_redead_grunt",vCat4)
+		VJ.AddNPC("Remort","npc_vj_totu_weaponized_redead_grunt",vCat4)
 		-- deimos drone
+		-- maybe call it Remort
 		-- ()
+
+		-- VJ.AddNPC("Re","npc_vj_totu_weaponized_redead_grunt",vCat4)
 		
-		VJ.AddNPC("Smog","npc_vj_totu_weaponized_smog",vCat4)
+	-- Cephues
+		VJ.AddNPC("Smog","npc_vj_totu_weaponized_smog",vCat12)
 		-- []
 		-- add friendly version
+		VJ.AddNPC("Drone","npc_vj_totu_weaponized_drone",vCat12) -- stinky
+		-- ()
+		VJ.AddNPC("Razor","npc_vj_totu_weaponized_razor",vCat12)
+		-- ()
+		VJ.AddNPC("Sentinel","npc_vj_totu_weaponized_sentinel",vCat12)
+		-- ()
+		VJ.AddNPC("Peacekeeper","npc_vj_totu_weaponized_peacekeeper",vCat12)
+		-- ()
+		VJ.AddNPC("Caretaker","npc_vj_totu_weaponized_caretaker",vCat12)
+		-- ()
+		-- medic npc
+		-- voiced by this? https://youtu.be/YCk6AvqA95k
 		/*
 	-- Morti Research Facility
 		VJ.AddNPC("Morti Scientist (Friendly)","npc_vj_totu_morti_scientist",vCat)
@@ -727,6 +739,9 @@ https://github.com/VJ-HLR-Developers/Half-Life-Zombie-Edition-SNPCs/blob/master/
 		-- noru stands for necrotic outbreak response unit
 		
 	-- Backcounty
+	
+		-- add a zombie called Bear?
+
 		VJ.AddNPC("Backcounty Walker","npc_vj_totu_backcounty_walker",vCat5)
 		-- ()
 		VJ.AddNPC("Backcounty Infected","npc_vj_totu_backcounty_infected",vCat5)
@@ -842,7 +857,7 @@ https://github.com/VJ-HLR-Developers/Half-Life-Zombie-Edition-SNPCs/blob/master/
 		
 		VJ.AddNPC("Swarm","npc_vj_totu_rotten_swarm",vCat6)
 		-- ()
-		VJ.AddNPC("Filth","npc_vj_totu_backcounty_filth",vCat5)
+		VJ.AddNPC("Filth","npc_vj_totu_backcounty_filth",vCat6)
 		-- ()
 		-- zombie cleaners
 		
@@ -1023,10 +1038,7 @@ https://github.com/VJ-HLR-Developers/Half-Life-Zombie-Edition-SNPCs/blob/master/
 	AddConvars["VJ_ToTU_Nightkin_Squaller_IronWill_Chance"] = 3
 	AddConvars["VJ_ToTU_Weaponized_Carcass_Exploders"] = 1
 	AddConvars["VJ_ToTU_Weaponized_Carcass_Exploders_Chance"] = 4
-	AddConvars["VJ_ToTU_Weaponized_Carcass_ZombineRunning"] = 1
-	AddConvars["VJ_ToTU_Weaponized_Carcass_Torso_SuperCrawl"] = 1
 	AddConvars["VJ_ToTU_Weaponized_Cyst_Exploders"] = 1
-	AddConvars["VJ_ToTU_Weaponized_Cyst_Run"] = 1
 	AddConvars["VJ_ToTU_Weaponized_Cyst_HurtOnRanged"] = 1
 	AddConvars["VJ_ToTU_Weaponized_Cyst_Exploders_Chance"] = 4
 	AddConvars["VJ_ToTU_Weaponized_Smog_Faceplate_Breakable"] = 1
@@ -1051,6 +1063,12 @@ https://github.com/VJ-HLR-Developers/Half-Life-Zombie-Edition-SNPCs/blob/master/
 	AddConvars["VJ_ToTU_Nightkin_Spectre_RangeAttack"] = 1
 	AddConvars["VJ_ToTU_Nightkin_Scylla_SubtypeBlacklisted"] = 1
 	AddConvars["VJ_ToTU_Nightkin_Shrieker_OriginalBehavior"] = 0
+	AddConvars["VJ_ToTU_Weaponized_Carcass_Bleed"] = 1
+	AddConvars["VJ_ToTU_Weaponized_Remort_Caretakers_Allow"] = 1
+	AddConvars["VJ_ToTU_Weaponized_Remort_Caretakers_Chance"] = 4
+	AddConvars["VJ_ToTU_Weaponized_Cancer_Reviving"] = 1
+	AddConvars["VJ_ToTU_Weaponized_Deimos_Infection"] = 1
+	AddConvars["VJ_ToTU_Weaponized_Deimos_Eyes"] = 2
 
 	-- AddConvars["VJ_ToTU_General_TF2Mode"] = 0
 	-- AddConvars["VJ_ToTU_Weaponized_Carcass_"] = 
@@ -1156,12 +1174,9 @@ https://github.com/VJ-HLR-Developers/Half-Life-Zombie-Edition-SNPCs/blob/master/
 			VJ_ToTU_Nightkin_Squaller_IronWill_Chance = "3",
 			VJ_ToTU_Weaponized_Carcass_Exploders = "1",
 			VJ_ToTU_Weaponized_Carcass_Exploders_Chance = "4",
-			VJ_ToTU_Weaponized_Carcass_ZombineRunning = "1",
-			VJ_ToTU_Weaponized_Carcass_Torso_SuperCrawl = "1",
 			VJ_ToTU_Weaponized_Cyst_Exploders = "1",
 			VJ_ToTU_Weaponized_Cyst_Exploders_Chance = "4",
 			VJ_ToTU_Weaponized_Cyst_HurtOnRanged = "1",
-			VJ_ToTU_Weaponized_Cyst_Run = "1",
 			VJ_ToTU_Weaponized_Smog_Faceplate_Breakable = "1",
 			VJ_ToTU_Weaponized_Smog_Tank_Breakable = "1",
 			VJ_ToTU_Weaponized_Smog_Faceplate_Health = "500",
@@ -1184,6 +1199,12 @@ https://github.com/VJ-HLR-Developers/Half-Life-Zombie-Edition-SNPCs/blob/master/
 			VJ_ToTU_Nightkin_Spectre_RangeAttack = "1",
 			VJ_ToTU_Nightkin_Scylla_SubtypeBlacklisted = "1",
 			VJ_ToTU_Nightkin_Shrieker_OriginalBehavior = "0",
+			VJ_ToTU_Weaponized_Carcass_Bleed = "1",
+			VJ_ToTU_Weaponized_Remort_Caretakers_Allow = "1",
+			VJ_ToTU_Weaponized_Remort_Caretakers_Chance = "1",
+			VJ_ToTU_Weaponized_Cancer_Reviving = "1",
+			VJ_ToTU_Weaponized_Deimos_Infection = "1",
+			VJ_ToTU_Weaponized_Deimos_Eyes = "2",
 			-- VJ_ToTU_MilZ_Det_ = "",
 			
 			
@@ -1327,7 +1348,7 @@ https://github.com/VJ-HLR-Developers/Half-Life-Zombie-Edition-SNPCs/blob/master/
 	*/
 	
 	Panel:ControlHelp("--------------------------------------------------------")
-	Panel:AddControl( "Label", {Text = "Military Zombies"})
+	Panel:AddControl( "Label", {Text = "MilZombs"})
 	Panel:ControlHelp("--------------------------------------------------------")
 	
 	Panel:AddControl("Checkbox", {Label = "MilZombs have breakable helmets?", Command = "VJ_ToTU_MilZ_Helmet_Breakable"})
@@ -1531,9 +1552,29 @@ https://github.com/VJ-HLR-Developers/Half-Life-Zombie-Edition-SNPCs/blob/master/
 	Panel:ControlHelp("Instead of running away and summoning allies, they will instead run at you and try to yell in your face.")
 
 	Panel:ControlHelp("--------------------------------------------------------")
-	Panel:AddControl( "Label", {Text = "Weaponized/Lab Specimens"})
+	Panel:AddControl( "Label", {Text = "Deimos Strain"})
 	Panel:ControlHelp("--------------------------------------------------------")
+
+	Panel:AddControl("Checkbox", {Label = "Enable Deimos infection?", Command = "VJ_ToTU_Weaponized_Deimos_Infection"})
+	Panel:ControlHelp("If enabled, Deimos strain zombs will infect victems.")
+
+	local combobox_deimoseyes = {Options = {}, CVars = {}, Label = "Deimos eyelights.", MenuButton = "0"}
+	combobox_deimoseyes.Options["Disable Entirely"] = {VJ_ToTU_Weaponized_Deimos_Eyes = 0}
+	combobox_deimoseyes.Options["Sprites Only"] = {VJ_ToTU_Weaponized_Deimos_Eyes = 1}
+	combobox_deimoseyes.Options["Sprites and Trails"] = {VJ_ToTU_Weaponized_Deimos_Eyes = 2}
+	Panel:AddControl("ComboBox", combobox_deimoseyes)
+
+	Panel:AddControl("Checkbox", {Label = "Enable Deimos bleeding?", Command = "VJ_ToTU_Weaponized_Carcass_Bleed"})
+	Panel:ControlHelp("If enabled, Carcasses, Cazadores, Cysts, and Corrupts can occasionally cause bleeding when they hit their target.")
+
+	Panel:AddControl("Checkbox", {Label = "Enable Caretaker Remorts?", Command = "VJ_ToTU_Weaponized_Remort_Caretakers_Allow"})
+	Panel:ControlHelp("If enabled, Remorts can spawn as the Caretaker varient.")
+	Panel:ControlHelp("They will heal nearby zombies.")
 	
+	Panel:AddControl("Slider", {Label = "Caretaker Remort chance.", Command = "VJ_ToTU_Weaponized_Remort_Caretakers_Chance", Min = 1, Max = 10000})
+	Panel:ControlHelp("Chance that a Remort will spawn as a Caretaker.")
+	Panel:ControlHelp("Default chance is 4.")
+
 	Panel:AddControl("Checkbox", {Label = "Enable Carcass exploders?", Command = "VJ_ToTU_Weaponized_Carcass_Exploders"})
 	Panel:ControlHelp("If enabled, Carcass can sometimes spawn as exploders.")
 	Panel:ControlHelp("Unbelievably, they explode when they die.")
@@ -1542,13 +1583,7 @@ https://github.com/VJ-HLR-Developers/Half-Life-Zombie-Edition-SNPCs/blob/master/
 	Panel:AddControl("Slider", {Label = "Carcass exploder chance.", Command = "VJ_ToTU_Weaponized_Carcass_Exploders_Chance", Min = 1, Max = 10000})
 	Panel:ControlHelp("Chance that a Carcass will spawn as an Exploder.")
 	Panel:ControlHelp("Default chance is 4.")
-	
-	Panel:AddControl("Checkbox", {Label = "Carcasses can Zombine run?", Command = "VJ_ToTU_Weaponized_Carcass_ZombineRunning"})
-	Panel:ControlHelp("If enabled, Carcass can run like Zombines every now and then.")
-	
-	Panel:AddControl("Checkbox", {Label = "Carcass Thoraxes can super crawl?", Command = "VJ_ToTU_Weaponized_Carcass_Torso_SuperCrawl"})
-	Panel:ControlHelp("If enabled, Carcass Thoraxes can crawl fast every now and then.")
-	
+		
 	Panel:AddControl("Checkbox", {Label = "Enable Cyst exploders?", Command = "VJ_ToTU_Weaponized_Cyst_Exploders"})
 	Panel:ControlHelp("If enabled, Cysts can sometimes spawn as exploders.")
 	
@@ -1556,11 +1591,15 @@ https://github.com/VJ-HLR-Developers/Half-Life-Zombie-Edition-SNPCs/blob/master/
 	Panel:ControlHelp("Chance that a Cyst will spawn as an Exploder.")
 	Panel:ControlHelp("Default chance is 4.")
 	
-	Panel:AddControl("Checkbox", {Label = "Cysts can run?", Command = "VJ_ToTU_Weaponized_Cyst_Run"})
-	Panel:ControlHelp("If enabled, Cysts can run every now and then.")
-	
 	Panel:AddControl("Checkbox", {Label = "Cysts take damage when range attacking?", Command = "VJ_ToTU_Weaponized_Cyst_HurtOnRanged"})
 	Panel:ControlHelp("If enabled, Cysts will take damage when they use their ranged attack.")
+
+	Panel:AddControl("Checkbox", {Label = "Enable Cancer reviving?", Command = "VJ_ToTU_Weaponized_Cancer_Reviving"})
+	Panel:ControlHelp("If enabled, Cancers can revive or mutate if not killed with fire.")
+
+	Panel:ControlHelp("--------------------------------------------------------")
+	Panel:AddControl( "Label", {Text = "Cepheus Strain"})
+	Panel:ControlHelp("--------------------------------------------------------")
 
 	Panel:AddControl("Checkbox", {Label = "Smogs faceplate is breakable?", Command = "VJ_ToTU_Weaponized_Smog_Faceplate_Breakable"})
 	Panel:ControlHelp("If enabled, Smogs faceplate can be broken after taking enough damage.")
@@ -1748,7 +1787,272 @@ https://github.com/VJ-HLR-Developers/Half-Life-Zombie-Edition-SNPCs/blob/master/
 				end)
 			end
 		end
-	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	hook.Add("OnNPCKilled","TOTU_Infection_Deimos",function(victim,inflictor,attacker)
+
+		if attacker.ToTU_Deimos == true && victim:LookupBone("ValveBiped.Bip01_Pelvis") && GetConVar("VJ_ToTU_Weaponized_Deimos_Infection"):GetInt() == 1 then
+
+			local zombie = ents.Create("npc_vj_totu_weaponized_redead")
+			local oldModel = victim:GetModel()
+			local oldSkin = victim:GetSkin()
+			local oldColor = victim:GetColor()
+			local oldMaterial = victim:GetMaterial()	  
+			local bg = {}
+			for i = 0,18 do
+				bg[i] = victim:GetBodygroup(i)
+			end
+			zombie:SetMaterial("hud/killicons/default")
+            zombie:SetPos(victim:GetPos())
+            zombie:SetAngles(victim:GetAngles())
+			zombie.ToTU_Weaponized_Redead_Infectee = true
+            zombie:Spawn()
+			zombie:Activate()
+            //zombie:SetParent(zombie)
+            zombie:Spawn()
+            zombie:VJ_TOTU_Deimos_CreateBoneMerge(zombie,oldModel,oldSkin,bg)
+
+			local DeathAnims = {ACT_SIGNAL2,ACT_SIGNAL3}	
+			local AnimTime = VJ_GetSequenceDuration(zombie,zombie:GetSequenceName(zombie:GetSequence()))
+
+			timer.Simple(0.01,function() if IsValid(zombie) then
+				zombie:VJ_ACT_PLAYACTIVITY(DeathAnims,true,120,false)
+				zombie.LNR_AllowedToStumble = false		
+				zombie.GodMode = true
+				zombie.HasPoseParameterLooking = false
+				zombie.DisableFindEnemy = true		
+				zombie.DisableMakingSelfEnemyToNPCs = true
+				zombie:AddFlags(FL_NOTARGET)
+				zombie.MovementType = VJ_MOVETYPE_STATIONARY		
+				zombie.CanTurnWhileStationary = false
+				zombie.HasSounds = false
+				zombie.DisableSelectSchedule = true
+
+				timer.Simple(math.random(GetConVar("VJ_LNR_ResurrectionTime1"):GetInt(),GetConVar("VJ_LNR_ResurrectionTime2"):GetInt()),function()
+
+					if IsValid(zombie) then
+
+						zombie:EmitSound(Sound("zombies/anywhere/ghoul/hit_"..math.random(1,3)..".mp3",80,math.random(100,90)))
+
+						local bloodspray = EffectData()
+						bloodspray:SetOrigin(zombie:GetPos())
+						bloodspray:SetScale(10)
+						bloodspray:SetFlags(3)
+						bloodspray:SetColor(0)
+						util.Effect("bloodspray",bloodspray)
+						util.Effect("bloodspray",bloodspray)
+						
+						local bloodeffect = EffectData()
+						bloodeffect:SetOrigin(zombie:GetPos())
+						bloodeffect:SetColor(VJ_Color2Byte(Color(17,6,6,255)))
+						bloodeffect:SetScale(125)
+						util.Effect("VJ_Blood1",bloodeffect)
+		
+						local newredead = ents.Create("npc_vj_totu_weaponized_redead")
+						newredead:SetPos(zombie:GetPos())
+						newredead:SetAngles(zombie:GetAngles())
+						newredead.ToTU_Weaponized_Redead_Infectee = true
+						newredead:Spawn()
+						newredead:Activate()
+
+						if zombie:GetActivity() == ACT_SIGNAL2 then
+							if math.random(1,3) == 1 then
+								newredead:VJ_ACT_PLAYACTIVITY("slumprise_a2",true,false,false)
+								AnimTime = VJ_GetSequenceDuration(newredead,"slumprise_a2")
+							else
+								newredead:VJ_ACT_PLAYACTIVITY("slumprise_a",true,false,false)
+								AnimTime = VJ_GetSequenceDuration(newredead,"slumprise_a")
+							end
+						end
+
+						if zombie:GetActivity() == ACT_SIGNAL3 then	
+							newredead:VJ_ACT_PLAYACTIVITY("infectionrise2",true,false,false)
+							AnimTime = VJ_GetSequenceDuration(newredead,"infectionrise2")		
+						end
+
+						timer.Simple(AnimTime,function() if IsValid(zombie) then
+
+							zombie.HasPoseParameterLooking = true	   
+							zombie:DoChangeMovementType(VJ_MOVETYPE_GROUND)
+							zombie.LNR_AllowedToStumble = true
+							zombie.DisableSelectSchedule = false
+
+						end end)
+
+						zombie:Remove()
+					
+					end
+
+				end)
+
+			end end)
+
+			if victim.IsVJBaseSNPC == true then
+				victim.HasDeathRagdoll = false
+				victim.HasDeathAnimation = false				
+			end
+
+			if victim:IsNPC() then
+				victim:Remove()
+			end
+
+		end
+
+	end)
+
+	hook.Add("PlayerDeath","TOTU_Infection_Deimos_Player",function(victim,inflictor,attacker)
+
+		if attacker.ToTU_Deimos == true && victim:LookupBone("ValveBiped.Bip01_Pelvis") && GetConVar("VJ_ToTU_Weaponized_Deimos_Infection"):GetInt() == 1 then
+
+			local zombie = ents.Create("npc_vj_totu_weaponized_redead")
+			local bonemerge = ents.Create("vj_lnr_infection")
+			local oldModel = victim:GetModel()
+			local oldSkin = victim:GetSkin()
+			local oldColor = victim:GetColor()
+			local oldMaterial = victim:GetMaterial()		  
+			local oldPlayerColor = victim:GetPlayerColor() 	  
+			local bg = {}
+			for i = 0,18 do
+				bg[i] = victim:GetBodygroup(i)
+			end
+
+            zombie:SetPos(victim:GetPos())
+            zombie:SetAngles(victim:GetAngles())
+            zombie:Spawn()
+			zombie:Activate()
+            //zombie:SetParent(zombie)
+            zombie:Spawn()
+
+            zombie:VJ_TOTU_Deimos_CreateBoneMerge(zombie,oldModel,oldSkin,bg)
+
+			local DeathAnims = {ACT_SIGNAL2,ACT_SIGNAL3}	
+			local AnimTime = VJ_GetSequenceDuration(zombie,zombie:GetSequenceName(zombie:GetSequence()))
+
+			timer.Simple(0.01,function() if IsValid(zombie) then
+				zombie:VJ_ACT_PLAYACTIVITY(DeathAnims,true,120,false)
+				zombie.LNR_AllowedToStumble = false		
+				zombie.GodMode = true
+				zombie.HasPoseParameterLooking = false
+				zombie.DisableFindEnemy = true		
+				zombie.DisableMakingSelfEnemyToNPCs = true
+				zombie:AddFlags(FL_NOTARGET)
+				zombie.MovementType = VJ_MOVETYPE_STATIONARY		
+				zombie.CanTurnWhileStationary = false
+				zombie.HasSounds = false
+				zombie.DisableSelectSchedule = true
+
+				timer.Simple(math.random(GetConVar("VJ_LNR_ResurrectionTime1"):GetInt(),GetConVar("VJ_LNR_ResurrectionTime2"):GetInt()),function()
+
+					if IsValid(zombie) then
+
+						zombie:EmitSound(Sound("zombies/anywhere/ghoul/hit_"..math.random(1,3)..".mp3",80,math.random(100,90)))
+
+						local bloodspray = EffectData()
+						bloodspray:SetOrigin(zombie:GetPos())
+						bloodspray:SetScale(10)
+						bloodspray:SetFlags(3)
+						bloodspray:SetColor(0)
+						util.Effect("bloodspray",bloodspray)
+						util.Effect("bloodspray",bloodspray)
+						
+						local bloodeffect = EffectData()
+						bloodeffect:SetOrigin(zombie:GetPos())
+						bloodeffect:SetColor(VJ_Color2Byte(Color(17,6,6,255)))
+						bloodeffect:SetScale(125)
+						util.Effect("VJ_Blood1",bloodeffect)
+		
+						local newredead = ents.Create("npc_vj_totu_weaponized_redead")
+						newredead:SetPos(zombie:GetPos())
+						newredead:SetAngles(zombie:GetAngles())
+						newredead.ToTU_Weaponized_Redead_Infectee = true
+						newredead:Spawn()
+						newredead:Activate()
+
+						if zombie:GetActivity() == ACT_SIGNAL2 then
+							if math.random(1,3) == 1 then
+								newredead:VJ_ACT_PLAYACTIVITY("slumprise_a2",true,false,false)
+								AnimTime = VJ_GetSequenceDuration(newredead,"slumprise_a2")
+							else
+								newredead:VJ_ACT_PLAYACTIVITY("slumprise_a",true,false,false)
+								AnimTime = VJ_GetSequenceDuration(newredead,"slumprise_a")
+							end
+						end
+
+						if zombie:GetActivity() == ACT_SIGNAL3 then	
+							newredead:VJ_ACT_PLAYACTIVITY("infectionrise2",true,false,false)
+							AnimTime = VJ_GetSequenceDuration(newredead,"infectionrise2")		
+						end
+
+						timer.Simple(AnimTime,function() if IsValid(zombie) then
+
+							zombie.HasPoseParameterLooking = true	   
+							zombie:DoChangeMovementType(VJ_MOVETYPE_GROUND)
+							zombie.LNR_AllowedToStumble = true
+							zombie.DisableSelectSchedule = false
+
+						end end)
+
+						zombie:Remove()
+					
+					end
+
+				end)
+
+			end end)	
+
+			local creator = NULL
+
+			if zombie:IsNPC() then
+				creator = IsValid(zombie:GetCreator()) && zombie:GetCreator()
+				zombie:SetCollisionBounds(Vector(13,13,72),Vector(-13,-13,0))
+			end
+
+			if victim:IsPlayer() then
+				if IsValid(victim:GetRagdollEntity()) then
+					victim:GetRagdollEntity():Remove()
+				end				
+			end
+
+		end
+
+	 end)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+		
 
 -- !!!!!! DON'T TOUCH ANYTHING BELOW THIS !!!!!! -------------------------------------------------------------------------------------------------------------------------
 	AddCSLuaFile(AutorunFile)
