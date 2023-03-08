@@ -1,0 +1,6 @@
+"VertexLitGeneric"
+{
+	"$baseTexture" "models/totu/revenant/Doctor_extras"
+	"$envmap" "env_cubemap"
+	"$envmapmask" "models/totu/revenant/Doctor_extras_envmap"
+}

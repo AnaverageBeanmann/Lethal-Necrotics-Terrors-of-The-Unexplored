@@ -1,0 +1,7 @@
+VertexLitGeneric
+{
+	"$basetexture" "models/totu/revenant/Surgeon_sheet_blue"
+	"$envmap" "env_cubemap"
+	"$envmapmask" "models/totu/revenant/surgeon_envmap"
+	"$halflambert" 1
+}

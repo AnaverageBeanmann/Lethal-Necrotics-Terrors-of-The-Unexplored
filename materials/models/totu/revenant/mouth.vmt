@@ -1,0 +1,7 @@
+"VertexLitGeneric"
+{
+	// Original shader: VertexLitTexture
+	"$basetexture" "models/totu/revenant/mouth"
+	"$halflambert" 1
+	"$nodecal" "1"
+}
