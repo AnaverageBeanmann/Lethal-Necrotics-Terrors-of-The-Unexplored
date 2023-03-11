@@ -20,45 +20,16 @@ ENT.AdminSpawnable	= false
 if !SERVER then return end
 
 local entsList = {
-	"npc_vj_totu_base_walker:1",
-	"npc_vj_totu_milzomb_airman:1",
-	"npc_vj_totu_milzomb_hazmat:1",
-	"npc_vj_totu_milzomb_walker:2",
-	"npc_vj_totu_base_infected:2",
-	"npc_vj_totu_milzomb_airman_infected:2",
-	"npc_vj_totu_milzomb_hazmat_infected:2",
-	"npc_vj_totu_milzomb_infected:3",
-	"npc_vj_totu_nightkin_scragg:3",
-	"npc_vj_totu_weaponized_redead:3",
-
-	"npc_vj_totu_milzomb_ghillie_walker:3",
+	"npc_vj_totu_weaponized_redead:1",
+	"npc_vj_totu_weaponized_redead_grunt:2",
+	"npc_vj_totu_weaponized_carcass:2",
+	"npc_vj_totu_weaponized_cazador:3",
+	"npc_vj_totu_weaponized_corrupt:3",
+	"npc_vj_totu_weaponized_cyst:4",
+	"npc_vj_totu_weaponized_cancer:4",
+	"npc_vj_totu_weaponized_revenant:4",
 	"npc_vj_totu_weaponized_cazador_torso:3",
-	"npc_vj_totu_weaponized_redead_grunt:4",
-	"npc_vj_totu_milzomb_ghillie:4",
-	"npc_vj_totu_weaponized_carcass:4",
 	"npc_vj_totu_weaponized_carcass_torso:4",
-	"npc_vj_totu_nightkin_skitter:4",
-	"npc_vj_totu_weaponized_cazador:5",
-	"npc_vj_totu_milzomb_ghost_walker:4",
-	"npc_vj_totu_milzomb_ghost:5",
-
-	"npc_vj_totu_weaponized_corrupt:4",
-	"npc_vj_totu_weaponized_cancer:5",
-	"npc_vj_totu_milzomb_juggernaut:6",
-	"npc_vj_totu_nightkin_squaller:6",
-	"npc_vj_totu_milzomb_bulldozer:7",
-	"npc_vj_totu_milzomb_tank:7",
-	"npc_vj_totu_nightkin_scylla:7",
-
-	-- "npc_vj_totu_milzomb_detonator:2",
-	-- "npc_vj_totu_milzomb_detonator_bulk:7",
-	-- "npc_vj_totu_nightkin_spectre:3",
-	-- "npc_vj_totu_nightkin_shrieker:6",
-	-- "npc_vj_totu_weaponized_revenant:6",
-
-	-- "npc_vj_totu_nightkin_spitballer:2",
-	-- "npc_vj_totu_weaponized_cyst:2",
-
 }
 ENT.EntitiesToSpawn = {
 	{SpawnPosition = {vForward=20, vRight=0, vUp=0}, Entities = entsList},

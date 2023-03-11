@@ -21,6 +21,7 @@ function ENT:Zombie_CustomOnPreInitialize()
 
 	self.CanEat = false
 	self.LNR_Walker = false
+	self.MeleeAttackDamageType = DMG_SLASH
 
 	if GetConVar("VJ_ToTU_Weaponized_Carcass_Bleed"):GetInt() == 1 then
 		self.MeleeAttackBleedEnemy = true
@@ -28,7 +29,6 @@ function ENT:Zombie_CustomOnPreInitialize()
 		self.MeleeAttackBleedEnemyDamage = math.random(3,4)
 		self.MeleeAttackBleedEnemyTime = 1
 		self.MeleeAttackBleedEnemyReps = 4
-		self.MeleeAttackDamageType = DMG_SLASH
 	end
 	
 	self.SoundTbl_MeleeAttackExtra = {
@@ -218,23 +218,24 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:Zombie_GlowEyes_Give()
 
-	if GetConVar("vj_npc_noidleparticle"):GetInt() == 0 && GetConVar("VJ_LNR_SpecialEyes"):GetInt() == 1 then
+	if GetConVar("VJ_ToTU_Weaponized_Deimos_Eyes"):GetInt() == 0 or GetConVar("vj_npc_noidleparticle"):GetInt() == 1 then return end
 
-		for i = 1,2 do	
-			local att = i == 2 && "eyeglow1" or "eyeglow2"		
-			local EyeGlow = ents.Create("env_sprite")
-			EyeGlow:SetKeyValue("model","vj_base/sprites/vj_glow1.vmt")
-			EyeGlow:SetKeyValue("scale","0.02")
-			EyeGlow:SetKeyValue("rendermode","5")
-			EyeGlow:SetKeyValue("rendercolor","220 0 255 255")
-			EyeGlow:SetKeyValue("spawnflags","1") 
-			EyeGlow:SetParent(self)
-			EyeGlow:Fire("SetParentAttachment",att,0)
-			EyeGlow:Spawn()
-			EyeGlow:Activate()
-			self:DeleteOnRemove(EyeGlow)
-		end
+	for i = 1,2 do	
+		local att = i == 2 && "eyeglow1" or "eyeglow2"		
+		local EyeGlow = ents.Create("env_sprite")
+		EyeGlow:SetKeyValue("model","vj_base/sprites/vj_glow1.vmt")
+		EyeGlow:SetKeyValue("scale","0.02")
+		EyeGlow:SetKeyValue("rendermode","5")
+		EyeGlow:SetKeyValue("rendercolor","220 0 255 255")
+		EyeGlow:SetKeyValue("spawnflags","1") 
+		EyeGlow:SetParent(self)
+		EyeGlow:Fire("SetParentAttachment",att,0)
+		EyeGlow:Spawn()
+		EyeGlow:Activate()
+		self:DeleteOnRemove(EyeGlow)
+	end
 
+	if GetConVar("VJ_ToTU_Weaponized_Deimos_Eyes"):GetInt() == 2 then
 		local TrailColor = Color(220,0,255,255)
 
 		if self:GetClass() == "npc_vj_totu_weaponized_carcass" then
@@ -261,8 +262,60 @@ function ENT:Zombie_GlowEyes_Give()
 			local EyeTrail = util.SpriteTrail(self,2,TrailColor,false,5,0,0.25,1,"vj_base/sprites/vj_trial1")
 			local EyeTrail2 = util.SpriteTrail(self,3,TrailColor,false,5,0,0.25,1,"vj_base/sprites/vj_trial1")
 		end
-
 	end
+
+end
+---------------------------------------------------------------------------------------------------------------------------------------------
+function ENT:ZombieSounds_Custom()
+
+	self.SoundTbl_Pain = {
+		""
+	}
+
+	self.SoundTbl_Idle = {
+		"voices/deimos/carcass/idle_1.mp3",
+		"voices/deimos/carcass/idle_2.mp3",
+		"voices/deimos/carcass/idle_3.mp3",
+		"voices/deimos/carcass/idle_4.mp3"
+	}
+		
+	self.SoundTbl_Alert = {
+		"voices/deimos/carcass/alert_1.mp3",
+		"voices/deimos/carcass/alert_2.mp3",
+		"voices/deimos/carcass/alert_3.mp3",
+		"voices/deimos/carcass/alert_4.mp3"
+	}
+	
+	self.SoundTbl_CombatIdle = {
+		"voices/deimos/carcass/idle_1.mp3",
+		"voices/deimos/carcass/idle_2.mp3",
+		"voices/deimos/carcass/idle_3.mp3",
+		"voices/deimos/carcass/idle_4.mp3"
+	}
+	
+	self.SoundTbl_BeforeMeleeAttack = {
+		"voices/deimos/carcass/attack_1.mp3",
+		"voices/deimos/carcass/attack_2.mp3",
+		"voices/deimos/carcass/attack_3.mp3",
+		"voices/deimos/carcass/attack_4.mp3",
+		"voices/deimos/carcass/attack_5.mp3",
+		"voices/deimos/carcass/attack_6.mp3"
+	}
+	
+	self.SoundTbl_Death = {
+		"voices/deimos/carcass/death_1.mp3",
+		"voices/deimos/carcass/death_2.mp3",
+		"voices/deimos/carcass/death_3.mp3",
+		"voices/deimos/carcass/death_4.mp3",
+		"voices/deimos/carcass/death_5.mp3"
+	}
+	
+	-- self.IdleSoundChance = 5
+	-- self.CombatIdleSoundChance = 4
+	self.IdleSoundLevel = 60
+	self.CombatIdleSoundLevel = 60
+	
+	self.ToTU_Almanac_VoiceActor = "Molded (Resident Evil 7)"
 
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------

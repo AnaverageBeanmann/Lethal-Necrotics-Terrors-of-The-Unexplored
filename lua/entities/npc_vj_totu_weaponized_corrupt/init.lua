@@ -20,21 +20,18 @@ function ENT:Zombie_CustomOnPreInitialize()
 	end end)
 	
 	
-	self.SoundTbl_MeleeAttackExtra = {
-		"vj_lnrhl2/shared/melee/zombie_slice_1.wav",
-		"vj_lnrhl2/shared/melee/zombie_slice_2.wav",
-		"vj_lnrhl2/shared/melee/zombie_slice_3.wav",
-		"vj_lnrhl2/shared/melee/zombie_slice_4.wav",
-		"vj_lnrhl2/shared/melee/zombie_slice_5.wav",
-		"vj_lnrhl2/shared/melee/zombie_slice_6.wav"
-	}
-	self.SoundTbl_MeleeAttack = {""}
 		self.AnimTbl_Flinch = {""}
 		self.CanFlinch = 0
 	self.CanEat = false
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:Zombie_CustomOnInitialize()
+
+	self:SetModelScale(1.13)
+	-- self:SetModelScale(1.31)
+	self.AnimTbl_Flinch = {}
+
+	if GetConVar("VJ_ToTU_Weaponized_Deimos_Eyes"):GetInt() == 0 or GetConVar("vj_npc_noidleparticle"):GetInt() == 1 then return end
 
 	for i = 1,2 do	
 		local att = i == 2 && "eyeglow1" or "eyeglow2"		
@@ -51,73 +48,68 @@ function ENT:Zombie_CustomOnInitialize()
 		self:DeleteOnRemove(EyeGlow)
 	end
 
-	local TrailColor = Color(220,0,255,255)
-	local EyeTrail = util.SpriteTrail(self,1,TrailColor,false,5,0,0.25,1,"vj_base/sprites/vj_trial1")
-	local EyeTrail2 = util.SpriteTrail(self,2,TrailColor,false,5,0,0.25,1,"vj_base/sprites/vj_trial1")
-
-	self:SetModelScale(1.13)
-	self.AnimTbl_Flinch = {}
+	if GetConVar("VJ_ToTU_Weaponized_Deimos_Eyes"):GetInt() == 2 then
+		local TrailColor = Color(220,0,255,255)
+		local EyeTrail = util.SpriteTrail(self,1,TrailColor,false,5,0,0.25,1,"vj_base/sprites/vj_trial1")
+		local EyeTrail2 = util.SpriteTrail(self,2,TrailColor,false,5,0,0.25,1,"vj_base/sprites/vj_trial1")
+	end
 
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:ZombieSounds_Custom()
 
-	/*
-	new voice ideas
-	dying light 2 snatcher/spitter
-	dead space puker
-	*/
-		self.SoundTbl_Idle = {
-			"voices/deimos/corrupt/idle1.mp3",
-			"voices/deimos/corrupt/idle2.mp3",
-			"voices/deimos/corrupt/idle3.mp3",
-			"voices/deimos/corrupt/idle4.mp3",
-			"voices/deimos/corrupt/idle5.mp3",
-			"voices/deimos/corrupt/idle6.mp3"
-		}
+	self.SoundTbl_Idle = {
+		"voices/deimos/corrupt/idle1.mp3",
+		"voices/deimos/corrupt/idle2.mp3",
+		"voices/deimos/corrupt/idle3.mp3",
+		"voices/deimos/corrupt/idle4.mp3",
+		"voices/deimos/corrupt/idle5.mp3",
+		"voices/deimos/corrupt/idle6.mp3"
+	}
 
-		self.SoundTbl_Alert = {
-			"voices/deimos/corrupt/alert1.mp3",
-			"voices/deimos/corrupt/alert2.mp3",
-			"voices/deimos/corrupt/alert3.mp3",
-			"voices/deimos/corrupt/alert4.mp3",
-			"voices/deimos/corrupt/super_puker_70.mp3"
-		}
+	self.SoundTbl_Alert = {
+		"voices/deimos/corrupt/alert1.mp3",
+		"voices/deimos/corrupt/alert2.mp3",
+		"voices/deimos/corrupt/alert3.mp3",
+		"voices/deimos/corrupt/alert4.mp3",
+		"voices/deimos/corrupt/super_puker_70.mp3"
+	}
 
-		self.SoundTbl_CombatIdle = {
-			"voices/deimos/corrupt/idle1.mp3",
-			"voices/deimos/corrupt/idle2.mp3",
-			"voices/deimos/corrupt/idle3.mp3",
-			"voices/deimos/corrupt/idle4.mp3",
-			"voices/deimos/corrupt/idle5.mp3",
-			"voices/deimos/corrupt/idle6.mp3"
-		}
+	self.SoundTbl_CombatIdle = {
+		"voices/deimos/corrupt/idle1.mp3",
+		"voices/deimos/corrupt/idle2.mp3",
+		"voices/deimos/corrupt/idle3.mp3",
+		"voices/deimos/corrupt/idle4.mp3",
+		"voices/deimos/corrupt/idle5.mp3",
+		"voices/deimos/corrupt/idle6.mp3"
+	}
 
-		self.SoundTbl_BeforeMeleeAttack = {
-			"voices/deimos/corrupt/alert1.mp3",
-			"voices/deimos/corrupt/alert2.mp3",
-			"voices/deimos/corrupt/alert3.mp3",
-			"voices/deimos/corrupt/alert4.mp3",
-			"voices/deimos/corrupt/super_puker_70.mp3"
-		}
+	self.SoundTbl_BeforeMeleeAttack = {
+		"voices/deimos/corrupt/alert1.mp3",
+		"voices/deimos/corrupt/alert2.mp3",
+		"voices/deimos/corrupt/alert3.mp3",
+		"voices/deimos/corrupt/alert4.mp3",
+		"voices/deimos/corrupt/super_puker_70.mp3"
+	}
 
-		self.SoundTbl_Pain = {
-			"voices/deimos/corrupt/pain1.mp3",
-			"voices/deimos/corrupt/pain2.mp3",
-			"voices/deimos/corrupt/pain3.mp3",
-			"voices/deimos/corrupt/pain4.mp3",
-			"voices/deimos/corrupt/pain5.mp3"
-		}
+	self.SoundTbl_Pain = {
+		"voices/deimos/corrupt/pain1.mp3",
+		"voices/deimos/corrupt/pain2.mp3",
+		"voices/deimos/corrupt/pain3.mp3",
+		"voices/deimos/corrupt/pain4.mp3",
+		"voices/deimos/corrupt/pain5.mp3"
+	}
 
-    	self.SoundTbl_Death = {
-			"voices/deimos/corrupt/death1.mp3",
-			"voices/deimos/corrupt/death2.mp3",
-			"voices/deimos/corrupt/death3.mp3",
-			"voices/deimos/corrupt/death4.mp3",
-			"voices/deimos/corrupt/death5.mp3"
-		}
+	self.SoundTbl_Death = {
+		"voices/deimos/corrupt/death1.mp3",
+		"voices/deimos/corrupt/death2.mp3",
+		"voices/deimos/corrupt/death3.mp3",
+		"voices/deimos/corrupt/death4.mp3",
+		"voices/deimos/corrupt/death5.mp3"
+	}
 		
 	self.ToTU_Almanac_VoiceActor = "Puker (Dead Space 2)"
+
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:Zombie_Difficulty()
@@ -129,31 +121,31 @@ function ENT:Zombie_Difficulty()
 	if GetConVar("VJ_LNR_Difficulty"):GetInt() == 1 then
 
 		self.StartHealth = 400
-		self.MeleeAttackDamage = math.Rand(15,20)
+		self.MeleeAttackDamage = math.Rand(25,30)
 		self.HealthRegenerationAmount = 2
 
 	elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 2 then
 
 		self.StartHealth = 500
-		self.MeleeAttackDamage = math.Rand(20,25)
+		self.MeleeAttackDamage = math.Rand(30,35)
 		self.HealthRegenerationAmount = 4
 
 	elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 3 then
 
 		self.StartHealth = 600
-		self.MeleeAttackDamage = math.Rand(25,30)
+		self.MeleeAttackDamage = math.Rand(35,40)
 		self.HealthRegenerationAmount = 6
 
 	elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 4 then
 
 		self.StartHealth = 700
-		self.MeleeAttackDamage = math.Rand(30,35)
+		self.MeleeAttackDamage = math.Rand(40,45)
 		self.HealthRegenerationAmount = 8
 
 	elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 5 then
 
 		self.StartHealth = 800
-		self.MeleeAttackDamage = math.Rand(35,40)
+		self.MeleeAttackDamage = math.Rand(45,50)
 		self.HealthRegenerationAmount = 10
 
 	else
@@ -162,6 +154,29 @@ function ENT:Zombie_Difficulty()
 		self.MeleeAttackDamage = math.Rand(20,25)
 		self.HealthRegenerationAmount = 4
 
+	end
+
+
+	if GetConVar("VJ_ToTU_Weaponized_Carcass_Bleed"):GetInt() == 1 then
+
+		self.MeleeAttackBleedEnemy = true
+		self.MeleeAttackBleedEnemyChance = 3
+		self.MeleeAttackBleedEnemyTime = 1
+		self.MeleeAttackBleedEnemyReps = 4
+		
+		if GetConVar("VJ_LNR_Difficulty"):GetInt() == 1 then
+			self.MeleeAttackBleedEnemyDamage = math.random(1,5)
+		elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 2 then
+			self.MeleeAttackBleedEnemyDamage = math.random(5,10)
+		elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 3 then
+			self.MeleeAttackBleedEnemyDamage = math.random(10,15)
+		elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 4 then
+			self.MeleeAttackBleedEnemyDamage = math.random(15,20)
+		elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 5 then
+			self.MeleeAttackBleedEnemyDamage = math.random(20,25)
+		else
+			self.MeleeAttackBleedEnemyDamage = math.random(5,10)
+		end
 	end
 
 	self:SetHealth(self.StartHealth)
@@ -224,15 +239,131 @@ end
 function ENT:Zombie_CustomOnMeleeAttack_BeforeStartTimer(seed)
 
 	if self:IsMoving() && self.ToTU_Weaponized_Redead_Running then
+
 		self.AnimTbl_MeleeAttack = {"vjseq_attack_run"}
-	else
-		self.AnimTbl_MeleeAttack = {
-			"vjseq_attack1",
-			"vjseq_attack2",
+		
+		self.SoundTbl_MeleeAttackExtra = {
+			"vj_lnrhl2/shared/melee/zombie_slice_1.wav",
+			"vj_lnrhl2/shared/melee/zombie_slice_2.wav",
+			"vj_lnrhl2/shared/melee/zombie_slice_3.wav",
+			"vj_lnrhl2/shared/melee/zombie_slice_4.wav",
+			"vj_lnrhl2/shared/melee/zombie_slice_5.wav",
+			"vj_lnrhl2/shared/melee/zombie_slice_6.wav"
 		}
+
+		self.SoundTbl_MeleeAttack = {""}
+
+		if GetConVar("VJ_LNR_Difficulty"):GetInt() == 1 then
+			self.MeleeAttackDamage = math.Rand(25,30)
+		elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 2 then
+			self.MeleeAttackDamage = math.Rand(30,35)
+		elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 3 then
+			self.MeleeAttackDamage = math.Rand(35,40)
+		elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 4 then
+			self.MeleeAttackDamage = math.Rand(40,45)
+		elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 5 then
+			self.MeleeAttackDamage = math.Rand(45,50)
+		else
+			self.MeleeAttackDamage = math.Rand(30,35)
+		end
+
+		self.HasMeleeAttackKnockBack = false
+
+		self.MeleeAttackDamageType = DMG_SLASH
+		
+		if GetConVar("VJ_ToTU_Weaponized_Carcass_Bleed"):GetInt() == 1 then
+			self.MeleeAttackBleedEnemy = true
+		end
+
+	else
+		if math.random(1,3) != 1 then
+
+			self.AnimTbl_MeleeAttack = {"vjseq_attack1"}
+
+			self.SoundTbl_MeleeAttackExtra = {
+				"vj_lnrhl2/shared/melee/zombie_slice_1.wav",
+				"vj_lnrhl2/shared/melee/zombie_slice_2.wav",
+				"vj_lnrhl2/shared/melee/zombie_slice_3.wav",
+				"vj_lnrhl2/shared/melee/zombie_slice_4.wav",
+				"vj_lnrhl2/shared/melee/zombie_slice_5.wav",
+				"vj_lnrhl2/shared/melee/zombie_slice_6.wav"
+			}
+
+			self.SoundTbl_MeleeAttack = {""}
+
+			if GetConVar("VJ_LNR_Difficulty"):GetInt() == 1 then
+				self.MeleeAttackDamage = math.Rand(25,30)
+			elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 2 then
+				self.MeleeAttackDamage = math.Rand(30,35)
+			elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 3 then
+				self.MeleeAttackDamage = math.Rand(35,40)
+			elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 4 then
+				self.MeleeAttackDamage = math.Rand(40,45)
+			elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 5 then
+				self.MeleeAttackDamage = math.Rand(45,50)
+			else
+				self.MeleeAttackDamage = math.Rand(30,35)
+			end
+
+			self.HasMeleeAttackKnockBack = false
+			
+			self.MeleeAttackDamageType = DMG_SLASH
+
+			if GetConVar("VJ_ToTU_Weaponized_Carcass_Bleed"):GetInt() == 1 then
+				self.MeleeAttackBleedEnemy = true
+			end
+
+		else
+
+			self.SoundTbl_MeleeAttackExtra = {
+				""
+			}
+
+			self.SoundTbl_MeleeAttack = {
+				"vj_lnrhl2/shared/melee/hit_punch_01.wav",
+				"vj_lnrhl2/shared/melee/hit_punch_02.wav",
+				"vj_lnrhl2/shared/melee/hit_punch_03.wav",
+				"vj_lnrhl2/shared/melee/hit_punch_04.wav",
+				"vj_lnrhl2/shared/melee/hit_punch_05.wav",
+				"vj_lnrhl2/shared/melee/hit_punch_06.wav",
+				"vj_lnrhl2/shared/melee/hit_punch_07.wav",
+				"vj_lnrhl2/shared/melee/hit_punch_08.wav"
+			}
+
+			self.AnimTbl_MeleeAttack = {"vjseq_attack2"}
+
+			if GetConVar("VJ_LNR_Difficulty"):GetInt() == 1 then
+				self.MeleeAttackDamage = math.Rand(5,10)
+			elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 2 then
+				self.MeleeAttackDamage = math.Rand(10,15)
+			elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 3 then
+				self.MeleeAttackDamage = math.Rand(15,20)
+			elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 4 then
+				self.MeleeAttackDamage = math.Rand(20,25)
+			elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 5 then
+				self.MeleeAttackDamage = math.Rand(30,35)
+			else
+				self.MeleeAttackDamage = math.Rand(10,15)
+			end
+
+			self.HasMeleeAttackKnockBack = true
+			self.MeleeAttackKnockBack_Forward1 = 150
+			self.MeleeAttackKnockBack_Forward2 = 150
+			self.MeleeAttackKnockBack_Up1 = 100
+			self.MeleeAttackKnockBack_Up2 = 125
+
+			self.MeleeAttackDamageType = DMG_CLUB
+			self.MeleeAttackBleedEnemy = false
+
+		end
+
 	end
 
 end
+---------------------------------------------------------------------------------------------------------------------------------------------
+-- function ENT:MeleeAttackKnockbackVelocity(hitEnt)
+	-- return self:GetForward()*5000 + self:GetUp()*300
+-- end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:CustomOnTakeDamage_AfterDamage(dmginfo,hitgroup)
 	if

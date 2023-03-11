@@ -5,14 +5,19 @@ include('shared.lua')
 	No parts of this code or any of its contents may be reproduced, copied, modified or adapted,
 	without the prior written consent of the author, unless otherwise indicated for stand-alone materials.
 -----------------------------------------------*/
-ENT.GeneralSoundPitch1 = 85
-ENT.GeneralSoundPitch2 = 80
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:Zombie_CustomOnPreInitialize()
 	self.MilZ_IsMilZ = true
 
+	self.MilZ_HelmetHealth = GetConVar("VJ_ToTU_MilZ_Helmet_Health"):GetInt()
+
+	if GetConVar("VJ_ToTU_General_TF2Mode"):GetInt() == 0 then
+		self.GeneralSoundPitch1 = 85
+		self.GeneralSoundPitch2 = 80
+	end
+
 	self.Model = {"models/totu/remort.mdl"}
-	timer.Simple(0.1,function() if IsValid(self) then
+	timer.Simple(0.1,function() if IsValid(self) && !self.LNR_Crippled  then
 		self.AnimTbl_Walk = {ACT_WALK}
 		self.AnimTbl_Run = {ACT_RUN}
 	end end)
@@ -257,9 +262,111 @@ function ENT:MilZ_GiveGasmaskSounds()
 
 	self.ToTU_Almanac_VoiceActor = "Security Zombie (Nightmare House 2)"
 
+	if GetConVar("VJ_ToTU_General_TF2Mode"):GetInt() == 1 then
+
+		self.SoundTbl_Idle = {
+			"vo/pyro_laughevil02.mp3",
+			"vo/pyro_laughevil03.mp3",
+			"vo/pyro_laughevil04.mp3"
+		}
+
+		self.SoundTbl_Alert = {
+			"vo/pyro_battlecry01.mp3",
+			"vo/pyro_battlecry02.mp3",
+			"vo/pyro_headleft01.mp3",
+			"vo/taunts/pyro/pyro_taunt_head_int_01.mp3",
+			"vo/taunts/pyro/pyro_taunt_head_int_03.mp3",
+			"vo/taunts/pyro/pyro_taunt_head_int_04.mp3"
+		}
+
+		self.SoundTbl_CallForHelp = {
+			"vo/pyro_activatecharge01.mp3",
+			"vo/pyro_go01.mp3",
+			"vo/pyro_headleft01.mp3",
+			"vo/pyro_helpme01.mp3",
+			"vo/pyro_moveup01.mp3"
+		}
+
+		self.SoundTbl_CombatIdle = {
+			"vo/pyro_laugh_addl04.mp3",
+			"vo/pyro_laughevil01.mp3",
+			"vo/pyro_laughevil02.mp3",
+			"vo/pyro_laughevil03.mp3",
+			"vo/pyro_laughevil04.mp3",
+			"vo/pyro_laughshort01.mp3",
+			"vo/taunts/pyro/pyro_taunt_cong_fun_05.mp3",
+			"vo/taunts/pyro/pyro_taunt_cong_fun_08.mp3",
+			"vo/taunts/pyro/pyro_taunt_cong_fun_09.mp3",
+			"vo/taunts/pyro/pyro_taunt_cong_fun_10.mp3",
+			"vo/taunts/pyro/pyro_taunt_cong_fun_11.mp3",
+			"vo/taunts/pyro/pyro_taunt_cong_fun_12.mp3",
+			"vo/taunts/pyro/pyro_taunt_cong_fun_13.mp3",
+			"vo/taunts/pyro/pyro_taunt_cong_fun_14.mp3"
+		}
+
+		self.SoundTbl_BeforeMeleeAttack = {
+			"vo/taunts/pyro_highfive01.mp3",
+			"vo/taunts/pyro_highfive02.mp3",
+			"vo/taunts/pyro/pyro_taunt_flip_exert_02.mp3",
+			"vo/taunts/pyro/pyro_taunt_flip_exert_04.mp3",
+			"vo/taunts/pyro/pyro_taunt_flip_exert_05.mp3",
+			"vo/taunts/pyro/pyro_taunt_head_exert_03.mp3"
+		}
+
+		self.SoundTbl_OnKilledEnemy = {
+			"vo/pyro_autocappedcontrolpoint01.mp3",
+			"vo/pyro_autocappedintelligence01.mp3",
+			"vo/pyro_cheers01.mp3",
+			"vo/pyro_goodjob01.mp3",
+			"vo/pyro_positivevocalization01.mp3",
+			"vo/taunts/pyro_taunts01.mp3",
+			"vo/taunts/pyro_taunts02.mp3",
+			"vo/taunts/pyro_taunts03.mp3",
+			"vo/taunts/pyro_taunts04.mp3",
+			"vo/taunts/pyro_highfive_success02.mp3",
+			"vo/taunts/pyro_highfive_success03.mp3",
+			"vo/taunts/pyro/pyro_taunt_ballon_07.mp3",
+			"vo/taunts/pyro/pyro_taunt_ballon_11.mp3"
+		}
+
+		self.SoundTbl_AllyDeath = {
+			"vo/pyro_autodejectedtie01.mp3",
+			"vo/pyro_jeers01.mp3",
+			"vo/pyro_jeers02.mp3",
+			"vo/pyro_negativevocalization01.mp3"
+		}
+
+		self.SoundTbl_Pain = {
+			"vo/pyro_medic01.mp3",
+			"vo/pyro_painsevere01.mp3",
+			"vo/pyro_painsevere02.mp3",
+			"vo/pyro_painsevere03.mp3",
+			"vo/pyro_painsevere04.mp3",
+			"vo/pyro_painsevere05.mp3",
+			"vo/pyro_painsevere06.mp3",
+			"vo/pyro_painsharp01.mp3",
+			"vo/pyro_painsharp02.mp3",
+			"vo/pyro_painsharp03.mp3",
+			"vo/pyro_painsharp04.mp3",
+			"vo/pyro_painsharp05.mp3",
+			"vo/pyro_painsharp06.mp3",
+			"vo/pyro_painsharp07.mp3"
+		}
+
+		self.SoundTbl_Death = {
+			"vo/pyro_paincrticialdeath01.mp3",
+			"vo/pyro_paincrticialdeath02.mp3",
+			"vo/pyro_paincrticialdeath03.mp3"
+		}
+		
+		self.ToTU_Almanac_VoiceActor = "Pyro (Team Fortress 2)"
+	end
+
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:Zombie_GlowEyes_Give()
+
+	if GetConVar("VJ_ToTU_Weaponized_Deimos_Eyes"):GetInt() == 0 or GetConVar("vj_npc_noidleparticle"):GetInt() == 1  then return end
 
 	for i = 1,2 do	
 		local att = i == 2 && "eyeglow1" or "eyeglow2"		
@@ -276,7 +383,7 @@ function ENT:Zombie_GlowEyes_Give()
 		self:DeleteOnRemove(EyeGlow)
 	end
 
-	if self.ToTU_Weaponized_Redead_Grunt_ShouldHaveEyetrail && !self.MilZ_HasGasmask then
+	if self.ToTU_Weaponized_Redead_Grunt_ShouldHaveEyetrail && !self.MilZ_HasGasmask && GetConVar("VJ_ToTU_Weaponized_Deimos_Eyes"):GetInt() == 2 then
 		local TrailColor = Color(220,0,255,255)
 		local EyeTrail = util.SpriteTrail(self,10,TrailColor,false,5,0,0.25,1,"vj_base/sprites/vj_trial1")
 		local EyeTrail2 = util.SpriteTrail(self,9,TrailColor,false,5,0,0.25,1,"vj_base/sprites/vj_trial1")

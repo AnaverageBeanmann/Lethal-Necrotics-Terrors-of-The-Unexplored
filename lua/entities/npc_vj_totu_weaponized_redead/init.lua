@@ -22,14 +22,17 @@ ENT.ToTU_Weaponized_Revenant_CanDoReviveEffects = true
 ENT.ToTU_Weaponized_NextHealTime = 0
 ENT.ToTU_Weaponized_Redead_Grunt_IsCaretaker = false
 ENT.ToTU_Weaponized_Revenant_NextBuffTime = 0
+ENT.ToTU_Weaponized_PoopShitter = false
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:Zombie_CustomOnPreInitialize()
 
-	self.MilZ_HelmetHealth = GetConVar("VJ_ToTU_MilZ_Helmet_Health"):GetInt()
-
 	self.Model = {"models/totu/redead.mdl"}
 
-	timer.Simple(0.1,function() if IsValid(self) then
+	if self.ToTU_Weaponized_PoopShitter then
+		self.Model = {"models/totu/thepoopshitter.mdl"}
+	end
+
+	timer.Simple(0.1,function() if IsValid(self) && !self.LNR_Crippled  then
 		self.AnimTbl_Walk = {ACT_WALK}
 		self.AnimTbl_Run = {ACT_RUN}
 	end end)
@@ -56,6 +59,8 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:Zombie_GlowEyes_Give()
 
+	if self.ToTU_Weaponized_Redead_Infectee or GetConVar("VJ_ToTU_Weaponized_Deimos_Eyes"):GetInt() == 0 or GetConVar("vj_npc_noidleparticle"):GetInt() == 1 then return end
+
 	for i = 1,2 do	
 		local att = i == 2 && "eyeglow1" or "eyeglow2"		
 		local EyeGlow = ents.Create("env_sprite")
@@ -71,50 +76,451 @@ function ENT:Zombie_GlowEyes_Give()
 		self:DeleteOnRemove(EyeGlow)
 	end
 
-	local TrailColor = Color(220,0,255,255)
-	local EyeTrail = util.SpriteTrail(self,8,TrailColor,false,5,0,0.25,1,"vj_base/sprites/vj_trial1")
-	local EyeTrail2 = util.SpriteTrail(self,9,TrailColor,false,5,0,0.25,1,"vj_base/sprites/vj_trial1")
+	if GetConVar("VJ_ToTU_Weaponized_Deimos_Eyes"):GetInt() == 2 then
+		local TrailColor = Color(220,0,255,255)
+		local EyeTrail = util.SpriteTrail(self,8,TrailColor,false,5,0,0.25,1,"vj_base/sprites/vj_trial1")
+		local EyeTrail2 = util.SpriteTrail(self,9,TrailColor,false,5,0,0.25,1,"vj_base/sprites/vj_trial1")
+	end
 
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:ZombieSounds_Custom()
-		self.SoundTbl_Idle = {
-			"voices/deimos/redead/idle_1.mp3",
-			"voices/deimos/redead/idle_2.mp3",
-			"voices/deimos/redead/idle_3.mp3"
-		}
 
-		self.SoundTbl_Alert = {
-			"voices/deimos/redead/spawn_1.mp3",
-			"voices/deimos/redead/spawn_2.mp3",
-			"voices/deimos/redead/spawn_3.mp3"
-		}
+	self.SoundTbl_Idle = {
+		"voices/deimos/redead/idle_1.mp3",
+		"voices/deimos/redead/idle_2.mp3",
+		"voices/deimos/redead/idle_3.mp3"
+	}
 
-		self.SoundTbl_CombatIdle = {
-			"voices/deimos/redead/idle_1.mp3",
-			"voices/deimos/redead/idle_2.mp3",
-			"voices/deimos/redead/idle_3.mp3"
-		}
+	self.SoundTbl_Alert = {
+		"voices/deimos/redead/spawn_1.mp3",
+		"voices/deimos/redead/spawn_2.mp3",
+		"voices/deimos/redead/spawn_3.mp3"
+	}
 
-		self.SoundTbl_BeforeMeleeAttack = {
-			"voices/deimos/redead/attack_1.mp3",
-			"voices/deimos/redead/attack_2.mp3",
-			"voices/deimos/redead/attack_3.mp3"
-		}
+	self.SoundTbl_CombatIdle = {
+		"voices/deimos/redead/idle_1.mp3",
+		"voices/deimos/redead/idle_2.mp3",
+		"voices/deimos/redead/idle_3.mp3"
+	}
 
-		self.SoundTbl_Pain = {
-			"voices/deimos/redead/pain_1.mp3",
-			"voices/deimos/redead/pain_2.mp3",
-			"voices/deimos/redead/pain_3.mp3"
-		}
+	self.SoundTbl_BeforeMeleeAttack = {
+		"voices/deimos/redead/attack_1.mp3",
+		"voices/deimos/redead/attack_2.mp3",
+		"voices/deimos/redead/attack_3.mp3"
+	}
 
-    	self.SoundTbl_Death = {
-			"voices/deimos/redead/death_1.mp3",
-			"voices/deimos/redead/death_2.mp3",
-			"voices/deimos/redead/death_3.mp3"
-		}
+	self.SoundTbl_Pain = {
+		"voices/deimos/redead/pain_1.mp3",
+		"voices/deimos/redead/pain_2.mp3",
+		"voices/deimos/redead/pain_3.mp3"
+	}
+
+	self.SoundTbl_Death = {
+		"voices/deimos/redead/death_1.mp3",
+		"voices/deimos/redead/death_2.mp3",
+		"voices/deimos/redead/death_3.mp3"
+	}
+	
+	self.ToTU_Almanac_VoiceActor = "Possessed (Doom 2016)"
+
+	if GetConVar("VJ_ToTU_General_TF2Mode"):GetInt() == 1 then
+		if self:GetClass() == "npc_vj_totu_weaponized_redead" then
+			self.SoundTbl_Idle = {
+				"vo/taunts/engy/eng_guzzle_04_burp.mp3",
+				"ambient/voices/cough1.wav",
+				"ambient/voices/cough2.wav",
+				"ambient/voices/cough3.wav",
+				"ambient/voices/cough4.wav",
+				"vo/engineer_laughshort01.mp3",
+				"vo/engineer_laughshort02.mp3",
+				"vo/engineer_laughshort03.mp3",
+				"vo/engineer_laughshort04.mp3",
+				"vo/engineer_laughevil01.mp3",
+				"vo/engineer_laughevil02.mp3",
+				"vo/engineer_laughevil03.mp3",
+				"vo/engineer_laughevil04.mp3",
+				"vo/engineer_laughevil05.mp3",
+				"vo/engineer_laughevil06.mp3",
+			}
+
+			self.SoundTbl_Alert = {
+				"vo/engineer_battlecry03.mp3",
+				"vo/engineer_battlecry04.mp3",
+				"vo/engineer_battlecry05.mp3",
+				"vo/engineer_dominationengineer05.mp3",
+				"vo/engineer_dominationengineer06.mp3",
+				"vo/engineer_incoming01.mp3",
+				"vo/engineer_incoming02.mp3",
+				"vo/engineer_incoming03.mp3",
+				"vo/engineer_meleedare01.mp3",
+				"vo/engineer_meleedare02.mp3",
+				"vo/engineer_meleedare03.mp3",
+				"vo/taunts/engineer_taunts01.mp3",
+				"vo/taunts/engineer_taunts03.mp3",
+				"vo/taunts/engineer_taunts04.mp3",
+				"vo/taunts/engineer_taunts05.mp3",
+				"vo/taunts/engineer_taunts06.mp3",
+				"vo/taunts/engineer_taunts08.mp3",
+				"vo/taunts/engineer_taunts10.mp3",
+				"vo/taunts/engineer_taunts12.mp3"
+			}
+
+			self.SoundTbl_CallForHelp = {
+				"vo/engineer_go01.mp3",
+				"vo/engineer_go02.mp3",
+				"vo/engineer_go03.mp3",
+				"vo/engineer_helpme01.mp3",
+				"vo/engineer_helpme02.mp3",
+				"vo/engineer_helpme03.mp3",
+			}
+
+			self.SoundTbl_CombatIdle = {
+				"vo/engineer_battlecry01.mp3",
+				"vo/engineer_battlecry06.mp3",
+				"vo/engineer_battlecry07.mp3",
+				"vo/engineer_cheers01.mp3",
+				"vo/engineer_cheers02.mp3",
+				"vo/engineer_cheers07.mp3",
+				"vo/engineer_gunslingertriplepunchfinal01.mp3",
+				"vo/engineer_laughevil01.mp3",
+				"vo/engineer_laughevil02.mp3",
+				"vo/engineer_laughevil03.mp3",
+				"vo/engineer_laughevil04.mp3",
+				"vo/engineer_laughevil05.mp3",
+				"vo/engineer_laughevil06.mp3",
+				"vo/engineer_laughhappy01.mp3",
+				"vo/engineer_laughhappy02.mp3",
+				"vo/engineer_laughhappy03.mp3",
+				"vo/engineer_laughlong01.mp3",
+				"vo/engineer_laughlong02.mp3",
+				"vo/engineer_laughshort01.mp3",
+				"vo/engineer_laughshort02.mp3",
+				"vo/engineer_laughshort03.mp3",
+				"vo/engineer_laughshort04.mp3",
+				"vo/engineer_sentrymoving02.mp3"
+			}
+
+			self.SoundTbl_BeforeMeleeAttack = {
+				"vo/engineer_gunslingerpunch01.mp3",
+				"vo/engineer_gunslingerpunch02.mp3",
+				"vo/engineer_gunslingerpunch03.mp3",
+				"vo/engineer_gunslingertriplepunchfinal02.mp3",
+				"vo/engineer_gunslingertriplepunchfinal03.mp3"
+			}
+
+			self.SoundTbl_OnKilledEnemy = {
+				"vo/engineer_autocappedcontrolpoint01.mp3",
+				"vo/engineer_autocappedcontrolpoint02.mp3",
+				"vo/engineer_autocappedintelligence01.mp3",
+				"vo/engineer_autocappedintelligence02.mp3",
+				"vo/engineer_autocappedintelligence03.mp3",
+				"vo/engineer_cheers03.mp3",
+				"vo/engineer_cheers04.mp3",
+				"vo/engineer_cheers05.mp3",
+				"vo/engineer_cheers06.mp3",
+				"vo/engineer_dominationdemoman01.mp3",
+				"vo/engineer_dominationdemoman04.mp3",
+				"vo/engineer_dominationengineer01.mp3",
+				"vo/engineer_dominationengineer03.mp3",
+				"vo/engineer_dominationengineer07.mp3",
+				"vo/engineer_dominationengineer09.mp3",
+				"vo/engineer_dominationheavy02.mp3",
+				"vo/engineer_dominationheavy03.mp3",
+				"vo/engineer_dominationheavy04.mp3",
+				"vo/engineer_dominationheavy05.mp3",
+				"vo/engineer_dominationheavy06.mp3",
+				"vo/engineer_dominationheavy07.mp3",
+				"vo/engineer_dominationheavy08.mp3",
+				"vo/engineer_dominationheavy09.mp3",
+				"vo/engineer_dominationheavy10.mp3",
+				"vo/engineer_dominationheavy11.mp3",
+				"vo/engineer_dominationheavy12.mp3",
+				"vo/engineer_dominationheavy14.mp3",
+				"vo/engineer_dominationpyro01.mp3",
+				"vo/engineer_dominationpyro02.mp3",
+				"vo/engineer_dominationpyro06.mp3",
+				"vo/engineer_dominationscout01.mp3",
+				"vo/engineer_dominationscout03.mp3",
+				"vo/engineer_dominationscout06.mp3",
+				"vo/engineer_dominationscout07.mp3",
+				"vo/engineer_dominationscout11.mp3",
+				"vo/engineer_dominationsoldier02.mp3",
+				"vo/engineer_dominationsoldier03.mp3",
+				"vo/engineer_dominationsoldier08.mp3",
+				"vo/engineer_dominationspy07.mp3",
+				"vo/engineer_dominationspy08.mp3",
+				"vo/engineer_dominationspy11.mp3",
+				"vo/engineer_dominationspy13.mp3",
+				"vo/engineer_mvm_close_call01.mp3",
+				"vo/engineer_mvm_get_upgrade01.mp3",
+				"vo/engineer_positivevocalization01.mp3",
+				"vo/engineer_revenge01.mp3",
+				"vo/engineer_revenge02.mp3",
+				"vo/engineer_sf13_influx_big01.mp3",
+				"vo/engineer_specialcompleted01.mp3",
+				"vo/engineer_specialcompleted02.mp3",
+				"vo/engineer_specialcompleted03.mp3",
+				"vo/engineer_specialcompleted04.mp3",
+				"vo/engineer_specialcompleted05.mp3",
+				"vo/engineer_specialcompleted10.mp3",
+				"vo/engineer_specialcompleted11.mp3"
+			}
+
+			self.SoundTbl_AllyDeath = {
+				"vo/engineer_autodejectedtie01.mp3",
+				"vo/engineer_autodejectedtie02.mp3",
+				"vo/engineer_autodejectedtie03.mp3",
+				"vo/engineer_jeers01.mp3",
+				"vo/engineer_jeers02.mp3",
+				"vo/engineer_jeers03.mp3",
+				"vo/engineer_jeers04.mp3",
+				"vo/engineer_negativevocalization01.mp3",
+				"vo/engineer_negativevocalization02.mp3",
+				"vo/engineer_negativevocalization03.mp3",
+				"vo/engineer_negativevocalization04.mp3",
+				"vo/engineer_negativevocalization05.mp3",
+				"vo/engineer_negativevocalization06.mp3",
+				"vo/engineer_negativevocalization07.mp3",
+				"vo/engineer_negativevocalization08.mp3",
+				"vo/engineer_negativevocalization09.mp3",
+				"vo/engineer_negativevocalization10.mp3",
+				"vo/engineer_negativevocalization11.mp3",
+				"vo/engineer_negativevocalization12.mp3"
+			}
+
+			self.SoundTbl_Pain = {
+				"vo/engineer_medic01.mp3",
+				"vo/engineer_medic02.mp3",
+				"vo/engineer_medic03.mp3",
+				"vo/engineer_painsevere01.mp3",
+				"vo/engineer_painsevere02.mp3",
+				"vo/engineer_painsevere03.mp3",
+				"vo/engineer_painsevere04.mp3",
+				"vo/engineer_painsevere05.mp3",
+				"vo/engineer_painsevere06.mp3",
+				"vo/engineer_painsevere07.mp3",
+				"vo/engineer_painsharp01.mp3",
+				"vo/engineer_painsharp02.mp3",
+				"vo/engineer_painsharp03.mp3",
+				"vo/engineer_painsharp04.mp3",
+				"vo/engineer_painsharp05.mp3",
+				"vo/engineer_painsharp06.mp3",
+				"vo/engineer_painsharp07.mp3",
+				"vo/engineer_painsharp08.mp3",
+			}
+
+			self.SoundTbl_Death = {
+				"vo/engineer_paincrticialdeath01.mp3",
+				"vo/engineer_paincrticialdeath02.mp3",
+				"vo/engineer_paincrticialdeath03.mp3",
+				"vo/engineer_paincrticialdeath04.mp3",
+				"vo/engineer_paincrticialdeath05.mp3",
+				"vo/engineer_paincrticialdeath06.mp3"
+			}
+			
+			self.ToTU_Almanac_VoiceActor = "Engineer (Team Fortress 2)"
+		end
 		
-		self.ToTU_Almanac_VoiceActor = "Possessed (Doom 2016)"
+		if self:GetClass() == "npc_vj_totu_weaponized_redead_grunt" then
+			self.SoundTbl_Idle = {
+				"ambient/voices/cough1.wav",
+				"ambient/voices/cough2.wav",
+				"ambient/voices/cough3.wav",
+				"ambient/voices/cough4.wav",
+				"vo/soldier_laughevil01.mp3",
+				"vo/soldier_laughevil02.mp3",
+				"vo/soldier_laughevil03.mp3",
+				"vo/soldier_laughshort01.mp3",
+				"vo/soldier_laughshort02.mp3",
+				"vo/soldier_laughshort03.mp3",
+				"vo/soldier_laughshort04.mp3"
+			}
+
+			self.SoundTbl_Alert = {
+				"vo/soldier_battlecry04.mp3",
+				"vo/soldier_battlecry05.mp3",
+				"vo/soldier_battlecry01.mp3",
+				"vo/soldier_battlecry01.mp3",
+				"vo/soldier_battlecry01.mp3",
+				"vo/soldier_dominationengineer04.mp3",
+				"vo/soldier_dominationscout04.mp3",
+				"vo/soldier_incoming01.mp3",
+				"vo/soldier_pickaxetaunt01.mp3",
+				"vo/soldier_pickaxetaunt02.mp3",
+				"vo/soldier_pickaxetaunt03.mp3",
+				"vo/soldier_pickaxetaunt04.mp3",
+				"vo/soldier_pickaxetaunt05.mp3",
+				"vo/soldier_pickaxetaunt06.mp3",
+				"vo/soldier_pickaxetaunt01.mp3",
+				"vo/soldier_sf12_zombie01.mp3",
+				"vo/soldier_specialcompleted04.mp3",
+				"vo/taunts/soldier_taunts02.mp3",
+				"vo/taunts/soldier_taunts03.mp3",
+				"vo/taunts/soldier_taunts05.mp3",
+				"vo/taunts/soldier_taunts06.mp3",
+				"vo/taunts/soldier_taunts07.mp3",
+				"vo/taunts/soldier_taunts08.mp3",
+				"vo/taunts/soldier_taunts11.mp3",
+				"vo/taunts/soldier_taunts12.mp3",
+				"vo/taunts/soldier_taunts14.mp3",
+				"vo/taunts/soldier_taunts15.mp3",
+				"vo/taunts/soldier_taunts16.mp3",
+				"vo/taunts/soldier_taunts17.mp3",
+				"vo/taunts/soldier_taunts20.mp3"
+			}
+
+			self.SoundTbl_CallForHelp = {
+				"vo/soldier_battlecry01.mp3",
+				"vo/soldier_battlecry02.mp3",
+				"vo/soldier_battlecry03.mp3",
+				"vo/soldier_go01.mp3",
+				"vo/soldier_go02.mp3",
+				"vo/soldier_go03.mp3",
+				"vo/soldier_helpme01.mp3",
+				"vo/soldier_helpme02.mp3",
+				"vo/soldier_helpme03.mp3",
+				"vo/soldier_moveup01.mp3",
+				"vo/soldier_moveup03.mp3"
+			}
+
+			self.SoundTbl_CombatIdle = {
+				"vo/soldier_battlecry06.mp3",
+				"vo/soldier_laughevil01.mp3",
+				"vo/soldier_laughevil02.mp3",
+				"vo/soldier_laughevil03.mp3",
+				"vo/soldier_laughhappy01.mp3",
+				"vo/soldier_laughhappy02.mp3",
+				"vo/soldier_laughhappy03.mp3",
+				"vo/soldier_laughlong01.mp3",
+				"vo/soldier_laughlong02.mp3",
+				"vo/soldier_laughlong03.mp3",
+				"vo/soldier_laughshort01.mp3",
+				"vo/soldier_laughshort02.mp3",
+				"vo/soldier_laughshort03.mp3",
+				"vo/soldier_laughshort04.mp3",
+				"vo/soldier_laughshort01.mp3",
+				"vo/soldier_sf12_zombie02.mp3",
+				"vo/soldier_sf12_zombie03.mp3",
+				"vo/soldier_sf12_zombie04.mp3"
+			}
+
+			self.SoundTbl_BeforeMeleeAttack = {
+				"vo/soldier_directhittaunt01.mp3",
+				"vo/soldier_directhittaunt02.mp3",
+				"vo/soldier_directhittaunt03.mp3",
+				"vo/soldier_directhittaunt04.mp3",
+				"vo/soldier_kaboomalts01.mp3",
+				"vo/soldier_kaboomalts02.mp3",
+				"vo/soldier_kaboomalts03.mp3",
+				"vo/soldier_specialcompleted05.mp3",
+				"vo/taunts/soldier_taunts01.mp3"
+			}
+
+			self.SoundTbl_OnKilledEnemy = {
+				"vo/soldier_cheers01.mp3",
+				"vo/soldier_cheers02.mp3",
+				"vo/soldier_cheers03.mp3",
+				"vo/soldier_cheers04.mp3",
+				"vo/soldier_cheers05.mp3",
+				"vo/soldier_cheers06.mp3",
+				"vo/soldier_autocappedintelligence02.mp3",
+				"vo/soldier_dominationmedic03.mp3",
+				"vo/soldier_dominationpyro07.mp3",
+				"vo/soldier_dominationpyro09.mp3",
+				"vo/soldier_dominationscout03.mp3",
+				"vo/soldier_dominationscout04.mp3",
+				"vo/soldier_dominationscout08.mp3",
+				"vo/soldier_dominationscout09.mp3",
+				"vo/soldier_dominationscout10.mp3",
+				"vo/soldier_dominationsniper12.mp3",
+				"vo/soldier_dominationsniper13.mp3",
+				"vo/soldier_dominationsoldier01.mp3",
+				"vo/soldier_dominationsoldier02.mp3",
+				"vo/soldier_dominationsoldier03.mp3",
+				"vo/soldier_dominationsoldier04.mp3",
+				"vo/soldier_dominationsoldier05.mp3",
+				"vo/soldier_dominationsoldier06.mp3",
+				"vo/soldier_dominationsoldier01.mp3",
+				"vo/soldier_hatoverhearttaunt01.mp3",
+				"vo/soldier_hatoverhearttaunt02.mp3",
+				"vo/soldier_hatoverhearttaunt03.mp3",
+				"vo/soldier_hatoverhearttaunt04.mp3",
+				"vo/soldier_hatoverhearttaunt05.mp3",
+				"vo/soldier_hatoverhearttaunt06.mp3",
+				"vo/soldier_hatoverhearttaunt07.mp3",
+				"vo/soldier_hatoverhearttaunt01.mp3",
+				"vo/soldier_item_wizard_domination02.mp3",
+				"vo/soldier_positivevocalization01.mp3",
+				"vo/soldier_positivevocalization02.mp3",
+				"vo/soldier_positivevocalization03.mp3",
+				"vo/soldier_positivevocalization04.mp3",
+				"vo/soldier_positivevocalization05.mp3",
+				"vo/soldier_positivevocalization01.mp3",
+				"vo/soldier_sf12_taunts12.mp3",
+				"vo/soldier_sf12_taunts13.mp3",
+				"vo/soldier_sf12_taunts14.mp3",
+				"vo/soldier_sf12_taunts17.mp3",
+				"vo/soldier_specialcompleted01.mp3",
+				"vo/soldier_specialcompleted03.mp3",
+				"vo/taunts/soldier_taunts04.mp3",
+				"vo/taunts/soldier_taunts09.mp3",
+				"vo/taunts/soldier_taunts10.mp3",
+				"vo/taunts/soldier_taunts13.mp3",
+				"vo/taunts/soldier_taunts18.mp3",
+				"vo/taunts/soldier_taunts19.mp3",
+				"vo/taunts/soldier_taunts21.mp3"
+			}
+
+			self.SoundTbl_AllyDeath = {
+				"vo/soldier_autodejectedtie01.mp3",
+				"vo/soldier_autodejectedtie02.mp3",
+				"vo/soldier_autodejectedtie03.mp3",
+				"vo/soldier_jeers01.mp3",
+				"vo/soldier_jeers02.mp3",
+				"vo/soldier_jeers03.mp3",
+				"vo/soldier_jeers04.mp3",
+				"vo/soldier_jeers05.mp3",
+				"vo/soldier_jeers06.mp3",
+				"vo/soldier_jeers07.mp3",
+				"vo/soldier_jeers08.mp3",
+				"vo/soldier_jeers09.mp3",
+				"vo/soldier_jeers10.mp3",
+				"vo/soldier_jeers11.mp3",
+				"vo/soldier_jeers12.mp3",
+			}
+
+			self.SoundTbl_Pain = {
+				"vo/soldier_medic01.mp3",
+				"vo/soldier_medic02.mp3",
+				"vo/soldier_medic03.mp3",
+				"vo/soldier_painsevere01.mp3",
+				"vo/soldier_painsevere02.mp3",
+				"vo/soldier_painsevere03.mp3",
+				"vo/soldier_painsevere04.mp3",
+				"vo/soldier_painsevere05.mp3",
+				"vo/soldier_painsevere06.mp3",
+				"vo/soldier_painsharp01.mp3",
+				"vo/soldier_painsharp02.mp3",
+				"vo/soldier_painsharp03.mp3",
+				"vo/soldier_painsharp04.mp3",
+				"vo/soldier_painsharp05.mp3",
+				"vo/soldier_painsharp06.mp3",
+				"vo/soldier_painsharp07.mp3",
+				"vo/soldier_painsharp08.mp3",
+				"vo/soldier_painsharp09.mp3"
+			}
+
+			self.SoundTbl_Death = {
+				"vo/soldier_paincrticialdeath01.mp3",
+				"vo/soldier_paincrticialdeath02.mp3",
+				"vo/soldier_paincrticialdeath03.mp3",
+				"vo/soldier_paincrticialdeath04.mp3"
+			}
+			
+			self.ToTU_Almanac_VoiceActor = "Soldier (Team Fortress 2)"
+		end
+	end
 
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
@@ -217,6 +623,44 @@ function ENT:Zombie_CustomOnThink_AIEnabled()
 					IsValid(v) &&
 					v:GetClass() == "prop_ragdoll" &&
 					v:GetClass() != "prop_physics" &&
+					(GetConVar("VJ_ToTU_Weaponized_Revenant_ReviveBlacklist"):GetInt() == 1 &&
+					v:GetModel() != "models/antlion.mdl" &&
+					v:GetModel() != "models/antlion_guard.mdl" &&
+					v:GetModel() != "models/combine_dropship.mdl" &&
+					v:GetModel() != "models/combine_gate_citizen.mdl" &&
+					v:GetModel() != "models/combine_gate_vehicle.mdl" &&
+					v:GetModel() != "models/combine_scanner.mdl" &&
+					v:GetModel() != "models/combine_strider.mdl" &&
+					v:GetModel() != "models/crow.mdl" &&
+					v:GetModel() != "models/dog.mdl" &&
+					v:GetModel() != "models/gunship.mdl" &&
+					v:GetModel() != "models/headcrab.mdl" &&
+					v:GetModel() != "models/headcrabblack.mdl" &&
+					v:GetModel() != "models/headcrabclassic.mdl" &&
+					v:GetModel() != "models/lamarr.mdl" &&
+					v:GetModel() != "models/manhack.mdl" &&
+					v:GetModel() != "models/pigeon.mdl" &&
+					v:GetModel() != "models/seagull.mdl" &&
+					v:GetModel() != "models/shield_scanner.mdl" &&
+					v:GetModel() != "models/cranes/crane_docks.mdl" &&
+					v:GetModel() != "models/gibs/fast_zombie_legs.mdl" &&
+					v:GetModel() != "models/gibs/fast_zombie_torso.mdl" &&
+					v:GetModel() != "models/gibs/strider_head.mdl" &&
+					v:GetModel() != "models/gibs/strider_left_leg.mdl" &&
+					v:GetModel() != "models/gibs/strider_right_leg.mdl" &&
+					v:GetModel() != "models/gibs/strider_weapon.mdl" &&
+					v:GetModel() != "models/humans/charple01.mdl" &&
+					v:GetModel() != "models/humans/charple02.mdl" &&
+					v:GetModel() != "models/humans/charple03.mdl" &&
+					v:GetModel() != "models/humans/charple04.mdl" &&
+					v:GetModel() != "models/props_vehicles/car001a_phy.mdl" &&
+					v:GetModel() != "models/props_vehicles/car001b_phy.mdl" &&
+					v:GetModel() != "models/props_vehicles/wagon001a_phy.mdl" &&
+					v:GetModel() != "models/zombie/classic.mdl" &&
+					v:GetModel() != "models/zombie/classic_legs.mdl" &&
+					v:GetModel() != "models/zombie/classic_torso.mdl" &&
+					v:GetModel() != "models/zombie/fast.mdl" &&
+					v:GetModel() != "models/zombie/poison.mdl" &&
 					v:GetModel() != "models/skeleton/skeleton_leg.mdl" &&
 					v:GetModel() != "models/skeleton/skeleton_leg_l.mdl" &&
 					v:GetModel() != "models/skeleton/skeleton_arm_l.mdl" &&
@@ -228,6 +672,8 @@ function ENT:Zombie_CustomOnThink_AIEnabled()
 					v:GetModel() != "models/totu/cazador_torso.mdl" &&
 					v:GetModel() != "models/totu/cazador_legs.mdl" &&
 					v:GetModel() != "models/totu/cyst.mdl"
+					or
+					GetConVar("VJ_ToTU_Weaponized_Revenant_ReviveBlacklist"):GetInt() == 0)
 				then
 					self:SetTarget(v)
 					self:VJ_TASK_GOTO_TARGET("TASK_RUN_PATH")
@@ -237,7 +683,45 @@ function ENT:Zombie_CustomOnThink_AIEnabled()
 					if
 						IsValid(v) &&
 						v:GetClass() == "prop_ragdoll" &&
-						v:GetClass() != "prop_physics"&&
+						v:GetClass() != "prop_physics" &&
+						(GetConVar("VJ_ToTU_Weaponized_Revenant_ReviveBlacklist"):GetInt() == 1 &&
+						v:GetModel() != "models/antlion.mdl" &&
+						v:GetModel() != "models/antlion_guard.mdl" &&
+						v:GetModel() != "models/combine_dropship.mdl" &&
+						v:GetModel() != "models/combine_gate_citizen.mdl" &&
+						v:GetModel() != "models/combine_gate_vehicle.mdl" &&
+						v:GetModel() != "models/combine_scanner.mdl" &&
+						v:GetModel() != "models/combine_strider.mdl" &&
+						v:GetModel() != "models/crow.mdl" &&
+						v:GetModel() != "models/dog.mdl" &&
+						v:GetModel() != "models/gunship.mdl" &&
+						v:GetModel() != "models/headcrab.mdl" &&
+						v:GetModel() != "models/headcrabblack.mdl" &&
+						v:GetModel() != "models/headcrabclassic.mdl" &&
+						v:GetModel() != "models/lamarr.mdl" &&
+						v:GetModel() != "models/manhack.mdl" &&
+						v:GetModel() != "models/pigeon.mdl" &&
+						v:GetModel() != "models/seagull.mdl" &&
+						v:GetModel() != "models/shield_scanner.mdl" &&
+						v:GetModel() != "models/cranes/crane_docks.mdl" &&
+						v:GetModel() != "models/gibs/fast_zombie_legs.mdl" &&
+						v:GetModel() != "models/gibs/fast_zombie_torso.mdl" &&
+						v:GetModel() != "models/gibs/strider_head.mdl" &&
+						v:GetModel() != "models/gibs/strider_left_leg.mdl" &&
+						v:GetModel() != "models/gibs/strider_right_leg.mdl" &&
+						v:GetModel() != "models/gibs/strider_weapon.mdl" &&
+						v:GetModel() != "models/humans/charple01.mdl" &&
+						v:GetModel() != "models/humans/charple02.mdl" &&
+						v:GetModel() != "models/humans/charple03.mdl" &&
+						v:GetModel() != "models/humans/charple04.mdl" &&
+						v:GetModel() != "models/props_vehicles/car001a_phy.mdl" &&
+						v:GetModel() != "models/props_vehicles/car001b_phy.mdl" &&
+						v:GetModel() != "models/props_vehicles/wagon001a_phy.mdl" &&
+						v:GetModel() != "models/zombie/classic.mdl" &&
+						v:GetModel() != "models/zombie/classic_legs.mdl" &&
+						v:GetModel() != "models/zombie/classic_torso.mdl" &&
+						v:GetModel() != "models/zombie/fast.mdl" &&
+						v:GetModel() != "models/zombie/poison.mdl" &&
 						v:GetModel() != "models/skeleton/skeleton_leg.mdl" &&
 						v:GetModel() != "models/skeleton/skeleton_leg_l.mdl" &&
 						v:GetModel() != "models/skeleton/skeleton_arm_l.mdl" &&
@@ -249,6 +733,8 @@ function ENT:Zombie_CustomOnThink_AIEnabled()
 						v:GetModel() != "models/totu/cazador_torso.mdl" &&
 						v:GetModel() != "models/totu/cazador_legs.mdl" &&
 						v:GetModel() != "models/totu/cyst.mdl"
+						or
+						GetConVar("VJ_ToTU_Weaponized_Revenant_ReviveBlacklist"):GetInt() == 0)
 					then
 						local eattime = 4.5 -- How long it should sleep
 						if !self.ToTU_Weaponized_Revenant_Reviving then
@@ -258,6 +744,7 @@ function ENT:Zombie_CustomOnThink_AIEnabled()
 						end
 						self.ToTU_Weaponized_Revenant_Reviving = true
 						self.AnimTbl_IdleStand = {ACT_VM_DEPLOYED_DRYFIRE}
+						self.ToTU_CanStumble = false
 						self:FaceCertainEntity(v)
 						self.DisableWandering = true -- Disables wandering when the SNPC is idle
 						self.CanTurnWhileStationary = false
@@ -270,21 +757,23 @@ function ENT:Zombie_CustomOnThink_AIEnabled()
 
 						timer.Simple(1,function() if IsValid(self) && self.ToTU_Weaponized_Revenant_CanDoReviveEffects then
 							self.ToTU_Weaponized_Revenant_CanDoReviveEffects = false
-							VJ_EmitSound(self,"physics/body/body_medium_break"..math.random(2,4)..".wav",80,math.random(100,95))
-							ParticleEffectAttach("blood_impact_red_01",PATTACH_POINT_FOLLOW,self,self:LookupAttachment("anim_attachment_RH"))
-							ParticleEffectAttach("blood_impact_red_01",PATTACH_POINT_FOLLOW,self,self:LookupAttachment("anim_attachment_LH"))
-							timer.Simple(1,function() if IsValid(self) then
+							if IsValid(v) then
+								VJ_EmitSound(self,"physics/body/body_medium_break"..math.random(2,4)..".wav",80,math.random(100,95))
+								ParticleEffectAttach("blood_impact_red_01",PATTACH_POINT_FOLLOW,self,self:LookupAttachment("anim_attachment_RH"))
+								ParticleEffectAttach("blood_impact_red_01",PATTACH_POINT_FOLLOW,self,self:LookupAttachment("anim_attachment_LH"))
+							end
+							timer.Simple(1,function() if IsValid(self) && IsValid(v)  then
 								VJ_EmitSound(self,"physics/body/body_medium_break"..math.random(2,4)..".wav",80,math.random(100,95))
 								VJ_EmitSound(self,"items/smallmedkit1.wav",80,math.random(70,65))
 								ParticleEffectAttach("blood_impact_red_01",PATTACH_POINT_FOLLOW,self,self:LookupAttachment("anim_attachment_RH"))
 								ParticleEffectAttach("blood_impact_red_01",PATTACH_POINT_FOLLOW,self,self:LookupAttachment("anim_attachment_LH"))
 							end end)
-							timer.Simple(2,function() if IsValid(self) then
+							timer.Simple(2,function() if IsValid(self) && IsValid(v) then
 								VJ_EmitSound(self,"physics/body/body_medium_break"..math.random(2,4)..".wav",80,math.random(100,95))
 								ParticleEffectAttach("blood_impact_red_01",PATTACH_POINT_FOLLOW,self,self:LookupAttachment("anim_attachment_RH"))
 								ParticleEffectAttach("blood_impact_red_01",PATTACH_POINT_FOLLOW,self,self:LookupAttachment("anim_attachment_LH"))
 							end end)
-							timer.Simple(3,function() if IsValid(self) then
+							timer.Simple(3,function() if IsValid(self) && IsValid(v)  then
 								VJ_EmitSound(self,"physics/body/body_medium_break"..math.random(2,4)..".wav",80,math.random(100,95))
 								ParticleEffectAttach("blood_impact_red_01",PATTACH_POINT_FOLLOW,self,self:LookupAttachment("anim_attachment_RH"))
 								ParticleEffectAttach("blood_impact_red_01",PATTACH_POINT_FOLLOW,self,self:LookupAttachment("anim_attachment_LH"))
@@ -305,6 +794,7 @@ function ENT:Zombie_CustomOnThink_AIEnabled()
 								else	
 									self.AnimTbl_IdleStand = {ACT_IDLE}
 								end
+								self.ToTU_CanStumble = true
 								self.MovementType = VJ_MOVETYPE_GROUND
 								self.CanFlinch = true
 								self.HasDeathAnimation = true
@@ -473,7 +963,7 @@ function ENT:Zombie_CustomOnThink_AIEnabled()
 	if self:GetClass() == "npc_vj_totu_weaponized_revenant" && !self.Dead then
 		for _,v in ipairs(ents.FindInSphere(self:GetPos(),150)) do
 
-			if v:IsNPC() && v:Disposition(self) == D_LI && CurTime() > self.ToTU_Weaponized_Revenant_NextBuffTime && v:GetClass() != "npc_vj_totu_weaponized_cazador" && v:GetClass() != "npc_vj_totu_weaponized_cazador_torso" then
+			if v:IsNPC() && !v.Dead && v.Alerted && !self.Dead && v:Disposition(self) == D_LI && CurTime() > self.ToTU_Weaponized_Revenant_NextBuffTime && v:GetClass() != "npc_vj_totu_weaponized_cazador" && v:GetClass() != "npc_vj_totu_weaponized_cazador_torso" then
 
 				if v.ToTU_Deimos then
 
@@ -497,9 +987,9 @@ function ENT:Zombie_CustomOnThink_AIEnabled()
 						end
 					end
 
-				end
+					self.ToTU_Weaponized_Revenant_NextBuffTime = CurTime() + math.random(3,5)
 
-				self.ToTU_Weaponized_Revenant_NextBuffTime = CurTime() + math.random(3,5)
+				end
 
 			end
 
@@ -508,13 +998,15 @@ function ENT:Zombie_CustomOnThink_AIEnabled()
 
 	if self:GetClass() == "npc_vj_totu_weaponized_cancer" then
 		if self.LNR_Crippled then
-			local randuncriptime = 5
+			local randuncriptime = math.random(5,10)
 			timer.Simple(randuncriptime,function() if IsValid(self) && self.LNR_Crippled then
-				self.LNR_Crippled = false
 				self:VJ_ACT_PLAYACTIVITY("vjseq_infectionrise2",true,false,false)
 				self.MovementType = VJ_MOVETYPE_STATIONARY
+				self.ToTU_CanStumble = false
 				timer.Simple(3.6,function() if IsValid(self) then
+					self.LNR_Crippled = false
 					self.MovementType = VJ_MOVETYPE_GROUND
+					self.ToTU_CanStumble = true
 				end end)
 				self:UnCripple()
 			end end)
@@ -525,7 +1017,7 @@ function ENT:Zombie_CustomOnThink_AIEnabled()
 
 		for _,v in ipairs(ents.FindInSphere(self:GetPos(),150)) do
 
-			if v:IsNPC() && v:Disposition(self) == D_LI then
+			if v:IsNPC() && !v.Dead && !self.Dead && v:Disposition(self) == D_LI then
 
 				if v:Health() < v:GetMaxHealth() && CurTime() > self.ToTU_Weaponized_NextHealTime then
 

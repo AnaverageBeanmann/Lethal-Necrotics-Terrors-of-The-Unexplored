@@ -9,7 +9,7 @@ function ENT:Zombie_CustomOnPreInitialize()
 
 	self.Model = {"models/totu/revenant.mdl"}
 
-	timer.Simple(0.1,function() if IsValid(self) then
+	timer.Simple(0.1,function() if IsValid(self) && !self.LNR_Crippled then
 		self.AnimTbl_Walk = {ACT_WALK}
 		self.AnimTbl_Run = {ACT_RUN}
 	end end)
@@ -36,6 +36,8 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:Zombie_GlowEyes_Give()
 
+	if GetConVar("VJ_ToTU_Weaponized_Deimos_Eyes"):GetInt() == 0 or GetConVar("vj_npc_noidleparticle"):GetInt() == 1 then return end
+
 	local TrailColor = Color(220,0,255,255)
 
 	if self:GetBodygroup(1) == 2 or self:GetBodygroup(1) == 3 then
@@ -54,8 +56,10 @@ function ENT:Zombie_GlowEyes_Give()
 			self:DeleteOnRemove(EyeGlow)
 		end
 
-		local EyeTrail = util.SpriteTrail(self,8,TrailColor,false,5,0,0.25,1,"vj_base/sprites/vj_trial1")
-		local EyeTrail2 = util.SpriteTrail(self,9,TrailColor,false,5,0,0.25,1,"vj_base/sprites/vj_trial1")
+		if GetConVar("VJ_ToTU_Weaponized_Deimos_Eyes"):GetInt() == 2 then
+			local EyeTrail = util.SpriteTrail(self,8,TrailColor,false,5,0,0.25,1,"vj_base/sprites/vj_trial1")
+			local EyeTrail2 = util.SpriteTrail(self,9,TrailColor,false,5,0,0.25,1,"vj_base/sprites/vj_trial1")
+		end
 	end
 
 	if self:GetBodygroup(1) == 4 or self:GetBodygroup(1) == 10 then
@@ -74,8 +78,10 @@ function ENT:Zombie_GlowEyes_Give()
 			self:DeleteOnRemove(EyeGlow)
 		end
 
-		local EyeTrail = util.SpriteTrail(self,10,TrailColor,false,5,0,0.25,1,"vj_base/sprites/vj_trial1")
-		local EyeTrail2 = util.SpriteTrail(self,11,TrailColor,false,5,0,0.25,1,"vj_base/sprites/vj_trial1")
+		if GetConVar("VJ_ToTU_Weaponized_Deimos_Eyes"):GetInt() == 2 then
+			local EyeTrail = util.SpriteTrail(self,10,TrailColor,false,5,0,0.25,1,"vj_base/sprites/vj_trial1")
+			local EyeTrail2 = util.SpriteTrail(self,11,TrailColor,false,5,0,0.25,1,"vj_base/sprites/vj_trial1")
+		end
 	end
 
 	if self:GetBodygroup(1) == 5 or self:GetBodygroup(1) == 11 then
@@ -94,8 +100,10 @@ function ENT:Zombie_GlowEyes_Give()
 			self:DeleteOnRemove(EyeGlow)
 		end
 
-		local EyeTrail = util.SpriteTrail(self,12,TrailColor,false,5,0,0.25,1,"vj_base/sprites/vj_trial1")
-		local EyeTrail2 = util.SpriteTrail(self,13,TrailColor,false,5,0,0.25,1,"vj_base/sprites/vj_trial1")
+		if GetConVar("VJ_ToTU_Weaponized_Deimos_Eyes"):GetInt() == 2 then
+			local EyeTrail = util.SpriteTrail(self,12,TrailColor,false,5,0,0.25,1,"vj_base/sprites/vj_trial1")
+			local EyeTrail2 = util.SpriteTrail(self,13,TrailColor,false,5,0,0.25,1,"vj_base/sprites/vj_trial1")
+		end
 	end
 
 	if self:GetBodygroup(1) == 6 or self:GetBodygroup(1) == 12 then
@@ -112,7 +120,9 @@ function ENT:Zombie_GlowEyes_Give()
 		EyeGlow:Activate()
 		self:DeleteOnRemove(EyeGlow)
 
-		local EyeTrail = util.SpriteTrail(self,14,TrailColor,false,5,0,0.25,1,"vj_base/sprites/vj_trial1")
+		if GetConVar("VJ_ToTU_Weaponized_Deimos_Eyes"):GetInt() == 2 then
+			local EyeTrail = util.SpriteTrail(self,14,TrailColor,false,5,0,0.25,1,"vj_base/sprites/vj_trial1")
+		end
 	end
 
 	if self:GetBodygroup(1) == 7 then
@@ -131,8 +141,10 @@ function ENT:Zombie_GlowEyes_Give()
 			self:DeleteOnRemove(EyeGlow)
 		end
 
-		local EyeTrail = util.SpriteTrail(self,15,TrailColor,false,5,0,0.25,1,"vj_base/sprites/vj_trial1")
-		local EyeTrail2 = util.SpriteTrail(self,16,TrailColor,false,5,0,0.25,1,"vj_base/sprites/vj_trial1")
+		if GetConVar("VJ_ToTU_Weaponized_Deimos_Eyes"):GetInt() == 2 then
+			local EyeTrail = util.SpriteTrail(self,15,TrailColor,false,5,0,0.25,1,"vj_base/sprites/vj_trial1")
+			local EyeTrail2 = util.SpriteTrail(self,16,TrailColor,false,5,0,0.25,1,"vj_base/sprites/vj_trial1")
+		end
 	end
 
 	if self:GetBodygroup(1) == 8 then
@@ -151,8 +163,10 @@ function ENT:Zombie_GlowEyes_Give()
 			self:DeleteOnRemove(EyeGlow)
 		end
 
-		local EyeTrail = util.SpriteTrail(self,17,TrailColor,false,5,0,0.25,1,"vj_base/sprites/vj_trial1")
-		local EyeTrail2 = util.SpriteTrail(self,18,TrailColor,false,5,0,0.25,1,"vj_base/sprites/vj_trial1")
+		if GetConVar("VJ_ToTU_Weaponized_Deimos_Eyes"):GetInt() == 2 then
+			local EyeTrail = util.SpriteTrail(self,17,TrailColor,false,5,0,0.25,1,"vj_base/sprites/vj_trial1")
+			local EyeTrail2 = util.SpriteTrail(self,18,TrailColor,false,5,0,0.25,1,"vj_base/sprites/vj_trial1")
+		end
 	end
 
 	if self:GetBodygroup(1) == 9 then
@@ -169,7 +183,9 @@ function ENT:Zombie_GlowEyes_Give()
 		EyeGlow:Activate()
 		self:DeleteOnRemove(EyeGlow)
 
-		local EyeTrail = util.SpriteTrail(self,19,TrailColor,false,5,0,0.25,1,"vj_base/sprites/vj_trial1")
+		if GetConVar("VJ_ToTU_Weaponized_Deimos_Eyes"):GetInt() == 2 then
+			local EyeTrail = util.SpriteTrail(self,19,TrailColor,false,5,0,0.25,1,"vj_base/sprites/vj_trial1")
+		end
 	end
 
 end

@@ -5,6 +5,76 @@ include('shared.lua')
 	No parts of this code or any of its contents may be reproduced, copied, modified or adapted,
 	without the prior written consent of the author, unless otherwise indicated for stand-alone materials.
 -----------------------------------------------*/
+function ENT:ZombieSounds_Custom()
+
+	self.SoundTbl_Idle = {
+		"voices/deimos/cyst/idle_1.mp3",
+		"voices/deimos/cyst/idle_2.mp3",
+		"voices/deimos/cyst/idle_3.mp3",
+		"voices/deimos/cyst/idle_4.mp3",
+		"voices/deimos/cyst/idle_5.mp3",
+		"voices/deimos/cyst/idle_6.mp3",
+		"voices/deimos/cyst/idle_7.mp3",
+	}
+		
+	self.SoundTbl_Alert = {
+		"voices/deimos/cyst/alert_1.mp3",
+		"voices/deimos/cyst/alert_2.mp3",
+		"voices/deimos/cyst/alert_3.mp3",
+		"voices/deimos/cyst/alert_4.mp3",
+		"voices/deimos/cyst/alert_5.mp3",
+		"voices/deimos/cyst/alert_6.mp3",
+		"voices/deimos/cyst/alert_7.mp3",
+		"voices/deimos/cyst/alert_8.mp3",
+		"voices/deimos/cyst/alert_9.mp3",
+		"voices/deimos/cyst/alert_10.mp3",
+	}
+	
+	self.SoundTbl_CombatIdle = {
+	self.SoundTbl_Idle
+	}
+	
+	self.SoundTbl_BeforeMeleeAttack = {
+		"voices/deimos/cyst/alert_1.mp3",
+		"voices/deimos/cyst/alert_2.mp3",
+		"voices/deimos/cyst/alert_3.mp3",
+		"voices/deimos/cyst/alert_4.mp3",
+		"voices/deimos/cyst/alert_5.mp3",
+		"voices/deimos/cyst/alert_6.mp3",
+		"voices/deimos/cyst/alert_7.mp3",
+		"voices/deimos/cyst/alert_8.mp3",
+		"voices/deimos/cyst/alert_9.mp3",
+		"voices/deimos/cyst/alert_10.mp3",
+	}
+	
+	self.SoundTbl_BeforeRangeAttack = {
+		"npc/barnacle/barnacle_tongue_pull1.wav",
+		"npc/barnacle/barnacle_tongue_pull2.wav",
+		"npc/barnacle/barnacle_tongue_pull3.wav",
+	}
+	
+	self.SoundTbl_Pain = {
+		"voices/deimos/cyst/pain_1.mp3",
+		"voices/deimos/cyst/pain_2.mp3",
+		"voices/deimos/cyst/pain_3.mp3",
+		"voices/deimos/cyst/pain_4.mp3",
+		"voices/deimos/cyst/pain_5.mp3",
+		"voices/deimos/cyst/pain_6.mp3",
+		"voices/deimos/cyst/pain_7.mp3",
+		"voices/deimos/cyst/pain_8.mp3",
+	}
+	
+	self.SoundTbl_Death = {
+		"voices/deimos/cyst/death_1.mp3",
+		"voices/deimos/cyst/death_2.mp3",
+		"voices/deimos/cyst/death_3.mp3",
+		"voices/deimos/cyst/death_4.mp3",
+	}
+	
+	self.ToTU_Almanac_VoiceActor = "Fat Molded (Resident Evil 7)"
+
+end
+---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:Zombie_Difficulty()
 
 	if GetConVar("VJ_LNR_Difficulty"):GetInt() == 1 then
@@ -62,6 +132,25 @@ function ENT:CustomRangeAttackCode_AfterProjectileSpawn(projectile)
 		d:SetAttacker(self)
 		d:SetDamageType(DMG_GENERIC) 
 		self:TakeDamageInfo(d)
+	end
+end
+---------------------------------------------------------------------------------------------------------------------------------------------
+function ENT:CustomOnTakeDamage_AfterDamage(dmginfo,hitgroup)
+	if
+		dmginfo:IsDamageType(DMG_CLUB) or
+		dmginfo:IsDamageType(DMG_SLASH) or
+		dmginfo:IsDamageType(DMG_GENERIC) or
+		dmginfo:IsDamageType(DMG_SONIC) or
+		dmginfo:IsDamageType(DMG_VEHICLE) or
+		dmginfo:IsDamageType(DMG_DIRECT) or
+		dmginfo:IsDamageType(DMG_NEVERGIB) or
+		dmginfo:IsDamageType(DMG_PHYSGUN) or
+		dmginfo:IsDamageType(DMG_CRUSH)
+	then	
+		if self.LNR_NextShoveT < CurTime() then
+			self:VJ_ACT_PLAYACTIVITY(ACT_FLINCH_PHYSICS,true,0.6)
+			self.LNR_NextShoveT = CurTime() + 3.5
+		end
 	end
 end
 /*-----------------------------------------------
