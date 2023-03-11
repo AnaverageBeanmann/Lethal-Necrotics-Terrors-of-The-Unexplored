@@ -92,7 +92,7 @@ end
 	VJ.AddCategoryInfo("Lethal Necrotics: Terrors of The Unexplored - Base Zombies", {Icon = "icons/symbolv3.png"})
 	VJ.AddCategoryInfo("Lethal Necrotics: Terrors of The Unexplored - Military Zombies", {Icon = "icons/symbolv3.png"})
 	VJ.AddCategoryInfo("Lethal Necrotics: Terrors of The Unexplored - Nightkin", {Icon = "icons/symbolv3.png"})
-	VJ.AddCategoryInfo("Lethal Necrotics: Terrors of The Unexplored - Weaponized/Lab Specimens", {Icon = "icons/symbolv3.png"})
+	VJ.AddCategoryInfo("Lethal Necrotics: Terrors of The Unexplored - Deimos", {Icon = "icons/symbolv3.png"})
 	VJ.AddCategoryInfo("Lethal Necrotics: Terrors of The Unexplored - Backcounty", {Icon = "icons/symbolv3.png"})
 	VJ.AddCategoryInfo("Lethal Necrotics: Terrors of The Unexplored - The Rotten", {Icon = "icons/symbolv3.png"})
 	VJ.AddCategoryInfo("Lethal Necrotics: Terrors of The Unexplored - Water Critters", {Icon = "icons/symbolv3.png"})
@@ -500,6 +500,13 @@ https://github.com/VJ-HLR-Developers/Half-Life-Zombie-Edition-SNPCs/blob/master/
 		add these to milzombs? https://steamcommunity.com/sharedfiles/filedetails/?id=2926996172&searchtext=
 		
 		have wark help with the deimos showcase
+		
+		desert zombs?
+		- ideas
+		- desert milzombs
+		- mummy (basic zomb equivilant?)
+		- lizard (speedy crawler)
+
 	*/
 
 	-- [] = done
@@ -639,10 +646,10 @@ https://github.com/VJ-HLR-Developers/Half-Life-Zombie-Edition-SNPCs/blob/master/
 		-- []
 		
 		VJ.AddNPC("Cancer","npc_vj_totu_weaponized_cancer",vCat4)
-		-- ()
+		-- []
 		
 		VJ.AddNPC("Revenant","npc_vj_totu_weaponized_revenant",vCat4)
-		-- ()
+		-- []
 		-- new model idea: revived and rotting caretaker
 		
 		VJ.AddNPC("Redead","npc_vj_totu_weaponized_redead",vCat4)
@@ -651,14 +658,15 @@ https://github.com/VJ-HLR-Developers/Half-Life-Zombie-Edition-SNPCs/blob/master/
 		-- purple glowing eyes
 		-- voiced by doom 2016 zombie
 		-- slow but can run occasionally
-		-- ()
+		-- []
 
 		VJ.AddNPC("Corrupt","npc_vj_totu_weaponized_corrupt",vCat4)
+		-- []
 		
 		VJ.AddNPC("Remort","npc_vj_totu_weaponized_redead_grunt",vCat4)
 		-- deimos drone
 		-- maybe call it Remort
-		-- ()
+		-- []
 
 		-- VJ.AddNPC("Re","npc_vj_totu_weaponized_redead_grunt",vCat4)
 		
@@ -876,6 +884,8 @@ https://github.com/VJ-HLR-Developers/Half-Life-Zombie-Edition-SNPCs/blob/master/
 		VJ.AddNPC("Turtle","npc_vj_totu_water_turtle",vCat7)
 		-- ()
 		-- bubbler/chelonioidea
+		-- new model https://steamcommunity.com/sharedfiles/filedetails/?id=2871813007&searchtext=diver
+		-- ask wark about making a visor bodygroup w/ head inside
 		
 		VJ.AddNPC("Stingray","npc_vj_totu_water_stingray",vCat7)
 		-- ()
@@ -926,7 +936,7 @@ https://github.com/VJ-HLR-Developers/Half-Life-Zombie-Edition-SNPCs/blob/master/
 
 		-- VJ.AddNPC("Kromling","npc_vj_totu_bonus_kromer",vCat8)
 		
-		VJ.AddNPC("Funnyman","npc_vj_totu_backcounty_clown",vCat5)
+		VJ.AddNPC("Funnyman","npc_vj_totu_backcounty_clown",vCat8)
 		-- ()
 		-- is clown
 		-- shoe go honk honk haha
@@ -940,7 +950,8 @@ https://github.com/VJ-HLR-Developers/Half-Life-Zombie-Edition-SNPCs/blob/master/
 		VJ.AddNPC("Spawner","sent_vj_totu_spawner",vCat8)
 		VJ.AddNPC("Spawner (Nightkin)","sent_vj_totu_spawner_nightkin",vCat8)
 		VJ.AddNPC("Spawner (MilZombs)","sent_vj_totu_spawner_milzombs",vCat8)
-		VJ.AddNPC("Spawner (Weaponized/Lab Specimens)","sent_vj_totu_spawner_weaponized",vCat8)
+		VJ.AddNPC("Spawner (Deimos)","sent_vj_totu_spawner_deimos",vCat8)
+		VJ.AddNPC("Spawner (Cepheus)","sent_vj_totu_spawner_cepheus",vCat8)
 		VJ.AddNPC("Spawner (Backcounty)","sent_vj_totu_spawner_backcounty",vCat8)
 		VJ.AddNPC("Spawner (Water Critters)","sent_vj_totu_spawner_watercritters",vCat8)
 		VJ.AddNPC("Spawner (The Rotten)","sent_vj_totu_spawner_rotten",vCat8)
@@ -1069,6 +1080,8 @@ https://github.com/VJ-HLR-Developers/Half-Life-Zombie-Edition-SNPCs/blob/master/
 	AddConvars["VJ_ToTU_Weaponized_Cancer_Reviving"] = 1
 	AddConvars["VJ_ToTU_Weaponized_Deimos_Infection"] = 1
 	AddConvars["VJ_ToTU_Weaponized_Deimos_Eyes"] = 2
+	AddConvars["VJ_ToTU_General_TF2Mode"] = 0
+	AddConvars["VJ_ToTU_Weaponized_Revenant_ReviveBlacklist"] = 1
 
 	-- AddConvars["VJ_ToTU_General_TF2Mode"] = 0
 	-- AddConvars["VJ_ToTU_Weaponized_Carcass_"] = 
@@ -1205,6 +1218,8 @@ https://github.com/VJ-HLR-Developers/Half-Life-Zombie-Edition-SNPCs/blob/master/
 			VJ_ToTU_Weaponized_Cancer_Reviving = "1",
 			VJ_ToTU_Weaponized_Deimos_Infection = "1",
 			VJ_ToTU_Weaponized_Deimos_Eyes = "2",
+			VJ_ToTU_General_TF2Mode = "0",
+			VJ_ToTU_Weaponized_Revenant_ReviveBlacklist = "1",
 			-- VJ_ToTU_MilZ_Det_ = "",
 			
 			
@@ -1263,6 +1278,10 @@ https://github.com/VJ-HLR-Developers/Half-Life-Zombie-Edition-SNPCs/blob/master/
 	Panel:ControlHelp("--------------------------------------------------------")
 	
 	Panel:AddControl("Checkbox", {Label = "Enable easter eggs?", Command = "VJ_ToTU_General_EasterEggs"})
+
+	Panel:AddControl("Checkbox", {Label = "Enable TF2 Mode?", Command = "VJ_ToTU_General_TF2Mode"})
+	Panel:ControlHelp("If enabled, zombies will be voiced by TF2 characters.")
+	Panel:ControlHelp("Requires TF2 to be mounted.")
 	
 	Panel:AddControl("Checkbox", {Label = "Disable the stumbling system?", Command = "VJ_ToTU_General_Stumbling_Disable"})
 	
@@ -1556,7 +1575,7 @@ https://github.com/VJ-HLR-Developers/Half-Life-Zombie-Edition-SNPCs/blob/master/
 	Panel:ControlHelp("--------------------------------------------------------")
 
 	Panel:AddControl("Checkbox", {Label = "Enable Deimos infection?", Command = "VJ_ToTU_Weaponized_Deimos_Infection"})
-	Panel:ControlHelp("If enabled, Deimos strain zombs will infect victems.")
+	Panel:ControlHelp("If enabled, Deimos strain zombs will infect victims.")
 
 	local combobox_deimoseyes = {Options = {}, CVars = {}, Label = "Deimos eyelights.", MenuButton = "0"}
 	combobox_deimoseyes.Options["Disable Entirely"] = {VJ_ToTU_Weaponized_Deimos_Eyes = 0}
@@ -1596,6 +1615,10 @@ https://github.com/VJ-HLR-Developers/Half-Life-Zombie-Edition-SNPCs/blob/master/
 
 	Panel:AddControl("Checkbox", {Label = "Enable Cancer reviving?", Command = "VJ_ToTU_Weaponized_Cancer_Reviving"})
 	Panel:ControlHelp("If enabled, Cancers can revive or mutate if not killed with fire.")
+
+	Panel:AddControl("Checkbox", {Label = "Enable Revenant revive blacklist?", Command = "VJ_ToTU_Weaponized_Revenant_ReviveBlacklist"})
+	Panel:ControlHelp("If enabled, Revenants cannot use certain models for reviving.")
+	Panel:ControlHelp("If disabled, anything considered prop_ragdoll is revivable.")
 
 	Panel:ControlHelp("--------------------------------------------------------")
 	Panel:AddControl( "Label", {Text = "Cepheus Strain"})
@@ -1825,6 +1848,7 @@ https://github.com/VJ-HLR-Developers/Half-Life-Zombie-Edition-SNPCs/blob/master/
             zombie:SetPos(victim:GetPos())
             zombie:SetAngles(victim:GetAngles())
 			zombie.ToTU_Weaponized_Redead_Infectee = true
+			zombie.ToTU_Weaponized_PoopShitter = true
             zombie:Spawn()
 			zombie:Activate()
             //zombie:SetParent(zombie)
@@ -1935,8 +1959,11 @@ https://github.com/VJ-HLR-Developers/Half-Life-Zombie-Edition-SNPCs/blob/master/
 				bg[i] = victim:GetBodygroup(i)
 			end
 
+			zombie:SetMaterial("hud/killicons/default")
             zombie:SetPos(victim:GetPos())
             zombie:SetAngles(victim:GetAngles())
+			zombie.ToTU_Weaponized_Redead_Infectee = true
+			zombie.ToTU_Weaponized_PoopShitter = true
             zombie:Spawn()
 			zombie:Activate()
             //zombie:SetParent(zombie)
