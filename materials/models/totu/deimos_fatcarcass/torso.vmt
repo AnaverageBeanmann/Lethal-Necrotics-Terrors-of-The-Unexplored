@@ -1,0 +1,11 @@
+"VertexLitGeneric"
+{
+	"$baseTexture" "models/totu/deimos_fatcarcass/torso"
+	"$basealphaenvmapmask" 1
+	"$envmaptint" "[0.3 0.3 0.3]"
+	"$envmap" "env_cubemap"
+	"$detail" "models\totu\detail\ci_detail_dirt"
+	"$detailscale" 9
+	"$detailblendfactor" 0.75
+	"$detailblendmode" 0
+}
