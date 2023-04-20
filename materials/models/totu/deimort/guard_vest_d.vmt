@@ -1,0 +1,10 @@
+"VertexLitGeneric"
+{
+	"$baseTexture" "models\totu/deimort/guard_vest_d"
+	"$bumpmap" "models\totu/deimort/guard_vest_n"
+	"$surfaceprop" "flesh"
+	"$detail" "models\totu\detail\ci_detail_dirt"
+	"$detailscale" 10
+	"$detailblendfactor" 0.5
+	"$detailblendmode" 0
+}

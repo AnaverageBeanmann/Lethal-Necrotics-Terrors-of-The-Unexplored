@@ -1,0 +1,5 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models/totu/totu/deimort/syringe"
+	"$selfillum" "1"
+}
