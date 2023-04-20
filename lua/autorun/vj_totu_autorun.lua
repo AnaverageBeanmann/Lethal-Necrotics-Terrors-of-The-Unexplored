@@ -479,11 +479,6 @@ end
 		
 		do varients for walker only, infected only, and both
 		see if you can use spawners as a base for spawners
-		
-try giving exploder carcs/cysts the antlion_gib_02_gas or antlion_spit_02 or antlion_spit_03 particle
-
-add eating system using modified code from this
-https://github.com/VJ-HLR-Developers/Half-Life-Zombie-Edition-SNPCs/blob/master/lua/entities/npc_vj_hlrze_zombie/init.lua
 
 		april 20th
 		- upload bbbos to the workshop
@@ -494,7 +489,7 @@ https://github.com/VJ-HLR-Developers/Half-Life-Zombie-Edition-SNPCs/blob/master/
 		- edit the og one so it's like "hey this is the old one check out the new one"
 		- continue working on it till it's all ready
 		- when it's finished unlist the old one
-		
+
 		add nmrih crawler biting anim for eating crawlers
 		
 		add these to milzombs? https://steamcommunity.com/sharedfiles/filedetails/?id=2926996172&searchtext=
@@ -506,6 +501,91 @@ https://github.com/VJ-HLR-Developers/Half-Life-Zombie-Edition-SNPCs/blob/master/
 		- desert milzombs
 		- mummy (basic zomb equivilant?)
 		- lizard (speedy crawler)
+		- move bonfire to this group
+		
+		make it so electricity can short-cirquit the ghost cloak and maybe the milzomb radio
+		
+		halloween mode feedback loop https://youtu.be/HPlKUziuXC0
+		
+		think of ideas for mutated deimosified peacekeeper
+		make it all big and muscly like a tank/demolisher
+		
+		add these weapons for redeads
+		- models/gibs/furniture_gibs/furnituretable001a_chunk05.mdl
+		- models/gibs/furniture_gibs/furnituretable002a_chunk08.mdl
+		- models/gibs/furniture_gibs/furnituretable003a_gib01.mdl
+		- models/props_c17/chair_stool01a.mdl
+		- models/props_c17/furnituredrawer001a_shard01.mdl
+		- models/props_c17/handrail04_cap.mdl
+		- models/props_c17/metalpot002a.mdl 
+		- models/props_c17/tools_wrench01a.mdl
+		- models/props_canal/winch02d.mdl
+		- models/props_debris/rebar002a_32.mdl
+		- models/props_debris/wood_chunk04b.mdl
+		- models/props_lab/cleaver.mdl (add physics to this one)
+		- models/props_lab/desklamp01.mdl
+		- models/props_wasteland/prison_pipefaucet001a.mdl
+		- models/props_wasteland/prison_throwswitchlever001.mdl
+		
+
+		- script for deimos showcase
+		- intro shot
+			- map: bigcity night
+			- song: land (0.5 pitch)
+			- show that the place is absolutely destroyed, lots of fires going on and stuff
+			- get closer to the streets to show off mostly redeads wandering around
+			- when we get to the first zomb at facility gamma do this instead
+				- map: boreas
+				- song: my cold lover or freezing point (probably this one), either of which gets slowed down alot
+				- show that the place is a wreck
+				- see if you can get stormfox 2 to look good outside
+		- npc intro shot
+			- do the cool spinny camera again but slower
+			- show name, health, damage, voice actor, and special gimmicks if it has any
+			- for bigcity zombs use land, for mort zombs use whatever we pick for the gamma intro shots
+			- do fades to show off different skin/bodygroup combinations and/or different subtypes
+		- film locations
+			- bigcitynight: an open section in the packed city section
+			- boreas: the cargo bay area
+		
+
+		music for deimos showcase
+		
+		taitoki
+		* definitely
+		- Lone Guy
+		- Land (probably 0.5 pitch)
+		- I'm Alive
+
+		* maybe
+		- Bracket
+		- Living in Hell
+		- Men Only
+		- Soft Hearts
+		- Something isn't right
+		- The Feel of Her (probably 0.8)
+		- Father
+		
+		music for backcounty showcase
+		
+		taitoki
+		- Ballad of the Hernandez Family
+		- Daddy's Home
+		
+		music for water critter showcase
+		
+		J-Dubbs
+		- Backflip Faceplant
+		- Stabby Fishy
+		- God Is Dead
+		- Behind You...
+		- Unlikely Teamup(?)
+		- River Ride
+		- Good Ol' .42
+		
+		Noisemaker
+		- Gills of Steel
+
 
 	*/
 
@@ -520,6 +600,7 @@ https://github.com/VJ-HLR-Developers/Half-Life-Zombie-Edition-SNPCs/blob/master/
 		-- []
 		VJ.AddNPC("Base Cepheus Gunner Zombie Guy Dude Thing","npc_vj_totu_base_cstrain",vCat1)
 		-- ()
+		-- VJ.AddNPC("Base Tank","npc_vj_totu_base_tank",vCat1)
 	
 	-- MilZombs
 		VJ.AddNPC("Grunt (Walker)","npc_vj_totu_milzomb_walker",vCat2)
@@ -624,51 +705,71 @@ https://github.com/VJ-HLR-Developers/Half-Life-Zombie-Edition-SNPCs/blob/master/
 		-- VJ.AddNPC("Scavenger","npc_vj_totu_tundra_scavenger",vCat9)
 		-- some kind of ravager copy but cold
 		-- name it scavenger?
-	
+
+		-- VJ.AddNPC("Chiliblain","npc_vj_totu_tundra_chiliblain",vCat9)
+		-- retextured evo covered in sores and cuts
+		-- bleedy heavy
+		-- "Chilblains are small, itchy swellings on the skin that occur as a reaction to cold temperatures."
+
+		-- VJ.AddNPC("Yukionna","npc_vj_totu_tundra_yukionna",vCat9)
+		-- squaller-like thing
+
+		-- VJ.AddNPC("Snowman","npc_vj_totu_tundra_snowman",vCat9)
+		-- ice anomaly dude?
+
 	-- Deimos
 		
-		VJ.AddNPC("Carcass","npc_vj_totu_weaponized_carcass",vCat4)
+		VJ.AddNPC("Redead","npc_vj_totu_deimos_redead",vCat4)
+		-- []
+		
+		VJ.AddNPC("Remort (Drone)","npc_vj_totu_deimos_redead_grunt",vCat4)
+		-- []
+
+		VJ.AddNPC("Remort (Researcher)","npc_vj_totu_deimos_redead_sci",vCat4)
+
+		VJ.AddNPC("Remort (Guard)","npc_vj_totu_deimos_redead_guard",vCat4)
+
+		VJ.AddNPC("Corrupt","npc_vj_totu_deimos_corrupt",vCat4)
+		-- []
+
+		VJ.AddNPC("Reaper","npc_vj_totu_deimos_corrupt_brute",vCat4)
+		-- corrupt but amnesia brute
+		-- say the crap on the front is chitin
+		-- make the stuff on the front bullet proof/resistant
+		-- voice actor is hl:a jeff
+		
+		VJ.AddNPC("Carcass","npc_vj_totu_deimos_carcass",vCat4)
 		-- []
 		-- see about fixing gesture flinches
 		-- add black mesa scientist and security guard zombie models
 		
-		VJ.AddNPC("Carcass Thorax","npc_vj_totu_weaponized_carcass_torso",vCat4)
+		VJ.AddNPC("Carcass Thorax","npc_vj_totu_deimos_carcass_torso",vCat4)
 		-- []
 
-		VJ.AddNPC("Cazador","npc_vj_totu_weaponized_cazador",vCat4)
+		VJ.AddNPC("Cazador","npc_vj_totu_deimos_cazador",vCat4)
 		-- []
 		-- give it a climbing down animation
-		
-		VJ.AddNPC("Cazador Thorax","npc_vj_totu_weaponized_cazador_torso",vCat4)
-		-- []
-		
-		VJ.AddNPC("Cyst","npc_vj_totu_weaponized_cyst",vCat4)
-		-- []
-		
-		VJ.AddNPC("Cancer","npc_vj_totu_weaponized_cancer",vCat4)
-		-- []
-		
-		VJ.AddNPC("Revenant","npc_vj_totu_weaponized_revenant",vCat4)
-		-- []
-		-- new model idea: revived and rotting caretaker
-		
-		VJ.AddNPC("Redead","npc_vj_totu_weaponized_redead",vCat4)
-		-- main revenant minion
-		-- rev can still spawn the c trio
-		-- purple glowing eyes
-		-- voiced by doom 2016 zombie
-		-- slow but can run occasionally
+
+		VJ.AddNPC("Cazador Thorax","npc_vj_totu_deimos_cazador_torso",vCat4)
 		-- []
 
-		VJ.AddNPC("Corrupt","npc_vj_totu_weaponized_corrupt",vCat4)
-		-- []
-		
-		VJ.AddNPC("Remort","npc_vj_totu_weaponized_redead_grunt",vCat4)
-		-- deimos drone
-		-- maybe call it Remort
+		VJ.AddNPC("Cyst","npc_vj_totu_deimos_cyst",vCat4)
 		-- []
 
-		-- VJ.AddNPC("Re","npc_vj_totu_weaponized_redead_grunt",vCat4)
+		VJ.AddNPC("Cancer","npc_vj_totu_deimos_cancer",vCat4)
+		-- []
+
+		VJ.AddNPC("Revenant","npc_vj_totu_deimos_revenant",vCat4)
+		-- []
+
+		-- VJ.AddNPC("Crusader","npc_vj_totu_deimos_crus",vCat4)
+		-- deimosified sentinel
+		-- always spawns with flak armor
+		-- flak armor now actually protects decently against bullets?
+
+
+
+		-- deimosified morti scientists and guards?
 		
 	-- Cephues
 		VJ.AddNPC("Smog","npc_vj_totu_weaponized_smog",vCat12)
@@ -686,6 +787,16 @@ https://github.com/VJ-HLR-Developers/Half-Life-Zombie-Edition-SNPCs/blob/master/
 		-- ()
 		-- medic npc
 		-- voiced by this? https://youtu.be/YCk6AvqA95k
+		
+		-- diet coke the hidden
+
+		-- VJ.AddNPC("Cremator","npc_vj_totu_weaponized_cremator",vCat12)
+		-- fire dude
+		-- can spawn with a flamethrower or a shotgun with dragons breath shells
+		-- has thermite grenades
+		-- tank sprays fuel if you shoot it
+		-- tank ignites if on fire while tank is leaking, or tank takes fire damage
+
 		/*
 	-- Morti Research Facility
 		VJ.AddNPC("Morti Scientist (Friendly)","npc_vj_totu_morti_scientist",vCat)
@@ -746,6 +857,8 @@ https://github.com/VJ-HLR-Developers/Half-Life-Zombie-Edition-SNPCs/blob/master/
 		-- use edited css gasmask ct model
 		-- noru stands for necrotic outbreak response unit
 		
+		-- rename these guys to impure/impurebodies
+
 	-- Backcounty
 	
 		-- add a zombie called Bear?
@@ -824,6 +937,24 @@ https://github.com/VJ-HLR-Developers/Half-Life-Zombie-Edition-SNPCs/blob/master/
 		-- add hammer and sledgehammer to weapon list
 		-- brick
 		-- rename to roughneck
+
+		-- VJ.AddNPC("Backcounty Survivor","npc_vj_totu_backcounty_survivor",vCat5)
+
+		-- VJ.AddNPC("Jerseyhead","npc_vj_totu_backcounty_jerseyhead",vCat5)
+		-- infinity franchiser
+		-- some sort of rage mechanic
+
+		-- VJ.AddNPC("Killjoy","npc_vj_totu_backcounty_killjoy",vCat5)
+		-- civvie in a pulled-up hoodie with a joy dealer mask
+		-- dodges often, even at close range
+		-- always spawns with a melee weapon
+
+		-- VJ.AddNPC("Corvid","npc_vj_totu_backcounty_corvid",vCat5)
+
+		-- VJ.AddNPC("Bandit","npc_vj_totu_backcounty_bandit",vCat5)
+		-- generic hostile human npcs
+		-- voice actor: https://youtu.be/FwhcZDYk6xU
+		-- get goose to help translate
 		
 	-- The Rotten
 		VJ.AddNPC("Degenerate","npc_vj_totu_rotten_degenerate",vCat6)
@@ -944,7 +1075,8 @@ https://github.com/VJ-HLR-Developers/Half-Life-Zombie-Edition-SNPCs/blob/master/
 		-- obese male?
 		-- https://steamcommunity.com/sharedfiles/filedetails/?id=1199974271
 		
-		-- VJ.AddNPC("","npc_vj_totu_bonus_",vCat)
+		-- VJ.AddNPC("b0ne(r)","npc_vj_totu_bonus_b0ner",vCat)
+		-- rattle me b0ne(r)s
 	
 	-- Spawners
 		VJ.AddNPC("Spawner","sent_vj_totu_spawner",vCat8)
@@ -959,9 +1091,25 @@ https://github.com/VJ-HLR-Developers/Half-Life-Zombie-Edition-SNPCs/blob/master/
 		-- VJ.AddNPC("Spawner (Morti Staff)","sent_vj_totu_spawner_morti",vCat)
 		
 	-- Freaks of Nature
-		VJ.AddNPC("Skullcrusher","npc_vj_totu_fon_juggernaut",vCat11)
-		VJ.AddNPC("Wrath","npc_vj_totu_fon_bulldozer",vCat11)
-	
+		-- VJ.AddNPC("Skullcrusher","npc_vj_totu_fon_juggernaut",vCat11)
+		-- VJ.AddNPC("Wrath","npc_vj_totu_fon_bulldozer",vCat11)
+		-- redo these 2
+
+		VJ.AddNPC("Gail","npc_vj_totu_fon_gail",vCat11)
+		-- remort researcher
+		-- deimos patient zero
+		-- music ideas; Just Run, The Feel of Her, Casino Deficento
+		-- make it do crawl stuff like skitters and whatnot
+
+		VJ.AddNPC("Lament","npc_vj_totu_fon_lament",vCat11)
+		-- reaper
+		-- music: blood for sex 1.3 playback speed, i'm alive, old friend
+		-- can scream/yell, damaing anything nearby
+
+		-- VJ.AddNPC("Condor","npc_vj_totu_deimos_condor",vCat4)
+		-- bigger and tougher cazador that's more agile
+		-- music https://youtu.be/ajxEH42nJ4U
+
 	--Zombies
 		--No Specific Area
 			-- VJ.AddNPC("Alternate","npc_vj_ln_totu_alternate",vCat)
@@ -1082,6 +1230,11 @@ https://github.com/VJ-HLR-Developers/Half-Life-Zombie-Edition-SNPCs/blob/master/
 	AddConvars["VJ_ToTU_Weaponized_Deimos_Eyes"] = 2
 	AddConvars["VJ_ToTU_General_TF2Mode"] = 0
 	AddConvars["VJ_ToTU_Weaponized_Revenant_ReviveBlacklist"] = 1
+	AddConvars["VJ_ToTU_Weaponized_Remort_Gasmasks_Allow"] = 1
+	AddConvars["VJ_ToTU_Weaponized_Remort_Gasmasks_Chance"] = 3
+	AddConvars["VJ_ToTU_Weaponized_Remort_FlakArmor_Allow"] = 1
+	AddConvars["VJ_ToTU_Weaponized_Remort_FlakArmor_Chance"] = 4
+	AddConvars["VJ_ToTU_General_NotZombieAllied"] = 0
 
 	-- AddConvars["VJ_ToTU_General_TF2Mode"] = 0
 	-- AddConvars["VJ_ToTU_Weaponized_Carcass_"] = 
@@ -1220,6 +1373,11 @@ https://github.com/VJ-HLR-Developers/Half-Life-Zombie-Edition-SNPCs/blob/master/
 			VJ_ToTU_Weaponized_Deimos_Eyes = "2",
 			VJ_ToTU_General_TF2Mode = "0",
 			VJ_ToTU_Weaponized_Revenant_ReviveBlacklist = "1",
+			VJ_ToTU_Weaponized_Remort_Gasmasks_Allow = "1",
+			VJ_ToTU_Weaponized_Remort_Gasmasks_Chance = "3",
+			VJ_ToTU_Weaponized_Remort_FlakArmor_Allow = "1",
+			VJ_ToTU_Weaponized_Remort_FlakArmor_Chance = "4",
+			VJ_ToTU_General_NotZombieAllied = "0",
 			-- VJ_ToTU_MilZ_Det_ = "",
 			
 			
@@ -1278,6 +1436,9 @@ https://github.com/VJ-HLR-Developers/Half-Life-Zombie-Edition-SNPCs/blob/master/
 	Panel:ControlHelp("--------------------------------------------------------")
 	
 	Panel:AddControl("Checkbox", {Label = "Enable easter eggs?", Command = "VJ_ToTU_General_EasterEggs"})
+
+	Panel:AddControl("Checkbox", {Label = "Non-Zombie allied?", Command = "VJ_ToTU_General_NotZombieAllied"})
+	Panel:ControlHelp("If enabled, ToTU zombs will have their relationship class set to CLASS_TOTU instead of CLASS_ZOMBIE.")
 
 	Panel:AddControl("Checkbox", {Label = "Enable TF2 Mode?", Command = "VJ_ToTU_General_TF2Mode"})
 	Panel:ControlHelp("If enabled, zombies will be voiced by TF2 characters.")
@@ -1586,6 +1747,21 @@ https://github.com/VJ-HLR-Developers/Half-Life-Zombie-Edition-SNPCs/blob/master/
 	Panel:AddControl("Checkbox", {Label = "Enable Deimos bleeding?", Command = "VJ_ToTU_Weaponized_Carcass_Bleed"})
 	Panel:ControlHelp("If enabled, Carcasses, Cazadores, Cysts, and Corrupts can occasionally cause bleeding when they hit their target.")
 
+	Panel:AddControl("Checkbox", {Label = "Remorts can spawn with gasmasks?", Command = "VJ_ToTU_Weaponized_Remort_Gasmasks_Allow"})
+	Panel:ControlHelp("If enabled, Remorts can sometimes spawn with gasmasks.")
+	
+	Panel:AddControl("Slider", {Label = "Gasmask chance.", Command = "VJ_ToTU_Weaponized_Remort_Gasmasks_Chance", Min = 1, Max = 10000})
+	Panel:ControlHelp("Chance that a Remort will spawn with a gasmask.")
+	Panel:ControlHelp("Default chance is 3.")
+	
+	Panel:AddControl("Checkbox", {Label = "Remorts can spawn with flak armor?", Command = "VJ_ToTU_Weaponized_Remort_FlakArmor_Allow"})
+	Panel:ControlHelp("If enabled, Remorts can sometimes spawn with flak armor.")
+	Panel:ControlHelp("Flak armor provides protection against explosive damage, aswell as a small bit of limb protection.")
+	
+	Panel:AddControl("Slider", {Label = "Flak armor chance.", Command = "VJ_ToTU_Weaponized_Remort_FlakArmor_Chance", Min = 1, Max = 10000})
+	Panel:ControlHelp("Chance that a Remort will spawn with flak armor.")
+	Panel:ControlHelp("Default chance is 4.")
+
 	Panel:AddControl("Checkbox", {Label = "Enable Caretaker Remorts?", Command = "VJ_ToTU_Weaponized_Remort_Caretakers_Allow"})
 	Panel:ControlHelp("If enabled, Remorts can spawn as the Caretaker varient.")
 	Panel:ControlHelp("They will heal nearby zombies.")
@@ -1835,7 +2011,7 @@ https://github.com/VJ-HLR-Developers/Half-Life-Zombie-Edition-SNPCs/blob/master/
 
 		if attacker.ToTU_Deimos == true && victim:LookupBone("ValveBiped.Bip01_Pelvis") && GetConVar("VJ_ToTU_Weaponized_Deimos_Infection"):GetInt() == 1 then
 
-			local zombie = ents.Create("npc_vj_totu_weaponized_redead")
+			local zombie = ents.Create("npc_vj_totu_deimos_redead")
 			local oldModel = victim:GetModel()
 			local oldSkin = victim:GetSkin()
 			local oldColor = victim:GetColor()
@@ -1891,10 +2067,10 @@ https://github.com/VJ-HLR-Developers/Half-Life-Zombie-Edition-SNPCs/blob/master/
 						bloodeffect:SetScale(125)
 						util.Effect("VJ_Blood1",bloodeffect)
 		
-						local newredead = ents.Create("npc_vj_totu_weaponized_redead")
+						local newredead = ents.Create("npc_vj_totu_deimos_redead")
 						newredead:SetPos(zombie:GetPos())
 						newredead:SetAngles(zombie:GetAngles())
-						newredead.ToTU_Weaponized_Redead_Infectee = true
+						newredead.ToTU_Weaponized_Shitter = true
 						newredead:Spawn()
 						newredead:Activate()
 
@@ -1947,7 +2123,7 @@ https://github.com/VJ-HLR-Developers/Half-Life-Zombie-Edition-SNPCs/blob/master/
 
 		if attacker.ToTU_Deimos == true && victim:LookupBone("ValveBiped.Bip01_Pelvis") && GetConVar("VJ_ToTU_Weaponized_Deimos_Infection"):GetInt() == 1 then
 
-			local zombie = ents.Create("npc_vj_totu_weaponized_redead")
+			local zombie = ents.Create("npc_vj_totu_deimos_redead")
 			local bonemerge = ents.Create("vj_lnr_infection")
 			local oldModel = victim:GetModel()
 			local oldSkin = victim:GetSkin()
@@ -2007,7 +2183,7 @@ https://github.com/VJ-HLR-Developers/Half-Life-Zombie-Edition-SNPCs/blob/master/
 						bloodeffect:SetScale(125)
 						util.Effect("VJ_Blood1",bloodeffect)
 		
-						local newredead = ents.Create("npc_vj_totu_weaponized_redead")
+						local newredead = ents.Create("npc_vj_totu_deimos_redead")
 						newredead:SetPos(zombie:GetPos())
 						newredead:SetAngles(zombie:GetAngles())
 						newredead.ToTU_Weaponized_Redead_Infectee = true
