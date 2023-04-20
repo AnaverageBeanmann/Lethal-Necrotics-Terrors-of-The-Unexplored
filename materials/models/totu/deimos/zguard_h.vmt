@@ -1,0 +1,29 @@
+"VertexLitGeneric"
+{
+	"$baseTexture" "models/totu/deimos/ZGuard_h"
+	"$bumpmap" "models/totu/deimos/ZGuard_h_normals"
+	"$model" 1
+	"$surfaceprop" "flesh"
+	"$multipass" 1
+
+	"$phong" "1"
+	"$phongboost" "2"
+	"$phongexponent" 33
+	"$phongfresnelranges" "[.18 .4 1]"
+	"$halflambert" "1"
+
+	// Rim lighting parameters
+	"$rimlight" "1"				// To enable rim lighting (requires phong)
+	"$rimlightexponent" "60"             // Exponent for phong component of rim lighting
+	"$rimlightboost" ".5"	               // Boost for ambient cube component of rim lighting
+	"$detail" "models\totu\detail\ci_detail_dirt"
+	"$detailscale" 5
+	"$detailblendfactor" 0.8
+	"$detailblendmode" 0
+	Proxies
+	{
+		ModelDetailFx
+		{
+		}
+	}
+}

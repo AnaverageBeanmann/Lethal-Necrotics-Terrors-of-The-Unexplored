@@ -1,0 +1,20 @@
+"VertexLitGeneric"
+{
+	"$baseTexture" "models/totu/deimos/fast_zombie_sheet3"
+	"$alphatest" 1
+	"$bumpmap" "models/totu/deimos/fast_zombie_sheet_normal"
+	"$surfaceprop" "flesh"
+	"$model" "1"
+	"$halflambert" "1"
+	"$phong" "1"
+	"$phongboost" "5"
+	"$phongexponent" 25
+	//"$phongexponenttexture" "Models/zombie_fast/fast_zombie_phong"
+	//"$phongalbedotint" "1"										
+	"$phongfresnelranges"	"[.2 .6 1]"
+
+	"$detail" "models\totu\detail\ci_detail_dirt"
+	"$detailscale" 5
+	"$detailblendfactor" 0.75
+	"$detailblendmode" 0
+}

@@ -1,0 +1,17 @@
+"VertexLitGeneric"
+{
+	"$baseTexture" "models/totu/deimos/poisonzombie_sheet2"
+//	"$envmap" "env_cubemap"
+	"$bumpmap" "models/totu/deimos/poisonzombie_sheet_normal"
+	"$model" "1"
+	"$phong" "1"
+	"$phongboost" "6"
+//	"$halflambert" "1"
+	"$phongexponenttexture" "models/totu/deimos/poisonzombie_phong"			
+	"$phongfresnelranges"	"[0 .5  1]"
+
+	"$detail" "models\totu\detail\ci_detail_dirt"
+	"$detailscale" 5
+	"$detailblendfactor" 0.75
+	"$detailblendmode" 0
+}

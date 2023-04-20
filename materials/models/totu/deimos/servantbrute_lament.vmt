@@ -1,0 +1,11 @@
+"VertexlitGeneric"
+{
+	$basetexture "models/totu/deimos/brute_lament"
+	$halflambert 1
+	$bumpmap "models/totu/deimos/brute_n"
+	$phong 1
+	$PhongExponent 2
+	$phongtint "{255 50 50}"
+	$phongboost 1
+	$phongfresnelranges "[0.05 0.5 1]"
+}

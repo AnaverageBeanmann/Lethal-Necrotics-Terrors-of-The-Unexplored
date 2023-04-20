@@ -1,0 +1,12 @@
+"VertexLitGeneric"
+{
+	// Original shader: VertexLitTexture
+	"$basetexture" "models/totu/deimos/joe_facemap"
+	"$bumpmap" "null-bumpmap"
+	"$halflambert" 1
+	"$detail" "models\totu\detail\ci_detail_dirt"
+	"$detailscale" 5
+	"$detailblendfactor" 0.8
+	"$detailblendmode" 0
+}
+

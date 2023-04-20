@@ -2,7 +2,7 @@
 {
 	// Original shader: VertexLitTexture
 	"$basetexture" "models/totu/deimos/eric_facemap"
-	"$bumpmap"    "models/totu/deimos/eric_facemap_normal"
+	"$bumpmap" "null-bumpmap"
 	"$halflambert" 1
 	"$detail" "models\totu\detail\ci_detail_dirt"
 	"$detailscale" 5
