@@ -98,6 +98,7 @@ ENT.ToTU_CanRest = false
 ENT.ToTU_Deimos = false
 ENT.ToTU_TF2Mode = false
 ENT.ToTU_CanStumble = true
+ENT.ToTU_FreakOfNature_Phase = 1
 
 ENT.ToTU_NextDodgeT = 0
 ENT.ToTU_CanDodge = false
@@ -396,6 +397,8 @@ function ENT:CustomOnPreInitialize()
 
 	if
 		self:GetClass() == "npc_vj_totu_fon_juggernaut" or
+		self:GetClass() == "npc_vj_totu_fon_gail" or
+		self:GetClass() == "npc_vj_totu_fon_lament" or
 		self:GetClass() == "npc_vj_totu_fon_bulldozer"
 	then
 
@@ -414,6 +417,22 @@ function ENT:CustomOnPreInitialize()
 			self.HasSoundTrack = true
 			self.SoundTrackVolume = 0.75
 			self.SoundTbl_SoundTrack = {"fx/fonmusic/Cauterizer.mp3"}
+
+		end
+
+		if self:GetClass() == "npc_vj_totu_fon_gail" then
+
+			self.HasSoundTrack = true
+			self.SoundTrackVolume = 0.75
+			self.SoundTbl_SoundTrack = {"fx/fonmusic/Casino_Deficento.mp3"}
+
+		end
+
+		if self:GetClass() == "npc_vj_totu_fon_lament" then
+
+			self.HasSoundTrack = true
+			self.SoundTrackVolume = 0.90
+			self.SoundTbl_SoundTrack = {"fx/fonmusic/I'm_Alive_0.8.mp3"}
 
 		end
 
@@ -488,6 +507,7 @@ function ENT:CustomOnPreInitialize()
 		self:GetClass() == "npc_vj_totu_milzomb_bulldozer" or
 		self:GetClass() == "npc_vj_totu_nightkin_scragg" or
 		self:GetClass() == "npc_vj_totu_weaponized_smog" or
+		self:GetClass() == "npc_vj_totu_deimos_redead" or
 		self:GetClass() == "npc_vj_totu_fon_juggernaut" or
 		self:GetClass() == "npc_vj_totu_fon_bulldozer"
 	then
@@ -552,19 +572,29 @@ function ENT:CustomOnInitialize()
 	end end)
 	*/
 
+	if GetConVar("VJ_ToTU_General_NotZombieAllied"):GetInt() == 1 then
+		self.VJ_NPC_Class = {"CLASS_TOTU"}
+	end
+
 	if
-		self:GetClass() == "npc_vj_totu_weaponized_carcass" or
-		self:GetClass() == "npc_vj_totu_weaponized_carcass_torso" or
-		self:GetClass() == "npc_vj_totu_weaponized_cazador" or
-		self:GetClass() == "npc_vj_totu_weaponized_cazador_torso" or
-		self:GetClass() == "npc_vj_totu_weaponized_cyst" or
-		self:GetClass() == "npc_vj_totu_weaponized_cancer" or
-		self:GetClass() == "npc_vj_totu_weaponized_revenant" or
-		self:GetClass() == "npc_vj_totu_weaponized_corrupt" or
-		self:GetClass() == "npc_vj_totu_weaponized_redead_grunt" or
-		self:GetClass() == "npc_vj_totu_weaponized_redead"
+		self:GetClass() == "npc_vj_totu_deimos_carcass" or
+		self:GetClass() == "npc_vj_totu_deimos_carcass_torso" or
+		self:GetClass() == "npc_vj_totu_deimos_cazador" or
+		self:GetClass() == "npc_vj_totu_deimos_cazador_torso" or
+		self:GetClass() == "npc_vj_totu_deimos_cyst" or
+		self:GetClass() == "npc_vj_totu_deimos_cancer" or
+		self:GetClass() == "npc_vj_totu_deimos_revenant" or
+		self:GetClass() == "npc_vj_totu_deimos_corrupt" or
+		self:GetClass() == "npc_vj_totu_deimos_redead_guard" or
+		self:GetClass() == "npc_vj_totu_deimos_redead_sci" or
+		self:GetClass() == "npc_vj_totu_fon_gail" or
+		self:GetClass() == "npc_vj_totu_fon_lament" or
+		self:GetClass() == "npc_vj_totu_deimos_corrupt_brute" or
+		self:GetClass() == "npc_vj_totu_deimos_redead_grunt" or
+		self:GetClass() == "npc_vj_totu_deimos_redead"
 	then
 		self.LNR_VirusInfection = false
+		self.LNR_Walker = false
 		self.ToTU_Deimos = true
 	end
 
@@ -588,9 +618,11 @@ function ENT:CustomOnInitialize()
 		!self.ToTU_IsFreakOfNature &&
 		(!self.ToTU_Deimos or
 		self.ToTU_Deimos &&
-		(self:GetClass() == "npc_vj_totu_weaponized_redead" or
-		self:GetClass() == "npc_vj_totu_weaponized_redead_grunt" or
-		self:GetClass() == "npc_vj_totu_weaponized_revenant"))
+		(self:GetClass() == "npc_vj_totu_deimos_redead" or
+		self:GetClass() == "npc_vj_totu_deimos_redead_guard" or
+		self:GetClass() == "npc_vj_totu_deimos_redead_sci" or
+		self:GetClass() == "npc_vj_totu_deimos_redead_grunt" or
+		self:GetClass() == "npc_vj_totu_deimos_revenant"))
 	then
 
 		if math.random(1,GetConVar("VJ_ToTU_General_Crawler_Chance"):GetInt()) == 1 then
@@ -608,7 +640,7 @@ function ENT:CustomOnInitialize()
 		!self.ToTU_InstantDigout
 	then
 		if math.random(1,GetConVar("VJ_ToTU_Spawn_DigChance"):GetInt()) == 1 then
-			if self:GetClass() != "npc_vj_totu_weaponized_redead" or (self:GetClass() == "npc_vj_totu_weaponized_redead" && !self.ToTU_Weaponized_Redead_Infectee) then
+			if self:GetClass() != "npc_vj_totu_deimos_redead" or (self:GetClass() == "npc_vj_totu_deimos_redead" && !self.ToTU_Weaponized_Redead_Infectee) then
 				self:RiseFromGround()
 			end
 		end
@@ -1684,6 +1716,142 @@ function ENT:ZombieWeapons()
 
 	end	
 
+	if self:GetClass() == "npc_vj_totu_deimos_redead" && !self.ToTU_Weaponized_PoopShitter && !self.ToTU_Weaponized_Shitter then
+
+		self.WeaponModel = ents.Create("prop_physics")
+	
+		local RandRedeadWeapon = math.random(1,7)
+		if RandRedeadWeapon == 1 then
+
+			self.WeaponModel:SetModel("models/vj_lnrhl2/weapons/w_knife_ct.mdl")
+			self.ToTU_Weaponized_WeaponBleed = true
+
+		elseif RandRedeadWeapon == 2 then
+
+			self.WeaponModel:SetModel("models/weapons/w_crowbar.mdl")
+			self.ToTU_Weaponized_WeaponBleed = true
+
+		elseif RandRedeadWeapon == 3 then
+
+			self.WeaponModel:SetModel("models/props_canal/mattpipe.mdl")
+
+		elseif RandRedeadWeapon == 4 then
+
+			self.WeaponModel:SetModel("models/vj_lnrhl2/weapons/w_axe.mdl")
+			self.ToTU_Weaponized_WeaponBleed = true
+
+		elseif RandRedeadWeapon == 5 then
+
+			self.WeaponModel:SetModel("models/vj_lnrhl2/weapons/w_brokenbottle.mdl")
+			self.ToTU_Weaponized_WeaponBleed = true
+
+		elseif RandRedeadWeapon == 6 then
+
+			self.WeaponModel:SetModel("models/vj_lnrhl2/weapons/w_pot.mdl")
+
+		elseif RandRedeadWeapon == 7 then
+
+			self.WeaponModel:SetModel("models/vj_lnrhl2/weapons/w_pan.mdl")
+
+		end
+
+		self.WeaponModel:SetLocalPos(self:GetPos())
+		self.WeaponModel:SetLocalAngles(self:GetAngles())			
+		self.WeaponModel:SetOwner(self)
+		self.WeaponModel:SetParent(self)
+		self.WeaponModel:Fire("SetParentAttachmentMaintainOffset","anim_attachment_LH")
+		self.WeaponModel:Fire("SetParentAttachment","anim_attachment_RH")
+		self.WeaponModel:SetCollisionGroup(COLLISION_GROUP_IN_VEHICLE)
+		self.WeaponModel:Spawn()
+		self.WeaponModel:Activate()
+		self.WeaponModel:SetSolid(SOLID_NONE)
+		self.WeaponModel:AddEffects(EF_BONEMERGE)
+
+		if GetConVar("VJ_LNR_Difficulty"):GetInt() == 1 then
+			self.MeleeAttackDamage = math.Rand(10,15)
+		elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 2 then
+			self.MeleeAttackDamage = math.Rand(15,20)
+		elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 3 then
+			self.MeleeAttackDamage = math.Rand(20,25)
+		elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 4 then
+			self.MeleeAttackDamage = math.Rand(25,30)
+		elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 5 then
+			self.MeleeAttackDamage = math.Rand(30,35)
+		else
+			self.MeleeAttackDamage = math.Rand(15,20)
+		end
+
+		if self.ToTU_Weaponized_WeaponBleed then
+		
+			self.MeleeAttackBleedEnemy = true
+			self.MeleeAttackBleedEnemyChance = 3
+			self.MeleeAttackBleedEnemyDamage = 1
+			self.MeleeAttackBleedEnemyTime = 1
+			self.MeleeAttackBleedEnemyReps = 4
+			self.MeleeAttackDamageType = DMG_SLASH
+
+		end
+
+	end
+
+
+
+	if self:GetClass() == "npc_vj_totu_deimos_redead_grunt" then
+
+		self.WeaponModel = ents.Create("prop_physics")
+	
+		local RandRedeadWeapon = math.random(1,2)
+		if RandRedeadWeapon == 1 then
+
+			self.WeaponModel:SetModel("models/vj_lnrhl2/weapons/w_knife_ct.mdl")
+			self.ToTU_Weaponized_WeaponBleed = true
+
+		elseif RandRedeadWeapon == 2 then
+
+			self.WeaponModel:SetModel("models/vj_weapons/w_glock.mdl")
+
+		end
+
+		self.WeaponModel:SetLocalPos(self:GetPos())
+		self.WeaponModel:SetLocalAngles(self:GetAngles())			
+		self.WeaponModel:SetOwner(self)
+		self.WeaponModel:SetParent(self)
+		self.WeaponModel:Fire("SetParentAttachmentMaintainOffset","anim_attachment_LH")
+		self.WeaponModel:Fire("SetParentAttachment","anim_attachment_RH")
+		self.WeaponModel:SetCollisionGroup(COLLISION_GROUP_IN_VEHICLE)
+		self.WeaponModel:Spawn()
+		self.WeaponModel:Activate()
+		self.WeaponModel:SetSolid(SOLID_NONE)
+		self.WeaponModel:AddEffects(EF_BONEMERGE)
+
+		if GetConVar("VJ_LNR_Difficulty"):GetInt() == 1 then
+			self.MeleeAttackDamage = math.Rand(10,15)
+		elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 2 then
+			self.MeleeAttackDamage = math.Rand(15,20)
+		elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 3 then
+			self.MeleeAttackDamage = math.Rand(20,25)
+		elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 4 then
+			self.MeleeAttackDamage = math.Rand(25,30)
+		elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 5 then
+			self.MeleeAttackDamage = math.Rand(30,35)
+		else
+			self.MeleeAttackDamage = math.Rand(15,20)
+		end
+
+		if self.ToTU_Weaponized_WeaponBleed then
+		
+			self.MeleeAttackBleedEnemy = true
+			self.MeleeAttackBleedEnemyChance = 3
+			self.MeleeAttackBleedEnemyDamage = 1
+			self.MeleeAttackBleedEnemyTime = 1
+			self.MeleeAttackBleedEnemyReps = 4
+			self.MeleeAttackDamageType = DMG_SLASH
+
+		end
+
+	end
+
+
 	if self.DisableFindEnemy == true then
 
 		if IsValid(self.WeaponModel) then 
@@ -1898,6 +2066,23 @@ function ENT:CustomOnAcceptInput(key,activator,caller,data)
 			VJ_EmitSound(self,"monsters/tesla/tesla_biped_walk_0"..math.random(1,5)..".wav",75,self:VJ_DecideSoundPitch(self.FootStepPitch.a,self.FootStepPitch.b))
 		end
 
+		if self:GetClass() == "npc_vj_totu_deimos_corrupt" then
+			VJ_EmitSound(self,"fx/footsteps/squal/step_"..math.random(1,9)..".mp3",70,self:VJ_DecideSoundPitch(self.FootStepPitch.a,self.FootStepPitch.b))
+		end
+
+		if self:GetClass() == "npc_vj_totu_deimos_corrupt_brute" or self:GetClass() == "npc_vj_totu_fon_lament" then
+			VJ_EmitSound(self,"fx/footsteps/squal/step_"..math.random(1,9)..".mp3",75,self:VJ_DecideSoundPitch(self.FootStepPitch.a,self.FootStepPitch.b))
+		end
+
+		if self:GetClass() == "npc_vj_totu_deimos_corrupt_brute" or self:GetClass() == "npc_vj_totu_fon_lament" then
+			
+			if self:GetActivity() == ACT_RUN or self:GetActivity() == ACT_MELEE_ATTACK2 then
+				VJ_EmitSound(self,"fx/ambru/metal_run0"..math.random(1,8)..".wav",75,self:VJ_DecideSoundPitch(self.FootStepPitch.a,self.FootStepPitch.b))
+			else
+				VJ_EmitSound(self,"fx/ambru/metal_walk0"..math.random(1,8)..".wav",75,self:VJ_DecideSoundPitch(self.FootStepPitch.a,self.FootStepPitch.b))
+			end
+		end
+
 	end
 	
 	if key == "infection_step" && self:IsOnGround() then
@@ -1931,7 +2116,7 @@ function ENT:CustomOnAcceptInput(key,activator,caller,data)
 	end	
 
 	if key == "split" then
-		if self:GetClass() == "npc_vj_totu_weaponized_carcass" or self:GetClass() == "npc_vj_totu_weaponized_cazador" then
+		if self:GetClass() == "npc_vj_totu_deimos_carcass" or self:GetClass() == "npc_vj_totu_deimos_cazador" then
 			self:ToTU_Carcass_Split()
 		end
 	end
@@ -2712,7 +2897,17 @@ end
 
 				end
 
-				self.ToTU_NextDodgeT = CurTime() + math.random(5,15)
+				if self.ToTU_Deimos then
+					if self.ToTU_Weaponized_Redead_Running then
+						self:VJ_ACT_PLAYACTIVITY(InfectedDodgeAnims,true,false,false)
+					else
+						self:VJ_ACT_PLAYACTIVITY(WalkerDodgeAnims,true,false,false)
+					end
+					self.ToTU_NextDodgeT = CurTime() + math.random(3,7)
+				else
+					self.ToTU_NextDodgeT = CurTime() + math.random(5,15)
+				end
+
 
 			end
 			
@@ -2864,7 +3059,7 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:RiseFromGround()
 
-	if self.ToTU_InstantDigout or self:GetClass() == "npc_vj_totu_weaponized_corrupt" or (self:GetClass() == "npc_vj_totu_weaponized_redead" && self.ToTU_Weaponized_Redead_Infectee) then return end
+	if self.ToTU_InstantDigout or self:GetClass() == "npc_vj_totu_weaponized_corrupt" or self:GetClass() == "npc_vj_totu_deimos_corrupt_brute" or self:GetClass() == "npc_vj_totu_fon_lament" or (self:GetClass() == "npc_vj_totu_weaponized_redead" && self.ToTU_Weaponized_Redead_Infectee) then return end
 
 	if self.ToTU_Nightkin_Squaller_UsingIronWill or self:GetClass() == "npc_vj_totu_weaponized_cyst" then return end
 
@@ -3314,26 +3509,30 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:CustomOnAlert(ent)
 
-	if self:GetClass() == "npc_vj_totu_weaponized_carcass" or self:GetClass() == "npc_vj_totu_weaponized_carcass_torso" then
+	if self:GetClass() == "npc_vj_totu_deimos_carcass" or self:GetClass() == "npc_vj_totu_deimos_carcass_torso" then
 
 		self.ToTU_Weaponized_Carcass_NextZombineRunT = CurTime() + math.random(3,7)
 
 	end
 
-	if self:GetClass() == "npc_vj_totu_weaponized_cyst" then
+	if self:GetClass() == "npc_vj_totu_deimos_cyst" then
 
 		self.ToTU_Weaponized_Carcass_NextZombineRunT = CurTime() + math.random(7,15)
 
 	end
 
 	if
-		self:GetClass() == "npc_vj_totu_weaponized_redead" or
-		self:GetClass() == "npc_vj_totu_weaponized_corrupt" or
-		self:GetClass() == "npc_vj_totu_weaponized_redead_grunt" or
-		self:GetClass() == "npc_vj_totu_weaponized_cancer"
+		self:GetClass() == "npc_vj_totu_deimos_redead" or
+		self:GetClass() == "npc_vj_totu_deimos_redead_guard" or
+		self:GetClass() == "npc_vj_totu_deimos_redead_sci" or
+		self:GetClass() == "npc_vj_totu_deimos_corrupt" or
+		self:GetClass() == "npc_vj_totu_deimos_corrupt_brute" or
+		self:GetClass() == "npc_vj_totu_fon_lament" or
+		self:GetClass() == "npc_vj_totu_deimos_redead_grunt" or
+		self:GetClass() == "npc_vj_totu_deimos_cancer"
 	then
 
-		self.ToTU_Weaponized_Redead_RunT = CurTime() + math.random(3,7)
+		self.ToTU_Weaponized_Redead_NextRunT = CurTime() + math.random(3,7)
 
 	end
 
@@ -3376,7 +3575,7 @@ function ENT:CustomOnAlert(ent)
 
 	self.ToTU_NextDodgeT = CurTime() + math.random(5,10)
 
-	if self.LNR_Infected or (self.ToTU_Deimos && !self.ToTU_Weaponized_IsHL2Zomb && self:GetClass() != "npc_vj_totu_weaponized_corrupt") then
+	if self.LNR_Infected or (self.ToTU_Deimos && !self.ToTU_Weaponized_IsHL2Zomb && self:GetClass() != "npc_vj_totu_deimos_corrupt" && self:GetClass() != "npc_vj_totu_deimos_corrupt_brute" && self:GetClass() != "npc_vj_totu_fon_lament") then
 
 		if self:GetClass() == "npc_vj_totu_milzomb_ghost" then
 
@@ -3400,15 +3599,23 @@ function ENT:CustomOnResetEnemy()
 
 	if self.VJ_IsBeingControlled or self.LNR_Crippled or self.ToTU_Weaponized_IsHL2Zomb then return end
 
-	if self.LNR_Infected or (self.ToTU_Deimos && !self.ToTU_Weaponized_IsHL2Zomb && self:GetClass() != "npc_vj_totu_weaponized_corrupt") then
+	if self.LNR_Infected or (self.ToTU_Deimos && !self.ToTU_Weaponized_IsHL2Zomb && self:GetClass() != "npc_vj_totu_deimos_corrupt") then
 
 		if self.LNR_UsingRelaxedIdle then
 
-			self.AnimTbl_IdleStand = {ACT_IDLE_RELAXED}
+			if (self.ToTU_Deimos && !self.ToTU_Weaponized_IsHL2Zomb && self:GetClass() != "npc_vj_totu_deimos_corrupt" && self:GetClass() != "npc_vj_totu_deimos_corrupt_brute" && self:GetClass() != "npc_vj_totu_fon_lament") then
+				self.AnimTbl_IdleStand = {ACT_IDLE}
+			else
+				self.AnimTbl_IdleStand = {ACT_IDLE_RELAXED}
+			end
 
 		else
 
-			self.AnimTbl_IdleStand = {ACT_IDLE}
+			if (self.ToTU_Deimos && !self.ToTU_Weaponized_IsHL2Zomb && self:GetClass() != "npc_vj_totu_deimos_corrupt" && self:GetClass() != "npc_vj_totu_deimos_corrupt_brute" && self:GetClass() != "npc_vj_totu_fon_lament") then
+				self.AnimTbl_IdleStand = {ACT_IDLE_AIM_STIMULATED}
+			else
+				self.AnimTbl_IdleStand = {ACT_IDLE}
+			end
 
 		end
 
@@ -3498,7 +3705,7 @@ function ENT:CustomOnMeleeAttack_AfterChecks(hitEnt, isProp)
 
 	end
 
-	if self:GetClass() == "npc_vj_totu_weaponized_corrupt" && self:GetSequence() != self:LookupSequence("attack2") then
+	if (self:GetClass() == "npc_vj_totu_deimos_corrupt" or self:GetClass() == "npc_vj_totu_deimos_corrupt_brute" or self:GetClass() == "npc_vj_totu_fon_lament") && self:GetSequence() != self:LookupSequence("attack2") then
 			if hitEnt.IsVJBaseSNPC && VJ_PICK(hitEnt.CustomBlood_Particle) then
 
 			ParticleEffectAttach(VJ_PICK(hitEnt.CustomBlood_Particle),PATTACH_POINT_FOLLOW,self,self:LookupAttachment("bloodeffect"))
@@ -3508,6 +3715,18 @@ function ENT:CustomOnMeleeAttack_AfterChecks(hitEnt, isProp)
 
 			ParticleEffectAttach("blood_impact_red_01",PATTACH_POINT_FOLLOW,self,self:LookupAttachment("bloodeffect"))
 			ParticleEffectAttach("blood_impact_red_01",PATTACH_POINT_FOLLOW,self,self:LookupAttachment("bloodeffect"))
+
+		end
+	end
+
+	if self.ToTU_Weaponized_WeaponBleed then
+			if hitEnt.IsVJBaseSNPC && VJ_PICK(hitEnt.CustomBlood_Particle) then
+
+			ParticleEffectAttach(VJ_PICK(hitEnt.CustomBlood_Particle),PATTACH_POINT_FOLLOW,self,self:LookupAttachment("anim_attachment_RH"))
+
+		elseif (hitEnt:IsPlayer() or hitEnt:IsNPC() or hitEnt:IsNextBot()) then
+
+			ParticleEffectAttach("blood_impact_red_01",PATTACH_POINT_FOLLOW,self,self:LookupAttachment("anim_attachment_RH"))
 
 		end
 	end
@@ -3550,7 +3769,7 @@ function ENT:CustomOnMeleeAttack_Miss()
 
 	end
 
-	if (self.LNR_Infected or self.ToTU_Deimos && !self.ToTU_Weaponized_IsHL2Zomb && self:GetClass() != "npc_vj_totu_weaponized_corrupt")&& !self:IsMoving() && !self.LNR_Crippled then
+	if (self.LNR_Infected or self.ToTU_Deimos && !self.ToTU_Weaponized_IsHL2Zomb && self:GetClass() != "npc_vj_totu_deimos_corrupt" && self:GetClass() != "npc_vj_totu_deimos_corrupt_brute" && self:GetClass() != "npc_vj_totu_fon_lament")&& !self:IsMoving() && !self.LNR_Crippled && !self.ToTU_WeHaveAWeapon then
 
 		self.PlayingAttackAnimation = false
 		self:StopAttacks(false)
@@ -3569,7 +3788,9 @@ function ENT:CustomOnMeleeAttack_BeforeStartTimer(seed)
 		self.MilZ_Det_IsDetonator or
 		(self:GetClass() == "npc_vj_totu_nightkin_shrieker" && self.ToTU_Nightkin_Shrieker_CanShriek) or
 		self.ToTU_Weaponized_IsHL2Zomb or
-		self:GetClass() == "npc_vj_totu_weaponized_corrupt"
+		self:GetClass() == "npc_vj_totu_deimos_corrupt" or
+		self:GetClass() == "npc_vj_totu_fon_lament" or
+		self:GetClass() == "npc_vj_totu_deimos_corrupt_brute"
 		then
 	return end
 
@@ -3656,13 +3877,81 @@ function ENT:CustomOnMeleeAttack_BeforeStartTimer(seed)
 
 		end
 
+		if self.WeaponModel:GetModel() == "models/weapons/w_crowbar.mdl" then
+
+			self.SoundTbl_MeleeAttackExtra = {
+				"weapons/axe/axe_impact_flesh1.wav",
+				"weapons/axe/axe_impact_flesh2.wav",
+				"weapons/axe/axe_impact_flesh3.wav",
+				"weapons/axe/axe_impact_flesh4.wav"
+			}
+
+			self.SoundTbl_MeleeAttackMiss = {
+				"weapons/iceaxe/iceaxe_swing1.wav"
+			}
+
+		end
+
+		if self.WeaponModel:GetModel() == "models/props_canal/mattpipe.mdl" then
+
+			self.SoundTbl_MeleeAttackExtra = {
+				"physics/metal/metal_canister_impact_hard1.wav",
+				"physics/metal/metal_canister_impact_hard2.wav",
+				"physics/metal/metal_canister_impact_hard3.wav"
+			}
+
+			self.SoundTbl_MeleeAttack = {
+				"physics/body/body_medium_impact_hard1.wav",
+				"physics/body/body_medium_impact_hard2.wav",
+				"physics/body/body_medium_impact_hard3.wav",
+				"physics/body/body_medium_impact_hard4.wav",
+				"physics/body/body_medium_impact_hard5.wav",
+				"physics/body/body_medium_impact_hard6.wav"
+			}
+
+			self.SoundTbl_MeleeAttackMiss = {
+				"weapons/iceaxe/iceaxe_swing1.wav"
+			}
+
+		end
+
+		if self.WeaponModel:GetModel() == "models/vj_lnrhl2/weapons/w_axe.mdl" then
+
+			self.SoundTbl_MeleeAttackExtra = {
+				"weapons/axe/melee_axe_01.wav",
+				"weapons/axe/melee_axe_02.wav",
+				"weapons/axe/melee_axe_03.wav"
+			}
+
+			self.SoundTbl_MeleeAttackMiss = {
+				"weapons/iceaxe/iceaxe_swing1.wav"
+			}
+
+		end
+
+		if self.WeaponModel:GetModel() == "models/vj_lnrhl2/weapons/w_brokenbottle.mdl" then
+			self.SoundTbl_MeleeAttack = {""}
+			self.SoundTbl_MeleeAttackExtra = {
+				"fx/knife/knife_stab.wav"
+			}
+		end
+
+		if self.WeaponModel:GetModel() == "models/vj_lnrhl2/weapons/w_pot.mdl" or self.WeaponModel:GetModel() == "models/vj_lnrhl2/weapons/w_pan.mdl" then
+			self.SoundTbl_MeleeAttackExtra = {
+				"weapons/pan/melee_frying_pan_01.wav",
+				"weapons/pan/melee_frying_pan_02.wav",
+				"weapons/pan/melee_frying_pan_03.wav",
+				"weapons/pan/melee_frying_pan_04.wav"
+			}
+		end
+
 	end
 
 	-- When Crawling or Crippled --
     if self.LNR_Crippled then
 		if self.LNR_Walker then
 			self.AnimTbl_MeleeAttack = {"vjseq_crawl_attack"}	
-		elseif self.LNR_Infected then
+		elseif self.LNR_Infected or self.ToTU_Deimos then
 			self.AnimTbl_MeleeAttack = {"vjseq_crawl_attack2"}
 		end
 	end
@@ -3707,10 +3996,135 @@ function ENT:CustomOnMeleeAttack_BeforeStartTimer(seed)
 
 			if self.ToTU_WeHaveAWeapon == true then
 
-				self.AnimTbl_MeleeAttack = {
-				"vjseq_nz_attack_stand_ad_2-2",
-				"vjseq_nz_attack_stand_au_2-2",
-				}
+				if self.WeaponModel:GetModel() == "models/vj_lnrhl2/weapons/w_knife_ct.mdl" then
+					if self.LNR_Walker then
+						if math.random(1,3) == 1 then
+							self.SoundTbl_MeleeAttackExtra = {
+								"fx/knife/knife_stab.wav"
+							}
+							self.AnimTbl_MeleeAttack = {
+								"vjseq_geen_stabs_a_bitch"
+							}
+						else
+							self.SoundTbl_MeleeAttackExtra = {
+								"fx/knife/knife_hit1.wav",
+								"fx/knife/knife_hit2.wav",
+								"fx/knife/knife_hit3.wav",
+								"fx/knife/knife_hit4.wav"
+							}
+							self.AnimTbl_MeleeAttack = {
+								"vjseq_weapon_swing_overhead_slow",
+								"vjseq_weapon_swing_side_slow"
+							}
+						end
+					else
+						if math.random(1,3) == 1 then
+							self.SoundTbl_MeleeAttackExtra = {
+								"fx/knife/knife_stab.wav"
+							}
+							self.AnimTbl_MeleeAttack = {
+								"vjseq_geen_stabs_a_bitch"
+							}
+						else
+							self.SoundTbl_MeleeAttackExtra = {
+								"fx/knife/knife_hit1.wav",
+								"fx/knife/knife_hit2.wav",
+								"fx/knife/knife_hit3.wav",
+								"fx/knife/knife_hit4.wav"
+							}
+							self.AnimTbl_MeleeAttack = {
+								"vjseq_weapon_swing_overhead",
+								"vjseq_weapon_swing_side"
+							}
+						end
+					end
+				end
+
+				if self.WeaponModel:GetModel() == "models/vj_weapons/w_glock.mdl" then
+					if self.LNR_Walker then
+						self.AnimTbl_MeleeAttack = {
+							"vjseq_weapon_swing_overhead_slow",
+							"vjseq_weapon_swing_side_slow"
+						}
+					else
+						self.AnimTbl_MeleeAttack = {
+							"vjseq_weapon_swing_overhead",
+							"vjseq_weapon_swing_side"
+						}
+					end
+				end
+
+				if self.WeaponModel:GetModel() == "models/weapons/w_crowbar.mdl" then
+					if self.LNR_Walker then
+						self.AnimTbl_MeleeAttack = {
+							"vjseq_weapon_swing_overhead_slow",
+							"vjseq_weapon_swing_side_slow"
+						}
+					else
+						self.AnimTbl_MeleeAttack = {
+							"vjseq_weapon_swing_overhead",
+							"vjseq_weapon_swing_side"
+						}
+					end
+				end
+
+				if self.WeaponModel:GetModel() == "models/props_canal/mattpipe.mdl" then
+					if self.LNR_Walker then
+						self.AnimTbl_MeleeAttack = {
+							"vjseq_weapon_swing_overhead_slow",
+							"vjseq_weapon_swing_side_slow"
+						}
+					else
+						self.AnimTbl_MeleeAttack = {
+							"vjseq_weapon_swing_overhead",
+							"vjseq_weapon_swing_side"
+						}
+					end
+				end
+
+				if self.WeaponModel:GetModel() == "models/vj_lnrhl2/weapons/w_axe.mdl" then
+					if self.LNR_Walker then
+						self.AnimTbl_MeleeAttack = {
+							"vjseq_weapon_swing_overhead_slow",
+							"vjseq_weapon_swing_side_slow"
+						}
+					else
+						self.AnimTbl_MeleeAttack = {
+							"vjseq_weapon_swing_overhead",
+							"vjseq_weapon_swing_side"
+						}
+					end
+				end
+
+				if self.WeaponModel:GetModel() == "models/vj_lnrhl2/weapons/w_brokenbottle.mdl" then
+					self.SoundTbl_MeleeAttack = {""}
+					self.SoundTbl_MeleeAttackExtra = {
+						"fx/knife/knife_stab.wav"
+					}
+					self.AnimTbl_MeleeAttack = {
+						"vjseq_geen_stabs_a_bitch"
+					}
+				end
+
+				if self.WeaponModel:GetModel() == "models/vj_lnrhl2/weapons/w_pot.mdl" or self.WeaponModel:GetModel() == "models/vj_lnrhl2/weapons/w_pan.mdl" then
+					if self.LNR_Walker then
+						self.AnimTbl_MeleeAttack = {
+							"vjseq_weapon_swing_overhead_slow",
+							"vjseq_weapon_swing_side_slow"
+						}
+					else
+						self.AnimTbl_MeleeAttack = {
+							"vjseq_weapon_swing_overhead",
+							"vjseq_weapon_swing_side"
+						}
+					end
+					self.SoundTbl_MeleeAttackExtra = {
+						"weapons/pan/melee_frying_pan_01.wav",
+						"weapons/pan/melee_frying_pan_02.wav",
+						"weapons/pan/melee_frying_pan_03.wav",
+						"weapons/pan/melee_frying_pan_04.wav"
+					}
+				end
 
 			else
 			
@@ -3850,13 +4264,13 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:CustomOnFlinch_BeforeFlinch(dmginfo,hitgroup)
 
-	if self:GetClass() == "npc_vj_totu_weaponized_corrupt" then return end
+	if self:GetClass() == "npc_vj_totu_deimos_corrupt" or self:GetClass() == "npc_vj_totu_deimos_corrupt_brute" or self:GetClass() == "npc_vj_totu_fon_lament" then return end
 
 	if
 		GetConVar("VJ_ToTU_General_Stumbling_Disable"):GetInt() == 1 or
 		self.LNR_Crippled or
 		self.ToTU_Crawling or
-		self:GetClass() == "npc_vj_totu_weaponized_cyst" or
+		self:GetClass() == "npc_vj_totu_deimos_cyst" or
 		self:GetActivity() == ACT_STEP_BACK or
 		self:GetActivity() == ACT_STEP_FORE or
 		self:GetActivity() == ACT_SMALL_FLINCH or
@@ -3900,7 +4314,7 @@ function ENT:CustomOnFlinch_BeforeFlinch(dmginfo,hitgroup)
 		self:ToTU_ResetFlinchHitgroups()
 	return end
 	
-	if (dmginfo:GetDamage() >= 20 or dmginfo:GetDamageForce():Length() >= 5000 or bit.band(dmginfo:GetDamageType(), DMG_BUCKSHOT) != 0) && self:GetClass() != "npc_vj_totu_weaponized_carcass" && !self.MeleeAttacking then
+	if (dmginfo:GetDamage() >= 20 or dmginfo:GetDamageForce():Length() >= 5000 or bit.band(dmginfo:GetDamageType(), DMG_BUCKSHOT) != 0) && self:GetClass() != "npc_vj_totu_deimos_carcass" && !self.MeleeAttacking then
 		-- carcass flinch anims are broken, so dont run this but if it's a carcass
 		self.HitGroupFlinching_Values = {
 		{HitGroup = {HITGROUP_HEAD}, Animation = {"vjges_ep_flinch_head"}}, 
@@ -4249,7 +4663,7 @@ function ENT:CustomOnTakeDamage_AfterDamage(dmginfo,hitgroup)
 
 	end
 
-	if GetConVar("VJ_LNR_Cripple"):GetInt() == 1 && self:GetClass() != "npc_vj_totu_weaponized_cyst" && !self.ToTU_IsFreakOfNature then 
+	if GetConVar("VJ_LNR_Cripple"):GetInt() == 1 && self:GetClass() != "npc_vj_totu_deimos_cyst" && !self.ToTU_IsFreakOfNature then 
 		if hitgroup == HITGROUP_LEFTLEG or hitgroup == HITGROUP_RIGHTLEG then
 			if
 				self:GetActivity() != ACT_GLIDE or
@@ -4262,7 +4676,7 @@ function ENT:CustomOnTakeDamage_AfterDamage(dmginfo,hitgroup)
 		end
 	end
 
-	if self.LNR_LegHP <= 0 && !self.LNR_Crippled && !self.ToTU_Nightkin_Squaller_UsingIronWill then
+	if self.LNR_LegHP <= 0 && !self.LNR_Crippled && !self.ToTU_Nightkin_Squaller_UsingIronWill && !self.ToTU_IsFreakOfNature then
 
 		self.LNR_Crippled = true
 		self:Cripple()
@@ -4313,21 +4727,29 @@ function ENT:Cripple()
 
 	end
 
-	if self:GetClass() == "npc_vj_totu_weaponized_carcass" or self:GetClass() == "npc_vj_totu_weaponized_cazador" then
-		self.AnimTbl_IdleStand = {ACT_IDLE_STIMULATED}
-		self.AnimTbl_Walk = {ACT_IDLE_STIMULATED}
-		self.AnimTbl_Run = {ACT_IDLE_STIMULATED}
-		self.MovementType = VJ_MOVETYPE_STATIONARY
-		self.ToTU_Weaponized_Carcass_CanZombineRun = false
-		self.HasMeleeAttack = false
-		self.HasLeapAttack = false
-		self:SetCollisionBounds(Vector(13,13,20),Vector(-13,-13,0))
+	if self:GetClass() == "npc_vj_totu_deimos_carcass" or self:GetClass() == "npc_vj_totu_deimos_cazador" then
+		if self:GetClass() == "npc_vj_totu_deimos_carcass" && (self.ToTU_Weaponized_Carcass_Type == 2 or self.ToTU_Weaponized_Carcass_Type == 3) then
+			self.ToTU_Weaponized_Carcass_CanZombineRun = false
+			self:SetCollisionBounds(Vector(13,13,20),Vector(-13,-13,0))
+			self.AnimTbl_IdleStand = {ACT_IDLE_RELAXED}
+			self.AnimTbl_Walk = {ACT_WALK_AGITATED}
+			self.AnimTbl_Run = {ACT_WALK_AGITATED}
+			self.LNR_Crippled = true
+		elseif self:GetClass() == "npc_vj_totu_deimos_carcass" or self:GetClass() == "npc_vj_totu_deimos_cazador" then
+			self.AnimTbl_IdleStand = {ACT_IDLE_STIMULATED}
+			self.AnimTbl_Walk = {ACT_IDLE_STIMULATED}
+			self.AnimTbl_Run = {ACT_IDLE_STIMULATED}
+			self.MovementType = VJ_MOVETYPE_STATIONARY
+			self.ToTU_Weaponized_Carcass_CanZombineRun = false
+			self.HasMeleeAttack = false
+			self.HasLeapAttack = false
+			self:SetCollisionBounds(Vector(13,13,20),Vector(-13,-13,0))
+		end
 	return end
 
 	self.MeleeAttackAnimationAllowOtherTasks = false	
 	self.MeleeAttackDistance = 15
 	self.MeleeAttackDamageDistance = 45	
-
 
 	self.HasLeapAttack = false 
 
@@ -4335,11 +4757,11 @@ function ENT:Cripple()
 	self:DropTheFuckignWeaponGoddamn()
 	self.HasRangeAttack = false
 
-	if self.LNR_Walker then	 
+	if self.LNR_Walker then
 		self.AnimTbl_IdleStand = {ACT_IDLE_STIMULATED}
 		self.AnimTbl_Walk = {ACT_WALK_STIMULATED}
 		self.AnimTbl_Run = {ACT_WALK_STIMULATED}
-	elseif self.LNR_Infected or self.ToTU_Mutated then
+	elseif self.LNR_Infected or self.ToTU_Mutated or self.ToTU_Deimos then
 		self.AnimTbl_IdleStand = {ACT_IDLE_AGITATED}
 		self.AnimTbl_Walk = {ACT_WALK_AGITATED}
 		self.AnimTbl_Run = {ACT_WALK_AGITATED}
@@ -4403,7 +4825,7 @@ function ENT:CustomOnPriorToKilled(dmginfo, hitgroup)
     self:SetSolid(SOLID_NONE)
     self:AddFlags(FL_NOTARGET)
 
-	if self:GetClass() == "npc_vj_totu_weaponized_cazador" && !self:IsOnGround() then
+	if self:GetClass() == "npc_vj_totu_deimos_cazador" && !self:IsOnGround() then
 		self.HasDeathAnimation = false
 	end
 	if self.MilZ_Ghost_IsGhost && !self.MilZ_Ghost_CloakBroke then
@@ -4416,7 +4838,7 @@ function ENT:CustomOnPriorToKilled(dmginfo, hitgroup)
 	end
 
 	if 
-		(self:GetClass() == "npc_vj_totu_weaponized_carcass" or self:GetClass() == "npc_vj_totu_weaponized_cyst") && 
+		(self:GetClass() == "npc_vj_totu_deimos_carcass" or self:GetClass() == "npc_vj_totu_deimos_cyst") && 
 		self.ToTU_Weaponized_Carcass_Exploder &&
 		GetConVar("VJ_ToTU_General_EasterEggs"):GetInt() == 1
 	then
@@ -4430,11 +4852,11 @@ function ENT:CustomOnPriorToKilled(dmginfo, hitgroup)
 		end
 	end
 
-	if self:GetClass() == "npc_vj_totu_weaponized_cancer" && (dmginfo:IsDamageType(DMG_BURN) or dmginfo:IsDamageType(DMG_SLOWBURN) or self:IsOnFire() ) then
+	if self:GetClass() == "npc_vj_totu_deimos_cancer" && (dmginfo:IsDamageType(DMG_BURN) or dmginfo:IsDamageType(DMG_SLOWBURN) or self:IsOnFire() ) then
 		self.ToTU_Weaponized_Cancer_FireDeath = true
 	end
 
-	if self:GetClass() == "npc_vj_totu_weaponized_cyst" then return end
+	if self:GetClass() == "npc_vj_totu_deimos_cyst" then return end
 
 	if 
 		(dmginfo:IsDamageType(DMG_BURN) or
@@ -4479,7 +4901,7 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:CustomDeathAnimationCode(dmginfo,hitgroup)
 
-	if self.LNR_Crippled or self.ToTU_Resting == 1 or self.ToTU_Resting == 2 or self:GetClass() == "npc_vj_totu_weaponized_cyst" or self:GetClass() == "npc_vj_totu_weaponized_corrupt" then return end
+	if self.LNR_Crippled or self.ToTU_Resting == 1 or self.ToTU_Resting == 2 or self:GetClass() == "npc_vj_totu_deimos_cyst" or self:GetClass() == "npc_vj_totu_deimos_corrupt" or self:GetClass() == "npc_vj_totu_deimos_corrupt_brute" or self:GetClass() == "npc_vj_totu_fon_lament" then return end
 	
 	if self:IsMoving() && GetConVar("VJ_ToTU_General_MovingDeathAnimations"):GetInt() == 1 && !self.ToTU_GiantZombie && !self.ToTU_IsFreakOfNature && !self.ToTU_Weaponized_IsHL2Zomb then
 
@@ -4537,7 +4959,7 @@ function ENT:CustomDeathAnimationCode(dmginfo,hitgroup)
 
 	end
 
-	if self:IsMoving() && GetConVar("VJ_ToTU_General_MovingDeathAnimations"):GetInt() == 1 && (self:GetClass() == "npc_vj_totu_weaponized_carcass" or self:GetClass() == "npc_vj_totu_weaponized_cazador") then
+	if self:IsMoving() && GetConVar("VJ_ToTU_General_MovingDeathAnimations"):GetInt() == 1 && (self:GetClass() == "npc_vj_totu_deimos_carcass" or self:GetClass() == "npc_vj_totu_deimos_cazador") then
 
 		self.AnimTbl_Death = {
 			"vjseq_nz_death_f_1",
@@ -4681,6 +5103,9 @@ function ENT:CustomDeathAnimationCode(dmginfo,hitgroup)
 		dmginfo:IsDamageType(DMG_DISSOLVE) or
 		dmginfo:IsDamageType (DMG_PLASMA)
 	then
+		if self:GetClass() == "npc_vj_totu_deimos_cancer" then
+			self.ToTU_Weaponized_Cancer_FireDeath = true
+		end
 		self.ToTU_ZappyDeath = true
 		self.AnimTbl_Death = {
 			"vjseq_nz_death_elec_1",
@@ -4767,7 +5192,7 @@ function ENT:CustomOnDeath_BeforeCorpseSpawned(dmginfo, hitgroup)
 			VJ_EmitSound(self,"test/laughnow.mp3",70,70)
 		end
 
-		if self:GetClass() == "npc_vj_totu_weaponized_cyst" then
+		if self:GetClass() == "npc_vj_totu_deimos_cyst" then
 			self:SetKeyValue("rendercolor","255 255 255 255")
 		end
 
@@ -4784,7 +5209,7 @@ function ENT:CustomOnDeath_BeforeCorpseSpawned(dmginfo, hitgroup)
 			self:CreateGibEntity("obj_vj_gib", "UseHuman_Small")
 			self:CreateGibEntity("obj_vj_gib", "UseHuman_Small")
 
-			if self:GetClass() == "npc_vj_totu_weaponized_cyst" then
+			if self:GetClass() == "npc_vj_totu_deimos_cyst" then
 
 				self:CreateGibEntity("prop_ragdoll", "models/skeleton/skeleton_leg_l.mdl")
 				self:CreateGibEntity("prop_ragdoll", "models/skeleton/skeleton_arm_l.mdl")
@@ -4943,7 +5368,7 @@ function ENT:CustomOnDeath_AfterCorpseSpawned(dmginfo,hitgroup,GetCorpse)
 		util.Effect("bloodspray",bloodspray)
 		util.Effect("bloodspray",bloodspray)
 
-		if self:GetClass() == "npc_vj_totu_weaponized_cyst" then
+		if self:GetClass() == "npc_vj_totu_deimos_cyst" then
 			local bloodeffect = EffectData()
 			bloodeffect:SetOrigin(GetCorpse:GetPos() +GetCorpse:GetUp()*40)
 			bloodeffect:SetColor(VJ_Color2Byte(Color(127,0,0,255)))
@@ -4957,7 +5382,7 @@ function ENT:CustomOnDeath_AfterCorpseSpawned(dmginfo,hitgroup,GetCorpse)
 			util.Effect("VJ_Blood1",bloodeffect)
 		end
 
-		if self:GetClass() == "npc_vj_totu_weaponized_cyst" then
+		if self:GetClass() == "npc_vj_totu_deimos_cyst" then
 			for i=1,math.random(3,10) do
 				local carproj = ents.Create("obj_vj_totu_bloodcoagle")
 				carproj:SetPos(GetCorpse:LocalToWorld(Vector(0,0,0)))
@@ -5038,7 +5463,7 @@ function ENT:CustomOnDeath_AfterCorpseSpawned(dmginfo,hitgroup,GetCorpse)
 
 	end
 
-	if self:GetClass() == "npc_vj_totu_weaponized_cancer" && IsValid(GetCorpse) && !self.ToTU_Weaponized_Cancer_FireDeath then
+	if self:GetClass() == "npc_vj_totu_deimos_cancer" && IsValid(GetCorpse) && !self.ToTU_Weaponized_Cancer_FireDeath then
 
 		local AnimTime = VJ_GetSequenceDuration(self,"vjseq_infectionrise2")
 		local AnimTime2 = VJ_GetSequenceDuration(self,"vjseq_Lying_to_Standing_Alert03d")
@@ -5050,7 +5475,7 @@ function ENT:CustomOnDeath_AfterCorpseSpawned(dmginfo,hitgroup,GetCorpse)
 
 			if RandRevive == 1 then
 
-				local RevivedSquall = ents.Create("npc_vj_totu_weaponized_carcass")
+				local RevivedSquall = ents.Create("npc_vj_totu_deimos_carcass")
 				RevivedSquall.CanFlinch = 0
 				RevivedSquall.CanInvestigate = false
 				RevivedSquall.HasDeathAnimation = false
@@ -5058,6 +5483,7 @@ function ENT:CustomOnDeath_AfterCorpseSpawned(dmginfo,hitgroup,GetCorpse)
 				
 				RevivedSquall:SetPos(GetCorpse:GetPos())
 				RevivedSquall:SetAngles(GetCorpse:GetAngles())
+				RevivedSquall.ToTU_Weaponized_CarcRevivee = true
 				RevivedSquall:Spawn()
 				RevivedSquall:Activate()
 				undo.ReplaceEntity(self,RevivedSquall)
@@ -5108,7 +5534,7 @@ function ENT:CustomOnDeath_AfterCorpseSpawned(dmginfo,hitgroup,GetCorpse)
 			
 			elseif RandRevive == 2 then
 
-				local RevivedSquall = ents.Create("npc_vj_totu_weaponized_cazador")
+				local RevivedSquall = ents.Create("npc_vj_totu_deimos_cazador")
 				RevivedSquall.CanFlinch = 0
 				RevivedSquall.CanInvestigate = false
 				RevivedSquall.HasDeathAnimation = false
@@ -5165,7 +5591,7 @@ function ENT:CustomOnDeath_AfterCorpseSpawned(dmginfo,hitgroup,GetCorpse)
 
 			elseif RandRevive == 3 then
 
-				local RevivedSquall = ents.Create("npc_vj_totu_weaponized_cyst")
+				local RevivedSquall = ents.Create("npc_vj_totu_deimos_cyst")
 				RevivedSquall.CanFlinch = 0
 				RevivedSquall.CanInvestigate = false
 				RevivedSquall.HasDeathAnimation = false
@@ -5215,7 +5641,7 @@ function ENT:CustomOnDeath_AfterCorpseSpawned(dmginfo,hitgroup,GetCorpse)
 
 			else
 			
-				local RevivedSquall = ents.Create("npc_vj_totu_weaponized_cancer")
+				local RevivedSquall = ents.Create("npc_vj_totu_deimos_cancer")
 				RevivedSquall.CanEat = false
 				RevivedSquall.CanFlinch = 0
 				RevivedSquall.CanInvestigate = false
@@ -5226,6 +5652,7 @@ function ENT:CustomOnDeath_AfterCorpseSpawned(dmginfo,hitgroup,GetCorpse)
 				RevivedSquall:SetAngles(GetCorpse:GetAngles())
 				RevivedSquall:Spawn()
 				RevivedSquall:Activate()
+				RevivedSquall:SetSkin(GetCorpse:GetSkin())
 				undo.ReplaceEntity(self,RevivedSquall)
 				RevivedSquall:SetHealth(RevSqSpawnH)
 

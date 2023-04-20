@@ -20,23 +20,21 @@ ENT.AdminSpawnable	= false
 if !SERVER then return end
 
 local entsList = {
-	"npc_vj_totu_weaponized_redead:1",
-	"npc_vj_totu_weaponized_redead_grunt:2",
-	"npc_vj_totu_weaponized_carcass:2",
-	"npc_vj_totu_weaponized_cazador:3",
-	"npc_vj_totu_weaponized_corrupt:3",
-	"npc_vj_totu_weaponized_cyst:4",
-	"npc_vj_totu_weaponized_cancer:4",
-	"npc_vj_totu_weaponized_revenant:4",
-	"npc_vj_totu_weaponized_cazador_torso:3",
-	"npc_vj_totu_weaponized_carcass_torso:4",
+	"npc_vj_totu_deimos_redead_sci:1",
+	"npc_vj_totu_deimos_carcass_torso:1",
+	"npc_vj_totu_deimos_redead:2",
+	"npc_vj_totu_deimos_carcass:2",
+	"npc_vj_totu_deimos_redead_grunt:2",
+	"npc_vj_totu_deimos_cazador_torso:2",
+	"npc_vj_totu_deimos_cazador:3",
+	"npc_vj_totu_deimos_cyst:3",
+	"npc_vj_totu_deimos_corrupt:3",
+	"npc_vj_totu_deimos_cancer:3",
+	"npc_vj_totu_deimos_corrupt_brute:4",
+	-- "npc_vj_totu_deimos_revenant:4",
 }
 ENT.EntitiesToSpawn = {
-	{SpawnPosition = {vForward=20, vRight=0, vUp=0}, Entities = entsList},
-	{SpawnPosition = {vForward=0, vRight=50, vUp=0}, Entities = entsList},
-	{SpawnPosition = {vForward=50, vRight=50, vUp=0}, Entities = entsList},
-	{SpawnPosition = {vForward=50, vRight=-50, vUp=0}, Entities = entsList},
-	{SpawnPosition = {vForward=0, vRight=-50, vUp=0}, Entities = entsList},
+	{SpawnPosition = {vForward=0, vRight=0, vUp=0}, Entities = entsList},
 }
 /*--------------------------------------------------
 	*** Copyright (c) 2012-2022 by DrVrej, All rights reserved. ***
