@@ -1,0 +1,29 @@
+"VertexLitGeneric"
+{
+	"$baseTexture" "models\totu/deimort/base_m_03_d"
+	"$bumpmap" "models\totu/deimort/base_m_03_n"
+//        "$lightwarptexture" "models\totu/deimort\Base_M_caucasian_wrp"
+        "$lightwarptexture" "models\totu/deimort\Base_M_african_wrp"
+        $halflambert 0
+	"$nodecal" "1"
+	"$model" "1"
+	"$surfaceprop" "flesh"
+
+
+	"$detail" "models\totu\detail\ci_detail_dirt"
+	"$detailscale" 10
+	"$detailblendfactor" 0.5
+	"$detailblendmode" 0
+
+// -- From here down is new stuff which will only be applied if $phong is set to 1 --
+        $phong 1
+        $phongboost "1.4"
+	$phongexponenttexture "models/totu/deimort/male_exponent"
+        $phongtint "[.85 .85 1]"
+        $phongfresnelranges "[.2 .5 5]"
+
+// Rim lighting parameters
+	"$rimlight" "1"				// To enable rim lighting (requires phong)
+	"$rimlightexponent" "80"             // Exponent for phong component of rim lighting
+	"$rimlightboost" ".5"	               // Boost for ambient cube component of rim lighting
+}
