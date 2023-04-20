@@ -1,0 +1,21 @@
+"VertexlitGeneric"
+{
+//Base
+	"$basetexture" "models\totu\deimos_carc2\body_d"
+	"$bumpmap" "models\totu\deimos_carc2\body_n"
+	"$phongexponenttexture" "models\totu\deimos_carc2\body_p"
+
+	"$phongalbedotint"	"1"
+	"$detail" "models\totu\detail\ci_detail_dirt"
+	"$detailscale" 9
+	"$detailblendfactor" 0.45
+	"$detailblendmode" 0
+//Phong
+	"$phong" "1"
+	"$phongboost"".2"
+	"$phongfresnelranges""[1 1 1]"
+	"$phongexponent"	"3"
+
+	"$ambientocclusion""0.7"
+	"$nocull" 	"1"
+}

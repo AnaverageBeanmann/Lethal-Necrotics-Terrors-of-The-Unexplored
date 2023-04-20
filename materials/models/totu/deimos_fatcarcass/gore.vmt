@@ -1,0 +1,8 @@
+"VertexLitGeneric"
+{
+	"$baseTexture" "models/totu/deimos_fatcarcass/gore"
+	"$detail" "models\totu\detail\ci_detail_dirt"
+	"$detailscale" 9
+	"$detailblendfactor" 0.90
+	"$detailblendmode" 0
+}

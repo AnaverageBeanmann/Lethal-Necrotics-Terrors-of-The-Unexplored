@@ -1,0 +1,19 @@
+"VertexlitGeneric"
+{
+//Base
+	"$basetexture" 					"models\hlvr\human\corpse\head_blood"
+	"$bumpmap" 						"models\hlvr\human\corpse\head_n"
+	"$phongexponenttexture" 		"models\hlvr\human\corpse\head_p"
+
+	"$alphatest" 		"1"
+	"$phongalbedotint"				"1"
+
+//Phong
+	"$phong" 						"1"
+	"$phongboost"					".5"
+	"$phongfresnelranges"			"[0.87 0.9 1]"
+	"$phongexponent"			"30"
+
+	"$ambientocclusion"				"0.7"
+	"$nocull" 			"1"
+}
