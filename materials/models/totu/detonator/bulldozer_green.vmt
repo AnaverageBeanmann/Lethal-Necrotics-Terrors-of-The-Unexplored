@@ -10,7 +10,7 @@
 	"$lightwarptexture"	"models/totu/detonator/lightwarp_soft_white"
 	"$phongalbedotint"      "1" 
 	"$phongfresnelranges"   "[0.5 1.5 8.0]"
-                  $detail models\lnrzombies\detail\ci_detail_dirt
+                  $detail models\totu\detail\ci_detail_dirt
                   $detailscale 9.74
                   $detailblendfactor 0.6
                   $detailblendmode 0
