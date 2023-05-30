@@ -32,7 +32,7 @@ function ENT:CustomOnInitialize()
 		self.IsIgnited = true
 		ParticleEffectAttach("fire_medium_01", PATTACH_ABSORIGIN_FOLLOW, self, 0)
 		VJ_EmitSound(self,"weapons/flaregun/fire.wav",80)
-		self.IdleSoundLevel = 70
+		self.IdleSoundLevel = 75
 
 		self.Light1 = ents.Create("light_dynamic")
 		self.Light1:SetKeyValue("brightness", "5")
