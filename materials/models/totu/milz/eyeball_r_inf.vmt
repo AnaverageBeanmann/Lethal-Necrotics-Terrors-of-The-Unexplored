@@ -1,6 +1,6 @@
 "UnlitGeneric"
 {
-	"$basetexture" "models/lnrzombies/Humans/Zombiefemale/Infected/eyeball_r"
+	"$basetexture" "models/totu/milz/infected/eyeball_r_inf"
 	"$model" 1
 	"$halflambert" 1
 }
