@@ -7,6 +7,8 @@ include('shared.lua')
 -----------------------------------------------*/
 function ENT:Zombie_GlowEyes_Give()
 
+	if GetConVar("VJ_ToTU_Weaponized_Deimos_Eyes"):GetInt() == 0 or GetConVar("vj_npc_noidleparticle"):GetInt() == 1  then return end
+
 	for i = 1,2 do	
 		local att = i == 2 && "eyeglow1" or "eyeglow2"		
 		local EyeGlow = ents.Create("env_sprite")
@@ -22,7 +24,7 @@ function ENT:Zombie_GlowEyes_Give()
 		self:DeleteOnRemove(EyeGlow)
 	end
 
-	if self.ToTU_Weaponized_Redead_Grunt_ShouldHaveEyetrail && !self.MilZ_HasGasmask && GetConVar("VJ_ToTU_Weaponized_Deimos_Eyes"):GetInt() == 2 then
+	if GetConVar("VJ_ToTU_Weaponized_Deimos_Eyes"):GetInt() == 2 then
 		local TrailColor = Color(220,0,255,255)
 		local EyeTrail = util.SpriteTrail(self,10,TrailColor,false,5,0,0.25,1,"vj_base/sprites/vj_trial1")
 		local EyeTrail2 = util.SpriteTrail(self,9,TrailColor,false,5,0,0.25,1,"vj_base/sprites/vj_trial1")

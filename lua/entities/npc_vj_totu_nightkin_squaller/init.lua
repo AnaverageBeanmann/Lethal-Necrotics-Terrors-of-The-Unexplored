@@ -9,31 +9,31 @@ util.AddNetworkString("VJ_ToTU_Squaller_Hud")
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:Zombie_Difficulty()
 
-	if GetConVar("VJ_LNR_Difficulty"):GetInt() == 1 then
+	if GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 1 then
 
 		-- self.StartHealth = 250
 		self.StartHealth = 300
 		self.MeleeAttackDamage = math.Rand(15,20)
 
-	elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 2 then
+	elseif GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 2 then
 
 		-- self.StartHealth = 500
 		self.StartHealth = 450
 		self.MeleeAttackDamage = math.Rand(20,25)
 
-	elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 3 then
+	elseif GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 3 then
 
 		-- self.StartHealth = 750
 		self.StartHealth = 600
 		self.MeleeAttackDamage = math.Rand(25,30)
 
-	elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 4 then
+	elseif GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 4 then
 
 		-- self.StartHealth = 1000
 		self.StartHealth = 750
 		self.MeleeAttackDamage = math.Rand(30,35)
 
-	elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 5 then
+	elseif GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 5 then
 
 		-- self.StartHealth = 1250
 		self.StartHealth = 900

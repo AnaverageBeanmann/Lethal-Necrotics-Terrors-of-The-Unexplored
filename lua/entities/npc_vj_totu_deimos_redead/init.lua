@@ -38,13 +38,15 @@ ENT.ToTU_Weaponized_Gail_DamageTillHeal = 1
 ENT.ToTU_Weaponized_Redead_Guard_HasHelmet = false
 ENT.ToTU_Weaponized_Redead_Guard_HelmetHealth = 100
 ENT.ToTU_Weaponized_Redead_Guard_HasVest = false
+ENT.ToTU_Weaponized_Redead_CanMutate = false
+ENT.ToTU_Weaponized_Redead_CannotDigout = false
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:Zombie_CustomOnPreInitialize()
 
 	self.Model = {"models/totu/redead.mdl"}
 
-	if self.ToTU_Weaponized_PoopShitter then
-		self.Model = {"models/totu/thepoopshitter.mdl"}
+	if self:GetClass() == "npc_vj_totu_deimos_reborn" then
+		self.Model = {"models/totu/reborn.mdl"}
 	end
 
 	if self:GetClass() == "npc_vj_totu_deimos_redead_sci" then
@@ -57,6 +59,10 @@ function ENT:Zombie_CustomOnPreInitialize()
 
 	if self:GetClass() == "npc_vj_totu_fon_gail" then
 		self.Model = {"models/totu/fon_gail.mdl"}
+	end
+
+	if self.ToTU_Weaponized_PoopShitter then
+		self.Model = {"models/totu/thepoopshitter.mdl"}
 	end
 
 	timer.Simple(0.1,function() if IsValid(self) && !self.LNR_Crippled  then
@@ -120,6 +126,16 @@ function ENT:Zombie_CustomOnInitialize()
 			self:SetBodygroup(2,2)
 			self:SetBodygroup(3,2)
 			self:SetBodygroup(4,2)
+		end
+	end
+
+	if
+		self:GetClass() == "npc_vj_totu_deimos_redead" or
+		self:GetClass() == "npc_vj_totu_deimos_redead_sci" or
+		self:GetClass() == "npc_vj_totu_deimos_redead_guard"
+	then
+		if math.random(1,3) == 1 then
+			self.ToTU_Weaponized_Redead_CanMutate = true
 		end
 	end
 
@@ -846,27 +862,27 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:Zombie_Difficulty()
 
-	if GetConVar("VJ_LNR_Difficulty"):GetInt() == 1 then
+	if GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 1 then
 
 		self.StartHealth = 100
 		self.MeleeAttackDamage = math.Rand(5,10)
 
-	elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 2 then
+	elseif GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 2 then
 
 		self.StartHealth = 150
 		self.MeleeAttackDamage = math.Rand(10,15)
 
-	elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 3 then
+	elseif GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 3 then
 
-		self.StartHealth = 200
-		self.MeleeAttackDamage = math.Rand(15,20)
+		self.StartHealth = 150
+		self.MeleeAttackDamage = math.Rand(10,15)
 
-	elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 4 then
+	elseif GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 4 then
 
 		self.StartHealth = 250
 		self.MeleeAttackDamage = math.Rand(20,25)
 
-	elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 5 then
+	elseif GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 5 then
 
 		self.StartHealth = 300
 		self.MeleeAttackDamage = math.Rand(25,30)
@@ -902,6 +918,11 @@ function ENT:Zombie_CustomOnThink_AIEnabled()
 
 		self.AnimTbl_Walk = {ACT_SPRINT}
 		self.AnimTbl_Run = {ACT_RUN_RELAXED}
+		
+		if self:GetClass() == "npc_vj_totu_deimos_revenant" then
+			self.AnimTbl_Walk = {ACT_MP_MELEE_GRENADE1_IDLE}
+			self.AnimTbl_Run = {ACT_SPRINT}
+		end
 
 	end
 
@@ -921,6 +942,9 @@ function ENT:Zombie_CustomOnThink_AIEnabled()
 		elseif self:GetClass() == "npc_vj_totu_fon_gail" then
 			self.AnimTbl_Walk = {ACT_MP_MELEE_GRENADE1_IDLE}
 			self.AnimTbl_Run = {ACT_RUN_AIM}
+		elseif self:GetClass() == "npc_vj_totu_deimos_revenant" then
+			self.AnimTbl_Walk = {ACT_MP_MELEE_GRENADE1_IDLE}
+			self.AnimTbl_Run = {ACT_RUN}
 		else
 			self.AnimTbl_Walk = {ACT_MP_MELEE_GRENADE1_IDLE}
 			self.AnimTbl_Run = {ACT_SPRINT}
@@ -950,6 +974,7 @@ function ENT:Zombie_CustomOnThink_AIEnabled()
 					if
 						IsValid(v) &&
 						!self.ToTU_Weapnoized_Revenant_GoingToCorpse &&
+						!self.ToTU_Weapnoized_Revenant_AtCorpse &&
 						v:GetClass() == "prop_ragdoll" &&
 						v:GetClass() != "prop_physics" &&
 						(GetConVar("VJ_ToTU_Weaponized_Revenant_ReviveBlacklist"):GetInt() == 1 &&
@@ -1008,14 +1033,15 @@ function ENT:Zombie_CustomOnThink_AIEnabled()
 						v:GetModel() != "models/totu/carcass_fat_legs.mdl" &&
 						v:GetModel() != "models/totu/carcass_guard.mdl" &&
 						v:GetModel() != "models/totu/carcass_sci.mdl" &&
-						v:GetModel() != "models/totu/cyst.mdl"
+						v:GetModel() != "models/totu/cyst.mdl" &&
+						v:GetModel() != "models/totu/reborn.mdl"
 						or
 						GetConVar("VJ_ToTU_Weaponized_Revenant_ReviveBlacklist"):GetInt() == 0)
 					then
 						self:SetTarget(v)
 						self:VJ_TASK_GOTO_TARGET("TASK_RUN_PATH")
 						self.ToTU_Weapnoized_Revenant_GoingToCorpse = true
-						VJ_EmitSound(self,"physics/body/body_medium_break"..math.random(2,4)..".wav",80,math.random(100,95))
+						-- VJ_EmitSound(self,"physics/body/body_medium_break"..math.random(2,4)..".wav",80,math.random(100,95))
 						timer.Simple(5,function() if IsValid(self) && self.ToTU_Weapnoized_Revenant_GoingToCorpse && !self.ToTU_Weapnoized_Revenant_AtCorpse then
 							self.ToTU_Weapnoized_Revenant_GoingToCorpse = false
 						end end)
@@ -1084,7 +1110,8 @@ function ENT:Zombie_CustomOnThink_AIEnabled()
 							v:GetModel() != "models/totu/carcass_fat_legs.mdl" &&
 							v:GetModel() != "models/totu/carcass_guard.mdl" &&
 							v:GetModel() != "models/totu/carcass_sci.mdl" &&
-							v:GetModel() != "models/totu/cyst.mdl"
+							v:GetModel() != "models/totu/cyst.mdl" &&
+							v:GetModel() != "models/totu/reborn.mdl"
 							or
 							GetConVar("VJ_ToTU_Weaponized_Revenant_ReviveBlacklist"):GetInt() == 0)
 						then
@@ -1094,8 +1121,9 @@ function ENT:Zombie_CustomOnThink_AIEnabled()
 								self:VJ_ACT_PLAYACTIVITY(anim,true,false,false)
 								self.ToTU_Weaponized_Revenant_Reviving = true
 							end
-						VJ_EmitSound(self,"physics/body/body_medium_break"..math.random(2,4)..".wav",80,math.random(100,95))
+						-- VJ_EmitSound(self,"physics/body/body_medium_break"..math.random(2,4)..".wav",80,math.random(100,95))
 						self.ToTU_Weapnoized_Revenant_AtCorpse = true
+						self.ToTU_Weapnoized_Revenant_GoingToCorpse = false
 							self.ToTU_Weaponized_Revenant_Reviving = true
 							self.AnimTbl_IdleStand = {ACT_VM_DEPLOYED_DRYFIRE}
 							self.ToTU_CanStumble = false
@@ -1158,151 +1186,178 @@ function ENT:Zombie_CustomOnThink_AIEnabled()
 									end
 									self.CanTurnWhileStationary = true
 								
-												self.ToTU_Weapnoized_Revenant_AtCorpse = false
+									self.ToTU_Weapnoized_Revenant_AtCorpse = false
 									timer.Simple(0.5,function() if IsValid(self) then
 
 										if IsValid(v) then
-								
-											if IsValid(v) then
 										
-												local anim = {"vjseq_ShoveReact"}
-												self:VJ_ACT_PLAYACTIVITY(anim,true,false,false)
+											local anim = {"vjseq_ShoveReact"}
+											self:VJ_ACT_PLAYACTIVITY(anim,true,false,false)
 
-												local AnimTime = VJ_GetSequenceDuration(self,"vjseq_infectionrise2")
-												local AnimTime2 = VJ_GetSequenceDuration(self,"vjseq_Lying_to_Standing_Alert03d")
-												local RevSqSpawnH = self.StartHealth * 0.5
+											local AnimTime = VJ_GetSequenceDuration(self,"vjseq_infectionrise2")
+											local AnimTime2 = VJ_GetSequenceDuration(self,"vjseq_Lying_to_Standing_Alert03d")
+											local RevSqSpawnH = self.StartHealth * 0.5
 
-												local RandRevive = math.random(1,3)
+											local RandRevive = math.random(1,10)
 
-												if RandRevive == 1 then
-													local RevivedSquall = ents.Create("npc_vj_totu_deimos_carcass")
-													RevivedSquall.CanFlinch = 0
-													RevivedSquall.CanInvestigate = false
-													RevivedSquall.HasDeathAnimation = false
-													RevivedSquall.CanTurnWhileStationary = false
-													
-													RevivedSquall:SetPos(v:GetPos())
-													RevivedSquall:SetAngles(v:GetAngles())
-													RevivedSquall:Spawn()
-													RevivedSquall:Activate()
-													-- undo.Create(self:GetName().." Minion")
-													-- undo.ReplaceEntity(self,RevivedSquall)
+											if RandRevive == 1 then
+												local RevivedSquall = ents.Create("npc_vj_totu_deimos_carcass")
+												RevivedSquall.CanFlinch = 0
+												RevivedSquall.CanInvestigate = false
+												RevivedSquall.HasDeathAnimation = false
+												RevivedSquall.CanTurnWhileStationary = false
+												RevivedSquall.ToTU_Weaponized_Redead_CannotDigout = true
+												
+												RevivedSquall:SetPos(v:GetPos())
+												RevivedSquall:SetAngles(v:GetAngles())
+												RevivedSquall:Spawn()
+												RevivedSquall:Activate()
 
-													timer.Simple(0.01,function() if IsValid(RevivedSquall) then
-														if math.random(1,2) == 1 then
-															if math.random(1,3) == 1 then
-																RevivedSquall:VJ_ACT_PLAYACTIVITY("vjseq_slumprise_a",true,false,false)
-															else
-																RevivedSquall:VJ_ACT_PLAYACTIVITY("vjseq_slumprise_a2",true,false,false)
-															end
-														else
-															RevivedSquall:VJ_ACT_PLAYACTIVITY("vjseq_slumprise_b",true,false,false)
-														end
-
-														RevivedSquall:SetPos(RevivedSquall:GetPos() + RevivedSquall:GetUp()*6)
-
-														timer.Simple(AnimTime,function() if IsValid(RevivedSquall) then
-															RevivedSquall.CanFlinch = 1
-															RevivedSquall.HasDeathAnimation = true
-															RevivedSquall.CanInvestigate = true
-															RevivedSquall.CanTurnWhileStationary = true
-														end end)
-
-													end end)
-
-												elseif RandRevive == 2 then
-
-													local RevivedSquall = ents.Create("npc_vj_totu_deimos_cazador")
-													RevivedSquall.CanFlinch = 0
-													RevivedSquall.CanInvestigate = false
-													RevivedSquall.HasDeathAnimation = false
-													RevivedSquall.CanTurnWhileStationary = false
-													
-													RevivedSquall:SetPos(v:GetPos())
-													RevivedSquall:SetAngles(v:GetAngles())
-													RevivedSquall:Spawn()
-													RevivedSquall:Activate()
-													-- undo.Create(self:GetName().." Minion")
-													-- undo.ReplaceEntity(self,RevivedSquall)
-
-													timer.Simple(0.01,function() if IsValid(RevivedSquall) then
-															
-														local RandCazRevAnims = math.random(1,3)
-														if RandCazRevAnims == 1 then
-															RevivedSquall:VJ_ACT_PLAYACTIVITY("vjseq_slumprise_b",true,false,false)
-														elseif RandCazRevAnims == 1 then
-															RevivedSquall:VJ_ACT_PLAYACTIVITY("vjseq_slumprise_c",true,false,false)
-														else
+												timer.Simple(0.01,function() if IsValid(RevivedSquall) then
+													if math.random(1,2) == 1 then
+														if math.random(1,3) == 1 then
 															RevivedSquall:VJ_ACT_PLAYACTIVITY("vjseq_slumprise_a",true,false,false)
+														else
+															RevivedSquall:VJ_ACT_PLAYACTIVITY("vjseq_slumprise_a2",true,false,false)
 														end
+													else
+														RevivedSquall:VJ_ACT_PLAYACTIVITY("vjseq_slumprise_b",true,false,false)
+													end
 
-														RevivedSquall:SetPos(RevivedSquall:GetPos() + RevivedSquall:GetUp()*6)
+													RevivedSquall:SetPos(RevivedSquall:GetPos() + RevivedSquall:GetUp()*6)
 
-														timer.Simple(AnimTime,function() if IsValid(RevivedSquall) then
-															RevivedSquall.CanFlinch = 1
-															RevivedSquall.HasDeathAnimation = true
-															RevivedSquall.CanInvestigate = true
-															RevivedSquall.CanTurnWhileStationary = true
-															
-														end end)
-
+													timer.Simple(AnimTime,function() if IsValid(RevivedSquall) then
+														RevivedSquall.CanFlinch = 1
+														RevivedSquall.HasDeathAnimation = true
+														RevivedSquall.CanInvestigate = true
+														RevivedSquall.CanTurnWhileStationary = true
 													end end)
 
-												elseif RandRevive == 3 then
+												end end)
 
-													local RevivedSquall = ents.Create("npc_vj_totu_deimos_cyst")
-													RevivedSquall.CanFlinch = 0
-													RevivedSquall.CanInvestigate = false
-													RevivedSquall.HasDeathAnimation = false
-													RevivedSquall.CanTurnWhileStationary = false
-													
-													RevivedSquall:SetPos(v:GetPos())
-													RevivedSquall:SetAngles(v:GetAngles())
-													RevivedSquall:Spawn()
-													RevivedSquall:Activate()
-													-- undo.Create(self:GetName().." Minion")
-													-- undo.ReplaceEntity(self,RevivedSquall)
+											elseif RandRevive == 2 then
 
-													timer.Simple(0.01,function() if IsValid(RevivedSquall) then
+												local RevivedSquall = ents.Create("npc_vj_totu_deimos_cazador")
+												RevivedSquall.CanFlinch = 0
+												RevivedSquall.CanInvestigate = false
+												RevivedSquall.HasDeathAnimation = false
+												RevivedSquall.CanTurnWhileStationary = false
+												RevivedSquall.ToTU_Weaponized_Redead_CannotDigout = true
+												
+												RevivedSquall:SetPos(v:GetPos())
+												RevivedSquall:SetAngles(v:GetAngles())
+												RevivedSquall:Spawn()
+												RevivedSquall:Activate()
 
-													RevivedSquall:VJ_ACT_PLAYACTIVITY("vjseq_slumprise_a",true,false,false)
+												timer.Simple(0.01,function() if IsValid(RevivedSquall) then
+														
+													local RandCazRevAnims = math.random(1,3)
+													if RandCazRevAnims == 1 then
+														RevivedSquall:VJ_ACT_PLAYACTIVITY("vjseq_slumprise_b",true,false,false)
+													elseif RandCazRevAnims == 1 then
+														RevivedSquall:VJ_ACT_PLAYACTIVITY("vjseq_slumprise_c",true,false,false)
+													else
+														RevivedSquall:VJ_ACT_PLAYACTIVITY("vjseq_slumprise_a",true,false,false)
+													end
 
-														RevivedSquall:SetPos(RevivedSquall:GetPos() + RevivedSquall:GetUp()*6)
+													RevivedSquall:SetPos(RevivedSquall:GetPos() + RevivedSquall:GetUp()*6)
 
-														timer.Simple(AnimTime,function() if IsValid(RevivedSquall) then
-															RevivedSquall.CanFlinch = 1
-															RevivedSquall.HasDeathAnimation = true
-															RevivedSquall.CanInvestigate = true
-															RevivedSquall.CanTurnWhileStationary = true
-															
-														end end)
-
+													timer.Simple(AnimTime,function() if IsValid(RevivedSquall) then
+														RevivedSquall.CanFlinch = 1
+														RevivedSquall.HasDeathAnimation = true
+														RevivedSquall.CanInvestigate = true
+														RevivedSquall.CanTurnWhileStationary = true
+														
 													end end)
 
+												end end)
+
+											elseif RandRevive == 3 then
+
+												local RevivedSquall = ents.Create("npc_vj_totu_deimos_cyst")
+												RevivedSquall.CanFlinch = 0
+												RevivedSquall.CanInvestigate = false
+												RevivedSquall.HasDeathAnimation = false
+												RevivedSquall.CanTurnWhileStationary = false
+												RevivedSquall.ToTU_Weaponized_Redead_CannotDigout = true
+												
+												RevivedSquall:SetPos(v:GetPos())
+												RevivedSquall:SetAngles(v:GetAngles())
+												RevivedSquall:Spawn()
+												RevivedSquall:Activate()
+
+												timer.Simple(0.01,function() if IsValid(RevivedSquall) then
+
+												RevivedSquall:VJ_ACT_PLAYACTIVITY("vjseq_slumprise_a",true,false,false)
+
+													RevivedSquall:SetPos(RevivedSquall:GetPos() + RevivedSquall:GetUp()*6)
+
+													timer.Simple(AnimTime,function() if IsValid(RevivedSquall) then
+														RevivedSquall.CanFlinch = 1
+														RevivedSquall.HasDeathAnimation = true
+														RevivedSquall.CanInvestigate = true
+														RevivedSquall.CanTurnWhileStationary = true
+														
+													end end)
+
+												end end)
+											
+											else
+												local RevivedSquall = ents.Create("npc_vj_totu_deimos_reborn")
+												RevivedSquall.CanFlinch = 0
+												RevivedSquall.CanInvestigate = false
+												RevivedSquall.HasDeathAnimation = false
+												RevivedSquall.CanTurnWhileStationary = false
+												RevivedSquall.ToTU_Weaponized_Redead_CannotDigout = true
+												
+												RevivedSquall:SetPos(v:GetPos())
+												RevivedSquall:SetAngles(v:GetAngles())
+												RevivedSquall:Spawn()
+												RevivedSquall:Activate()
+
+												timer.Simple(0.01,function() if IsValid(RevivedSquall) then
+														
+												if math.random(1,2) == 1 then
+													RevivedSquall:VJ_ACT_PLAYACTIVITY("vjseq_infectionrise2",true,false,false)
+												else
+													RevivedSquall:VJ_ACT_PLAYACTIVITY("vjseq_Lying_to_Standing_Alert03d",true,false,false)
 												end
 
-												if IsValid(v) then
+													RevivedSquall:SetPos(RevivedSquall:GetPos() + RevivedSquall:GetUp()*6)
 
-													v:EmitSound(Sound("zombies/anywhere/ghoul/hit_"..math.random(1,3)..".mp3",80,math.random(100,90)))
-													local bloodspray = EffectData()
-													bloodspray:SetOrigin(v:GetPos())
-													bloodspray:SetScale(10)
-													bloodspray:SetFlags(3)
-													bloodspray:SetColor(0)
-													util.Effect("bloodspray",bloodspray)
-													util.Effect("bloodspray",bloodspray)
-													
-													local bloodeffect = EffectData()
-													bloodeffect:SetOrigin(v:GetPos())
-													bloodeffect:SetColor(VJ_Color2Byte(Color(17,6,6,255)))
-													bloodeffect:SetScale(125)
-													util.Effect("VJ_Blood1",bloodeffect)
+													timer.Simple(AnimTime,function() if IsValid(RevivedSquall) then
+														RevivedSquall.CanFlinch = 1
+														RevivedSquall.HasDeathAnimation = true
+														RevivedSquall.CanInvestigate = true
+														RevivedSquall.CanTurnWhileStationary = true
+														
+													end end)
 
-													v:Remove()
-												end
+												end end)
+											end
+
+											if IsValid(v) then
+
+												v:EmitSound(Sound("zombies/anywhere/ghoul/hit_"..math.random(1,3)..".mp3",80,math.random(100,90)))
+												local bloodspray = EffectData()
+												bloodspray:SetOrigin(v:GetPos())
+												bloodspray:SetScale(10)
+												bloodspray:SetFlags(3)
+												bloodspray:SetColor(0)
+												util.Effect("bloodspray",bloodspray)
+												util.Effect("bloodspray",bloodspray)
+												
+												local bloodeffect = EffectData()
+												bloodeffect:SetOrigin(v:GetPos())
+												bloodeffect:SetColor(VJ_Color2Byte(Color(17,6,6,255)))
+												bloodeffect:SetScale(125)
+												util.Effect("VJ_Blood1",bloodeffect)
+
+												v:Remove()
 											end
 						
 										end
+
 										end end)
 									
 								end
@@ -1531,26 +1586,19 @@ end
 function ENT:CustomOnRangeAttack_BeforeStartTimer(seed)
 	if self:GetClass() == "npc_vj_totu_deimos_redead" then
 		if math.random(1,5) == 1 then
-			local randthrowable = math.random(1,3)
-			if randthrowable == 1 then
-				self.RangeAttackEntityToSpawn = "obj_vj_totu_molotov"
-			elseif randthrowable == 2 then
-				self.RangeAttackEntityToSpawn = "obj_vj_totu_milzgren"
-			elseif randthrowable == 3 then
-				local randvial = math.random(1,2)
-				if randvial == 1 then
-					self.RangeAttackEntityToSpawn = "sent_vj_lnr_vial_ln21a"
-				else
-					self.RangeAttackEntityToSpawn = "sent_vj_lnr_vial_ln21b"
-				end
-			end
+			self.RangeAttackEntityToSpawn = "obj_vj_totu_molotov"
 		else
 			self.RangeAttackEntityToSpawn = "obj_vj_totu_trash"
 		end
 	end
 	if self:GetClass() == "npc_vj_totu_deimos_redead_grunt" then
-		if math.random(1,2) == 1 then
+		local randnade = math.random(1,4)
+		if randnade == 1 then
 			self.RangeAttackEntityToSpawn = "obj_vj_totu_flashbang"
+		elseif randnade == 2 then
+			self.RangeAttackEntityToSpawn = "obj_vj_totu_smokeg"
+		elseif randnade == 3 then
+			self.RangeAttackEntityToSpawn = "obj_vj_totu_thermite"
 		else
 			self.RangeAttackEntityToSpawn = "obj_vj_totu_milzgren"
 		end

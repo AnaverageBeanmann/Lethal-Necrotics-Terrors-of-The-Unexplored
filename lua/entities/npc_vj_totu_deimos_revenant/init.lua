@@ -11,7 +11,7 @@ function ENT:Zombie_CustomOnPreInitialize()
 
 	timer.Simple(0.1,function() if IsValid(self) && !self.LNR_Crippled then
 		self.AnimTbl_Walk = {ACT_MP_MELEE_GRENADE1_IDLE}
-		self.AnimTbl_Run = {ACT_SPRINT}
+		self.AnimTbl_Run = {ACT_RUN}
 		self.AnimTbl_IdleStand = {ACT_IDLE_AIM_STIMULATED}
 		if self.LNR_UsingRelaxedIdle == true then
 			self.AnimTbl_IdleStand = {ACT_IDLE}
@@ -196,27 +196,27 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:Zombie_Difficulty()
 
-	if GetConVar("VJ_LNR_Difficulty"):GetInt() == 1 then
+	if GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 1 then
 
 		self.StartHealth = 150
 		self.MeleeAttackDamage = math.Rand(5,10)
 
-	elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 2 then
+	elseif GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 2 then
 
 		self.StartHealth = 200
 		self.MeleeAttackDamage = math.Rand(10,15)
 
-	elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 3 then
+	elseif GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 3 then
 
-		self.StartHealth = 250
-		self.MeleeAttackDamage = math.Rand(15,20)
+		self.StartHealth = 300
+		self.MeleeAttackDamage = math.Rand(10,15)
 
-	elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 4 then
+	elseif GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 4 then
 
 		self.StartHealth = 300
 		self.MeleeAttackDamage = math.Rand(20,25)
 
-	elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 5 then
+	elseif GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 5 then
 
 		self.StartHealth = 350
 		self.MeleeAttackDamage = math.Rand(25,30)

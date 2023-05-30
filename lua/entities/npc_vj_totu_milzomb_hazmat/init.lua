@@ -248,7 +248,7 @@ function ENT:SetUpGibesOnDeath(dmginfo,hitgroup)
 
 	end
 
-	if GetConVar("VJ_LNR_Gib"):GetInt() == 1 then
+	if GetConVar("VJ_TOTU_LNR_Gib"):GetInt() == 1 then
 
 		self:CreateGibEntity("obj_vj_gib","UseHuman_Small",{Pos=self:LocalToWorld(Vector(0,0,30))})
 		self:CreateGibEntity("obj_vj_gib","UseHuman_Small",{Pos=self:LocalToWorld(Vector(0,0,30))})

@@ -19,7 +19,7 @@ ENT.AnimTbl_Run = {ACT_WALK}
 ENT.CanEat = true
 ---------------------------------------------------------------------------------------------------------------------------------------------
 ENT.CustomBlood_Particle = {"lnr_bullet_impact_01","lnr_bullet_impact_02","lnr_bullet_impact_03","lnr_bullet_impact_04"}
-ENT.CustomBlood_Decal = {"VJ_LNR_Blood_Red"}
+ENT.CustomBlood_Decal = {"VJ_TOTU_LNR_Blood_Red"}
 ENT.ImmuneDamagesTable = {DMG_RADIATION,DMG_NERVEGAS}
 ENT.CanFlinch = 1
 ENT.FlinchChance = 1
@@ -112,9 +112,9 @@ ENT.MilZ_Bulldozer_NextSprintT = 0
 ENT.MilZ_Jugg_RunTime = 0
 ENT.MilZ_Bulldozer_RunTime = 0
 
-ENT.ToTU_Almanac_Name = "-= Base Walker =-"
-ENT.ToTU_Almanac_Strain = "Strain: Walker"
-ENT.ToTU_Almanac_Toughness = "Toughness: Average"
+ENT.ToTU_Almanac_Name = ""
+ENT.ToTU_Almanac_Strain = ""
+ENT.ToTU_Almanac_Toughness = ""
 
 -- Less than 50 HP - Fragile
 -- 50 - 99 HP - Weak
@@ -127,9 +127,12 @@ ENT.ToTU_Almanac_Toughness = "Toughness: Average"
 -- 651 - 900 HP - Dense
 -- 901 - 1250 HP - Stonewalled
 -- 1251 - 1500 HP - Undying
--- 1500+ HP - Nigh-Invulnerable
+-- 1501 - 3000 HP - Uber-Undying
+-- 3001 - 5000 HP - Overkill
+-- 5001 - 9999 HP - Godlike
+-- 9999+ HP - Invulnerable
 
-ENT.ToTU_Almanac_Damage = "Damage: Average"
+ENT.ToTU_Almanac_Damage = ""
 
 -- Less than 5 - Very Weak
 -- 5-10 - Weak
@@ -140,14 +143,14 @@ ENT.ToTU_Almanac_Damage = "Damage: Average"
 -- 45-60 - Deadly
 -- 100+ - Lethal
 
-ENT.ToTU_Almanac_FlavorText = "ToTU's code backbone."
-ENT.ToTU_Almanac_Notes = "Standard walker business."
+ENT.ToTU_Almanac_FlavorText = ""
+ENT.ToTU_Almanac_Notes = ""
 ENT.ToTU_Almanac_Notes2 = ""
 ENT.ToTU_Almanac_Notes3 = ""
 ENT.ToTU_Almanac_Notes4 = ""
 ENT.ToTU_Almanac_Notes5 = ""
 ENT.ToTU_Almanac_Gimmicks = ""
-ENT.ToTU_Almanac_VoiceActor = "Father Grigori (Half-Life 2), Walter White (Breaking Bad)"
+ENT.ToTU_Almanac_VoiceActor = ""
 -- leave blank if not applicable
 
 -- scourge
@@ -220,9 +223,9 @@ ENT.FootSteps = {
 		"physics/flesh/flesh_impact_hard6.wav",
 	},
 	[MAT_CONCRETE] = {
-		"vj_lnrhl2/shared/footstep/zombie_footstep_m_01.wav",
-		"vj_lnrhl2/shared/footstep/zombie_footstep_m_02.wav",
-		"vj_lnrhl2/shared/footstep/zombie_footstep_m_03.wav",
+		"fx/footsteps/zombie_footstep_m_01.wav",
+		"fx/footsteps/zombie_footstep_m_02.wav",
+		"fx/footsteps/zombie_footstep_m_03.wav",
 	},
 	[MAT_DIRT] = {
 		"player/footsteps/dirt1.wav",
@@ -331,14 +334,14 @@ ENT.FootSteps = {
 }
 
 ENT.SoundTbl_MeleeAttack = {
-	"vj_lnrhl2/shared/melee/hit_punch_01.wav",
-	"vj_lnrhl2/shared/melee/hit_punch_02.wav",
-	"vj_lnrhl2/shared/melee/hit_punch_03.wav",
-	"vj_lnrhl2/shared/melee/hit_punch_04.wav",
-	"vj_lnrhl2/shared/melee/hit_punch_05.wav",
-	"vj_lnrhl2/shared/melee/hit_punch_06.wav",
-	"vj_lnrhl2/shared/melee/hit_punch_07.wav",
-	"vj_lnrhl2/shared/melee/hit_punch_08.wav"}
+	"fx/hit_punch_01.wav",
+	"fx/hit_punch_02.wav",
+	"fx/hit_punch_03.wav",
+	"fx/hit_punch_04.wav",
+	"fx/hit_punch_05.wav",
+	"fx/hit_punch_06.wav",
+	"fx/hit_punch_07.wav",
+	"fx/hit_punch_08.wav"}
 ENT.SoundTbl_MeleeAttackMiss = {"npc/zombie/claw_miss2.wav","npc/zombie/claw_miss1.wav"}
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:CustomOnFootStepSound()
@@ -367,19 +370,19 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:CustomOnPreInitialize()
 
-	if GetConVar("VJ_LNR_DeathAnimations"):GetInt() == 0 then
+	if GetConVar("VJ_TOTU_LNR_DeathAnimations"):GetInt() == 0 then
 
 		self.HasDeathAnimation = false
 
 	end
 
-	if GetConVar("vj_LNR_Alert"):GetInt() == 0 then
+	if GetConVar("VJ_TOTU_LNR_Alert"):GetInt() == 0 then
 
 		self.CallForHelp = false
 
 	end
 
-	if GetConVar("VJ_LNR_BreakDoors"):GetInt() == 1 then
+	if GetConVar("VJ_TOTU_LNR_BreakDoors"):GetInt() == 1 then
 
         self.LNR_CanBreakDoors = true
 		self.CanOpenDoors = false
@@ -456,6 +459,7 @@ function ENT:CustomOnPreInitialize()
 		self.AnimTbl_Run = {ACT_SPRINT}
 		self.LNR_Walker = false
 		self.LNR_Infected = true
+		self.ToTU_Almanac_Strain = "Strain: Infected"
 	end
 
 	if self:GetClass() == "npc_vj_totu_milzomb_detonator" then
@@ -492,8 +496,6 @@ function ENT:CustomOnPreInitialize()
 
 		self.Model = {"models/totu/testmonkinf.mdl"}
 
-		self.ToTU_Almanac_Name = "-= Base Infected =-"
-		self.ToTU_Almanac_Strain = "Strain: Infected"
 		self.ToTU_Almanac_FlavorText = "ToTU's other code backbone, atleast until the Walker had all the code merged."
 		self.ToTU_Almanac_Notes = "Standard infected business."
 		self.ToTU_Almanac_VoiceActor = "Effect 4/Flower (RB's Two Faces Mod)"
@@ -507,6 +509,11 @@ function ENT:CustomOnPreInitialize()
 		self:GetClass() == "npc_vj_totu_milzomb_bulldozer" or
 		self:GetClass() == "npc_vj_totu_nightkin_scragg" or
 		self:GetClass() == "npc_vj_totu_weaponized_smog" or
+		self:GetClass() == "npc_vj_totu_deimos_cancer" or
+		self:GetClass() == "npc_vj_totu_deimos_reborn" or
+		self:GetClass() == "npc_vj_totu_deimos_redead_grunt" or
+		self:GetClass() == "npc_vj_totu_deimos_redead_guard" or
+		self:GetClass() == "npc_vj_totu_deimos_redead_sci" or
 		self:GetClass() == "npc_vj_totu_deimos_redead" or
 		self:GetClass() == "npc_vj_totu_fon_juggernaut" or
 		self:GetClass() == "npc_vj_totu_fon_bulldozer"
@@ -531,31 +538,31 @@ function ENT:Zombie_CustomOnPreInitialize() end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:Zombie_UpdateAlmanacStuff() end
 ---------------------------------------------------------------------------------------------------------------------------------------------
-	function ENT:VJ_TOTU_Deimos_CreateBoneMerge(targEnt,oldModel,oldSkin,bg)
-		local creator = NULL
-		if targEnt:IsNPC() then
-			creator = IsValid(targEnt:GetCreator()) && targEnt:GetCreator()
-			targEnt:SetCollisionBounds(Vector(13,13,72),Vector(-13,-13,0))
-		end
-
-		local body = ents.Create("vj_lnr_infection")
-		body:SetModel(oldModel)
-		body:SetPos(targEnt:GetPos())
-		body:SetAngles(targEnt:GetAngles())
-		body.VJ_Owner = targEnt
-		body:Spawn()
-		body:SetParent(targEnt)
-		body:SetSkin(oldSkin)
-		body:SetColor(oldColor)
-		body:SetMaterial(oldMaterial)		
-		if bg then
-				for i = 0,18 do
-				--	body:SetBodygroup(i,bg[i])
-				end			
-			end
-		targEnt.Bonemerge = body
-		targEnt.BonemergeModel = oldModel						
+function ENT:VJ_TOTU_Deimos_CreateBoneMerge(targEnt,oldModel,oldSkin,bg)
+	local creator = NULL
+	if targEnt:IsNPC() then
+		creator = IsValid(targEnt:GetCreator()) && targEnt:GetCreator()
+		targEnt:SetCollisionBounds(Vector(13,13,72),Vector(-13,-13,0))
 	end
+
+	local body = ents.Create("vj_totu_lnr_infection")
+	body:SetModel(oldModel)
+	body:SetPos(targEnt:GetPos())
+	body:SetAngles(targEnt:GetAngles())
+	body.VJ_Owner = targEnt
+	body:Spawn()
+	body:SetParent(targEnt)
+	body:SetSkin(oldSkin)
+	body:SetColor(oldColor)
+	body:SetMaterial(oldMaterial)		
+	if bg then
+			for i = 0,18 do
+			--	body:SetBodygroup(i,bg[i])
+			end			
+		end
+	targEnt.Bonemerge = body
+	targEnt.BonemergeModel = oldModel
+end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:CustomOnInitialize()
 
@@ -572,11 +579,18 @@ function ENT:CustomOnInitialize()
 	end end)
 	*/
 
+	self.ToTU_Almanac_Name = "-= "..self:GetName().." =-"
+
 	if GetConVar("VJ_ToTU_General_NotZombieAllied"):GetInt() == 1 then
 		self.VJ_NPC_Class = {"CLASS_TOTU"}
 	end
 
 	if
+		self:GetClass() == "npc_vj_totu_deimos_reborn" or
+		self:GetClass() == "npc_vj_totu_deimos_redead" or
+		self:GetClass() == "npc_vj_totu_deimos_redead_sci" or
+		self:GetClass() == "npc_vj_totu_deimos_redead_guard" or
+		self:GetClass() == "npc_vj_totu_deimos_redead_grunt" or
 		self:GetClass() == "npc_vj_totu_deimos_carcass" or
 		self:GetClass() == "npc_vj_totu_deimos_carcass_torso" or
 		self:GetClass() == "npc_vj_totu_deimos_cazador" or
@@ -585,17 +599,14 @@ function ENT:CustomOnInitialize()
 		self:GetClass() == "npc_vj_totu_deimos_cancer" or
 		self:GetClass() == "npc_vj_totu_deimos_revenant" or
 		self:GetClass() == "npc_vj_totu_deimos_corrupt" or
-		self:GetClass() == "npc_vj_totu_deimos_redead_guard" or
-		self:GetClass() == "npc_vj_totu_deimos_redead_sci" or
-		self:GetClass() == "npc_vj_totu_fon_gail" or
-		self:GetClass() == "npc_vj_totu_fon_lament" or
 		self:GetClass() == "npc_vj_totu_deimos_corrupt_brute" or
-		self:GetClass() == "npc_vj_totu_deimos_redead_grunt" or
-		self:GetClass() == "npc_vj_totu_deimos_redead"
+		self:GetClass() == "npc_vj_totu_fon_gail" or
+		self:GetClass() == "npc_vj_totu_fon_lament"
 	then
 		self.LNR_VirusInfection = false
 		self.LNR_Walker = false
 		self.ToTU_Deimos = true
+		self.ToTU_Almanac_Strain = "Strain: Deimos"
 	end
 
 	if self.ToTU_Weaponized_IsHL2Zomb then
@@ -612,9 +623,8 @@ function ENT:CustomOnInitialize()
 		self.AnimTbl_Walk = {ACT_WALK_RELAXED}
 	end
 
-	-- if GetConVar("VJ_LNR_Crawl"):GetInt() == 1 && !self.ToTU_IsFreakOfNature && !self.ToTU_Deimos then
 	if
-		GetConVar("VJ_LNR_Crawl"):GetInt() == 1 &&
+		GetConVar("VJ_TOTU_LNR_Crawl"):GetInt() == 1 &&
 		!self.ToTU_IsFreakOfNature &&
 		(!self.ToTU_Deimos or
 		self.ToTU_Deimos &&
@@ -625,7 +635,7 @@ function ENT:CustomOnInitialize()
 		self:GetClass() == "npc_vj_totu_deimos_revenant"))
 	then
 
-		if math.random(1,GetConVar("VJ_ToTU_General_Crawler_Chance"):GetInt()) == 1 then
+		if math.random(1,GetConVar("VJ_ToTU_General_Crawler_Chance"):GetInt()) == 1 && GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() != 5 then
 
 			self.LNR_Crippled = true
 			self:Cripple()
@@ -635,7 +645,7 @@ function ENT:CustomOnInitialize()
 	end
 
 	if
-		GetConVar("VJ_LNR_GroundRise"):GetInt() == 1 &&
+		GetConVar("VJ_TOTU_LNR_GroundRise"):GetInt() == 1 &&
 		( self:IsDirtGround(self:GetPos()) or GetConVar("VJ_ToTU_Spawn_UniversalDig"):GetInt() == 1 ) &&
 		!self.ToTU_InstantDigout
 	then
@@ -650,10 +660,10 @@ function ENT:CustomOnInitialize()
 		if self:GetClass() == "npc_vj_totu_squaller" then
 			util.AddNetworkString("VJ_ToTU_Squaller_Hud")
 		else
-			util.AddNetworkString("vj_lnr_infected_hud")
+			util.AddNetworkString("VJ_TOTU_LNR_Infected_HUD")
 		end
 	else
-		util.AddNetworkString("vj_lnr_walker_hud")
+		util.AddNetworkString("VJ_TOTU_LNR_Walker_HUD")
 	end
 
 	if !self.LNR_Crippled then
@@ -676,7 +686,7 @@ function ENT:CustomOnInitialize()
 		if self.LNR_Walker && !self.ToTU_IsFreakOfNature && !self.ToTU_Deimos then
 
 			if
-				GetConVar("VJ_LNR_Runner"):GetInt() == 1 &&
+				GetConVar("VJ_TOTU_LNR_Runner"):GetInt() == 1 &&
 				math.random(1,GetConVar("VJ_ToTU_General_Runners_Chance"):GetInt()) == 1 &&
 				!self.ToTU_IsFreakOfNature
 			then
@@ -691,7 +701,7 @@ function ENT:CustomOnInitialize()
 			end
 
 			if
-				GetConVar("VJ_LNR_Biter"):GetInt() == 1 &&
+				GetConVar("VJ_TOTU_LNR_Biter"):GetInt() == 1 &&
 				!self.ToTU_IsFreakOfNature
 			then
 				if
@@ -702,6 +712,8 @@ function ENT:CustomOnInitialize()
 					self:GetClass() != "npc_vj_totu_milzomb_ghillie_walker" && 
 					self:GetClass() != "npc_vj_totu_fon_juggernaut" && 
 					self:GetClass() != "npc_vj_totu_milzomb_airman" && 
+					self:GetClass() != "npc_vj_totu_lnr_wal" && 
+					self:GetClass() != "npc_vj_totu_lnr_wal_ply" && 
 					!self.MilZ_HasGasmask
 				then
 					self.LNR_Biter = true
@@ -710,9 +722,10 @@ function ENT:CustomOnInitialize()
 
 			if
 				GetConVar("VJ_ToTU_General_Rushers_Allow"):GetInt() == 2 or
-				GetConVar("VJ_ToTU_General_Rushers_Allow"):GetInt() == 3		
+				GetConVar("VJ_ToTU_General_Rushers_Allow"):GetInt() == 3 or
+				GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 5
 			then
-				if math.random(1,GetConVar("VJ_ToTU_General_Rushers_Chance"):GetInt()) == 1 then
+				if math.random(1,GetConVar("VJ_ToTU_General_Rushers_Chance"):GetInt()) == 1 or GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 5 then
 					if
 						(self:GetClass() != "npc_vj_totu_milzomb_tank" && self:GetClass() != "npc_vj_totu_milzomb_detonator_bulk") or
 						(self:GetClass() == "npc_vj_totu_milzomb_tank" && GetConVar("VJ_ToTU_MilZ_Tank_SubtypeBlacklisted"):GetInt() == 0) or
@@ -729,7 +742,7 @@ function ENT:CustomOnInitialize()
 		if self.LNR_Infected && !self.ToTU_IsFreakOfNature && !self.ToTU_Deimos then
 
 			if 
-				GetConVar("VJ_LNR_SuperSprinter"):GetInt() == 1 &&
+				GetConVar("VJ_TOTU_LNR_SuperSprinter"):GetInt() == 1 &&
 				self:GetClass() != "npc_vj_totu_nightkin_squaller" &&
 				self:GetClass() != "npc_vj_totu_fon_bulldozer" && 
 				!self.ToTU_IsFreakOfNature 
@@ -749,9 +762,10 @@ function ENT:CustomOnInitialize()
 
 			if
 				GetConVar("VJ_ToTU_General_Rushers_Allow"):GetInt() == 1 or
-				GetConVar("VJ_ToTU_General_Rushers_Allow"):GetInt() == 3		
+				GetConVar("VJ_ToTU_General_Rushers_Allow"):GetInt() == 3 or
+				GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 5
 			then
-				if math.random(1,GetConVar("VJ_ToTU_General_Rushers_Chance"):GetInt()) == 1 then
+				if math.random(1,GetConVar("VJ_ToTU_General_Rushers_Chance"):GetInt()) == 1 or GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 5 then
 					if
 						(self:GetClass() != "npc_vj_totu_milzomb_detonator" && self:GetClass() != "npc_vj_totu_nightkin_scylla") or
 						(self:GetClass() == "npc_vj_totu_milzomb_detonator" && GetConVar("VJ_ToTU_MilZ_Det_SubtypeBlacklisted"):GetInt() == 0) or
@@ -800,14 +814,14 @@ function ENT:CustomOnInitialize()
 		self.SoundTbl_LeapAttackJump = {self.SoundTbl_BeforeMeleeAttack}
 
 		self.SoundTbl_LeapAttackDamage = {
-			"vj_lnrhl2/shared/melee/hit_punch_01.wav",
-			"vj_lnrhl2/shared/melee/hit_punch_02.wav",
-			"vj_lnrhl2/shared/melee/hit_punch_03.wav",
-			"vj_lnrhl2/shared/melee/hit_punch_04.wav",
-			"vj_lnrhl2/shared/melee/hit_punch_05.wav",
-			"vj_lnrhl2/shared/melee/hit_punch_06.wav",
-			"vj_lnrhl2/shared/melee/hit_punch_07.wav",
-			"vj_lnrhl2/shared/melee/hit_punch_08.wav"
+			"fx/hit_punch_01.wav",
+			"fx/hit_punch_02.wav",
+			"fx/hit_punch_03.wav",
+			"fx/hit_punch_04.wav",
+			"fx/hit_punch_05.wav",
+			"fx/hit_punch_06.wav",
+			"fx/hit_punch_07.wav",
+			"fx/hit_punch_08.wav"
 		}
 
 		self.SoundTbl_LeapAttackDamageMiss = {"npc/zombie/claw_miss2.wav","npc/zombie/claw_miss1.wav"}
@@ -841,7 +855,39 @@ function ENT:CustomOnInitialize()
 	self:Zombie_CustomOnInitialize()
 	self:ZombieSounds()
 	self:Zombie_Difficulty()
-	
+
+	if self.StartHealth <= 49 then
+		self.ToTU_Almanac_Toughness = "Toughness: Fragile"
+	elseif self.StartHealth > 49 && self.StartHealth < 100 then
+		self.ToTU_Almanac_Toughness = "Toughness: Weak"
+	elseif self.StartHealth == 100 then
+		self.ToTU_Almanac_Toughness = "Toughness: Average"
+	elseif self.StartHealth > 101 && self.StartHealth < 151 then
+		self.ToTU_Almanac_Toughness = "Toughness: Above-Average"
+	elseif self.StartHealth > 150 && self.StartHealth < 201 then
+		self.ToTU_Almanac_Toughness = "Toughness: Stronger-Than-Average"
+	elseif self.StartHealth > 200 && self.StartHealth < 351 then
+		self.ToTU_Almanac_Toughness = "Toughness: Beefy"
+	elseif self.StartHealth > 350 && self.StartHealth < 451 then
+		self.ToTU_Almanac_Toughness = "Toughness: Tough"
+	elseif self.StartHealth > 450 && self.StartHealth < 651 then
+		self.ToTU_Almanac_Toughness = "Toughness: Very Tough"
+	elseif self.StartHealth > 650 && self.StartHealth < 901 then
+		self.ToTU_Almanac_Toughness = "Toughness: Dense"
+	elseif self.StartHealth > 900 && self.StartHealth < 1251 then
+		self.ToTU_Almanac_Toughness = "Toughness: Stonewalled"
+	elseif self.StartHealth > 1250 && self.StartHealth < 1501 then
+		self.ToTU_Almanac_Toughness = "Toughness: Undying"
+	elseif self.StartHealth > 1500 && self.StartHealth < 3001 then
+		self.ToTU_Almanac_Toughness = "Toughness: Uber-Undying"
+	elseif self.StartHealth > 3000 && self.StartHealth < 5001 then
+		self.ToTU_Almanac_Toughness = "Toughness: Overkill"
+	elseif self.StartHealth > 5000 && self.StartHealth < 10000 then
+		self.ToTU_Almanac_Toughness = "Toughness: Godlike"
+	elseif self.StartHealth > 9999 then
+		self.ToTU_Almanac_Toughness = "Toughness: Nigh-Invulnerable"
+	end
+
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:Zombie_CustomOnInitialize() end -- For additional initialize options
@@ -849,6 +895,7 @@ function ENT:Zombie_CustomOnInitialize() end -- For additional initialize option
 function ENT:ZombieSounds()
 
 	if self:GetClass() == "npc_vj_totu_base_walker" then
+
 
 		self.SoundTbl_Idle = {
 			"vo/ravenholm/firetrap_vigil.wav",
@@ -989,6 +1036,10 @@ function ENT:ZombieSounds()
 			"test/laughnow.mp3",
 		}
 
+		self.ToTU_Almanac_VoiceActor = "Father Grigori (Half-Life 2), Walter White (Breaking Bad)"
+		self.ToTU_Almanac_FlavorText = "ToTU's code backbone."
+		self.ToTU_Almanac_Notes = "Standard walker business."
+
 	elseif self:GetClass() == "npc_vj_totu_base_infected" then
 
 		self.SoundTbl_Alert = {"test/flower_1.mp3"}
@@ -1103,11 +1154,11 @@ function ENT:ZombieSounds()
 	
 	else
 	
-	self:ZombieSounds_GiveDefault()
-	self:ZombieSounds_Custom()
-	if self.MilZ_HasGasmask or self:GetClass() == "npc_vj_totu_milzomb_tank" or self.MilZ_Ghost_IsGhost then
-		self:MilZ_GiveGasmaskSounds()
-	end
+		self:ZombieSounds_GiveDefault()
+		self:ZombieSounds_Custom()
+		if self.MilZ_HasGasmask or self:GetClass() == "npc_vj_totu_milzomb_tank" or self.MilZ_Ghost_IsGhost then
+			self:MilZ_GiveGasmaskSounds()
+		end
 		
 	end
 
@@ -1121,117 +1172,117 @@ function ENT:ZombieSounds_GiveDefault()
 	if self.LNR_Infected then
 
 		self.SoundTbl_Idle = {
-			"vj_lnrhl2/infected/zomb_runner_male1-idle-01.wav",
-			"vj_lnrhl2/infected/zomb_runner_male1-idle-02.wav",
-			"vj_lnrhl2/infected/zomb_runner_male1-idle-03.wav",
-			"vj_lnrhl2/infected/zomb_runner_male1-idle-04.wav",
-			"vj_lnrhl2/infected/zomb_runner_male1-idle-05.wav",
-			"vj_lnrhl2/infected/zomb_runner_male1-idle-06.wav",
-			"vj_lnrhl2/infected/zomb_runner_male1-idle-07.wav",
-			"vj_lnrhl2/infected/zomb_runner_male1-idle-08.wav",
-			"vj_lnrhl2/infected/zomb_runner_male1-idle-09.wav",
-			"vj_lnrhl2/infected/zomb_runner_male1-idle-10.wav"
+			"voices/default/infected/zomb_runner_male1-idle-01.wav",
+			"voices/default/infected/zomb_runner_male1-idle-02.wav",
+			"voices/default/infected/zomb_runner_male1-idle-03.wav",
+			"voices/default/infected/zomb_runner_male1-idle-04.wav",
+			"voices/default/infected/zomb_runner_male1-idle-05.wav",
+			"voices/default/infected/zomb_runner_male1-idle-06.wav",
+			"voices/default/infected/zomb_runner_male1-idle-07.wav",
+			"voices/default/infected/zomb_runner_male1-idle-08.wav",
+			"voices/default/infected/zomb_runner_male1-idle-09.wav",
+			"voices/default/infected/zomb_runner_male1-idle-10.wav"
 		}
 
 		self.SoundTbl_Alert = {
-			"vj_lnrhl2/infected/zomb_runner_male1-alert-01.wav",
-			"vj_lnrhl2/infected/zomb_runner_male1-alert-02.wav",
-			"vj_lnrhl2/infected/zomb_runner_male1-alert-03.wav",
-			"vj_lnrhl2/infected/zomb_runner_male1-alert-04.wav",
-			"vj_lnrhl2/infected/zomb_runner_male1-alert-05.wav",
-			"vj_lnrhl2/infected/zomb_runner_male1-alert-06.wav",
-			"vj_lnrhl2/infected/zomb_runner_male1-alert-07.wav",
-			"vj_lnrhl2/infected/zomb_runner_male1-alert-08.wav",
-			"vj_lnrhl2/infected/zomb_runner_male1-alert-09.wav",
-			"vj_lnrhl2/infected/zomb_runner_male1-alert-10.wav",
-			"vj_lnrhl2/infected/zomb_runner_male1-alert-11.wav",
-			"vj_lnrhl2/infected/zomb_runner_male1-alert-12.wav",
-			"vj_lnrhl2/infected/zomb_runner_male1-alert-13.wav",
-			"vj_lnrhl2/infected/zomb_runner_male1-alert-14.wav",
-			"vj_lnrhl2/infected/zomb_runner_male1-alert-15.wav"
+			"voices/default/infected/zomb_runner_male1-alert-01.wav",
+			"voices/default/infected/zomb_runner_male1-alert-02.wav",
+			"voices/default/infected/zomb_runner_male1-alert-03.wav",
+			"voices/default/infected/zomb_runner_male1-alert-04.wav",
+			"voices/default/infected/zomb_runner_male1-alert-05.wav",
+			"voices/default/infected/zomb_runner_male1-alert-06.wav",
+			"voices/default/infected/zomb_runner_male1-alert-07.wav",
+			"voices/default/infected/zomb_runner_male1-alert-08.wav",
+			"voices/default/infected/zomb_runner_male1-alert-09.wav",
+			"voices/default/infected/zomb_runner_male1-alert-10.wav",
+			"voices/default/infected/zomb_runner_male1-alert-11.wav",
+			"voices/default/infected/zomb_runner_male1-alert-12.wav",
+			"voices/default/infected/zomb_runner_male1-alert-13.wav",
+			"voices/default/infected/zomb_runner_male1-alert-14.wav",
+			"voices/default/infected/zomb_runner_male1-alert-15.wav"
 		}
 
 		self.SoundTbl_CombatIdle = {
-			"vj_lnrhl2/infected/zomb_runner_male1-pursuit-01.wav",
-			"vj_lnrhl2/infected/zomb_runner_male1-pursuit-02.wav",
-			"vj_lnrhl2/infected/zomb_runner_male1-pursuit-03.wav",
-			"vj_lnrhl2/infected/zomb_runner_male1-pursuit-04.wav",
-			"vj_lnrhl2/infected/zomb_runner_male1-pursuit-05.wav",
-			"vj_lnrhl2/infected/zomb_runner_male1-pursuit-06.wav",
-			"vj_lnrhl2/infected/zomb_runner_male1-pursuit-07.wav",
-			"vj_lnrhl2/infected/zomb_runner_male1-pursuit-08.wav",
-			"vj_lnrhl2/infected/zomb_runner_male1-pursuit-09.wav",
-			"vj_lnrhl2/infected/zomb_runner_male1-pursuit-10.wav",
-			"vj_lnrhl2/infected/zomb_runner_male1-pursuit-11.wav",
-			"vj_lnrhl2/infected/zomb_runner_male1-pursuit-12.wav",
-			"vj_lnrhl2/infected/zomb_runner_male1-pursuit-13.wav"	
+			"voices/default/infected/zomb_runner_male1-pursuit-01.wav",
+			"voices/default/infected/zomb_runner_male1-pursuit-02.wav",
+			"voices/default/infected/zomb_runner_male1-pursuit-03.wav",
+			"voices/default/infected/zomb_runner_male1-pursuit-04.wav",
+			"voices/default/infected/zomb_runner_male1-pursuit-05.wav",
+			"voices/default/infected/zomb_runner_male1-pursuit-06.wav",
+			"voices/default/infected/zomb_runner_male1-pursuit-07.wav",
+			"voices/default/infected/zomb_runner_male1-pursuit-08.wav",
+			"voices/default/infected/zomb_runner_male1-pursuit-09.wav",
+			"voices/default/infected/zomb_runner_male1-pursuit-10.wav",
+			"voices/default/infected/zomb_runner_male1-pursuit-11.wav",
+			"voices/default/infected/zomb_runner_male1-pursuit-12.wav",
+			"voices/default/infected/zomb_runner_male1-pursuit-13.wav"	
 		}
 
 		self.SoundTbl_BeforeMeleeAttack = {
-			"vj_lnrhl2/infected/zomb_runner_male1-attack01.wav",
-			"vj_lnrhl2/infected/zomb_runner_male1-attack02.wav",
-			"vj_lnrhl2/infected/zomb_runner_male1-attack03.wav",
-			"vj_lnrhl2/infected/zomb_runner_male1-attack04.wav",
-			"vj_lnrhl2/infected/zomb_runner_male1-attack05.wav",
-			"vj_lnrhl2/infected/zomb_runner_male1-attack06.wav",
-			"vj_lnrhl2/infected/zomb_runner_male1-attack07.wav",
-			"vj_lnrhl2/infected/zomb_runner_male1-attack08.wav",
-			"vj_lnrhl2/infected/zomb_runner_male1-attack09.wav",
-			"vj_lnrhl2/infected/zomb_runner_male1-attack10.wav",
-			"vj_lnrhl2/infected/zomb_runner_male1-attack11.wav",
-			"vj_lnrhl2/infected/zomb_runner_male1-attack12.wav",
-			"vj_lnrhl2/infected/zomb_runner_male1-attack13.wav",
-			"vj_lnrhl2/infected/zomb_runner_male1-attack14.wav",
-			"vj_lnrhl2/infected/zomb_runner_male1-attack15.wav",
-			"vj_lnrhl2/infected/zomb_runner_male1-attack16.wav",
-			"vj_lnrhl2/infected/zomb_runner_male1-attack17.wav",
-			"vj_lnrhl2/infected/zomb_runner_male1-attack18.wav",
-			"vj_lnrhl2/infected/zomb_runner_male1-attack19.wav",
-			"vj_lnrhl2/infected/zomb_runner_male1-attack20.wav"	
+			"voices/default/infected/zomb_runner_male1-attack01.wav",
+			"voices/default/infected/zomb_runner_male1-attack02.wav",
+			"voices/default/infected/zomb_runner_male1-attack03.wav",
+			"voices/default/infected/zomb_runner_male1-attack04.wav",
+			"voices/default/infected/zomb_runner_male1-attack05.wav",
+			"voices/default/infected/zomb_runner_male1-attack06.wav",
+			"voices/default/infected/zomb_runner_male1-attack07.wav",
+			"voices/default/infected/zomb_runner_male1-attack08.wav",
+			"voices/default/infected/zomb_runner_male1-attack09.wav",
+			"voices/default/infected/zomb_runner_male1-attack10.wav",
+			"voices/default/infected/zomb_runner_male1-attack11.wav",
+			"voices/default/infected/zomb_runner_male1-attack12.wav",
+			"voices/default/infected/zomb_runner_male1-attack13.wav",
+			"voices/default/infected/zomb_runner_male1-attack14.wav",
+			"voices/default/infected/zomb_runner_male1-attack15.wav",
+			"voices/default/infected/zomb_runner_male1-attack16.wav",
+			"voices/default/infected/zomb_runner_male1-attack17.wav",
+			"voices/default/infected/zomb_runner_male1-attack18.wav",
+			"voices/default/infected/zomb_runner_male1-attack19.wav",
+			"voices/default/infected/zomb_runner_male1-attack20.wav"	
 		}
 
 		self.SoundTbl_Pain = {
-			"vj_lnrhl2/infected/zomb_runner_male1-pain01.wav",
-			"vj_lnrhl2/infected/zomb_runner_male1-pain02.wav",
-			"vj_lnrhl2/infected/zomb_runner_male1-pain03.wav",
-			"vj_lnrhl2/infected/zomb_runner_male1-pain04.wav",
-			"vj_lnrhl2/infected/zomb_runner_male1-pain05.wav",
-			"vj_lnrhl2/infected/zomb_runner_male1-pain06.wav",
-			"vj_lnrhl2/infected/zomb_runner_male1-pain07.wav",
-			"vj_lnrhl2/infected/zomb_runner_male1-pain08.wav",
-			"vj_lnrhl2/infected/zomb_runner_male1-pain09.wav",
-			"vj_lnrhl2/infected/zomb_runner_male1-pain10.wav",
-			"vj_lnrhl2/infected/zomb_runner_male1-pain11.wav",
-			"vj_lnrhl2/infected/zomb_runner_male1-pain12.wav",
-			"vj_lnrhl2/infected/zomb_runner_male1-pain13.wav",
-			"vj_lnrhl2/infected/zomb_runner_male1-pain14.wav",
-			"vj_lnrhl2/infected/zomb_runner_male1-pain15.wav",
-			"vj_lnrhl2/infected/zomb_runner_male1-pain16.wav",
-			"vj_lnrhl2/infected/zomb_runner_male1-pain17.wav",
-			"vj_lnrhl2/infected/zomb_runner_male1-pain18.wav"
+			"voices/default/infected/zomb_runner_male1-pain01.wav",
+			"voices/default/infected/zomb_runner_male1-pain02.wav",
+			"voices/default/infected/zomb_runner_male1-pain03.wav",
+			"voices/default/infected/zomb_runner_male1-pain04.wav",
+			"voices/default/infected/zomb_runner_male1-pain05.wav",
+			"voices/default/infected/zomb_runner_male1-pain06.wav",
+			"voices/default/infected/zomb_runner_male1-pain07.wav",
+			"voices/default/infected/zomb_runner_male1-pain08.wav",
+			"voices/default/infected/zomb_runner_male1-pain09.wav",
+			"voices/default/infected/zomb_runner_male1-pain10.wav",
+			"voices/default/infected/zomb_runner_male1-pain11.wav",
+			"voices/default/infected/zomb_runner_male1-pain12.wav",
+			"voices/default/infected/zomb_runner_male1-pain13.wav",
+			"voices/default/infected/zomb_runner_male1-pain14.wav",
+			"voices/default/infected/zomb_runner_male1-pain15.wav",
+			"voices/default/infected/zomb_runner_male1-pain16.wav",
+			"voices/default/infected/zomb_runner_male1-pain17.wav",
+			"voices/default/infected/zomb_runner_male1-pain18.wav"
 		}
 
 		self.SoundTbl_Death = {
-			"vj_lnrhl2/infected/zomb_runner_male1-death-01.wav",
-			"vj_lnrhl2/infected/zomb_runner_male1-death-02.wav",
-			"vj_lnrhl2/infected/zomb_runner_male1-death-03.wav",
-			"vj_lnrhl2/infected/zomb_runner_male1-death-04.wav",
-			"vj_lnrhl2/infected/zomb_runner_male1-death-05.wav",
-			"vj_lnrhl2/infected/zomb_runner_male1-death-06.wav",
-			"vj_lnrhl2/infected/zomb_runner_male1-death-07.wav",
-			"vj_lnrhl2/infected/zomb_runner_male1-death-08.wav",
-			"vj_lnrhl2/infected/zomb_runner_male1-death-09.wav",
-			"vj_lnrhl2/infected/zomb_runner_male1-death-10.wav",
-			"vj_lnrhl2/infected/zomb_runner_male1-death-11.wav",
-			"vj_lnrhl2/infected/zomb_runner_male1-death-12.wav",
-			"vj_lnrhl2/infected/zomb_runner_male1-death-13.wav",
-			"vj_lnrhl2/infected/zomb_runner_male1-death-14.wav",
-			"vj_lnrhl2/infected/zomb_runner_male1-death-15.wav",
-			"vj_lnrhl2/infected/zomb_runner_male1-death-16.wav",
-			"vj_lnrhl2/infected/zomb_runner_male1-death-17.wav",
-			"vj_lnrhl2/infected/zomb_runner_male1-death-18.wav",
-			"vj_lnrhl2/infected/zomb_runner_male1-death-19.wav",
-			"vj_lnrhl2/infected/zomb_runner_male1-death-20.wav"
+			"voices/default/infected/zomb_runner_male1-death-01.wav",
+			"voices/default/infected/zomb_runner_male1-death-02.wav",
+			"voices/default/infected/zomb_runner_male1-death-03.wav",
+			"voices/default/infected/zomb_runner_male1-death-04.wav",
+			"voices/default/infected/zomb_runner_male1-death-05.wav",
+			"voices/default/infected/zomb_runner_male1-death-06.wav",
+			"voices/default/infected/zomb_runner_male1-death-07.wav",
+			"voices/default/infected/zomb_runner_male1-death-08.wav",
+			"voices/default/infected/zomb_runner_male1-death-09.wav",
+			"voices/default/infected/zomb_runner_male1-death-10.wav",
+			"voices/default/infected/zomb_runner_male1-death-11.wav",
+			"voices/default/infected/zomb_runner_male1-death-12.wav",
+			"voices/default/infected/zomb_runner_male1-death-13.wav",
+			"voices/default/infected/zomb_runner_male1-death-14.wav",
+			"voices/default/infected/zomb_runner_male1-death-15.wav",
+			"voices/default/infected/zomb_runner_male1-death-16.wav",
+			"voices/default/infected/zomb_runner_male1-death-17.wav",
+			"voices/default/infected/zomb_runner_male1-death-18.wav",
+			"voices/default/infected/zomb_runner_male1-death-19.wav",
+			"voices/default/infected/zomb_runner_male1-death-20.wav"
 		}
 
 		self.ToTU_Almanac_VoiceActor = "Male Zombie (No More Room In Hell)"
@@ -1433,248 +1484,737 @@ function ENT:ZombieSounds_GiveDefault()
 	else
 
 		self.SoundTbl_Idle = {
-			"vj_lnrhl2/walker_male/idle1.wav",
-			"vj_lnrhl2/walker_male/idle2.wav",
-			"vj_lnrhl2/walker_male/idle3.wav",
-			"vj_lnrhl2/walker_male/idle4.wav",
-			"vj_lnrhl2/walker_male/idle5.wav",
-			"vj_lnrhl2/walker_male/idle6.wav",
-			"vj_lnrhl2/walker_male/idle7.wav",
-			"vj_lnrhl2/walker_male/idle8.wav",
-			"vj_lnrhl2/walker_male/idle9.wav",
-			"vj_lnrhl2/walker_male/idle10.wav",
-			"vj_lnrhl2/walker_male/idle11.wav",
-			"vj_lnrhl2/walker_male/idle12.wav",
-			"vj_lnrhl2/walker_male/idle13.wav",
-			"vj_lnrhl2/walker_male/idle14.wav",
-			"vj_lnrhl2/walker_male/idle15.wav",	
-			"vj_lnrhl2/walker_male/idle16.wav",
-			"vj_lnrhl2/walker_male/idle17.wav",
-			"vj_lnrhl2/walker_male/idle18.wav",
-			"vj_lnrhl2/walker_male/idle19.wav",
-			"vj_lnrhl2/walker_male/idle20.wav"
+			"voices/default/walker/idle1.wav",
+			"voices/default/walker/idle2.wav",
+			"voices/default/walker/idle3.wav",
+			"voices/default/walker/idle4.wav",
+			"voices/default/walker/idle5.wav",
+			"voices/default/walker/idle6.wav",
+			"voices/default/walker/idle7.wav",
+			"voices/default/walker/idle8.wav",
+			"voices/default/walker/idle9.wav",
+			"voices/default/walker/idle10.wav",
+			"voices/default/walker/idle11.wav",
+			"voices/default/walker/idle12.wav",
+			"voices/default/walker/idle13.wav",
+			"voices/default/walker/idle14.wav",
+			"voices/default/walker/idle15.wav",	
+			"voices/default/walker/idle16.wav",
+			"voices/default/walker/idle17.wav",
+			"voices/default/walker/idle18.wav",
+			"voices/default/walker/idle19.wav",
+			"voices/default/walker/idle20.wav"
 		}
 
 		self.SoundTbl_Alert = {
-			"vj_lnrhl2/walker_male/alert_sham_m_01.wav",
-			"vj_lnrhl2/walker_male/alert_sham_m_02.wav",
-			"vj_lnrhl2/walker_male/alert_sham_m_03.wav",
-			"vj_lnrhl2/walker_male/alert_sham_m_04.wav",
-			"vj_lnrhl2/walker_male/alert_sham_m_05.wav",
-			"vj_lnrhl2/walker_male/alert_sham_m_06.wav",
-			"vj_lnrhl2/walker_male/alert_sham_m_07.wav",
-			"vj_lnrhl2/walker_male/alert_sham_m_08.wav",
-			"vj_lnrhl2/walker_male/alert_sham_m_09.wav",
-			"vj_lnrhl2/walker_male/alert_sham_m_10.wav",
-			"vj_lnrhl2/walker_male/alert_sham_m_11.wav",
-			"vj_lnrhl2/walker_male/alert_sham_m_12.wav",
-			"vj_lnrhl2/walker_male/alert_sham_m_13.wav",
-			"vj_lnrhl2/walker_male/alert_sham_m_14.wav",
-			"vj_lnrhl2/walker_male/alert_sham_m_15.wav",
-			"vj_lnrhl2/walker_male/alert_sham_m_16.wav",
-			"vj_lnrhl2/walker_male/alert_sham_m_17.wav",
-			"vj_lnrhl2/walker_male/alert_sham_m_18.wav",
-			"vj_lnrhl2/walker_male/alert_sham_m_19.wav",
-			"vj_lnrhl2/walker_male/alert_sham_m_20.wav",	
-			"vj_lnrhl2/walker_male/alert_sham_m_21.wav",
-			"vj_lnrhl2/walker_male/alert1.wav",
-			"vj_lnrhl2/walker_male/alert2.wav",
-			"vj_lnrhl2/walker_male/alert3.wav",
-			"vj_lnrhl2/walker_male/alert4.wav",	
-			"vj_lnrhl2/walker_male/alert5.wav",
-			"vj_lnrhl2/walker_male/alert6.wav",
-			"vj_lnrhl2/walker_male/alert7.wav",
-			"vj_lnrhl2/walker_male/alert8.wav",
-			"vj_lnrhl2/walker_male/alert9.wav",	
-			"vj_lnrhl2/walker_male/alert10.wav"		
+			"voices/default/walker/alert_sham_m_01.wav",
+			"voices/default/walker/alert_sham_m_02.wav",
+			"voices/default/walker/alert_sham_m_03.wav",
+			"voices/default/walker/alert_sham_m_04.wav",
+			"voices/default/walker/alert_sham_m_05.wav",
+			"voices/default/walker/alert_sham_m_06.wav",
+			"voices/default/walker/alert_sham_m_07.wav",
+			"voices/default/walker/alert_sham_m_08.wav",
+			"voices/default/walker/alert_sham_m_09.wav",
+			"voices/default/walker/alert_sham_m_10.wav",
+			"voices/default/walker/alert_sham_m_11.wav",
+			"voices/default/walker/alert_sham_m_12.wav",
+			"voices/default/walker/alert_sham_m_13.wav",
+			"voices/default/walker/alert_sham_m_14.wav",
+			"voices/default/walker/alert_sham_m_15.wav",
+			"voices/default/walker/alert_sham_m_16.wav",
+			"voices/default/walker/alert_sham_m_17.wav",
+			"voices/default/walker/alert_sham_m_18.wav",
+			"voices/default/walker/alert_sham_m_19.wav",
+			"voices/default/walker/alert_sham_m_20.wav",	
+			"voices/default/walker/alert_sham_m_21.wav",
+			"voices/default/walker/alert1.wav",
+			"voices/default/walker/alert2.wav",
+			"voices/default/walker/alert3.wav",
+			"voices/default/walker/alert4.wav",	
+			"voices/default/walker/alert5.wav",
+			"voices/default/walker/alert6.wav",
+			"voices/default/walker/alert7.wav",
+			"voices/default/walker/alert8.wav",
+			"voices/default/walker/alert9.wav",	
+			"voices/default/walker/alert10.wav"		
 		}
 
 		self.SoundTbl_CombatIdle = {
-			"vj_lnrhl2/walker_male/pursuit_sham_m_01.wav",
-			"vj_lnrhl2/walker_male/pursuit_sham_m_02.wav",
-			"vj_lnrhl2/walker_male/pursuit_sham_m_03.wav",
-			"vj_lnrhl2/walker_male/pursuit_sham_m_04.wav",
-			"vj_lnrhl2/walker_male/pursuit_sham_m_05.wav",
-			"vj_lnrhl2/walker_male/pursuit_sham_m_06.wav",
-			"vj_lnrhl2/walker_male/pursuit_sham_m_07.wav",
-			"vj_lnrhl2/walker_male/pursuit_sham_m_08.wav",
-			"vj_lnrhl2/walker_male/pursuit_sham_m_09.wav",
-			"vj_lnrhl2/walker_male/pursuit_sham_m_10.wav",
-			"vj_lnrhl2/walker_male/pursuit_sham_m_11.wav",
-			"vj_lnrhl2/walker_male/pursuit_sham_m_12.wav",
-			"vj_lnrhl2/walker_male/pursuit_sham_m_13.wav",
-			"vj_lnrhl2/walker_male/pursuit_sham_m_14.wav",
-			"vj_lnrhl2/walker_male/pursuit_sham_m_15.wav",
-			"vj_lnrhl2/walker_male/pursuit_sham_m_16.wav",
-			"vj_lnrhl2/walker_male/pursuit_sham_m_17.wav",
-			"vj_lnrhl2/walker_male/pursuit_sham_m_18.wav"
+			"voices/default/walker/pursuit_sham_m_01.wav",
+			"voices/default/walker/pursuit_sham_m_02.wav",
+			"voices/default/walker/pursuit_sham_m_03.wav",
+			"voices/default/walker/pursuit_sham_m_04.wav",
+			"voices/default/walker/pursuit_sham_m_05.wav",
+			"voices/default/walker/pursuit_sham_m_06.wav",
+			"voices/default/walker/pursuit_sham_m_07.wav",
+			"voices/default/walker/pursuit_sham_m_08.wav",
+			"voices/default/walker/pursuit_sham_m_09.wav",
+			"voices/default/walker/pursuit_sham_m_10.wav",
+			"voices/default/walker/pursuit_sham_m_11.wav",
+			"voices/default/walker/pursuit_sham_m_12.wav",
+			"voices/default/walker/pursuit_sham_m_13.wav",
+			"voices/default/walker/pursuit_sham_m_14.wav",
+			"voices/default/walker/pursuit_sham_m_15.wav",
+			"voices/default/walker/pursuit_sham_m_16.wav",
+			"voices/default/walker/pursuit_sham_m_17.wav",
+			"voices/default/walker/pursuit_sham_m_18.wav"
 		}
 
 		self.SoundTbl_BeforeMeleeAttack = {
-			"vj_lnrhl2/walker_male/attack_sham_m_01.wav",
-			"vj_lnrhl2/walker_male/attack_sham_m_02.wav",
-			"vj_lnrhl2/walker_male/attack_sham_m_03.wav",
-			"vj_lnrhl2/walker_male/attack_sham_m_04.wav",
-			"vj_lnrhl2/walker_male/attack_sham_m_05.wav",
-			"vj_lnrhl2/walker_male/attack_sham_m_06.wav",
-			"vj_lnrhl2/walker_male/attack_sham_m_07.wav",
-			"vj_lnrhl2/walker_male/attack_sham_m_08.wav",
-			"vj_lnrhl2/walker_male/attack_sham_m_09.wav",
-			"vj_lnrhl2/walker_male/attack_sham_m_10.wav",
-			"vj_lnrhl2/walker_male/attack_sham_m_11.wav",
-			"vj_lnrhl2/walker_male/attack_sham_m_12.wav",
-			"vj_lnrhl2/walker_male/attack_sham_m_13.wav",
-			"vj_lnrhl2/walker_male/attack_sham_m_14.wav",
-			"vj_lnrhl2/walker_male/attack_sham_m_15.wav",
-			"vj_lnrhl2/walker_male/attack_sham_m_16.wav",
-			"vj_lnrhl2/walker_male/attack_sham_m_17.wav",
-			"vj_lnrhl2/walker_male/attack_sham_m_18.wav",
-			"vj_lnrhl2/walker_male/attack_sham_m_19.wav",
-			"vj_lnrhl2/walker_male/attack_sham_m_20.wav",	
-			"vj_lnrhl2/walker_male/attack_sham_m_21.wav",
-			"vj_lnrhl2/walker_male/attack_sham_m_22.wav"	
+			"voices/default/walker/attack_sham_m_01.wav",
+			"voices/default/walker/attack_sham_m_02.wav",
+			"voices/default/walker/attack_sham_m_03.wav",
+			"voices/default/walker/attack_sham_m_04.wav",
+			"voices/default/walker/attack_sham_m_05.wav",
+			"voices/default/walker/attack_sham_m_06.wav",
+			"voices/default/walker/attack_sham_m_07.wav",
+			"voices/default/walker/attack_sham_m_08.wav",
+			"voices/default/walker/attack_sham_m_09.wav",
+			"voices/default/walker/attack_sham_m_10.wav",
+			"voices/default/walker/attack_sham_m_11.wav",
+			"voices/default/walker/attack_sham_m_12.wav",
+			"voices/default/walker/attack_sham_m_13.wav",
+			"voices/default/walker/attack_sham_m_14.wav",
+			"voices/default/walker/attack_sham_m_15.wav",
+			"voices/default/walker/attack_sham_m_16.wav",
+			"voices/default/walker/attack_sham_m_17.wav",
+			"voices/default/walker/attack_sham_m_18.wav",
+			"voices/default/walker/attack_sham_m_19.wav",
+			"voices/default/walker/attack_sham_m_20.wav",	
+			"voices/default/walker/attack_sham_m_21.wav",
+			"voices/default/walker/attack_sham_m_22.wav"	
 		}
 	
 		self.SoundTbl_Pain = {
-			"vj_lnrhl2/walker_male/pain01.wav",
-			"vj_lnrhl2/walker_male/pain02.wav",
-			"vj_lnrhl2/walker_male/pain03.wav",
-			"vj_lnrhl2/walker_male/pain04.wav",
-			"vj_lnrhl2/walker_male/pain05.wav"
+			"voices/default/walker/pain01.wav",
+			"voices/default/walker/pain02.wav",
+			"voices/default/walker/pain03.wav",
+			"voices/default/walker/pain04.wav",
+			"voices/default/walker/pain05.wav"
 		}
 
 		self.SoundTbl_Death = {
-			"vj_lnrhl2/walker_male/die01.wav",
-			"vj_lnrhl2/walker_male/die02.wav",
-			"vj_lnrhl2/walker_male/die03.wav",
-			"vj_lnrhl2/walker_male/die04.wav",
-			"vj_lnrhl2/walker_male/die05.wav"
+			"voices/default/walker/die01.wav",
+			"voices/default/walker/die02.wav",
+			"voices/default/walker/die03.wav",
+			"voices/default/walker/die04.wav",
+			"voices/default/walker/die05.wav"
 		}
 
 		self.ToTU_Almanac_VoiceActor = "Male Zombie (No More Room In Hell)"
 
 		if GetConVar("VJ_ToTU_General_DefaultVoices_AltWalker"):GetInt() == 1 then
 
+			self.SoundTbl_Idle = {
+				"voices/dlbiter/idle_1.mp3",
+				"voices/dlbiter/idle_2.mp3",
+				"voices/dlbiter/idle_3.mp3",
+				"voices/dlbiter/idle_4.mp3",
+				"voices/dlbiter/idle_5.mp3",
+				"voices/dlbiter/idle_6.mp3",
+				"voices/dlbiter/idle_7.mp3",
+				"voices/dlbiter/idle_8.mp3",
+				"voices/dlbiter/idle_9.mp3",
+				"voices/dlbiter/idle_10.mp3",
+				"voices/dlbiter/idle_11.mp3",
+				"voices/dlbiter/idle_12.mp3",
+				"voices/dlbiter/idle_13.mp3",
+				"voices/dlbiter/idle_14.mp3",
+				"voices/dlbiter/idle_15.mp3",
+				"voices/dlbiter/idle_16.mp3",
+				"voices/dlbiter/idle_17.mp3",
+				"voices/dlbiter/idle_18.mp3",
+				"voices/dlbiter/idle_19.mp3",
+				"voices/dlbiter/idle_20.mp3",
+				"voices/dlbiter/idle_21.mp3",
+				"voices/dlbiter/idle_22.mp3",
+				"voices/dlbiter/idle_23.mp3",
+				"voices/dlbiter/idle_24.mp3",
+				"voices/dlbiter/idle_25.mp3",
+				"voices/dlbiter/idle_26.mp3",
+				"voices/dlbiter/idle_27.mp3",
+				"voices/dlbiter/idle_28.mp3",
+			}
+
+			self.SoundTbl_Alert = {
+				"voices/dlbiter/alert_1.mp3",
+				"voices/dlbiter/alert_2.mp3",
+				"voices/dlbiter/alert_3.mp3",
+				"voices/dlbiter/alert_4.mp3",
+				"voices/dlbiter/alert_5.mp3",
+			}
+
+			self.SoundTbl_CombatIdle = {
+				"voices/dlbiter/idle_1.mp3",
+				"voices/dlbiter/idle_2.mp3",
+				"voices/dlbiter/idle_3.mp3",
+				"voices/dlbiter/idle_4.mp3",
+				"voices/dlbiter/idle_5.mp3",
+				"voices/dlbiter/idle_6.mp3",
+				"voices/dlbiter/idle_7.mp3",
+				"voices/dlbiter/idle_8.mp3",
+				"voices/dlbiter/idle_9.mp3",
+				"voices/dlbiter/idle_10.mp3",
+				"voices/dlbiter/idle_11.mp3",
+				"voices/dlbiter/idle_12.mp3",
+				"voices/dlbiter/idle_13.mp3",
+				"voices/dlbiter/idle_14.mp3",
+				"voices/dlbiter/idle_15.mp3",
+				"voices/dlbiter/idle_16.mp3",
+				"voices/dlbiter/idle_17.mp3",
+				"voices/dlbiter/idle_18.mp3",
+				"voices/dlbiter/idle_19.mp3",
+				"voices/dlbiter/idle_20.mp3",
+				"voices/dlbiter/idle_21.mp3",
+				"voices/dlbiter/idle_22.mp3",
+				"voices/dlbiter/idle_23.mp3",
+				"voices/dlbiter/idle_24.mp3",
+				"voices/dlbiter/idle_25.mp3",
+				"voices/dlbiter/idle_26.mp3",
+				"voices/dlbiter/idle_27.mp3",
+				"voices/dlbiter/idle_28.mp3",
+			}
+
+			self.SoundTbl_BeforeMeleeAttack = {
+				"voices/dlbiter/attack_1.mp3",
+				"voices/dlbiter/attack_2.mp3",
+				"voices/dlbiter/attack_3.mp3",
+				"voices/dlbiter/attack_4.mp3",
+				"voices/dlbiter/attack_5.mp3",
+			}
+		
+			self.SoundTbl_Pain = {
+				"voices/dlbiter/pain_1.mp3",
+				"voices/dlbiter/pain_2.mp3",
+				"voices/dlbiter/pain_3.mp3",
+				"voices/dlbiter/pain_4.mp3",
+				"voices/dlbiter/pain_5.mp3",
+				"voices/dlbiter/pain_6.mp3",
+				"voices/dlbiter/pain_7.mp3",
+				"voices/dlbiter/pain_8.mp3",
+			}
+
+			self.SoundTbl_Death = {
+				"voices/dlbiter/death_1.mp3",
+				"voices/dlbiter/death_2.mp3",
+				"voices/dlbiter/death_3.mp3",
+				"voices/dlbiter/death_4.mp3",
+				"voices/dlbiter/death_5.mp3",
+			}
+			
+			self.ToTU_Almanac_VoiceActor = "Biter (Dying Light)"
+
+			if self.LNR_Runner then
+				self.SoundTbl_CombatIdle = {
+					"voices/dlbiter/berserker_short_1.mp3",
+					"voices/dlbiter/berserker_short_2.mp3",
+					"voices/dlbiter/berserker_short_3.mp3",
+					"voices/dlbiter/berserker_short_4.mp3",
+					"voices/dlbiter/berserker_short_5.mp3",
+					"voices/dlbiter/berserker_short_6.mp3",
+					"voices/dlbiter/berserker_short_7.mp3",
+				}
+			end
+
+			if self.ToTU_Rusher then
+				self.SoundTbl_CombatIdle = {
+					"voices/dlbiter/berserker_long_1.mp3",
+					"voices/dlbiter/berserker_long_2.mp3",
+					"voices/dlbiter/berserker_long_3.mp3",
+					"voices/dlbiter/berserker_long_4.mp3",
+					"voices/dlbiter/berserker_long_5.mp3",
+				}
+			end
+
+		end
+
+	end
+
+end
+---------------------------------------------------------------------------------------------------------------------------------------------
+function ENT:ZombieSounds_GiveDefault_Female()
+
+	if self.LNR_Infected then
+
 		self.SoundTbl_Idle = {
-			"voices/dlbiter/idle_1.mp3",
-			"voices/dlbiter/idle_2.mp3",
-			"voices/dlbiter/idle_3.mp3",
-			"voices/dlbiter/idle_4.mp3",
-			"voices/dlbiter/idle_5.mp3",
-			"voices/dlbiter/idle_6.mp3",
-			"voices/dlbiter/idle_7.mp3",
-			"voices/dlbiter/idle_8.mp3",
-			"voices/dlbiter/idle_9.mp3",
-			"voices/dlbiter/idle_10.mp3",
-			"voices/dlbiter/idle_11.mp3",
-			"voices/dlbiter/idle_12.mp3",
-			"voices/dlbiter/idle_13.mp3",
-			"voices/dlbiter/idle_14.mp3",
-			"voices/dlbiter/idle_15.mp3",
-			"voices/dlbiter/idle_16.mp3",
-			"voices/dlbiter/idle_17.mp3",
-			"voices/dlbiter/idle_18.mp3",
-			"voices/dlbiter/idle_19.mp3",
-			"voices/dlbiter/idle_20.mp3",
-			"voices/dlbiter/idle_21.mp3",
-			"voices/dlbiter/idle_22.mp3",
-			"voices/dlbiter/idle_23.mp3",
-			"voices/dlbiter/idle_24.mp3",
-			"voices/dlbiter/idle_25.mp3",
-			"voices/dlbiter/idle_26.mp3",
-			"voices/dlbiter/idle_27.mp3",
-			"voices/dlbiter/idle_28.mp3",
+			"voices/default/infected/zomb_runner_male1-idle-01.wav",
+			"voices/default/infected/zomb_runner_male1-idle-02.wav",
+			"voices/default/infected/zomb_runner_male1-idle-03.wav",
+			"voices/default/infected/zomb_runner_male1-idle-04.wav",
+			"voices/default/infected/zomb_runner_male1-idle-05.wav",
+			"voices/default/infected/zomb_runner_male1-idle-06.wav",
+			"voices/default/infected/zomb_runner_male1-idle-07.wav",
+			"voices/default/infected/zomb_runner_male1-idle-08.wav",
+			"voices/default/infected/zomb_runner_male1-idle-09.wav",
+			"voices/default/infected/zomb_runner_male1-idle-10.wav"
 		}
 
 		self.SoundTbl_Alert = {
-			"voices/dlbiter/alert_1.mp3",
-			"voices/dlbiter/alert_2.mp3",
-			"voices/dlbiter/alert_3.mp3",
-			"voices/dlbiter/alert_4.mp3",
-			"voices/dlbiter/alert_5.mp3",
+			"voices/default/infected/zomb_runner_male1-alert-01.wav",
+			"voices/default/infected/zomb_runner_male1-alert-02.wav",
+			"voices/default/infected/zomb_runner_male1-alert-03.wav",
+			"voices/default/infected/zomb_runner_male1-alert-04.wav",
+			"voices/default/infected/zomb_runner_male1-alert-05.wav",
+			"voices/default/infected/zomb_runner_male1-alert-06.wav",
+			"voices/default/infected/zomb_runner_male1-alert-07.wav",
+			"voices/default/infected/zomb_runner_male1-alert-08.wav",
+			"voices/default/infected/zomb_runner_male1-alert-09.wav",
+			"voices/default/infected/zomb_runner_male1-alert-10.wav",
+			"voices/default/infected/zomb_runner_male1-alert-11.wav",
+			"voices/default/infected/zomb_runner_male1-alert-12.wav",
+			"voices/default/infected/zomb_runner_male1-alert-13.wav",
+			"voices/default/infected/zomb_runner_male1-alert-14.wav",
+			"voices/default/infected/zomb_runner_male1-alert-15.wav"
 		}
 
 		self.SoundTbl_CombatIdle = {
-			"voices/dlbiter/idle_1.mp3",
-			"voices/dlbiter/idle_2.mp3",
-			"voices/dlbiter/idle_3.mp3",
-			"voices/dlbiter/idle_4.mp3",
-			"voices/dlbiter/idle_5.mp3",
-			"voices/dlbiter/idle_6.mp3",
-			"voices/dlbiter/idle_7.mp3",
-			"voices/dlbiter/idle_8.mp3",
-			"voices/dlbiter/idle_9.mp3",
-			"voices/dlbiter/idle_10.mp3",
-			"voices/dlbiter/idle_11.mp3",
-			"voices/dlbiter/idle_12.mp3",
-			"voices/dlbiter/idle_13.mp3",
-			"voices/dlbiter/idle_14.mp3",
-			"voices/dlbiter/idle_15.mp3",
-			"voices/dlbiter/idle_16.mp3",
-			"voices/dlbiter/idle_17.mp3",
-			"voices/dlbiter/idle_18.mp3",
-			"voices/dlbiter/idle_19.mp3",
-			"voices/dlbiter/idle_20.mp3",
-			"voices/dlbiter/idle_21.mp3",
-			"voices/dlbiter/idle_22.mp3",
-			"voices/dlbiter/idle_23.mp3",
-			"voices/dlbiter/idle_24.mp3",
-			"voices/dlbiter/idle_25.mp3",
-			"voices/dlbiter/idle_26.mp3",
-			"voices/dlbiter/idle_27.mp3",
-			"voices/dlbiter/idle_28.mp3",
+			"voices/default/infected/zomb_runner_male1-pursuit-01.wav",
+			"voices/default/infected/zomb_runner_male1-pursuit-02.wav",
+			"voices/default/infected/zomb_runner_male1-pursuit-03.wav",
+			"voices/default/infected/zomb_runner_male1-pursuit-04.wav",
+			"voices/default/infected/zomb_runner_male1-pursuit-05.wav",
+			"voices/default/infected/zomb_runner_male1-pursuit-06.wav",
+			"voices/default/infected/zomb_runner_male1-pursuit-07.wav",
+			"voices/default/infected/zomb_runner_male1-pursuit-08.wav",
+			"voices/default/infected/zomb_runner_male1-pursuit-09.wav",
+			"voices/default/infected/zomb_runner_male1-pursuit-10.wav",
+			"voices/default/infected/zomb_runner_male1-pursuit-11.wav",
+			"voices/default/infected/zomb_runner_male1-pursuit-12.wav",
+			"voices/default/infected/zomb_runner_male1-pursuit-13.wav"	
 		}
 
 		self.SoundTbl_BeforeMeleeAttack = {
-			"voices/dlbiter/attack_1.mp3",
-			"voices/dlbiter/attack_2.mp3",
-			"voices/dlbiter/attack_3.mp3",
-			"voices/dlbiter/attack_4.mp3",
-			"voices/dlbiter/attack_5.mp3",
+			"voices/default/infected/zomb_runner_male1-attack01.wav",
+			"voices/default/infected/zomb_runner_male1-attack02.wav",
+			"voices/default/infected/zomb_runner_male1-attack03.wav",
+			"voices/default/infected/zomb_runner_male1-attack04.wav",
+			"voices/default/infected/zomb_runner_male1-attack05.wav",
+			"voices/default/infected/zomb_runner_male1-attack06.wav",
+			"voices/default/infected/zomb_runner_male1-attack07.wav",
+			"voices/default/infected/zomb_runner_male1-attack08.wav",
+			"voices/default/infected/zomb_runner_male1-attack09.wav",
+			"voices/default/infected/zomb_runner_male1-attack10.wav",
+			"voices/default/infected/zomb_runner_male1-attack11.wav",
+			"voices/default/infected/zomb_runner_male1-attack12.wav",
+			"voices/default/infected/zomb_runner_male1-attack13.wav",
+			"voices/default/infected/zomb_runner_male1-attack14.wav",
+			"voices/default/infected/zomb_runner_male1-attack15.wav",
+			"voices/default/infected/zomb_runner_male1-attack16.wav",
+			"voices/default/infected/zomb_runner_male1-attack17.wav",
+			"voices/default/infected/zomb_runner_male1-attack18.wav",
+			"voices/default/infected/zomb_runner_male1-attack19.wav",
+			"voices/default/infected/zomb_runner_male1-attack20.wav"	
 		}
-	
+
 		self.SoundTbl_Pain = {
-			"voices/dlbiter/pain_1.mp3",
-			"voices/dlbiter/pain_2.mp3",
-			"voices/dlbiter/pain_3.mp3",
-			"voices/dlbiter/pain_4.mp3",
-			"voices/dlbiter/pain_5.mp3",
-			"voices/dlbiter/pain_6.mp3",
-			"voices/dlbiter/pain_7.mp3",
-			"voices/dlbiter/pain_8.mp3",
+			"voices/default/infected/zomb_runner_male1-pain01.wav",
+			"voices/default/infected/zomb_runner_male1-pain02.wav",
+			"voices/default/infected/zomb_runner_male1-pain03.wav",
+			"voices/default/infected/zomb_runner_male1-pain04.wav",
+			"voices/default/infected/zomb_runner_male1-pain05.wav",
+			"voices/default/infected/zomb_runner_male1-pain06.wav",
+			"voices/default/infected/zomb_runner_male1-pain07.wav",
+			"voices/default/infected/zomb_runner_male1-pain08.wav",
+			"voices/default/infected/zomb_runner_male1-pain09.wav",
+			"voices/default/infected/zomb_runner_male1-pain10.wav",
+			"voices/default/infected/zomb_runner_male1-pain11.wav",
+			"voices/default/infected/zomb_runner_male1-pain12.wav",
+			"voices/default/infected/zomb_runner_male1-pain13.wav",
+			"voices/default/infected/zomb_runner_male1-pain14.wav",
+			"voices/default/infected/zomb_runner_male1-pain15.wav",
+			"voices/default/infected/zomb_runner_male1-pain16.wav",
+			"voices/default/infected/zomb_runner_male1-pain17.wav",
+			"voices/default/infected/zomb_runner_male1-pain18.wav"
 		}
 
 		self.SoundTbl_Death = {
-			"voices/dlbiter/death_1.mp3",
-			"voices/dlbiter/death_2.mp3",
-			"voices/dlbiter/death_3.mp3",
-			"voices/dlbiter/death_4.mp3",
-			"voices/dlbiter/death_5.mp3",
+			"voices/default/infected/zomb_runner_male1-death-01.wav",
+			"voices/default/infected/zomb_runner_male1-death-02.wav",
+			"voices/default/infected/zomb_runner_male1-death-03.wav",
+			"voices/default/infected/zomb_runner_male1-death-04.wav",
+			"voices/default/infected/zomb_runner_male1-death-05.wav",
+			"voices/default/infected/zomb_runner_male1-death-06.wav",
+			"voices/default/infected/zomb_runner_male1-death-07.wav",
+			"voices/default/infected/zomb_runner_male1-death-08.wav",
+			"voices/default/infected/zomb_runner_male1-death-09.wav",
+			"voices/default/infected/zomb_runner_male1-death-10.wav",
+			"voices/default/infected/zomb_runner_male1-death-11.wav",
+			"voices/default/infected/zomb_runner_male1-death-12.wav",
+			"voices/default/infected/zomb_runner_male1-death-13.wav",
+			"voices/default/infected/zomb_runner_male1-death-14.wav",
+			"voices/default/infected/zomb_runner_male1-death-15.wav",
+			"voices/default/infected/zomb_runner_male1-death-16.wav",
+			"voices/default/infected/zomb_runner_male1-death-17.wav",
+			"voices/default/infected/zomb_runner_male1-death-18.wav",
+			"voices/default/infected/zomb_runner_male1-death-19.wav",
+			"voices/default/infected/zomb_runner_male1-death-20.wav"
 		}
+
+		self.ToTU_Almanac_VoiceActor = "Male Zombie (No More Room In Hell)"
+
+		if GetConVar("VJ_ToTU_General_DefaultVoices_AltInfected"):GetInt() == 1 then
 		
-		self.ToTU_Almanac_VoiceActor = "Biter (Dying Light)"
+		self.SoundTbl_Idle = {
+			"voices/l4d/common/idle/breathing/breathing01.wav",
+			"voices/l4d/common/idle/breathing/breathing08.wav",
+			"voices/l4d/common/idle/breathing/breathing09.wav",
+			"voices/l4d/common/idle/breathing/breathing10.wav",
+			"voices/l4d/common/idle/breathing/breathing13.wav",
+			"voices/l4d/common/idle/breathing/breathing16.wav",
+			"voices/l4d/common/idle/breathing/breathing18.wav",
+			"voices/l4d/common/idle/breathing/breathing25.wav",
+			"voices/l4d/common/idle/breathing/breathing26.wav",
+			"voices/l4d/common/idle/breathing/idle_breath_01.wav",
+			"voices/l4d/common/idle/breathing/idle_breath_02.wav",
+			"voices/l4d/common/idle/breathing/idle_breath_03.wav",
+			"voices/l4d/common/idle/breathing/idle_breath_04.wav",
+			"voices/l4d/common/idle/breathing/idle_breath_06.wav",
+			"voices/l4d/common/idle/moaning/moan01.wav",
+			"voices/l4d/common/idle/moaning/moan02.wav",
+			"voices/l4d/common/idle/moaning/moan03.wav",
+			"voices/l4d/common/idle/moaning/moan04.wav",
+			"voices/l4d/common/idle/moaning/moan05.wav",
+			"voices/l4d/common/idle/moaning/moan06.wav",
+			"voices/l4d/common/idle/moaning/moan07.wav",
+			"voices/l4d/common/idle/moaning/moan08.wav",
+			"voices/l4d/common/idle/moaning/moan09.wav",
+			"voices/l4d/common/idle/mumbling/mumbling01.wav",
+			"voices/l4d/common/idle/mumbling/mumbling02.wav",
+			"voices/l4d/common/idle/mumbling/mumbling03.wav",
+			"voices/l4d/common/idle/mumbling/mumbling04.wav",
+			"voices/l4d/common/idle/mumbling/mumbling05.wav",
+			"voices/l4d/common/idle/mumbling/mumbling06.wav",
+			"voices/l4d/common/idle/mumbling/mumbling07.wav",
+			"voices/l4d/common/idle/mumbling/mumbling08.wav",
+		}
 
-		if self.LNR_Runner then
-			self.SoundTbl_CombatIdle = {
-				"voices/dlbiter/berserker_short_1.mp3",
-				"voices/dlbiter/berserker_short_2.mp3",
-				"voices/dlbiter/berserker_short_3.mp3",
-				"voices/dlbiter/berserker_short_4.mp3",
-				"voices/dlbiter/berserker_short_5.mp3",
-				"voices/dlbiter/berserker_short_6.mp3",
-				"voices/dlbiter/berserker_short_7.mp3",
-			}
+		self.SoundTbl_Alert = {
+			"voices/l4d/common/alert/alert/alert13.wav",
+			"voices/l4d/common/alert/alert/alert16.wav",
+			"voices/l4d/common/alert/alert/alert22.wav",
+			"voices/l4d/common/alert/alert/alert23.wav",
+			"voices/l4d/common/alert/alert/alert25.wav",
+			"voices/l4d/common/alert/alert/alert26.wav",
+			"voices/l4d/common/alert/alert/alert27.wav",
+			"voices/l4d/common/alert/alert/alert36.wav",
+			"voices/l4d/common/alert/alert/alert37.wav",
+			"voices/l4d/common/alert/alert/alert38.wav",
+			"voices/l4d/common/alert/alert/alert39.wav",
+			"voices/l4d/common/alert/alert/alert40.wav",
+			"voices/l4d/common/alert/alert/alert41.wav",
+			"voices/l4d/common/alert/alert/alert42.wav",
+			"voices/l4d/common/alert/alert/alert43.wav",
+			"voices/l4d/common/alert/alert/alert44.wav",
+			"voices/l4d/common/alert/alert/male/alert50.wav",
+			"voices/l4d/common/alert/alert/male/alert51.wav",
+			"voices/l4d/common/alert/alert/male/alert52.wav",
+			"voices/l4d/common/alert/alert/male/alert53.wav",
+			"voices/l4d/common/alert/alert/male/alert54.wav",
+			"voices/l4d/common/alert/alert/male/alert55.wav",
+		}
+
+		self.SoundTbl_CombatIdle = {
+			"voices/l4d/common/action/rage/shoved_1.wav",
+			"voices/l4d/common/action/rage/shoved_2.wav",
+			"voices/l4d/common/action/rage/shoved_3.wav",
+			"voices/l4d/common/action/rage/shoved_4.wav",
+			"voices/l4d/common/action/rage/male/rage_50.wav",
+			"voices/l4d/common/action/rage/male/rage_51.wav",
+			"voices/l4d/common/action/rage/male/rage_52.wav",
+			"voices/l4d/common/action/rage/male/rage_53.wav",
+			"voices/l4d/common/action/rage/male/rage_54.wav",
+			"voices/l4d/common/action/rage/male/rage_55.wav",
+			"voices/l4d/common/action/rage/male/rage_56.wav",
+			"voices/l4d/common/action/rage/male/rage_57.wav",
+			"voices/l4d/common/action/rage/male/rage_58.wav",
+			"voices/l4d/common/action/rage/male/rage_59.wav",
+			"voices/l4d/common/action/rage/male/rage_60.wav",
+			"voices/l4d/common/action/rage/male/rage_61.wav",
+			"voices/l4d/common/action/rage/male/rage_62.wav",
+			"voices/l4d/common/action/rage/male/rage_64.wav",
+			"voices/l4d/common/action/rage/male/rage_65.wav",
+			"voices/l4d/common/action/rage/male/rage_66.wav",
+			"voices/l4d/common/action/rage/male/rage_67.wav",
+			"voices/l4d/common/action/rage/male/rage_68.wav",
+			"voices/l4d/common/action/rage/male/rage_69.wav",
+			"voices/l4d/common/action/rage/male/rage_70.wav",
+			"voices/l4d/common/action/rage/male/rage_71.wav",
+			"voices/l4d/common/action/rage/male/rage_72.wav",
+			"voices/l4d/common/action/rage/male/rage_73.wav",
+			"voices/l4d/common/action/rage/male/rage_74.wav",
+			"voices/l4d/common/action/rage/male/rage_75.wav",
+			"voices/l4d/common/action/rage/male/rage_76.wav",
+			"voices/l4d/common/action/rage/male/rage_77.wav",
+			"voices/l4d/common/action/rage/male/rage_78.wav",
+			"voices/l4d/common/action/rage/male/rage_79.wav",
+			"voices/l4d/common/action/rage/male/rage_80.wav",
+			"voices/l4d/common/action/rage/male/rage_81.wav",
+			"voices/l4d/common/action/rage/male/rage_82.wav",
+		}
+
+		self.SoundTbl_BeforeMeleeAttack = {
+			"voices/l4d/common/action/rageat/rage_at_victim01.wav",
+			"voices/l4d/common/action/rageat/rage_at_victim02.wav",
+			"voices/l4d/common/action/rageat/rage_at_victim21.wav",
+			"voices/l4d/common/action/rageat/rage_at_victim22.wav",
+			"voices/l4d/common/action/rageat/rage_at_victim25.wav",
+			"voices/l4d/common/action/rageat/rage_at_victim26.wav",
+			"voices/l4d/common/action/rageat/rage_at_victim34.wav",
+			"voices/l4d/common/action/rageat/rage_at_victim35.wav",
+			"voices/l4d/common/action/rageat/snarl_4.wav",
+			"voices/l4d/common/action/rageat/male/rage_at_victim20.wav",
+			"voices/l4d/common/action/rageat/male/rage_at_victim21.wav",
+			"voices/l4d/common/action/rageat/male/rage_at_victim22.wav",
+			"voices/l4d/common/action/rageat/male/rage_at_victim23.wav",
+			"voices/l4d/common/action/rageat/male/rage_at_victim24.wav",
+			"voices/l4d/common/action/rageat/male/rage_at_victim25.wav",
+			"voices/l4d/common/action/rageat/male/rage_at_victim26.wav",
+			"voices/l4d/common/action/rageat/male/rage_at_victim27.wav",
+			"voices/l4d/common/action/rageat/male/rage_at_victim28.wav",
+			"voices/l4d/common/action/rageat/male/rage_at_victim29.wav",
+			"voices/l4d/common/action/rageat/male/rage_at_victim30.wav",
+			"voices/l4d/common/action/rageat/male/rage_at_victim31.wav",
+			"voices/l4d/common/action/rageat/male/rage_at_victim32.wav",
+			"voices/l4d/common/action/rageat/male/rage_at_victim33.wav",
+			"voices/l4d/common/action/rageat/male/rage_at_victim34.wav",
+			"voices/l4d/common/action/rageat/male/rage_at_victim35.wav",
+			"voices/l4d/common/action/rageat/male/rage_at_victim36.wav",
+			"voices/l4d/common/action/rageat/male/rage_at_victim37.wav",
+		}
+
+		self.SoundTbl_Pain = {
+			"voices/l4d/common/action/been_shot/been_shot_01.wav",
+			"voices/l4d/common/action/been_shot/been_shot_02.wav",
+			"voices/l4d/common/action/been_shot/been_shot_04.wav",
+			"voices/l4d/common/action/been_shot/been_shot_05.wav",
+			"voices/l4d/common/action/been_shot/been_shot_06.wav",
+			"voices/l4d/common/action/been_shot/been_shot_08.wav",
+			"voices/l4d/common/action/been_shot/been_shot_09.wav",
+			"voices/l4d/common/action/been_shot/been_shot_12.wav",
+			"voices/l4d/common/action/been_shot/been_shot_13.wav",
+			"voices/l4d/common/action/been_shot/been_shot_14.wav",
+			"voices/l4d/common/action/been_shot/been_shot_18.wav",
+			"voices/l4d/common/action/been_shot/been_shot_19.wav",
+			"voices/l4d/common/action/been_shot/been_shot_20.wav",
+			"voices/l4d/common/action/been_shot/been_shot_21.wav",
+			"voices/l4d/common/action/been_shot/been_shot_22.wav",
+			"voices/l4d/common/action/been_shot/been_shot_24.wav",
+			"voices/l4d/common/action/been_shot/male/been_shot_30.wav",
+			"voices/l4d/common/action/been_shot/male/been_shot_31.wav",
+			"voices/l4d/common/action/been_shot/male/been_shot_32.wav",
+			"voices/l4d/common/action/been_shot/male/been_shot_33.wav",
+			"voices/l4d/common/action/been_shot/male/been_shot_34.wav",
+			"voices/l4d/common/action/been_shot/male/been_shot_35.wav",
+			"voices/l4d/common/action/been_shot/male/been_shot_36.wav",
+			"voices/l4d/common/action/been_shot/male/been_shot_37.wav",
+		}
+
+		self.SoundTbl_Death = {
+			"voices/l4d/common/action/die/death_14.wav",
+			"voices/l4d/common/action/die/death_17.wav",
+			"voices/l4d/common/action/die/death_18.wav",
+			"voices/l4d/common/action/die/death_19.wav",
+			"voices/l4d/common/action/die/death_22.wav",
+			"voices/l4d/common/action/die/death_23.wav",
+			"voices/l4d/common/action/die/death_24.wav",
+			"voices/l4d/common/action/die/death_25.wav",
+			"voices/l4d/common/action/die/death_26.wav",
+			"voices/l4d/common/action/die/death_27.wav",
+			"voices/l4d/common/action/die/death_28.wav",
+			"voices/l4d/common/action/die/death_29.wav",
+			"voices/l4d/common/action/die/death_30.wav",
+			"voices/l4d/common/action/die/death_32.wav",
+			"voices/l4d/common/action/die/death_33.wav",
+			"voices/l4d/common/action/die/death_34.wav",
+			"voices/l4d/common/action/die/death_35.wav",
+			"voices/l4d/common/action/die/death_36.wav",
+			"voices/l4d/common/action/die/death_37.wav",
+			"voices/l4d/common/action/die/death_38.wav",
+			"voices/l4d/common/action/die/male/death_40.wav",
+			"voices/l4d/common/action/die/male/death_41.wav",
+			"voices/l4d/common/action/die/male/death_42.wav",
+			"voices/l4d/common/action/die/male/death_43.wav",
+			"voices/l4d/common/action/die/male/death_44.wav",
+			"voices/l4d/common/action/die/male/death_45.wav",
+			"voices/l4d/common/action/die/male/death_46.wav",
+			"voices/l4d/common/action/die/male/death_47.wav",
+			"voices/l4d/common/action/die/male/death_48.wav",
+			"voices/l4d/common/action/die/male/death_49.wav",
+		}
+
+		self.ToTU_Almanac_VoiceActor = "Common Infected (Left 4 Dead)"
+
 		end
 
-		if self.ToTU_Rusher then
-			self.SoundTbl_CombatIdle = {
-				"voices/dlbiter/berserker_long_1.mp3",
-				"voices/dlbiter/berserker_long_2.mp3",
-				"voices/dlbiter/berserker_long_3.mp3",
-				"voices/dlbiter/berserker_long_4.mp3",
-				"voices/dlbiter/berserker_long_5.mp3",
+	else
+
+		self.SoundTbl_Idle = {
+			"voices/default/walker/idle1.wav",
+			"voices/default/walker/idle2.wav",
+			"voices/default/walker/idle3.wav",
+			"voices/default/walker/idle4.wav",
+			"voices/default/walker/idle5.wav",
+			"voices/default/walker/idle6.wav",
+			"voices/default/walker/idle7.wav",
+			"voices/default/walker/idle8.wav",
+			"voices/default/walker/idle9.wav",
+			"voices/default/walker/idle10.wav",
+			"voices/default/walker/idle11.wav",
+			"voices/default/walker/idle12.wav",
+			"voices/default/walker/idle13.wav",
+			"voices/default/walker/idle14.wav",
+			"voices/default/walker/idle15.wav",	
+			"voices/default/walker/idle16.wav",
+			"voices/default/walker/idle17.wav",
+			"voices/default/walker/idle18.wav",
+			"voices/default/walker/idle19.wav",
+			"voices/default/walker/idle20.wav"
+		}
+
+		self.SoundTbl_Alert = {
+			"voices/default/walker/alert_sham_m_01.wav",
+			"voices/default/walker/alert_sham_m_02.wav",
+			"voices/default/walker/alert_sham_m_03.wav",
+			"voices/default/walker/alert_sham_m_04.wav",
+			"voices/default/walker/alert_sham_m_05.wav",
+			"voices/default/walker/alert_sham_m_06.wav",
+			"voices/default/walker/alert_sham_m_07.wav",
+			"voices/default/walker/alert_sham_m_08.wav",
+			"voices/default/walker/alert_sham_m_09.wav",
+			"voices/default/walker/alert_sham_m_10.wav",
+			"voices/default/walker/alert_sham_m_11.wav",
+			"voices/default/walker/alert_sham_m_12.wav",
+			"voices/default/walker/alert_sham_m_13.wav",
+			"voices/default/walker/alert_sham_m_14.wav",
+			"voices/default/walker/alert_sham_m_15.wav",
+			"voices/default/walker/alert_sham_m_16.wav",
+			"voices/default/walker/alert_sham_m_17.wav",
+			"voices/default/walker/alert_sham_m_18.wav",
+			"voices/default/walker/alert_sham_m_19.wav",
+			"voices/default/walker/alert_sham_m_20.wav",	
+			"voices/default/walker/alert_sham_m_21.wav",
+			"voices/default/walker/alert1.wav",
+			"voices/default/walker/alert2.wav",
+			"voices/default/walker/alert3.wav",
+			"voices/default/walker/alert4.wav",	
+			"voices/default/walker/alert5.wav",
+			"voices/default/walker/alert6.wav",
+			"voices/default/walker/alert7.wav",
+			"voices/default/walker/alert8.wav",
+			"voices/default/walker/alert9.wav",	
+			"voices/default/walker/alert10.wav"		
+		}
+
+		self.SoundTbl_CombatIdle = {
+			"voices/default/walker/pursuit_sham_m_01.wav",
+			"voices/default/walker/pursuit_sham_m_02.wav",
+			"voices/default/walker/pursuit_sham_m_03.wav",
+			"voices/default/walker/pursuit_sham_m_04.wav",
+			"voices/default/walker/pursuit_sham_m_05.wav",
+			"voices/default/walker/pursuit_sham_m_06.wav",
+			"voices/default/walker/pursuit_sham_m_07.wav",
+			"voices/default/walker/pursuit_sham_m_08.wav",
+			"voices/default/walker/pursuit_sham_m_09.wav",
+			"voices/default/walker/pursuit_sham_m_10.wav",
+			"voices/default/walker/pursuit_sham_m_11.wav",
+			"voices/default/walker/pursuit_sham_m_12.wav",
+			"voices/default/walker/pursuit_sham_m_13.wav",
+			"voices/default/walker/pursuit_sham_m_14.wav",
+			"voices/default/walker/pursuit_sham_m_15.wav",
+			"voices/default/walker/pursuit_sham_m_16.wav",
+			"voices/default/walker/pursuit_sham_m_17.wav",
+			"voices/default/walker/pursuit_sham_m_18.wav"
+		}
+
+		self.SoundTbl_BeforeMeleeAttack = {
+			"voices/default/walker/attack_sham_m_01.wav",
+			"voices/default/walker/attack_sham_m_02.wav",
+			"voices/default/walker/attack_sham_m_03.wav",
+			"voices/default/walker/attack_sham_m_04.wav",
+			"voices/default/walker/attack_sham_m_05.wav",
+			"voices/default/walker/attack_sham_m_06.wav",
+			"voices/default/walker/attack_sham_m_07.wav",
+			"voices/default/walker/attack_sham_m_08.wav",
+			"voices/default/walker/attack_sham_m_09.wav",
+			"voices/default/walker/attack_sham_m_10.wav",
+			"voices/default/walker/attack_sham_m_11.wav",
+			"voices/default/walker/attack_sham_m_12.wav",
+			"voices/default/walker/attack_sham_m_13.wav",
+			"voices/default/walker/attack_sham_m_14.wav",
+			"voices/default/walker/attack_sham_m_15.wav",
+			"voices/default/walker/attack_sham_m_16.wav",
+			"voices/default/walker/attack_sham_m_17.wav",
+			"voices/default/walker/attack_sham_m_18.wav",
+			"voices/default/walker/attack_sham_m_19.wav",
+			"voices/default/walker/attack_sham_m_20.wav",	
+			"voices/default/walker/attack_sham_m_21.wav",
+			"voices/default/walker/attack_sham_m_22.wav"	
+		}
+	
+		self.SoundTbl_Pain = {
+			"voices/default/walker/pain01.wav",
+			"voices/default/walker/pain02.wav",
+			"voices/default/walker/pain03.wav",
+			"voices/default/walker/pain04.wav",
+			"voices/default/walker/pain05.wav"
+		}
+
+		self.SoundTbl_Death = {
+			"voices/default/walker/die01.wav",
+			"voices/default/walker/die02.wav",
+			"voices/default/walker/die03.wav",
+			"voices/default/walker/die04.wav",
+			"voices/default/walker/die05.wav"
+		}
+
+		self.ToTU_Almanac_VoiceActor = "Male Zombie (No More Room In Hell)"
+
+		if GetConVar("VJ_ToTU_General_DefaultVoices_AltWalker"):GetInt() == 1 then
+
+			self.SoundTbl_Idle = {
 			}
-		end
+
+			self.SoundTbl_Alert = {
+				"voices/dlbiter/fem/walker_female00_enemy_spotted_00_0.wav",
+				"voices/dlbiter/fem/walker_female00_enemy_spotted_01_0.wav",
+				"voices/dlbiter/fem/walker_female00_enemy_spotted_02_0.wav",
+				"voices/dlbiter/fem/walker_female00_enemy_spotted_03_0.wav",
+				"voices/dlbiter/fem/walker_female00_enemy_spotted_04_0.wav",
+			}
+
+			self.SoundTbl_CombatIdle = {
+			}
+
+			self.SoundTbl_BeforeMeleeAttack = {
+				"voices/dlbiter/fem/walker_female00_attack_00_0.wav",
+				"voices/dlbiter/fem/walker_female00_attack_01_0.wav",
+				"voices/dlbiter/fem/walker_female00_attack_02_0.wav",
+				"voices/dlbiter/fem/walker_female00_attack_03_0.wav",
+				"voices/dlbiter/fem/walker_female00_attack_04_0.wav",
+				"voices/dlbiter/fem/walker_female00_attack_05_0.wav",
+			}
+		
+			self.SoundTbl_Pain = {
+			}
+
+			self.SoundTbl_Death = {
+				"voices/dlbiter/fem/walker_female00_death_00_0.wav",
+				"voices/dlbiter/fem/walker_female00_death_01_0.wav",
+				"voices/dlbiter/fem/walker_female00_death_02_0.wav",
+				"voices/dlbiter/fem/walker_female00_death_03_0.wav",
+			}
+			
+			self.ToTU_Almanac_VoiceActor = "Biter (Dying Light)"
+
+			if self.LNR_Runner or self.ToTU_Rusher then
+				self.SoundTbl_CombatIdle = {
+					"voices/dlbiter/fem/walker_female00_berserker_00_0.wav",
+					"voices/dlbiter/fem/walker_female00_berserker_01_0.wav",
+					"voices/dlbiter/fem/walker_female00_berserker_02_0.wav",
+					"voices/dlbiter/fem/walker_female00_berserker_03_0.wav",
+				}
+			end
 
 		end
 
@@ -1723,7 +2263,7 @@ function ENT:ZombieWeapons()
 		local RandRedeadWeapon = math.random(1,7)
 		if RandRedeadWeapon == 1 then
 
-			self.WeaponModel:SetModel("models/vj_lnrhl2/weapons/w_knife_ct.mdl")
+			self.WeaponModel:SetModel("models/totu/wep_knife_ct.mdl")
 			self.ToTU_Weaponized_WeaponBleed = true
 
 		elseif RandRedeadWeapon == 2 then
@@ -1737,21 +2277,21 @@ function ENT:ZombieWeapons()
 
 		elseif RandRedeadWeapon == 4 then
 
-			self.WeaponModel:SetModel("models/vj_lnrhl2/weapons/w_axe.mdl")
+			self.WeaponModel:SetModel("models/totu/wep_axe.mdl")
 			self.ToTU_Weaponized_WeaponBleed = true
 
 		elseif RandRedeadWeapon == 5 then
 
-			self.WeaponModel:SetModel("models/vj_lnrhl2/weapons/w_brokenbottle.mdl")
+			self.WeaponModel:SetModel("models/totu/wep_brokenbottle.mdl")
 			self.ToTU_Weaponized_WeaponBleed = true
 
 		elseif RandRedeadWeapon == 6 then
 
-			self.WeaponModel:SetModel("models/vj_lnrhl2/weapons/w_pot.mdl")
+			self.WeaponModel:SetModel("models/totu/wep_pot.mdl")
 
 		elseif RandRedeadWeapon == 7 then
 
-			self.WeaponModel:SetModel("models/vj_lnrhl2/weapons/w_pan.mdl")
+			self.WeaponModel:SetModel("models/totu/wep_pan.mdl")
 
 		end
 
@@ -1767,15 +2307,15 @@ function ENT:ZombieWeapons()
 		self.WeaponModel:SetSolid(SOLID_NONE)
 		self.WeaponModel:AddEffects(EF_BONEMERGE)
 
-		if GetConVar("VJ_LNR_Difficulty"):GetInt() == 1 then
+		if GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 1 then
 			self.MeleeAttackDamage = math.Rand(10,15)
-		elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 2 then
+		elseif GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 2 then
 			self.MeleeAttackDamage = math.Rand(15,20)
-		elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 3 then
+		elseif GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 3 then
 			self.MeleeAttackDamage = math.Rand(20,25)
-		elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 4 then
+		elseif GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 4 then
 			self.MeleeAttackDamage = math.Rand(25,30)
-		elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 5 then
+		elseif GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 5 then
 			self.MeleeAttackDamage = math.Rand(30,35)
 		else
 			self.MeleeAttackDamage = math.Rand(15,20)
@@ -1803,7 +2343,7 @@ function ENT:ZombieWeapons()
 		local RandRedeadWeapon = math.random(1,2)
 		if RandRedeadWeapon == 1 then
 
-			self.WeaponModel:SetModel("models/vj_lnrhl2/weapons/w_knife_ct.mdl")
+			self.WeaponModel:SetModel("models/totu/wep_knife_ct.mdl")
 			self.ToTU_Weaponized_WeaponBleed = true
 
 		elseif RandRedeadWeapon == 2 then
@@ -1824,15 +2364,15 @@ function ENT:ZombieWeapons()
 		self.WeaponModel:SetSolid(SOLID_NONE)
 		self.WeaponModel:AddEffects(EF_BONEMERGE)
 
-		if GetConVar("VJ_LNR_Difficulty"):GetInt() == 1 then
+		if GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 1 then
 			self.MeleeAttackDamage = math.Rand(10,15)
-		elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 2 then
+		elseif GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 2 then
 			self.MeleeAttackDamage = math.Rand(15,20)
-		elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 3 then
+		elseif GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 3 then
 			self.MeleeAttackDamage = math.Rand(20,25)
-		elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 4 then
+		elseif GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 4 then
 			self.MeleeAttackDamage = math.Rand(25,30)
-		elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 5 then
+		elseif GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 5 then
 			self.MeleeAttackDamage = math.Rand(30,35)
 		else
 			self.MeleeAttackDamage = math.Rand(15,20)
@@ -1856,7 +2396,7 @@ function ENT:ZombieWeapons()
 
 		if IsValid(self.WeaponModel) then 
 
-			self.WeaponModel:SetMaterial("lnr/bonemerge") 
+			self.WeaponModel:SetMaterial("models/totu/bonemerge") 
 			self.WeaponModel:DrawShadow(false)
 
 		end
@@ -1888,7 +2428,7 @@ function ENT:MilZ_GiveKnife()
 	self.SoundTbl_MeleeAttack = {""}
 
 	self.WeaponModel = ents.Create("prop_physics")	
-	self.WeaponModel:SetModel("models/vj_lnrhl2/weapons/w_knife_ct.mdl")
+	self.WeaponModel:SetModel("models/totu/wep_knife_ct.mdl")
 	self.WeaponModel:SetLocalPos(self:GetPos())
 	self.WeaponModel:SetLocalAngles(self:GetAngles())			
 	self.WeaponModel:SetOwner(self)
@@ -1968,30 +2508,41 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:Zombie_Difficulty()
 
-	if GetConVar("VJ_LNR_Difficulty"):GetInt() == 1 then
+	if GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 1 then
 
-		self.StartHealth = 50
+		-- I'm Too Young To Die
+		self.StartHealth = 35
+		self.MeleeAttackDamage = math.Rand(1,5)
+
+	elseif GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 2 then
+
+		-- Hey, Not Too Rough
+		self.StartHealth = 75
 		self.MeleeAttackDamage = math.Rand(5,10)
 
-	elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 2 then
+	elseif GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 3 then
 
-		self.StartHealth = 100
+		-- Hurt Me Plenty
+		self.StartHealth = 200
 		self.MeleeAttackDamage = math.Rand(10,15)
 
-	elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 3 then
+	elseif GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 4 then
 
-		self.StartHealth = 150
+		-- Ultra Violence
+		self.StartHealth = 275
 		self.MeleeAttackDamage = math.Rand(15,20)
 
-	elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 4 then
+	elseif GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 5 then
 
-		self.StartHealth = 200
-		self.MeleeAttackDamage = math.Rand(20,25)
-
-	elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 5 then
-
-		self.StartHealth = 250
+		-- NIGHTMARE!
+		self.StartHealth = 600
 		self.MeleeAttackDamage = math.Rand(25,30)
+
+	else
+
+		-- HMP failsafe incase the convar is set to an unsupported number
+		self.StartHealth = 150
+		self.MeleeAttackDamage = math.Rand(10,15)
 
 	end
 
@@ -1999,7 +2550,7 @@ function ENT:Zombie_Difficulty()
 
 	self.LNR_LegHP = self.StartHealth * 0.20
 
-end 
+end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:CustomOnAcceptInput(key,activator,caller,data)
 
@@ -2104,7 +2655,7 @@ function ENT:CustomOnAcceptInput(key,activator,caller,data)
 	end
 
 	if key == "crawl" then
-		VJ_EmitSound(self,"vj_lnrhl2/shared/footstep/concrete"..math.random(1,4)..".wav",self.FootStepSoundLevel,self:VJ_DecideSoundPitch(self.FootStepPitch.a,self.FootStepPitch.b))
+		VJ_EmitSound(self,"fx/footsteps/concrete"..math.random(1,4)..".wav",self.FootStepSoundLevel,self:VJ_DecideSoundPitch(self.FootStepPitch.a,self.FootStepPitch.b))
 	end
 
 	if key == "crawl" && self:WaterLevel() > 0 && self:WaterLevel() < 3 then
@@ -2595,11 +3146,12 @@ function ENT:CustomOnThink()
 	end
 
 	if
-		GetConVar("VJ_LNR_BreakDoors"):GetInt() == 0 or
+		GetConVar("VJ_TOTU_LNR_BreakDoors"):GetInt() == 0 or
 		self.LNR_Crippled or
 		self.Dead or
 		self.DeathAnimationCodeRan or
 		self.Flinching or
+		-- there's probably a better way to do this
 		self:GetSequence() == self:LookupSequence("nz_spawn_climbout_fast") or
 		self:GetSequence() == self:LookupSequence("nz_spawn_jump") or
 		self:GetSequence() == self:LookupSequence("shove_forward_01") or
@@ -2607,28 +3159,28 @@ function ENT:CustomOnThink()
 		self:GetSequence() == self:LookupSequence("infectionrise2") or
 		self:GetSequence() == self:LookupSequence("slumprise_a") or
 		self:GetSequence() == self:LookupSequence("slumprise_a2") or
-				self:GetSequence() == self:LookupSequence("Climb120_00_InPlace") or
-				self:GetSequence() == self:LookupSequence("Climb120_00a_InPlace") or
-				self:GetSequence() == self:LookupSequence("Climb120_03_InPlace") or
-				self:GetSequence() == self:LookupSequence("Climb120_03a_InPlace") or
-				self:GetSequence() == self:LookupSequence("Climb120_04_InPlace") or
-				self:GetSequence() == self:LookupSequence("Climb144_00_InPlace") or
-				self:GetSequence() == self:LookupSequence("Climb144_00a_InPlace") or
-				self:GetSequence() == self:LookupSequence("Climb144_01_InPlace") or
-				self:GetSequence() == self:LookupSequence("Climb144_03_InPlace") or
-				self:GetSequence() == self:LookupSequence("Climb144_03a_InPlace") or
-				self:GetSequence() == self:LookupSequence("Climb144_04_InPlace") or
-				self:GetSequence() == self:LookupSequence("Climb72_03_InPlace") or
-				self:GetSequence() == self:LookupSequence("Climb72_04_InPlace") or
-				self:GetSequence() == self:LookupSequence("Climb72_05_InPlace") or
-				self:GetSequence() == self:LookupSequence("Climb72_06_InPlace") or
-				self:GetSequence() == self:LookupSequence("Climb72_07_InPlace") or
-				self:GetSequence() == self:LookupSequence("Climb96_00_InPlace") or
-				self:GetSequence() == self:LookupSequence("Climb96_00a_InPlace") or
-				self:GetSequence() == self:LookupSequence("Climb96_03_InPlace") or
-				self:GetSequence() == self:LookupSequence("Climb96_03a_InPlace") or
-				self:GetSequence() == self:LookupSequence("Climb96_04a_InPlace") or
-				self:GetSequence() == self:LookupSequence("Climb96_05_InPlace") or
+		self:GetSequence() == self:LookupSequence("Climb120_00_InPlace") or
+		self:GetSequence() == self:LookupSequence("Climb120_00a_InPlace") or
+		self:GetSequence() == self:LookupSequence("Climb120_03_InPlace") or
+		self:GetSequence() == self:LookupSequence("Climb120_03a_InPlace") or
+		self:GetSequence() == self:LookupSequence("Climb120_04_InPlace") or
+		self:GetSequence() == self:LookupSequence("Climb144_00_InPlace") or
+		self:GetSequence() == self:LookupSequence("Climb144_00a_InPlace") or
+		self:GetSequence() == self:LookupSequence("Climb144_01_InPlace") or
+		self:GetSequence() == self:LookupSequence("Climb144_03_InPlace") or
+		self:GetSequence() == self:LookupSequence("Climb144_03a_InPlace") or
+		self:GetSequence() == self:LookupSequence("Climb144_04_InPlace") or
+		self:GetSequence() == self:LookupSequence("Climb72_03_InPlace") or
+		self:GetSequence() == self:LookupSequence("Climb72_04_InPlace") or
+		self:GetSequence() == self:LookupSequence("Climb72_05_InPlace") or
+		self:GetSequence() == self:LookupSequence("Climb72_06_InPlace") or
+		self:GetSequence() == self:LookupSequence("Climb72_07_InPlace") or
+		self:GetSequence() == self:LookupSequence("Climb96_00_InPlace") or
+		self:GetSequence() == self:LookupSequence("Climb96_00a_InPlace") or
+		self:GetSequence() == self:LookupSequence("Climb96_03_InPlace") or
+		self:GetSequence() == self:LookupSequence("Climb96_03a_InPlace") or
+		self:GetSequence() == self:LookupSequence("Climb96_04a_InPlace") or
+		self:GetSequence() == self:LookupSequence("Climb96_05_InPlace") or
 		self.MeleeAttacking == true or
 		self.RangeAttacking == true or
 		self.LeapAttacking == true
@@ -2664,115 +3216,9 @@ function ENT:CustomOnThink()
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:CustomOnThink_AIEnabled()
-/*
--- save this code for the revenant
-if self.VJ_IsBeingControlled or GetConVar("VJ_ToTU_General_CanEat"):GetInt() == 0 then return end
 
-
-		if !self.ToTU_IsEating && !self.Alerted && !self:IsBusy() && self.ToTU_Hungry then
-			for _,v in ipairs(ents.FindInSphere(self:GetPos(),2600)) do
-				if IsValid(v) && (v:GetClass() == "prop_ragdoll" or v:GetClass() == "obj_vj_gib") && v:GetClass() != "prop_physics" then
-					self:SetTarget(v)
-					self:VJ_TASK_GOTO_TARGET("TASK_WALK_PATH")
-				end
-			for _,v in ipairs(ents.FindInSphere(self:GetPos(),20)) do
-			
-				-- if self.ToTU_IsEating && !IsValid(v) then
-					-- self.ToTU_IsEating = false
-					-- local anim = {"vjseq_Crouch_to_stand"}				
-					-- self:VJ_ACT_PLAYACTIVITY(anim,true,false,false)
-						
-					-- if self.LNR_UsingRelaxedIdle then
-						-- self.AnimTbl_IdleStand = {ACT_IDLE_RELAXED}
-					-- else	
-						-- self.AnimTbl_IdleStand = {ACT_IDLE}
-					-- end
-						
-					-- if GetConVar("vj_npc_nowandering"):GetInt() == 0 then
-						-- self.DisableWandering = true -- Disables wandering when the SNPC is idle
-					-- end
-					-- self.CanTurnWhileStationary = true
-				-- end
-	
-				if IsValid(v) && (v:GetClass() == "prop_ragdoll" or v:GetClass() == "obj_vj_gib") && v:GetClass() != "prop_physics" then
-			
-					local eattime = math.Rand(15, 30) -- How long it should sleep
-					self.ToTU_IsEating = true				
-					local anim = {"vjseq_Stand_to_crouch"}				
-					self:VJ_ACT_PLAYACTIVITY(anim,true,false,false)
-					self.AnimTbl_IdleStand = {ACT_HL2MP_IDLE_CROUCH_ZOMBIE_01}
-					self:FaceCertainEntity(v)
-					-- self:SetState(VJ_STATE_ONLY_ANIMATION, eattime)
-					self.DisableWandering = true -- Disables wandering when the SNPC is idle
-					self.CanTurnWhileStationary = false
-					self.BringFriendsOnDeath = false
-					
-					v:SetCollisionGroup(COLLISION_GROUP_DEBRIS)
-			
-					timer.Simple(eattime, function() -- Reset after eattime seconds
-					
-					if IsValid(self) && self.ToTU_IsEating == true then
-						self.ToTU_IsEating = false
-						local anim = {"vjseq_Crouch_to_stand"}				
-						self:VJ_ACT_PLAYACTIVITY(anim,true,false,false)
-						
-						if self.LNR_UsingRelaxedIdle then
-							self.AnimTbl_IdleStand = {ACT_IDLE_RELAXED}
-						else	
-							self.AnimTbl_IdleStand = {ACT_IDLE}
-						end
-						
-						if GetConVar("vj_npc_nowandering"):GetInt() == 0 then
-							self.DisableWandering = true -- Disables wandering when the SNPC is idle
-						end
-						self.BringFriendsOnDeath = false
-						self.CanTurnWhileStationary = true
-						self.ToTU_NextEatTime = CurTime() + math.Rand(15, 45)
-						
-						if IsValid(v) then
-							self.ToTU_Hungry = false
-							v:EmitSound(Sound("physics/flesh/flesh_bloody_break.wav", 100, math.random(100,95)))
-							
-							if v:GetClass() != "obj_vj_gib" then
-							self:CreateGibEntity("obj_vj_gib","models/gibs/humans/sgib_01.mdl",{BloodDecal="VJ_Blood_Red",Pos=v:LocalToWorld(Vector(0,0,0))})
-							self:CreateGibEntity("obj_vj_gib","models/gibs/humans/mgib_02.mdl",{BloodDecal="VJ_Blood_Red",Pos=v:LocalToWorld(Vector(0,0,0))})
-							self:CreateGibEntity("obj_vj_gib","models/gibs/humans/mgib_04.mdl",{BloodDecal="VJ_Blood_Red",Pos=v:LocalToWorld(Vector(0,0,0))})
-							self:CreateGibEntity("obj_vj_gib","models/gibs/humans/mgib_05.mdl",{BloodDecal="VJ_Blood_Red",Pos=v:LocalToWorld(Vector(0,0,0))})
-							self:CreateGibEntity("obj_vj_gib","models/gibs/humans/mgib_07.mdl",{BloodDecal="VJ_Blood_Red",Pos=v:LocalToWorld(Vector(0,0,0))})
-	
-							local effectBlood = EffectData()
-							effectBlood:SetOrigin(v:GetPos() + v:OBBCenter())
-							effectBlood:SetColor(VJ_Color2Byte(Color(127,0,0)))
-							effectBlood:SetScale(120)
-							util.Effect("VJ_Blood1",effectBlood)
-		
-							local bloodspray = EffectData()
-							bloodspray:SetOrigin(v:GetPos())
-							bloodspray:SetScale(8)
-							bloodspray:SetFlags(3)
-							bloodspray:SetColor(0)
-							util.Effect("bloodspray",bloodspray)
-							util.Effect("bloodspray",bloodspray)
-							
-							end 
-							
-							v:Remove()
-						end
-					end
-				
-				end)
-			end
-		end
-	end
-end
-*/
 	self:Zombie_CustomOnThink_AIEnabled()
--- /*
--- ENT.ToTU_NextRestT = 0
--- ENT.ToTU_Resting = 0
-	-- 0 = Not Resting
-	-- 1 = Sitting
-	-- 2 = Lying
+
 	if !self.ToTU_Weaponized_IsHL2Zomb && !self.LNR_Crippled && !self.VJ_IsBeingControlled && self.ToTU_CanRest then
 		if
 			!self.Alerted &&
@@ -2857,7 +3303,7 @@ end
 			end)
 		end
 	end
--- */
+
 	if self.ToTU_CanDodge && !self.LNR_Crippled then
 
 		if
@@ -2876,7 +3322,8 @@ end
 			self:GetActivity() == ACT_GMOD_SHOWOFF_STAND_01 or
 			self:GetActivity() == ACT_GLIDE or
 			self:GetSequence() == self:LookupSequence("shove_forward_01") or
-			self:GetSequence() == self:LookupSequence("Run_Stumble_01") 
+			self:GetSequence() == self:LookupSequence("Run_Stumble_01") or
+			!self:IsOnGround()
 		then return end
 
 		local WalkerDodgeAnims = {ACT_STEP_LEFT, ACT_STEP_RIGHT}
@@ -2898,11 +3345,7 @@ end
 				end
 
 				if self.ToTU_Deimos then
-					if self.ToTU_Weaponized_Redead_Running then
-						self:VJ_ACT_PLAYACTIVITY(InfectedDodgeAnims,true,false,false)
-					else
-						self:VJ_ACT_PLAYACTIVITY(WalkerDodgeAnims,true,false,false)
-					end
+					self:VJ_ACT_PLAYACTIVITY(InfectedDodgeAnims,true,false,false)
 					self.ToTU_NextDodgeT = CurTime() + math.random(3,7)
 				else
 					self.ToTU_NextDodgeT = CurTime() + math.random(5,15)
@@ -3011,8 +3454,6 @@ function ENT:CustomOnEat(status, statusInfo)
 		return
 			self:VJ_ACT_PLAYACTIVITY(anim,true,false,false)
 	elseif status == "Eat" then
-		-- VJ_EmitSound(self, "vj_hlr/hl1_npc/bullchicken/bc_bite"..math.random(1, 3)..".wav", 100) --more accurate to the mod - epicplayer
-		-- Health changes
 		local food = self.EatingData.Ent
 		local damage = 5
 		local foodHP = food:Health()
@@ -3024,11 +3465,6 @@ function ENT:CustomOnEat(status, statusInfo)
 			local bloodParticle = VJ_PICK(bloodData.Particle)
 			if bloodParticle then
 				ParticleEffect(bloodParticle, bloodPos, self:GetAngles())
-			end
-			local bloodDecal = VJ_PICK(bloodData.Decal)
-			if bloodDecal then
-				-- local tr = util.TraceLine({start = bloodPos, endpos = bloodPos + vecZ50, filter = {food, self}})
-				-- util.Decal(bloodDecal, tr.HitPos + tr.HitNormal + Vector(math.random(-45, 45), math.random(-45, 45), 0), tr.HitPos - tr.HitNormal, food)
 			end
 		end
 		return 1
@@ -3063,15 +3499,17 @@ function ENT:RiseFromGround()
 
 	if self.ToTU_Nightkin_Squaller_UsingIronWill or self:GetClass() == "npc_vj_totu_weaponized_cyst" then return end
 
-	self:SetMaterial("vj_lnr/bonemerge")
+	if self.ToTU_Weaponized_Redead_CannotDigout then return end
+
+	self:SetMaterial("models/totu/bonemerge")
 
 	if IsValid(self.WeaponModel) then
-		self.WeaponModel:SetMaterial("vj_lnr/bonemerge")
+		self.WeaponModel:SetMaterial("models/totu/bonemerge")
 		self.WeaponModel:DrawShadow(false)
 	end
 
 	if IsValid(self.bobm) then
-		self.bobm:SetMaterial("vj_lnr/bonemerge")
+		self.bobm:SetMaterial("models/totu/bonemerge")
 		self.bobm:DrawShadow(false)
 	end
 
@@ -3084,6 +3522,7 @@ function ENT:RiseFromGround()
 	self.HasPoseParameterLooking = false
 	self.DisableFindEnemy = true		
 	self.CallForHelp = false
+	self.CanInvestigate = false
 
 	if self.MilZ_Det_IsDetonator then
 		self.MilZ_Det_Beep_CanBeep = false
@@ -3173,9 +3612,10 @@ function ENT:RiseFromGround()
 		
 		timer.Simple(5,function() if IsValid(self) then
 			self.CanTurnWhileStationary = true
+			self.CanInvestigate = true
 		end end)
 		
-		VJ_EmitSound(self,"vj_lnrhl2/shared/dirtintro"..math.random(1,2)..".wav",75,100)
+		VJ_EmitSound(self,"fx/dirtintro"..math.random(1,2)..".wav",75,100)
 		ParticleEffect("advisor_plat_break",self:GetPos(),self:GetAngles(),self)
 		ParticleEffect("strider_impale_ground",self:GetPos(),self:GetAngles(),self)
 
@@ -3373,7 +3813,7 @@ function ENT:CustomOnChangeActivity(newAct)
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:CustomOnChangeMovementType(movType)
-	if GetConVar("VJ_LNR_JumpClimb"):GetInt() == 0 or self.LNR_Crippled then
+	if GetConVar("VJ_TOTU_LNR_JumpClimb"):GetInt() == 0 or self.LNR_Crippled then
         self:CapabilitiesRemove(bit.bor(CAP_MOVE_JUMP))
 	    self:CapabilitiesRemove(bit.bor(CAP_MOVE_CLIMB)) 
 	end
@@ -3397,10 +3837,10 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:Controller_IntMsg(ply)
 
-	ply:ChatPrint("INTERACT/USE + RELOAD: Mutate.")
+	ply:ChatPrint("INTERACT/USE + RELOAD: Mutate. (Jank)")
 	ply:ChatPrint("ZOOM: Toggle Jumping.")
 
-	if GetConVar("VJ_LNR_BreakDoors"):GetInt() == 1 then
+	if GetConVar("VJ_TOTU_LNR_BreakDoors"):GetInt() == 1 then
 
 		ply:ChatPrint("DUCK/CROUCH Next to Door: Start breaking down door.")
 
@@ -3454,13 +3894,13 @@ function ENT:Controller_Initialize(ply)
 
 	elseif self.LNR_Walker then
 
-		net.Start("vj_lnr_walker_hud")
+		net.Start("VJ_TOTU_LNR_Walker_HUD")
 		net.WriteBool(false)
 		net.WriteEntity(self)
 		net.Send(ply)
 
 		function self.VJ_TheControllerEntity:CustomOnStopControlling()
-			net.Start("vj_lnr_walker_hud")
+			net.Start("VJ_TOTU_LNR_Walker_HUD")
 			net.WriteBool(true)
 			net.WriteEntity(self)
 			net.Send(ply)
@@ -3468,13 +3908,13 @@ function ENT:Controller_Initialize(ply)
 
 	else
 
-		net.Start("vj_lnr_infected_hud")
+		net.Start("VJ_TOTU_LNR_Infected_HUD")
 		net.WriteBool(false)
 		net.WriteEntity(self)
 		net.Send(ply)
 
 		function self.VJ_TheControllerEntity:CustomOnStopControlling()
-			net.Start("vj_lnr_infected_hud")
+			net.Start("VJ_TOTU_LNR_Infected_HUD")
 			net.WriteBool(true)
 			net.WriteEntity(self)
 			net.Send(ply)
@@ -3529,6 +3969,7 @@ function ENT:CustomOnAlert(ent)
 		self:GetClass() == "npc_vj_totu_deimos_corrupt_brute" or
 		self:GetClass() == "npc_vj_totu_fon_lament" or
 		self:GetClass() == "npc_vj_totu_deimos_redead_grunt" or
+		self:GetClass() == "npc_vj_totu_deimos_reborn" or
 		self:GetClass() == "npc_vj_totu_deimos_cancer"
 	then
 
@@ -3675,7 +4116,7 @@ function ENT:CustomOnMeleeAttack_AfterChecks(hitEnt, isProp)
 
 	end
 	
-	if IsValid(self.WeaponModel) && self.WeaponModel:GetModel() == "models/vj_lnrhl2/weapons/w_knife_ct.mdl" then
+	if IsValid(self.WeaponModel) && self.WeaponModel:GetModel() == "models/totu/wep_knife_ct.mdl" then
 
 		if hitEnt.IsVJBaseSNPC && VJ_PICK(hitEnt.CustomBlood_Particle) then
 
@@ -3731,20 +4172,20 @@ function ENT:CustomOnMeleeAttack_AfterChecks(hitEnt, isProp)
 		end
 	end
 
-    if hitEnt:IsPlayer() && hitEnt:Health() < self.MeleeAttackDamage + 1 then
-       VJ_LNR_SetPlayerZombie(hitEnt,self,self)	
+    if hitEnt:IsPlayer() && hitEnt:Health() < self.MeleeAttackDamage + 1 && GetConVar("VJ_ToTU_LNR_Infection"):GetInt() == 1 then
+       VJ_TOTU_LNR_SetPlayerZombie(hitEnt,self,self)	
 	end
 
-	if GetConVar("VJ_LNR_InfectionHit"):GetInt() == 0 then return end
+	if GetConVar("VJ_TOTU_LNR_InfectionHit"):GetInt() == 0 then return end
 
-	if math.random(1,GetConVar("VJ_LNR_InfectionChance"):GetInt()) == 1 && (hitEnt:LookupBone("ValveBiped.Bip01_Pelvis") != nil) && !hitEnt.LNR_InfectedVictim then
+	if math.random(1,GetConVar("VJ_TOTU_LNR_InfectionChance"):GetInt()) == 1 && (hitEnt:LookupBone("ValveBiped.Bip01_Pelvis") != nil) && !hitEnt.LNR_InfectedVictim then
 
 		if (hitEnt:IsPlayer() && hitEnt:Armor() < 25 && GetConVar("sbox_godmode"):GetInt() == 0) or hitEnt:IsNPC() then
 
 			if hitEnt.LNR_InfectedVictim then return end
 
 			hitEnt.LNR_InfectedVictim = true
-			VJ_LNR_InfectionApply(hitEnt,self)
+			VJ_TOTU_LNR_InfectionApply(hitEnt,self)
 
 		end
 
@@ -3769,7 +4210,21 @@ function ENT:CustomOnMeleeAttack_Miss()
 
 	end
 
-	if (self.LNR_Infected or self.ToTU_Deimos && !self.ToTU_Weaponized_IsHL2Zomb && self:GetClass() != "npc_vj_totu_deimos_corrupt" && self:GetClass() != "npc_vj_totu_deimos_corrupt_brute" && self:GetClass() != "npc_vj_totu_fon_lament")&& !self:IsMoving() && !self.LNR_Crippled && !self.ToTU_WeHaveAWeapon then
+	if 
+		(
+			self.LNR_Infected or
+			self.LNR_Walker && GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 5 or
+			self.ToTU_Deimos && 
+			!self.ToTU_Weaponized_IsHL2Zomb && 
+			self:GetClass() != "npc_vj_totu_deimos_corrupt" && 
+			self:GetClass() != "npc_vj_totu_deimos_corrupt_brute" && 
+			self:GetClass() != "npc_vj_totu_fon_lament"
+		) &&
+		!self:IsMoving() && 
+		!self.LNR_Crippled && 
+		!self.ToTU_WeHaveAWeapon
+
+	then
 
 		self.PlayingAttackAnimation = false
 		self:StopAttacks(false)
@@ -3798,9 +4253,9 @@ function ENT:CustomOnMeleeAttack_BeforeStartTimer(seed)
 	if self.LNR_Biter && !self.LNR_Crippled then
 
         self.SoundTbl_MeleeAttackExtra = {
-        "vj_lnrhl2/shared/melee/zombie_bite1.wav",
-        "vj_lnrhl2/shared/melee/zombie_bite2.wav",
-        "vj_lnrhl2/shared/melee/zombie_bite3.wav"
+        "fx/zombie_bite1.wav",
+        "fx/zombie_bite2.wav",
+        "fx/zombie_bite3.wav"
 		}
 
 		self.SoundTbl_MeleeAttack = {
@@ -3810,12 +4265,12 @@ function ENT:CustomOnMeleeAttack_BeforeStartTimer(seed)
 	elseif self.ToTU_Nightkin_IsKin or self.ToTU_Weaponized_IsHL2Zomb then
 
         self.SoundTbl_MeleeAttackExtra = {
-			"vj_lnrhl2/shared/melee/zombie_slice_1.wav",
-			"vj_lnrhl2/shared/melee/zombie_slice_2.wav",
-			"vj_lnrhl2/shared/melee/zombie_slice_3.wav",
-			"vj_lnrhl2/shared/melee/zombie_slice_4.wav",
-			"vj_lnrhl2/shared/melee/zombie_slice_5.wav",
-			"vj_lnrhl2/shared/melee/zombie_slice_6.wav"
+			"fx/zombie_slice_1.wav",
+			"fx/zombie_slice_2.wav",
+			"fx/zombie_slice_3.wav",
+			"fx/zombie_slice_4.wav",
+			"fx/zombie_slice_5.wav",
+			"fx/zombie_slice_6.wav"
 		}
 
 		self.SoundTbl_MeleeAttack = {
@@ -3829,21 +4284,21 @@ function ENT:CustomOnMeleeAttack_BeforeStartTimer(seed)
 		}
 
 		self.SoundTbl_MeleeAttack = {
-			"vj_lnrhl2/shared/melee/hit_punch_01.wav",
-			"vj_lnrhl2/shared/melee/hit_punch_02.wav",
-			"vj_lnrhl2/shared/melee/hit_punch_03.wav",
-			"vj_lnrhl2/shared/melee/hit_punch_04.wav",
-			"vj_lnrhl2/shared/melee/hit_punch_05.wav",
-			"vj_lnrhl2/shared/melee/hit_punch_06.wav",
-			"vj_lnrhl2/shared/melee/hit_punch_07.wav",
-			"vj_lnrhl2/shared/melee/hit_punch_08.wav"
+			"fx/hit_punch_01.wav",
+			"fx/hit_punch_02.wav",
+			"fx/hit_punch_03.wav",
+			"fx/hit_punch_04.wav",
+			"fx/hit_punch_05.wav",
+			"fx/hit_punch_06.wav",
+			"fx/hit_punch_07.wav",
+			"fx/hit_punch_08.wav"
 		}
 
 	end
 
     if IsValid(self.WeaponModel) then
 
-		if self.WeaponModel:GetModel() == "models/vj_lnrhl2/weapons/w_knife_ct.mdl" then 
+		if self.WeaponModel:GetModel() == "models/totu/wep_knife_ct.mdl" then 
 
 			self.SoundTbl_MeleeAttackExtra = {
 				"fx/knife/knife_hit1.wav",
@@ -3915,7 +4370,7 @@ function ENT:CustomOnMeleeAttack_BeforeStartTimer(seed)
 
 		end
 
-		if self.WeaponModel:GetModel() == "models/vj_lnrhl2/weapons/w_axe.mdl" then
+		if self.WeaponModel:GetModel() == "models/totu/wep_axe.mdl" then
 
 			self.SoundTbl_MeleeAttackExtra = {
 				"weapons/axe/melee_axe_01.wav",
@@ -3929,14 +4384,14 @@ function ENT:CustomOnMeleeAttack_BeforeStartTimer(seed)
 
 		end
 
-		if self.WeaponModel:GetModel() == "models/vj_lnrhl2/weapons/w_brokenbottle.mdl" then
+		if self.WeaponModel:GetModel() == "models/totu/wep_brokenbottle.mdl" then
 			self.SoundTbl_MeleeAttack = {""}
 			self.SoundTbl_MeleeAttackExtra = {
 				"fx/knife/knife_stab.wav"
 			}
 		end
 
-		if self.WeaponModel:GetModel() == "models/vj_lnrhl2/weapons/w_pot.mdl" or self.WeaponModel:GetModel() == "models/vj_lnrhl2/weapons/w_pan.mdl" then
+		if self.WeaponModel:GetModel() == "models/totu/wep_pot.mdl" or self.WeaponModel:GetModel() == "models/totu/wep_pan.mdl" then
 			self.SoundTbl_MeleeAttackExtra = {
 				"weapons/pan/melee_frying_pan_01.wav",
 				"weapons/pan/melee_frying_pan_02.wav",
@@ -3996,7 +4451,7 @@ function ENT:CustomOnMeleeAttack_BeforeStartTimer(seed)
 
 			if self.ToTU_WeHaveAWeapon == true then
 
-				if self.WeaponModel:GetModel() == "models/vj_lnrhl2/weapons/w_knife_ct.mdl" then
+				if self.WeaponModel:GetModel() == "models/totu/wep_knife_ct.mdl" then
 					if self.LNR_Walker then
 						if math.random(1,3) == 1 then
 							self.SoundTbl_MeleeAttackExtra = {
@@ -4082,7 +4537,7 @@ function ENT:CustomOnMeleeAttack_BeforeStartTimer(seed)
 					end
 				end
 
-				if self.WeaponModel:GetModel() == "models/vj_lnrhl2/weapons/w_axe.mdl" then
+				if self.WeaponModel:GetModel() == "models/totu/wep_axe.mdl" then
 					if self.LNR_Walker then
 						self.AnimTbl_MeleeAttack = {
 							"vjseq_weapon_swing_overhead_slow",
@@ -4096,7 +4551,7 @@ function ENT:CustomOnMeleeAttack_BeforeStartTimer(seed)
 					end
 				end
 
-				if self.WeaponModel:GetModel() == "models/vj_lnrhl2/weapons/w_brokenbottle.mdl" then
+				if self.WeaponModel:GetModel() == "models/totu/wep_brokenbottle.mdl" then
 					self.SoundTbl_MeleeAttack = {""}
 					self.SoundTbl_MeleeAttackExtra = {
 						"fx/knife/knife_stab.wav"
@@ -4106,7 +4561,7 @@ function ENT:CustomOnMeleeAttack_BeforeStartTimer(seed)
 					}
 				end
 
-				if self.WeaponModel:GetModel() == "models/vj_lnrhl2/weapons/w_pot.mdl" or self.WeaponModel:GetModel() == "models/vj_lnrhl2/weapons/w_pan.mdl" then
+				if self.WeaponModel:GetModel() == "models/totu/wep_pot.mdl" or self.WeaponModel:GetModel() == "models/totu/wep_pan.mdl" then
 					if self.LNR_Walker then
 						self.AnimTbl_MeleeAttack = {
 							"vjseq_weapon_swing_overhead_slow",
@@ -4128,7 +4583,7 @@ function ENT:CustomOnMeleeAttack_BeforeStartTimer(seed)
 
 			else
 			
-			if self.LNR_Infected or self.ToTU_Deimos then
+			if self.LNR_Infected or self.ToTU_Deimos or self.LNR_Walker && GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 5 then
 
 				self.AnimTbl_MeleeAttack = {
 					"vjseq_CI_Standing_Melee_1",
@@ -4534,7 +4989,7 @@ function ENT:ToTU_ResetFlinchHitgroups()
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:CustomOnTakeDamage_BeforeDamage(dmginfo,hitgroup)
-	if GetConVar("VJ_LNR_Headshot"):GetInt() == 1 && self.LNR_CanBeHeadshot && hitgroup == HITGROUP_HEAD then
+	if GetConVar("VJ_TOTU_LNR_Headshot"):GetInt() == 1 && self.LNR_CanBeHeadshot && hitgroup == HITGROUP_HEAD then
 		dmginfo:SetDamage(self:Health())
 	end
 	self:ArmorDamage(dmginfo,hitgroup)
@@ -4547,21 +5002,21 @@ function ENT:DropTheFuckignWeaponGoddamn()
 	if IsValid(self.WeaponModel) && self.ToTU_WeHaveAWeapon then
 
 		self.SoundTbl_MeleeAttack = {
-			"vj_lnrhl2/shared/melee/hit_punch_01.wav",
-			"vj_lnrhl2/shared/melee/hit_punch_02.wav",
-			"vj_lnrhl2/shared/melee/hit_punch_03.wav",
-			"vj_lnrhl2/shared/melee/hit_punch_04.wav",
-			"vj_lnrhl2/shared/melee/hit_punch_05.wav",
-			"vj_lnrhl2/shared/melee/hit_punch_06.wav",
-			"vj_lnrhl2/shared/melee/hit_punch_07.wav",
-			"vj_lnrhl2/shared/melee/hit_punch_08.wav"
+			"fx/hit_punch_01.wav",
+			"fx/hit_punch_02.wav",
+			"fx/hit_punch_03.wav",
+			"fx/hit_punch_04.wav",
+			"fx/hit_punch_05.wav",
+			"fx/hit_punch_06.wav",
+			"fx/hit_punch_07.wav",
+			"fx/hit_punch_08.wav"
 			}
 
 		self.SoundTbl_MeleeAttackExtra = {""}
 		self.SoundTbl_MeleeAttackMiss = {"npc/zombie/claw_miss2.wav","npc/zombie/claw_miss1.wav"}
 
 		self.MeleeAttackDamageType = DMG_CLUB
-		self:CreateGibEntity("prop_physics",self.WeaponModel:GetModel(),{Pos=self:GetAttachment(self:LookupAttachment("anim_attachment_RH")).Pos,Ang=self:GetAngles()}) self.WeaponModel:SetMaterial("lnr/bonemerge") self.WeaponModel:DrawShadow(false) self.ToTU_WeHaveAWeapon = false
+		self:CreateGibEntity("prop_physics",self.WeaponModel:GetModel(),{Pos=self:GetAttachment(self:LookupAttachment("anim_attachment_RH")).Pos,Ang=self:GetAngles()}) self.WeaponModel:SetMaterial("models/totu/bonemerge") self.WeaponModel:DrawShadow(false) self.ToTU_WeHaveAWeapon = false
 		self.WeaponModel:Remove()
 
 		if self.VJ_IsBeingControlled then
@@ -4663,7 +5118,7 @@ function ENT:CustomOnTakeDamage_AfterDamage(dmginfo,hitgroup)
 
 	end
 
-	if GetConVar("VJ_LNR_Cripple"):GetInt() == 1 && self:GetClass() != "npc_vj_totu_deimos_cyst" && !self.ToTU_IsFreakOfNature then 
+	if GetConVar("VJ_TOTU_LNR_Cripple"):GetInt() == 1 && self:GetClass() != "npc_vj_totu_deimos_cyst" && !self.ToTU_IsFreakOfNature then 
 		if hitgroup == HITGROUP_LEFTLEG or hitgroup == HITGROUP_RIGHTLEG then
 			if
 				self:GetActivity() != ACT_GLIDE or
@@ -4794,15 +5249,15 @@ function ENT:Cripple()
 		self:GetClass() == "npc_vj_totu_milzomb_tank" or
 		self:GetClass() == "npc_vj_totu_nightkin_scylla"
 	then
-		if GetConVar("VJ_LNR_Difficulty"):GetInt() == 1 then
+		if GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 1 then
 			self.MeleeAttackDamage = math.Rand(10,15)
-		elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 2 then
+		elseif GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 2 then
 			self.MeleeAttackDamage = math.Rand(15,20)
-		elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 3 then
+		elseif GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 3 then
 			self.MeleeAttackDamage = math.Rand(25,30)
-		elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 4 then
+		elseif GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 4 then
 			self.MeleeAttackDamage = math.Rand(30,35)
-		elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 5 then
+		elseif GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 5 then
 			self.MeleeAttackDamage = math.Rand(35,40)
 		end
 		self.MeleeAttackKnockBack_Forward1 = 75
@@ -4852,7 +5307,20 @@ function ENT:CustomOnPriorToKilled(dmginfo, hitgroup)
 		end
 	end
 
-	if self:GetClass() == "npc_vj_totu_deimos_cancer" && (dmginfo:IsDamageType(DMG_BURN) or dmginfo:IsDamageType(DMG_SLOWBURN) or self:IsOnFire() ) then
+	if
+		(
+			self:GetClass() == "npc_vj_totu_deimos_cancer" or
+			self:GetClass() == "npc_vj_totu_deimos_reborn" or
+			self:GetClass() == "npc_vj_totu_deimos_redead_sci" or
+			self:GetClass() == "npc_vj_totu_deimos_redead_guard"
+		)
+		&&
+		(
+			dmginfo:IsDamageType(DMG_BURN) or 
+			dmginfo:IsDamageType(DMG_SLOWBURN) or 
+			self:IsOnFire()
+		)
+	then
 		self.ToTU_Weaponized_Cancer_FireDeath = true
 	end
 
@@ -4892,7 +5360,7 @@ function ENT:CustomOnPriorToKilled(dmginfo, hitgroup)
 
 	if self.MilZ_Det_IsDetonator then
 		if !self.MilZ_Det_DeathExplosionAllowed then
-			self:CreateGibEntity("prop_physics",self.bobm:GetModel(),{Pos=self:GetAttachment(self:LookupAttachment("bobomb")).Pos,Ang=self:GetAngles()}) self.bobm:SetMaterial("lnr/bonemerge") self.bobm:DrawShadow(false) self.ToTU_WeHaveAWeapon = false
+			self:CreateGibEntity("prop_physics",self.bobm:GetModel(),{Pos=self:GetAttachment(self:LookupAttachment("bobomb")).Pos,Ang=self:GetAngles()}) self.bobm:SetMaterial("models/totu/bonemerge") self.bobm:DrawShadow(false) self.ToTU_WeHaveAWeapon = false
 			self.bobm:Remove()	
 		end
 	end
@@ -5103,7 +5571,12 @@ function ENT:CustomDeathAnimationCode(dmginfo,hitgroup)
 		dmginfo:IsDamageType(DMG_DISSOLVE) or
 		dmginfo:IsDamageType (DMG_PLASMA)
 	then
-		if self:GetClass() == "npc_vj_totu_deimos_cancer" then
+		if
+			self:GetClass() == "npc_vj_totu_deimos_cancer" or
+			self:GetClass() "npc_vj_totu_deimos_reborn" or
+			self:GetClass() "npc_vj_totu_deimos_redead_sci" or
+			self:GetClass() "npc_vj_totu_deimos_redead_guard"
+		then
 			self.ToTU_Weaponized_Cancer_FireDeath = true
 		end
 		self.ToTU_ZappyDeath = true
@@ -5198,7 +5671,7 @@ function ENT:CustomOnDeath_BeforeCorpseSpawned(dmginfo, hitgroup)
 
 		util.VJ_SphereDamage(self, self, self:GetPos(), 75, 35, DMG_BLAST, true, true, {Force=50})
 
-		if GetConVar("vj_LNR_Gib"):GetInt() == 1 then
+		if GetConVar("VJ_TOTU_LNR_Gib"):GetInt() == 1 then
 
 			self:CreateGibEntity("obj_vj_gib", "UseHuman_Big")
 			self:CreateGibEntity("obj_vj_gib", "UseHuman_Big")
@@ -5245,6 +5718,29 @@ function ENT:CustomOnDeath_AfterCorpseSpawned(dmginfo,hitgroup,GetCorpse)
 
 	end
 
+	if (self:GetClass() == "npc_vj_totu_lnr_wal" or self:GetClass() == "npc_vj_totu_lnr_wal_ply") && IsValid(GetCorpse) then
+
+		local bloodspray = EffectData()
+		bloodspray:SetOrigin(GetCorpse:GetPos())
+		bloodspray:SetScale(10)
+		bloodspray:SetFlags(3)
+		bloodspray:SetColor(0)
+		util.Effect("bloodspray",bloodspray)
+		util.Effect("bloodspray",bloodspray)
+
+		local bloodeffect = EffectData()
+		bloodeffect:SetOrigin(GetCorpse:GetPos() + GetCorpse:GetUp()*-20)
+		bloodeffect:SetColor(VJ_Color2Byte(Color(127,0,0,255)))
+		bloodeffect:SetScale(75)
+		util.Effect("VJ_Blood1",bloodeffect)
+		util.Effect("VJ_Blood1",bloodeffect)
+
+					GetCorpse:EmitSound(Sound("zombies/anywhere/ghoul/hit_"..math.random(1,3)..".mp3",80,math.random(100,90)))
+					
+		GetCorpse:Remove()
+
+	end
+
 	if self:GetClass() == "npc_vj_totu_nightkin_squaller" && IsValid(GetCorpse) then
 
 		if !self.ToTU_Nightkin_Squaller_HasIronWill then return end
@@ -5275,7 +5771,7 @@ function ENT:CustomOnDeath_AfterCorpseSpawned(dmginfo,hitgroup,GetCorpse)
 			RevivedSquall:Activate()
 			undo.ReplaceEntity(self,RevivedSquall)
 			RevivedSquall:SetHealth(RevSqSpawnH)
-			-- RevivedSquall:SetMaterial("lnr/bonemerge")
+			-- RevivedSquall:SetMaterial("models/totu/bonemerge")
 			RevivedSquall:SetMaterial()
 			-- RevivedSquall:SetModel(GetCorpse:GetModel())
 			RevivedSquall:SetSkin(GetCorpse:GetSkin())
@@ -5484,6 +5980,7 @@ function ENT:CustomOnDeath_AfterCorpseSpawned(dmginfo,hitgroup,GetCorpse)
 				RevivedSquall:SetPos(GetCorpse:GetPos())
 				RevivedSquall:SetAngles(GetCorpse:GetAngles())
 				RevivedSquall.ToTU_Weaponized_CarcRevivee = true
+				RevivedSquall.ToTU_Weaponized_Redead_CannotDigout = true
 				RevivedSquall:Spawn()
 				RevivedSquall:Activate()
 				undo.ReplaceEntity(self,RevivedSquall)
@@ -5542,6 +6039,7 @@ function ENT:CustomOnDeath_AfterCorpseSpawned(dmginfo,hitgroup,GetCorpse)
 				
 				RevivedSquall:SetPos(GetCorpse:GetPos())
 				RevivedSquall:SetAngles(GetCorpse:GetAngles())
+				RevivedSquall.ToTU_Weaponized_Redead_CannotDigout = true
 				RevivedSquall:Spawn()
 				RevivedSquall:Activate()
 				undo.ReplaceEntity(self,RevivedSquall)
@@ -5599,6 +6097,7 @@ function ENT:CustomOnDeath_AfterCorpseSpawned(dmginfo,hitgroup,GetCorpse)
 				
 				RevivedSquall:SetPos(GetCorpse:GetPos())
 				RevivedSquall:SetAngles(GetCorpse:GetAngles())
+				RevivedSquall.ToTU_Weaponized_Redead_CannotDigout = true
 				RevivedSquall:Spawn()
 				RevivedSquall:Activate()
 				undo.ReplaceEntity(self,RevivedSquall)
@@ -5650,6 +6149,7 @@ function ENT:CustomOnDeath_AfterCorpseSpawned(dmginfo,hitgroup,GetCorpse)
 				
 				RevivedSquall:SetPos(GetCorpse:GetPos())
 				RevivedSquall:SetAngles(GetCorpse:GetAngles())
+				RevivedSquall.ToTU_Weaponized_Redead_CannotDigout = true
 				RevivedSquall:Spawn()
 				RevivedSquall:Activate()
 				RevivedSquall:SetSkin(GetCorpse:GetSkin())
@@ -5691,6 +6191,126 @@ function ENT:CustomOnDeath_AfterCorpseSpawned(dmginfo,hitgroup,GetCorpse)
 
     end
 
+	if
+		(
+			self:GetClass() == "npc_vj_totu_deimos_redead" or
+			self:GetClass() == "npc_vj_totu_deimos_redead_sci" or
+			self:GetClass() == "npc_vj_totu_deimos_redead_guard"
+		) &&
+		self.ToTU_Weaponized_Redead_CanMutate &&
+		IsValid(GetCorpse) &&
+		!self.ToTU_Weaponized_Cancer_FireDeath
+	then
+
+		local AnimTime = VJ_GetSequenceDuration(self,"vjseq_infectionrise2")
+		local AnimTime2 = VJ_GetSequenceDuration(self,"vjseq_Lying_to_Standing_Alert03d")
+		-- local RevSqSpawnH = self.StartHealth * 0.10
+
+		local RandRevive = math.random(1,6)
+
+		timer.Simple(math.random(5,10),function() if IsValid(GetCorpse) && GetConVar("VJ_ToTU_Weaponized_Cancer_Reviving"):GetInt() == 1 then
+			
+			local RevivedSquall = ents.Create("npc_vj_totu_deimos_reborn")
+			RevivedSquall.CanEat = false
+			RevivedSquall.CanFlinch = 0
+			RevivedSquall.CanInvestigate = false
+			RevivedSquall.HasDeathAnimation = false
+			RevivedSquall.CanTurnWhileStationary = false
+			
+			RevivedSquall:SetPos(GetCorpse:GetPos())
+			RevivedSquall:SetAngles(GetCorpse:GetAngles())
+			RevivedSquall.ToTU_Weaponized_Redead_CannotDigout = true
+			RevivedSquall:Spawn()
+			RevivedSquall:Activate()
+			RevivedSquall:SetSkin(GetCorpse:GetSkin())
+			undo.ReplaceEntity(self,RevivedSquall)
+			-- RevivedSquall:SetHealth(RevSqSpawnH)
+
+			timer.Simple(0.01,function() if IsValid(RevivedSquall) then
+
+				if math.random(1,2) == 1 then
+					RevivedSquall:VJ_ACT_PLAYACTIVITY("vjseq_infectionrise2",true,false,false)
+				else
+					RevivedSquall:VJ_ACT_PLAYACTIVITY("vjseq_Lying_to_Standing_Alert03d",true,false,false)
+				end
+
+				RevivedSquall:SetPos(RevivedSquall:GetPos() + RevivedSquall:GetUp()*6)
+				
+				RevivedSquall:EmitSound(Sound("zombies/anywhere/ghoul/hit_"..math.random(1,3)..".mp3",80,math.random(100,90)))
+
+				local bloodspray = EffectData()
+				bloodspray:SetOrigin(RevivedSquall:GetPos())
+				bloodspray:SetScale(10)
+				bloodspray:SetFlags(3)
+				bloodspray:SetColor(0)
+				util.Effect("bloodspray",bloodspray)
+				util.Effect("bloodspray",bloodspray)
+				
+				local bloodeffect = EffectData()
+				bloodeffect:SetOrigin(RevivedSquall:GetPos())
+				bloodeffect:SetColor(VJ_Color2Byte(Color(17,6,6,255)))
+				bloodeffect:SetScale(125)
+				util.Effect("VJ_Blood1",bloodeffect)
+
+				if IsValid(GetCorpse) then
+					GetCorpse:Remove()
+				end
+
+				if math.random(1,100) == 1 && GetConVar("VJ_ToTU_General_EasterEggs"):GetInt() == 1 then
+					VJ_EmitSound(RevivedSquall,"fx/egg/igetup.mp3",100,100)
+				end
+
+				timer.Simple(AnimTime,function() if IsValid(RevivedSquall) then
+					RevivedSquall.CanFlinch = 1
+					RevivedSquall.HasDeathAnimation = true
+					RevivedSquall.CanInvestigate = true
+					RevivedSquall.CanEat = true
+					RevivedSquall.CanTurnWhileStationary = true
+					
+				end end)
+
+			end end)
+
+		end end)
+
+    end
+
+end
+---------------------------------------------------------------------------------------------------------------------------------------------
+function ENT:VJ_ToTU_LNR_CreateBoneMerge(zombieEnt,oldModel,oldSkin,oldColor,oldMaterial,oldPlayerColor,bgEnt)
+
+	 local creator = NULL
+
+	if zombieEnt:IsNPC() && !zombieEnt.LNR_Crawler then
+		creator = IsValid(zombieEnt:GetCreator()) && zombieEnt:GetCreator()
+		zombieEnt:SetCollisionBounds(zombieEnt:GetCollisionBounds())				
+	end
+
+	local body = ents.Create("vj_totu_lnr_infection")
+	body:SetModel(oldModel)
+	body:SetPos(zombieEnt:GetPos())
+	body:SetAngles(zombieEnt:GetAngles())
+	body.VJ_Owner = zombieEnt
+	body:Spawn()			
+	body:SetParent(zombieEnt)
+	body:SetSkin(oldSkin)
+	body:SetColor(oldColor)
+	body:SetMaterial(oldMaterial)
+	
+	if	oldPlayerColor != false then
+		body:SetPlayerColor(oldPlayerColor)
+	else
+		body:SetPlayerColor(Color(61,87,105):ToVector())
+	end
+
+	if IsValid(bgEnt) then
+		for i = 0, body:GetNumBodyGroups() -1 do
+			body:SetBodygroup(i,bgEnt:GetBodygroup(i))
+		end	
+	end
+
+	zombieEnt.Bonemerge = body
+		
 end
 /*-----------------------------------------------
 	*** Copyright (c) 2012-2019 by DrVrej, All rights reserved. ***

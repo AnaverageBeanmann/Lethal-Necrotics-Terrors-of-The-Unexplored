@@ -7,6 +7,8 @@ include('shared.lua')
 -----------------------------------------------*/
 function ENT:Zombie_GlowEyes_Give()
 
+	if GetConVar("VJ_ToTU_Weaponized_Deimos_Eyes"):GetInt() == 0 or GetConVar("vj_npc_noidleparticle"):GetInt() == 1  then return end
+
 	for i = 1,2 do	
 		local att = i == 2 && "eyeglow1" or "eyeglow2"		
 		local EyeGlow = ents.Create("env_sprite")
@@ -22,11 +24,57 @@ function ENT:Zombie_GlowEyes_Give()
 		self:DeleteOnRemove(EyeGlow)
 	end
 
-	if self.ToTU_Weaponized_Redead_Grunt_ShouldHaveEyetrail && !self.MilZ_HasGasmask && GetConVar("VJ_ToTU_Weaponized_Deimos_Eyes"):GetInt() == 2 then
+	if GetConVar("VJ_ToTU_Weaponized_Deimos_Eyes"):GetInt() == 2 then
 		local TrailColor = Color(220,0,255,255)
 		local EyeTrail = util.SpriteTrail(self,10,TrailColor,false,5,0,0.25,1,"vj_base/sprites/vj_trial1")
 		local EyeTrail2 = util.SpriteTrail(self,9,TrailColor,false,5,0,0.25,1,"vj_base/sprites/vj_trial1")
 	end
+
+end
+---------------------------------------------------------------------------------------------------------------------------------------------
+function ENT:Zombie_Difficulty()
+
+	if GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 1 then
+
+		-- I'm Too Young To Die
+		self.StartHealth = 35
+		self.MeleeAttackDamage = math.Rand(1,5)
+
+	elseif GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 2 then
+
+		-- Hey, Not Too Rough
+		self.StartHealth = 75
+		self.MeleeAttackDamage = math.Rand(5,10)
+
+	elseif GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 3 then
+
+		-- Hurt Me Plenty
+		self.StartHealth = 200
+		self.MeleeAttackDamage = math.Rand(10,15)
+
+	elseif GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 4 then
+
+		-- Ultra Violence
+		self.StartHealth = 275
+		self.MeleeAttackDamage = math.Rand(15,20)
+
+	elseif GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 5 then
+
+		-- NIGHTMARE!
+		self.StartHealth = 600
+		self.MeleeAttackDamage = math.Rand(25,30)
+
+	else
+
+		-- HMP failsafe incase the convar is set to an unsupported number
+		self.StartHealth = 75
+		self.MeleeAttackDamage = math.Rand(10,15)
+
+	end
+
+	self:SetHealth(self.StartHealth)	
+
+	self.LNR_LegHP = self.StartHealth * 0.20
 
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
@@ -59,7 +107,7 @@ function ENT:ArmorDamage(dmginfo,hitgroup)
 		self.ToTU_Weaponized_Redead_Guard_HasHelmet
 	then
 
-		if GetConVar("VJ_ToTU_MilZ_Helmet_Breakable"):GetInt() == 1 then
+		-- if GetConVar("VJ_ToTU_MilZ_Helmet_Breakable"):GetInt() == 1 then
 
 			self.ToTU_Weaponized_Redead_Guard_HelmetHealth = self.ToTU_Weaponized_Redead_Guard_HelmetHealth -dmginfo:GetDamage()
 
@@ -98,7 +146,7 @@ function ENT:ArmorDamage(dmginfo,hitgroup)
 
 		return end
 
-		end
+		-- end
 
 		if self.HasSounds && self.HasImpactSounds then VJ_EmitSound(self,"fx/armor/bhit_helmet-1.wav",70) end
 
@@ -142,7 +190,7 @@ function ENT:ArmorDamage(dmginfo,hitgroup)
 			then
 
 				if self.HasSounds && self.HasImpactSounds then VJ_EmitSound(self,"fx/armor/kevlar"..math.random(1,5)..".wav",70) end
-				if self.HasSounds && self.HasImpactSounds then VJ_EmitSound(self,{"physics/wood/wood_box_break1.wav","physics/wood/wood_box_break2.wav"},70) end
+				-- if self.HasSounds && self.HasImpactSounds then VJ_EmitSound(self,{"physics/wood/wood_box_break1.wav","physics/wood/wood_box_break2.wav"},70) end
 				dmginfo:ScaleDamage(0.70)
 
 			end

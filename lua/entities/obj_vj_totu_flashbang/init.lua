@@ -72,10 +72,11 @@ function ENT:CustomOnInitialize()
 
 				time = Lerp( dist / flashpower, time, 0 )
 
+				/*
 				if k:VisibleVec( flashorigin ) then
 					k:ScreenFade( SCREENFADE.IN, Color( 255, 255, 255, 255 ), 2.5, time )
 				end
-
+				*/
 				k:SetDSP( 37, false )
 
 			elseif k:IsNPC() then

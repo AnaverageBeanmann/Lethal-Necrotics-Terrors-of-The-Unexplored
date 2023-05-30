@@ -142,31 +142,31 @@ function ENT:Zombie_Difficulty()
 	self.HealthRegenerationDelay = VJ_Set(2, 2)
 	self.HealthRegenerationResetOnDmg = false
 
-	if GetConVar("VJ_LNR_Difficulty"):GetInt() == 1 then
+	if GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 1 then
 
 		self.StartHealth = 600
 		self.MeleeAttackDamage = math.Rand(25,30)
 		self.HealthRegenerationAmount = 30
 
-	elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 2 then
+	elseif GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 2 then
 
 		self.StartHealth = 750
 		self.MeleeAttackDamage = math.Rand(30,35)
 		self.HealthRegenerationAmount = 36
 
-	elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 3 then
+	elseif GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 3 then
 
 		self.StartHealth = 900
 		self.MeleeAttackDamage = math.Rand(35,40)
 		self.HealthRegenerationAmount = 45
 
-	elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 4 then
+	elseif GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 4 then
 
 		self.StartHealth = 1050
 		self.MeleeAttackDamage = math.Rand(40,45)
 		self.HealthRegenerationAmount = 52
 
-	elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 5 then
+	elseif GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 5 then
 
 		self.StartHealth = 1200
 		self.MeleeAttackDamage = math.Rand(45,50)
@@ -188,15 +188,15 @@ function ENT:Zombie_Difficulty()
 		self.MeleeAttackBleedEnemyTime = 1
 		self.MeleeAttackBleedEnemyReps = 4
 		
-		if GetConVar("VJ_LNR_Difficulty"):GetInt() == 1 then
+		if GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 1 then
 			self.MeleeAttackBleedEnemyDamage = math.random(1,5)
-		elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 2 then
+		elseif GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 2 then
 			self.MeleeAttackBleedEnemyDamage = math.random(5,10)
-		elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 3 then
+		elseif GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 3 then
 			self.MeleeAttackBleedEnemyDamage = math.random(10,15)
-		elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 4 then
+		elseif GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 4 then
 			self.MeleeAttackBleedEnemyDamage = math.random(15,20)
-		elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 5 then
+		elseif GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 5 then
 			self.MeleeAttackBleedEnemyDamage = math.random(20,25)
 		else
 			self.MeleeAttackBleedEnemyDamage = math.random(5,10)
@@ -215,7 +215,7 @@ function ENT:RiseFromGround()
 		end
 	end end)
 
-	VJ_EmitSound(self,"vj_lnrhl2/shared/dirtintro"..math.random(1,2)..".wav",75,100)
+	VJ_EmitSound(self,"fx/dirtintro"..math.random(1,2)..".wav",75,100)
 	ParticleEffect("advisor_plat_break",self:GetPos(),self:GetAngles(),self)
 	ParticleEffect("strider_impale_ground",self:GetPos(),self:GetAngles(),self)
 
@@ -330,25 +330,25 @@ function ENT:Zombie_CustomOnMeleeAttack_BeforeStartTimer(seed)
 		self.AnimTbl_MeleeAttack = {"vjseq_attack_run"}
 		
 		self.SoundTbl_MeleeAttackExtra = {
-			"vj_lnrhl2/shared/melee/zombie_slice_1.wav",
-			"vj_lnrhl2/shared/melee/zombie_slice_2.wav",
-			"vj_lnrhl2/shared/melee/zombie_slice_3.wav",
-			"vj_lnrhl2/shared/melee/zombie_slice_4.wav",
-			"vj_lnrhl2/shared/melee/zombie_slice_5.wav",
-			"vj_lnrhl2/shared/melee/zombie_slice_6.wav"
+			"fx/zombie_slice_1.wav",
+			"fx/zombie_slice_2.wav",
+			"fx/zombie_slice_3.wav",
+			"fx/zombie_slice_4.wav",
+			"fx/zombie_slice_5.wav",
+			"fx/zombie_slice_6.wav"
 		}
 
 		self.SoundTbl_MeleeAttack = {""}
 
-		if GetConVar("VJ_LNR_Difficulty"):GetInt() == 1 then
+		if GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 1 then
 			self.MeleeAttackDamage = math.Rand(25,30)
-		elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 2 then
+		elseif GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 2 then
 			self.MeleeAttackDamage = math.Rand(30,35)
-		elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 3 then
+		elseif GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 3 then
 			self.MeleeAttackDamage = math.Rand(35,40)
-		elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 4 then
+		elseif GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 4 then
 			self.MeleeAttackDamage = math.Rand(40,45)
-		elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 5 then
+		elseif GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 5 then
 			self.MeleeAttackDamage = math.Rand(45,50)
 		else
 			self.MeleeAttackDamage = math.Rand(30,35)
@@ -368,25 +368,25 @@ function ENT:Zombie_CustomOnMeleeAttack_BeforeStartTimer(seed)
 			self.AnimTbl_MeleeAttack = {"vjseq_attack1"}
 
 			self.SoundTbl_MeleeAttackExtra = {
-				"vj_lnrhl2/shared/melee/zombie_slice_1.wav",
-				"vj_lnrhl2/shared/melee/zombie_slice_2.wav",
-				"vj_lnrhl2/shared/melee/zombie_slice_3.wav",
-				"vj_lnrhl2/shared/melee/zombie_slice_4.wav",
-				"vj_lnrhl2/shared/melee/zombie_slice_5.wav",
-				"vj_lnrhl2/shared/melee/zombie_slice_6.wav"
+				"fx/zombie_slice_1.wav",
+				"fx/zombie_slice_2.wav",
+				"fx/zombie_slice_3.wav",
+				"fx/zombie_slice_4.wav",
+				"fx/zombie_slice_5.wav",
+				"fx/zombie_slice_6.wav"
 			}
 
 			self.SoundTbl_MeleeAttack = {""}
 
-			if GetConVar("VJ_LNR_Difficulty"):GetInt() == 1 then
+			if GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 1 then
 				self.MeleeAttackDamage = math.Rand(25,30)
-			elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 2 then
+			elseif GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 2 then
 				self.MeleeAttackDamage = math.Rand(30,35)
-			elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 3 then
+			elseif GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 3 then
 				self.MeleeAttackDamage = math.Rand(35,40)
-			elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 4 then
+			elseif GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 4 then
 				self.MeleeAttackDamage = math.Rand(40,45)
-			elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 5 then
+			elseif GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 5 then
 				self.MeleeAttackDamage = math.Rand(45,50)
 			else
 				self.MeleeAttackDamage = math.Rand(30,35)
@@ -407,27 +407,27 @@ function ENT:Zombie_CustomOnMeleeAttack_BeforeStartTimer(seed)
 			}
 
 			self.SoundTbl_MeleeAttack = {
-				"vj_lnrhl2/shared/melee/hit_punch_01.wav",
-				"vj_lnrhl2/shared/melee/hit_punch_02.wav",
-				"vj_lnrhl2/shared/melee/hit_punch_03.wav",
-				"vj_lnrhl2/shared/melee/hit_punch_04.wav",
-				"vj_lnrhl2/shared/melee/hit_punch_05.wav",
-				"vj_lnrhl2/shared/melee/hit_punch_06.wav",
-				"vj_lnrhl2/shared/melee/hit_punch_07.wav",
-				"vj_lnrhl2/shared/melee/hit_punch_08.wav"
+				"fx/hit_punch_01.wav",
+				"fx/hit_punch_02.wav",
+				"fx/hit_punch_03.wav",
+				"fx/hit_punch_04.wav",
+				"fx/hit_punch_05.wav",
+				"fx/hit_punch_06.wav",
+				"fx/hit_punch_07.wav",
+				"fx/hit_punch_08.wav"
 			}
 
 			self.AnimTbl_MeleeAttack = {"vjseq_attack2"}
 
-			if GetConVar("VJ_LNR_Difficulty"):GetInt() == 1 then
+			if GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 1 then
 				self.MeleeAttackDamage = math.Rand(5,10)
-			elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 2 then
+			elseif GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 2 then
 				self.MeleeAttackDamage = math.Rand(10,15)
-			elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 3 then
+			elseif GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 3 then
 				self.MeleeAttackDamage = math.Rand(15,20)
-			elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 4 then
+			elseif GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 4 then
 				self.MeleeAttackDamage = math.Rand(20,25)
-			elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 5 then
+			elseif GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 5 then
 				self.MeleeAttackDamage = math.Rand(30,35)
 			else
 				self.MeleeAttackDamage = math.Rand(10,15)

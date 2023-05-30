@@ -77,27 +77,27 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:Zombie_Difficulty()
 
-	if GetConVar("VJ_LNR_Difficulty"):GetInt() == 1 then
+	if GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 1 then
 
 		self.StartHealth = 200
 		self.MeleeAttackDamage = math.Rand(15,20)
 
-	elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 2 then
+	elseif GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 2 then
 
 		self.StartHealth = 300
 		self.MeleeAttackDamage = math.Rand(20,25)
 
-	elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 3 then
+	elseif GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 3 then
 
-		self.StartHealth = 400
-		self.MeleeAttackDamage = math.Rand(25,30)
+		self.StartHealth = 275
+		self.MeleeAttackDamage = math.Rand(20,25)
 
-	elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 4 then
+	elseif GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 4 then
 
 		self.StartHealth = 500
 		self.MeleeAttackDamage = math.Rand(35,40)
 
-	elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 5 then
+	elseif GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 5 then
 
 		self.StartHealth = 600
 		self.MeleeAttackDamage = math.Rand(40,45)
