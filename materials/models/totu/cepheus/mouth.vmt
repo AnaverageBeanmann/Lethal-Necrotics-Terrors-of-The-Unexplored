@@ -1,7 +1,0 @@
-"Teeth"
-{
-	"$basetexture"		"models/totu/cepheus/mouth"
-	"$model"			"1"
-	"$clientshader"		"MouthShader"
-	"$halflambert"		"1"
-}
