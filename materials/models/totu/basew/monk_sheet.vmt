@@ -1,0 +1,21 @@
+Patch
+{
+include "materials\models\totu\basew\common_zombie_shared.vmt"
+insert
+{
+	"$basetexture" "models/totu\basew/monk_sheet"
+                "$bumpmap" "models/totu\basew/monk_sheet_normal"
+	"$phong" "1"
+	"$phongboost" "0.5"
+	"$phongexponent" "10"
+	"$phongfresnelranges"	"[0.05 0.5 1]"
+                 "$detail" models\totu\detail\ci_detail_dirt
+                 "$detailscale" 10
+                 "$detailblendfactor" 0.8
+                 "$detailblendmode" 0
+
+	"$rimlight" "1"
+	"$rimlightexponent" "8"
+	"$rimlightboost" "2"
+}
+}

@@ -1,0 +1,6 @@
+"UnlitGeneric"
+{
+	"$basetexture" "models/totu/basew/eyeball_r"
+	"$model" 1
+	"$halflambert" 1
+}

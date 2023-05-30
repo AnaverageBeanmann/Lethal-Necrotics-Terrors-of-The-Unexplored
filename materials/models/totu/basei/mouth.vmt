@@ -1,0 +1,13 @@
+Patch
+{
+include "materials\models\totu\basei\common_zombie_shared.vmt"
+insert
+{
+	"$basetexture" "models/totu\basei/mouth"
+	"$clientshader" "MouthShader"
+                  "$detail" models\totu\detail\ci_detail_dirt
+                  "$detailscale" 10
+                 "$detailblendfactor" 0.8
+                  "$detailblendmode" 0
+}
+}

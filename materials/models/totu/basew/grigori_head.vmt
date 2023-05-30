@@ -1,0 +1,26 @@
+Patch
+{
+include "materials\models\totu/basew\common_zombie_shared.vmt"
+insert
+{
+	// Original shader: VertexLitTexture
+	"$basetexture" "models/totu/basew/grigori_head"
+ 	"$bumpmap" "models/totu/basew/monk_head_normal"
+	"$phong" "1"
+	"$phongexponent" "10.0"
+	"$phongboost" "0.55"
+	"$phongfresnelranges"	"[0.1 0.5 1.5]"
+	
+	"$phongtint" "[0.9 0.8 0.7]"
+	
+                 "$detail" models\totu\detail\ci_detail_dirt
+                 "$detailscale" 10
+                 "$detailblendfactor" 0.8
+                 "$detailblendmode" 0
+
+	"$rimlight" "1"
+	"$rimlightboost" "2"
+	"$rimlightexponent" "4"
+	"$rimmask" "1"
+}
+}

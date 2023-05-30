@@ -1,0 +1,16 @@
+Patch
+{
+include "materials\models\totu\basew\common_zombie_shared.vmt"
+insert
+{
+	"$basetexture" "models/totu\basew/head_w_gib"
+	"$bumpmap" "models/totu\basew/head_w_gib_normal"
+	"$phongexponent"   "20"
+	"$phongboost"   "0.04"
+	"$phongfresnelranges"   "[1 1 1]"
+                  "$detail" models\totu\detail\ci_detail_dirt
+                  "$detailscale" 10
+                 "$detailblendfactor" 0.8
+                  "$detailblendmode" 0
+}
+}

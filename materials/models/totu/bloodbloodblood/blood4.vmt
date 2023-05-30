@@ -1,0 +1,9 @@
+"DecalModulate"
+{
+$basetexture "models/totu/bloodbloodblood/blood4"
+$translucent 1
+$decal 1
+$decalscale 0.15
+$vertexcolor 1
+$vertexalpha 1
+}
