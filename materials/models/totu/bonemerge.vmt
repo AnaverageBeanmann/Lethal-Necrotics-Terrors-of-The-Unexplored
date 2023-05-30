@@ -1,0 +1,8 @@
+"VertexlitGeneric"
+{
+	"$basetexture"		"models/totu/bonemerge"
+	"$alphatest" 1
+	"$translucent" 1
+	"$nodecal" 1
+	"$additive"		1 // hldm style!
+}

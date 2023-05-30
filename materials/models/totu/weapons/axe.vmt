@@ -1,0 +1,11 @@
+"VertexLitGeneric"
+{
+	"$baseTexture" "Models/totu/weapons/axe"
+	"$envmap" "env_cubemap"
+	"$envmapmask" "Models/totu/weapons/axe_ref"
+
+	"$detail" "models\totu\detail\ci_detail_dirt"
+	"$detailscale" 10
+	"$detailblendfactor" 0.75
+	"$detailblendmode" 0
+}

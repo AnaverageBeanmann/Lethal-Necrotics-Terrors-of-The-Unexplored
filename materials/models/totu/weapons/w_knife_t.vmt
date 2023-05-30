@@ -1,0 +1,8 @@
+"vertexlitgeneric"
+{
+	"$baseTexture" "models/totu/weapons/w_knife_t"
+	"$detail" "models\totu\detail\ci_detail_dirt"
+	"$detailscale" 10
+	"$detailblendfactor" 0.75
+	"$detailblendmode" 0
+}

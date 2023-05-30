@@ -1,0 +1,13 @@
+
+"VertexLitGeneric"
+{
+	// Original shader: VertexLitTexture
+	"$basetexture" "Models/totu/weapons/garbage001a_01"
+	"$surfaceprop" "plastic"
+	"$nodecal" 1
+	"$detail" "models\totu\detail\ci_detail_dirt"
+	"$detailscale" 10
+	"$detailblendfactor" 0.75
+	"$detailblendmode" 0
+}
+
