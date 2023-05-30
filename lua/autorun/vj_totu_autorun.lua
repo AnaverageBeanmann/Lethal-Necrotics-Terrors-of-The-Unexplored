@@ -16,53 +16,7 @@ local LNRSpecialsExists = file.Exists("lua/autorun/vj_lnrspecials_autorun.lua","
 local LNRExtrasExists = file.Exists("lua/autorun/vj_lnre_autorun.lua","GAME")
 
 if VJExists == true then
-if LNRHL2Exists == true then
-/*
-if LNRSpecialsExists == false then
-		if CLIENT then
-				local teal = Color(0,255,255)
-				local yellow = Color(255,255,0)
-				local red = Color(255,0,0)
-				local white = Color(255,255,255)
-				local green = Color(33,255,0)
-				timer.Simple(10,function()
-					chat.AddText(teal,"== Terrors of The Unexplored ==")
-					chat.AddText(red,"Lethal Necrotics Reanimated: Specials is not installed!")
-					chat.AddText(red,"You will experience missing textures because of this.")
-					chat.AddText(white,"To fix this, install the Specials Pack.")
-					chat.AddText(green,"Specials Pack Download:")
-					chat.AddText(white,"https://steamcommunity.com/sharedfiles/filedetails/?id=1887964505")
-					chat.AddText(teal,"======================")
-					local fiddlesticks = CreateSound(game.GetWorld(), "vo/k_lab/kl_ohdear.wav")
-					fiddlesticks:SetSoundLevel(0)
-					fiddlesticks:Play()
-				end)
-			end
-		end
-*/
-/*
-if LNRExtrasExists == false then
-	if CLIENT then
-		local teal = Color(0,255,255)
-		local yellow = Color(255,255,0)
-		local red = Color(255,0,0)
-		local white = Color(255,255,255)
-		local green = Color(33,255,0)
-		timer.Simple(10,function()
-			chat.AddText(teal,"== Terrors of The Unexplored ==")
-			chat.AddText(red,"Lethal Necrotics Reanimated: Extras is not installed!")
-			chat.AddText(red,"You will experience missing textures because of this.")
-			chat.AddText(white,"To fix this, install the Extras Pack.")
-			chat.AddText(green,"Extras Pack Download:")
-			chat.AddText(white,"https://steamcommunity.com/sharedfiles/filedetails/?id=1887964505")
-			chat.AddText(teal,"======================")
-			local fiddlesticks = CreateSound(game.GetWorld(), "vo/k_lab/kl_ohdear.wav")
-			fiddlesticks:SetSoundLevel(0)
-			fiddlesticks:Play()
-		end)
-	end
-end
-*/
+
 
 	include('autorun/vj_controls.lua')
 	
@@ -77,7 +31,7 @@ end
 	local vCat4 = "Lethal Necrotics: Terrors of The Unexplored - Deimos"
 	local vCat5 = "Lethal Necrotics: Terrors of The Unexplored - Backcounty"
 	local vCat6 = "Lethal Necrotics: Terrors of The Unexplored - The Rotten"
-	local vCat7 = "Lethal Necrotics: Terrors of The Unexplored - Water Critters"
+	local vCat7 = "Lethal Necrotics: Terrors of The Unexplored - Aquos"
 	local vCat8 = "Lethal Necrotics: Terrors of The Unexplored - Spawners/Bonus"
 	local vCat9 = "Lethal Necrotics: Terrors of The Unexplored - Tundra Wastes"
 	local vCat10 = "Lethal Necrotics: Terrors of The Unexplored - Morti Labs"
@@ -103,7 +57,51 @@ end
 	VJ.AddCategoryInfo("Lethal Necrotics: Terrors of The Unexplored - Cepheus", {Icon = "icons/symbolv3.png"})
 	-- local vCat2 = "Lethal Necrotics: Terrors of The Unexplored - Misc & Spawners"
 	-- VJ.AddCategoryInfo("Lethal Necrotics: Terrors of The Unexplored - Misc & Spawners", {Icon = "icons/totu_icon.png"})
-	
+
+	game.AddDecal(
+		"VJ_TOTU_LNR_Blood_Red",
+		{
+			"models/totu/bloodbloodblood/blood1",
+			"models/totu/bloodbloodblood/blood2",
+			"models/totu/bloodbloodblood/blood3",
+			"models/totu/bloodbloodblood/blood4",
+			"models/totu/bloodbloodblood/blood5",
+			"models/totu/bloodbloodblood/blood6",
+			"models/totu/bloodbloodblood/blood7",
+			"models/totu/bloodbloodblood/blood8"
+		}
+	)
+
+	VJ.AddParticle(
+		"particles/letthebloodcleanseyou.pcf",
+		{
+			"lnr_bullet_impact_01",
+			"lnr_bullet_impact_02",
+			"lnr_bullet_impact_02_w_squirt",
+			"lnr_bullet_impact_03",
+			"lnr_bullet_impact_04",
+			"lnr_melee_hit_01",
+			"lnr_melee_hit_01_w_squirt",
+			"lnr_headshot_burst_splat_1",
+			"lnr_headshot_blood_splats",
+			"lnr_blood_Impact_boom",
+			"lnr_head_s",
+			"lnr_headdyyy",
+			"lnr_headshot_spurt_trail",
+			"lnr_headshot_squirt_2",
+			"lnr_headshot_squirting",
+			"lnr_headshot_trails_1",
+			"lnr_splat_1",
+			"lnr_splat_2",
+			"lnr_gorechunk1",
+			"lnr_gorechunk1_trail1",
+			"lnr_gorechunkhead1",
+			"lnr_gorechunkhead_trail1",
+			"lnr_headshot_velocity_back",
+			"lnr_sqlkj",
+		}
+	)
+
 	/*
 	ask doofus if he can tweak the stalker idles so the left arm doesn't clip through the left leg
 	
@@ -556,6 +554,9 @@ end
 		- Lone Guy
 		- Land (probably 0.5 pitch)
 		- I'm Alive
+		
+		good
+		- Scum of the Earth
 
 		* maybe
 		- Bracket
@@ -572,6 +573,9 @@ end
 		- Ballad of the Hernandez Family
 		- Daddy's Home
 		
+		Broken Sword
+		- Infinite Trash (https://youtu.be/G0V1Yn2Wf2k)
+		
 		music for water critter showcase
 		
 		J-Dubbs
@@ -585,8 +589,122 @@ end
 		
 		Noisemaker
 		- Gills of Steel
+		
+		CatsGoPurple
+		- Bleached Hair (https://youtu.be/TDvygxghsg8)
+		
+		A CHAIR
+		- Clam Chowder (https://youtu.be/R0FMVQX6zwg?t=199)
+
+		music for nightkin showcase redo
+		
+		good
+		- Scum of the Earth
+		
+		music for milzomb showcase redo
 
 
+		models to add $includemodel "totu/animations/zombie_animrig_valve_movement.mdl" to:
+		
+		base infected
+		
+		airman wal
+		airman inf
+		bulldozer
+		detonator
+		bulk detonator
+		ghillie wal
+		ghillie inf
+		ghost wal
+		ghost inf
+		hazmat wal
+		hazmat inf
+		grunt wal
+		grunt inf
+		tank
+		juggernaut
+		
+		scragg
+		scylla
+		shrieker
+		skitter
+		spectre
+		spitballer
+		squaller
+		
+		gail
+		
+		add pain mode convar
+		- turns on ability changes that are in nightmare difficulty
+		
+		make it so healing zombs can un-cripple zombs when they heal them
+		
+		do heavy playtesting to find any missing stuff from lnr hl2
+		
+		update the sitting/lying events
+		
+		add these convars
+		- damage immunity toggles/options
+			- no immunities
+			- only immune to radiation
+			- only immune to nervegas
+			- immune to both
+		- re-add milzgasmaskers being immune to nervegas w/ radiation resistance if this gets added
+		deimos
+		- zombs being able to mutate into reborn
+		- reborn mutate chance
+		- redeads having weapons
+		- redead weapon chance
+		- redeads spawning as throwers
+		- redead thrower chance
+		- remort guards being able to spawn with armor
+		- remort guard vest chance
+		- remort guard helmet chance
+		- remort guard helmet health
+		- remort drone having gasmask
+		- remort drone gasmask chance
+		- remort drone having flak armor
+		- remort drone flak armor chance
+		- remort drone helmet health
+		- remort drone having grenades
+		- remort drone grenade chance
+		- carcass spawning as exploders
+		- carcass exploder chance
+		- carcass remort subtype
+		- carcass remort chance
+		- carcass remort actually doing anything
+		- cancer reviving at all
+		- cancer being able to mutate
+		- cancer mutate chance
+		- revenant healing stuff
+		- revenant buffing nearby deimos
+		
+		zombs move slower in water?
+		- speed would change at waist-high and chest-high ammounts
+		- add a convar to disable this
+		
+		bugbait particles is env_sporeexplosion
+		
+		lacrinimo ideas
+		- make reborn slower
+		- add effects when carcass splits
+		- make deimos zomb eyes sparkle before running
+		- zombies react to being on fire
+		- add some sort of sound w/ effect to headshot hits/kills
+		- see about using the unused bodygroups for nightkin to make the different types more distinct from eachother
+		- see what's going on with crippled shriekers attacking the air
+		- fix cripple shit with everyone
+		- make cyst play headcrab release if it dies from self-damage from range attacking (play barnacle death sound?)
+		- lighting a ghost on fire breaks the cloaker/cloaker breaks faster from heat
+		- if a hazmat is on fire long enough the tank will just explode instantly
+		- lighting a detonator on fire will cause the bomb to short cirquit (play city scanner pain sounds) and then shortly explode (don't make him panic when it's about to go off)
+		- infected ghosts can toss down smoke grenades when they run to charge their cloak
+		- walker ghosts can sometimes drop smoke grenades if you push them over
+		- suit depressurize sound on death for hazmat zombs of some sort (probably smog for now)
+		- detonators drop live bombs when killed (explode if shot)
+		- giant zombies cause aoe damage if you knock them over (or maybe just tank)
+		- some sort of giant deimos zombie that falls over when it stops running
+		- "hazmat suit zombie which explodes into damaging virus cloud"
 	*/
 
 	-- [] = done
@@ -688,7 +806,7 @@ end
 		VJ.AddNPC("Frostbitten Juggernaut","npc_vj_totu_milzomb_juggernaut_snowy",vCat9)
 		-- rename to snowgernaut
 		-- ()
-		VJ.AddNPC("Frostdozer","npc_vj_totu_milzomb_bulldozer_snowy",vCat9)
+		VJ.AddNPC("Snowdozer","npc_vj_totu_milzomb_bulldozer_snowy",vCat9)
 		-- rename to snowdozer
 		-- ()
 		VJ.AddNPC("Frostbitten","npc_vj_totu_tundra_frostbite",vCat9)
@@ -719,6 +837,10 @@ end
 
 	-- Deimos
 		
+		-- add female redeads and remort researchers
+		-- new voice ideas
+			-- redeads: re8 lycans
+
 		VJ.AddNPC("Redead","npc_vj_totu_deimos_redead",vCat4)
 		-- []
 		
@@ -762,12 +884,21 @@ end
 		VJ.AddNPC("Revenant","npc_vj_totu_deimos_revenant",vCat4)
 		-- []
 
+		VJ.AddNPC("Reborn","npc_vj_totu_deimos_reborn",vCat4)
+
 		-- VJ.AddNPC("Crusader","npc_vj_totu_deimos_crus",vCat4)
 		-- deimosified sentinel
 		-- always spawns with flak armor
 		-- flak armor now actually protects decently against bullets?
 
-
+		-- VJ.AddNPC("Cratus","npc_vj_totu_deimos_cratus",vCat4)
+		-- reincarnated behemoth
+		-- desaturate skin and give purple eye
+		-- one eye is missing
+		-- tends to trip over when it stops running
+		-- can kneel down and rip out a chunk of concrete or a tree stump to hurl at you
+		-- easter egg: play wii sports home run sound when projectile breaks
+		-- causes area damage when falls over
 
 		-- deimosified morti scientists and guards?
 		
@@ -796,6 +927,19 @@ end
 		-- has thermite grenades
 		-- tank sprays fuel if you shoot it
 		-- tank ignites if on fire while tank is leaking, or tank takes fire damage
+		
+		-- gadgets drones could toss down maybe
+			-- clayrmore
+			-- alarmed motion sensor
+			-- turret ( call it the Mechanical Automated Defence Unit/M.A.D.U. )
+			
+		-- use these for something?
+			-- https://steamcommunity.com/sharedfiles/filedetails/?id=2964258917
+				-- drones
+			-- https://steamcommunity.com/sharedfiles/filedetails/?id=2963872425
+				-- sentinel
+			-- https://steamcommunity.com/sharedfiles/filedetails/?id=2879594601
+				-- caretaker
 
 		/*
 	-- Morti Research Facility
@@ -956,6 +1100,8 @@ end
 		-- voice actor: https://youtu.be/FwhcZDYk6xU
 		-- get goose to help translate
 		
+		-- backcounty survivors
+		
 	-- The Rotten
 		VJ.AddNPC("Degenerate","npc_vj_totu_rotten_degenerate",vCat6)
 		-- ()
@@ -1003,7 +1149,22 @@ end
 		
 		
 
-	-- Water Critters
+	-- Aquos
+	
+		-- theme: vacation resort that got hit
+		
+		VJ.AddNPC("Cod","npc_vj_totu_water_cod",vCat7)
+		-- rotten drowned walker dude
+		-- dressed up like generic island vacationers
+
+		VJ.AddNPC("Salmon","npc_vj_totu_water_salmon",vCat7)
+		-- fresher basic drowned zombie
+		-- same apparel as cod
+
+		VJ.AddNPC("Crab","npc_vj_totu_water_crab",vCat7)
+		-- basic tanky dude
+		-- skin has calloused, which gives it protection
+
 		VJ.AddNPC("Pirahna","npc_vj_totu_water_pirahna",vCat7)
 		-- ()
 		-- flounder
@@ -1011,6 +1172,8 @@ end
 		-- ()
 		
 		VJ.AddNPC("Whale","npc_vj_totu_water_whale",vCat7)
+		-- make the shirt one of those floral/flower shirts
+		-- merge with the gavialidae
 		-- ()
 		VJ.AddNPC("Turtle","npc_vj_totu_water_turtle",vCat7)
 		-- ()
@@ -1026,7 +1189,7 @@ end
 		-- ()
 		VJ.AddNPC("Megalodon","npc_vj_totu_water_megalodon",vCat7)
 		-- ()
-		VJ.AddNPC("Gharial","npc_vj_totu_water_gharial",vCat7)
+		-- VJ.AddNPC("Gharial","npc_vj_totu_water_gharial",vCat7)
 		-- ()
 
 	-- Bonus
@@ -1142,8 +1305,43 @@ end
 		-- VJ.AddNPCWeapon("vj_LN_TOTU_LMG","weapon_vj_ln_totu_lmg")
 		-- VJ.AddNPCWeapon("vj_LN_TOTU_KNIFE","weapon_vj_ln_totu_knife")
 
+    VJ.AddClientConVar("VJ_ToTU_LNR_ZombieOverlay", 1, {FCVAR_ARCHIVE})
+    VJ.AddClientConVar("VJ_ToTU_LNR_BloodDecals", 1, {FCVAR_ARCHIVE})
 	
 	local AddConvars = {}
+	
+	AddConvars["VJ_ToTU_LNR_Infection"] = 1
+	AddConvars["VJ_ToTU_LNR_InfectionHit"] = 1
+	AddConvars["VJ_ToTU_LNR_InfectionEffects"] = 1
+	AddConvars["VJ_ToTU_LNR_PlayerZombie"] = 1
+	AddConvars["VJ_ToTU_LNR_Biter"] = 1
+	AddConvars["VJ_ToTU_LNR_Runner"] = 0
+	AddConvars["VJ_ToTU_LNR_SuperSprinter"] = 1
+	AddConvars["VJ_ToTU_LNR_Crawl"] = 1
+	AddConvars["VJ_ToTU_LNR_MeleeWeapons"] = 1
+	AddConvars["VJ_ToTU_LNR_CitizenSkins"] = 0
+	AddConvars["VJ_ToTU_LNR_Eyes"] = 1
+	AddConvars["VJ_ToTU_LNR_PMEyes"] = 1
+	AddConvars["VJ_ToTU_LNR_Alert"] = 1
+	AddConvars["VJ_ToTU_LNR_JumpClimb"] = 0
+	AddConvars["VJ_ToTU_LNR_GroundRise"] = 1
+	AddConvars["VJ_ToTU_LNR_BreakDoors"] = 1
+	-- AddConvars["VJ_ToTU_LNR_BreakDoors_Func"] = 1
+	AddConvars["VJ_ToTU_LNR_Headshot"] = 0
+	AddConvars["VJ_ToTU_LNR_Gib"] = 1
+	AddConvars["VJ_ToTU_LNR_Dismember"] = 1
+	AddConvars["VJ_ToTU_LNR_Cripple"] = 1
+	AddConvars["VJ_ToTU_LNR_DeathAnimations"] = 1
+	AddConvars["VJ_ToTU_LNR_CorpseEffects"] = 1
+	AddConvars["VJ_ToTU_LNR_UHItems"] = 0
+	AddConvars["VJ_ToTU_LNR_Difficulty"] = 3
+	AddConvars["VJ_ToTU_LNR_InfectionChance"] = 5
+	AddConvars["VJ_ToTU_LNR_InfectionTime1"] = 20
+	AddConvars["VJ_ToTU_LNR_InfectionTime2"] = 40
+	AddConvars["VJ_ToTU_LNR_ResurrectionTime1"] = 5
+	AddConvars["VJ_ToTU_LNR_ResurrectionTime2"] = 10
+	
+	
 	AddConvars["VJ_ToTU_Spawn_UniversalDig"] = 0
 	AddConvars["VJ_ToTU_Spawn_DigChance"] = 5
 	AddConvars["VJ_ToTU_Spawn_AlertSound"] = 1
@@ -1288,6 +1486,43 @@ end
 		Panel:AddControl( "Label", {Text = "Please respawn any existing zombies after changing things in here!"})
 	local vj_resetbutton = {Options = {}, CVars = {}, Label = "Reset Everything:", MenuButton = "0"}
 		vj_resetbutton.Options["#vjbase.menugeneral.default"] = { 
+
+
+
+
+	VJ_ToTU_LNR_Infection = "1",
+	VJ_ToTU_LNR_InfectionHit = "1",
+	VJ_ToTU_LNR_InfectionEffects = "1",
+	VJ_ToTU_LNR_PlayerZombie = "1",
+	VJ_ToTU_LNR_Biter = "1",
+	VJ_ToTU_LNR_Runner = "0",
+	VJ_ToTU_LNR_SuperSprinter = "1",
+	VJ_ToTU_LNR_Crawl = "1",
+	VJ_ToTU_LNR_MeleeWeapons = "1",
+	VJ_ToTU_LNR_CitizenSkins = "0",
+	VJ_ToTU_LNR_Eyes = "1",
+	VJ_ToTU_LNR_PMEyes = "1",
+	VJ_ToTU_LNR_Alert = "1",
+	VJ_ToTU_LNR_JumpClimb = "0",
+	VJ_ToTU_LNR_GroundRise = "1",
+	VJ_ToTU_LNR_BreakDoors = "1",
+	-- VJ_ToTU_LNR_BreakDoors_Func = "1",
+	VJ_ToTU_LNR_Headshot = "0",
+	VJ_ToTU_LNR_Gib = "1",
+	VJ_ToTU_LNR_Dismember = "1",
+	VJ_ToTU_LNR_Cripple = "1",
+	VJ_ToTU_LNR_DeathAnimations = "1",
+	VJ_ToTU_LNR_CorpseEffects = "1",
+	VJ_ToTU_LNR_UHItems = "0",
+	VJ_ToTU_LNR_Difficulty = "3",
+	VJ_ToTU_LNR_InfectionChance = "5",
+	VJ_ToTU_LNR_InfectionTime1 = "20",
+	VJ_ToTU_LNR_InfectionTime2 = "40",
+	VJ_ToTU_LNR_ResurrectionTime1 = "5",
+	VJ_ToTU_LNR_ResurrectionTime2 = "10",
+
+
+
 			VJ_ToTU_Spawn_UniversalDig = "0",
 			VJ_ToTU_Spawn_DigChance = "5",
 			VJ_ToTU_Spawn_AlertSound = "1",
@@ -1435,6 +1670,164 @@ end
 	Panel:ControlHelp("These affect all zombies in ToTU.")
 	Panel:ControlHelp("--------------------------------------------------------")
 	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+			
+			
+			
+			Panel:AddControl("Checkbox", {Label ="Enable Player-Controlled Zombies Upon Turning?", Command ="VJ_TOTU_LNR_PlayerZombie"})
+			
+			Panel:AddControl("Checkbox", {Label ="Enable Biters?", Command ="VJ_TOTU_LNR_Biter"})			
+			
+			
+
+			
+			Panel:AddControl("Checkbox", {Label ="Enable Crawlers?", Command ="VJ_TOTU_LNR_Crawl"})
+			
+			Panel:AddControl("Checkbox", {Label ="Enable Melee Weapons?", Command ="VJ_TOTU_LNR_MeleeWeapons"})			
+			
+			Panel:AddControl("Checkbox", {Label ="Enable HL2 Skins Only?", Command ="VJ_TOTU_LNR_CitizenSkins"})
+			Panel:ControlHelp("Ex: HL2-themed skins only for Citizen, Corpse & Charple Zombies.")			
+			
+			Panel:AddControl("Checkbox", {Label ="Enable Eye Effects For Infected Players/(S)NPCs?", Command ="VJ_TOTU_LNR_Eyes"})
+			
+			Panel:AddControl("Checkbox", {Label ="Enable Eye Effects For PM Zombies?", Command ="VJ_TOTU_LNR_PMEyes"})
+			Panel:ControlHelp("Note: Can look weird & out of place depending on the model.")			
+			
+			Panel:AddControl("Checkbox", {Label ="Enable Zombies To Alert Each Other?", Command ="VJ_TOTU_LNR_Alert"})
+			
+			Panel:AddControl("Checkbox", {Label ="Enable Zombies To Jump & Climb?", Command ="VJ_TOTU_LNR_JumpClimb"})
+			Panel:ControlHelp("Note: Doesn't affect Evos, Ravagers, Tanks or Titans.")
+			
+			Panel:AddControl("Checkbox", {Label ="Enable Zombies To Rise Out Of The Ground?", Command ="VJ_TOTU_LNR_GroundRise"})	
+			Panel:ControlHelp("Note: They can only rise out of the ground on specific ground types.")
+			
+			Panel:AddControl("Checkbox", {Label ="Enable Zombies To Break Doors?", Command ="VJ_TOTU_LNR_BreakDoors"})
+			
+			-- Panel:AddControl("Checkbox", {Label ="Enable Zombies To Break Entities Classified As 'func_door_rotating?'", Command ="VJ_TOTU_LNR_BreakDoors_Func"})
+			
+			Panel:AddControl("Checkbox", {Label ="Enable Instant Headshot Death?", Command ="VJ_TOTU_LNR_Headshot"})
+			Panel:ControlHelp("Note: Only applies for normal Zombies.")
+			
+			Panel:AddControl("Checkbox", {Label ="Enable Gibbing?", Command ="VJ_TOTU_LNR_Gib"})			
+			
+			Panel:AddControl("Checkbox", {Label ="Enable Arm Dismemberment?", Command ="VJ_TOTU_LNR_Dismember"})
+			
+			Panel:AddControl("Checkbox", {Label ="Enable Leg Crippling?", Command ="VJ_TOTU_LNR_Cripple"})				
+			
+			Panel:AddControl("Checkbox", {Label ="Enable Death Animations?", Command ="VJ_TOTU_LNR_DeathAnimations"})			
+			
+			Panel:AddControl("Checkbox", {Label ="Enable Corpse Effects & Decals?", Command ="VJ_TOTU_LNR_CorpseEffects"})
+			
+			Panel:AddControl("Checkbox", {Label ="Enable Zombies To Drop Underhell Items?", Command ="VJ_TOTU_LNR_UHItems"})
+			Panel:ControlHelp("Note: You need the Underhell SWEPs in order for this to work.")			
+			
+			Panel:AddControl("Slider", {Label ="Infection Chance",Command ="VJ_TOTU_LNR_InfectionChance", Min = "1", Max = "100"})
+			Panel:ControlHelp("Chance to be infected by a Zombie.")
+			
+			Panel:AddControl("Slider", {Label ="Infection Time Rand #1",Command ="VJ_TOTU_LNR_InfectionTime1", Min = "5", Max = "120"})
+			
+			Panel:AddControl("Slider", {Label ="Infection Time Rand #2",Command ="VJ_TOTU_LNR_InfectionTime2", Min = "5", Max = "120"})
+			Panel:ControlHelp("Time until succumbing to infection.")
+			
+			Panel:AddControl("Slider", {Label ="Resurrection Time Rand #1",Command ="VJ_TOTU_LNR_ResurrectionTime1", Min = "5", Max = "120"})
+			
+			Panel:AddControl("Slider", {Label ="Resurrection Time Rand #2",Command ="VJ_TOTU_LNR_ResurrectionTime2", Min = "5", Max = "120"})
+			Panel:ControlHelp("Time until infected Players/(S)NPCs resurrect.")
+			Panel:ControlHelp("Note: Rand #2 must be higher than Rand #1")
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	Panel:ControlHelp("-------------piss-------------")
+	
+	
+				
+	local difficultycombobox = {Options = {}, CVars = {}, Label = "Difficulty", MenuButton = "0"}
+	difficultycombobox.Options["[1] I'm Too Young To Die"] = {VJ_TOTU_LNR_Difficulty = 1}
+	difficultycombobox.Options["[2] Hey, Not Too Rough"] = {VJ_TOTU_LNR_Difficulty = 2}
+	difficultycombobox.Options["[3] Hurt Me Plenty (Default)"] = {VJ_TOTU_LNR_Difficulty = 3}
+	difficultycombobox.Options["[4] Ultra Violence"] = {VJ_TOTU_LNR_Difficulty = 4}
+	difficultycombobox.Options["[5] NIGHTMARE!"] = {VJ_TOTU_LNR_Difficulty = 5}
+	Panel:AddControl("ComboBox", difficultycombobox)
+
+	Panel:ControlHelp("------------------------------")
+	Panel:AddControl( "Label", {Text = "I'm Too Young To Die"})
+	Panel:ControlHelp("Baby mode, zombies barely pose a threat.")
+	Panel:ControlHelp("For situations where you want action of people killing zombies but don't want the zombies to kill them.")
+	Panel:ControlHelp("- Zombies have heavily reduced health and damage.")
+	Panel:ControlHelp("---------------")
+	Panel:AddControl( "Label", {Text = "Hey, Not Too Rough"})
+	Panel:ControlHelp("More lenient with the difficulty.")
+	Panel:ControlHelp("Zombies are generally more easier to deal with, but not to the extent of ITYTD.")
+	Panel:ControlHelp("Balanced around HL2 weaponry.")
+	Panel:ControlHelp("- Zombies have reduced health and damage.")
+	Panel:ControlHelp("---------------")
+	Panel:AddControl( "Label", {Text = "Hurt Me Plenty"})
+	Panel:ControlHelp("The main, standard difficulty.")
+	Panel:ControlHelp("Difficult enough to be threatening but easy enough to deal with without too much effort.")
+	Panel:ControlHelp("Balanced around ArcCW and ARC9 weaponry.")
+	Panel:ControlHelp("- Zombies have their regular health and damage.")
+	Panel:ControlHelp("---------------")
+	Panel:AddControl( "Label", {Text = "Ultra Violence"})
+	Panel:ControlHelp("We're not holding back as much.")
+	Panel:ControlHelp("Zombies are generally harder to kill, you'll probably have to put in some effort now.")
+	Panel:ControlHelp("Balanced around CoD MW2019 weaponry.")
+	Panel:ControlHelp("- Zombies have increased health and damage.")
+	Panel:ControlHelp("---------------")
+	Panel:AddControl( "Label", {Text = "NIGHTMARE!"})
+	Panel:ControlHelp("You're going to die.")
+	Panel:ControlHelp("We're not holding back anymore.")
+	Panel:ControlHelp("Zombies are the hardest to kill here.")
+	Panel:ControlHelp("Some zombies have their special moves upgraded or have been given new moves outright.")
+	Panel:ControlHelp("- Zombies have heavily increased health and damage.")
+	Panel:ControlHelp("- Zombies will never spawn as crawlers.")
+	Panel:ControlHelp("- Zombies always spawn as Rushers.")
+	Panel:ControlHelp("- Zombies with subclass restrictions have those restrictions removed.")
+	Panel:ControlHelp("- Walkers use more aggressive standing attack animations.")
+	Panel:ControlHelp("- Hazmats can do a kamikaze attack.")
+	Panel:ControlHelp("- Grunts with grenades can do a kamikaze attack.")
+	Panel:ControlHelp("- Ghosts don't flicker randomly or when attacking.")
+	Panel:ControlHelp("- Detonators don't stop in place when they're about to explode.")
+	Panel:ControlHelp("- Scourges spit more often and now also spit multiple projectiles at once.")
+	Panel:ControlHelp("- Shriekers spawn more dangerous Nightkin more often.")
+	Panel:ControlHelp("- Deimos zombies run for far longer and have almost non-existant run cooldowns.")
+	Panel:ControlHelp("- Revenants can revive corpses into more dangerous Deimos zombies.")
+	Panel:ControlHelp("- Reapers gain an aoe yell attack and a spit attack.")
+	Panel:ControlHelp("------------------------------")
+
+	Panel:AddControl("Checkbox", {Label ="Enable infection system?", Command ="VJ_TOTU_LNR_Infection"})
+	Panel:ControlHelp("If enabled, zombs will turn players and npcs they kill into zombies.")
+	Panel:ControlHelp("Only works with models that have a valvebiped skeleton.")
+
+	Panel:AddControl("Checkbox", {Label ="Enable zombies infecting from attacks?", Command ="VJ_TOTU_LNR_InfectionHit"})
+	Panel:ControlHelp("If enabled, zombs have a chance to infect their target when they hit them.")
+	Panel:ControlHelp("Infected targets will eventually keel over and die after enough time.")
+	Panel:ControlHelp("There is no cure to prevent this.")
+
+			Panel:AddControl("Checkbox", {Label ="Enable infection sounds and effects?", Command ="VJ_TOTU_LNR_InfectionEffects"})
+			Panel:ControlHelp("Note: Only ValveBiped models will be affected.")
+			Panel:ControlHelp("I don't know what this does actually.")
+
 	Panel:AddControl("Checkbox", {Label = "Enable easter eggs?", Command = "VJ_ToTU_General_EasterEggs"})
 
 	Panel:AddControl("Checkbox", {Label = "Non-Zombie allied?", Command = "VJ_ToTU_General_NotZombieAllied"})
@@ -1480,10 +1873,16 @@ end
 	Panel:ControlHelp("Chance that a zombie will spawn as a crawler.")
 	Panel:ControlHelp("Default chance is 5.")
 	
+	Panel:AddControl("Checkbox", {Label ="Enable Runners?", Command ="VJ_TOTU_LNR_Runner"})
+	Panel:ControlHelp("If enabled, walkers can spawn as runners, which move faster.")
+
 	Panel:AddControl("Slider", {Label = "Runner spawn chance.", Command = "VJ_ToTU_General_Runners_Chance", Min = 1, Max = 10000})
 	Panel:ControlHelp("Chance that a walker will spawn as a runner.")
 	Panel:ControlHelp("Default chance is 3.")
-	
+
+	Panel:AddControl("Checkbox", {Label ="Enable Super Sprinters?", Command ="VJ_TOTU_LNR_SuperSprinter"})
+	Panel:ControlHelp("If enabled, infected can spawn as super sprinters, which move faster.")
+
 	Panel:AddControl("Slider", {Label = "Super Sprinter spawn chance?", Command = "VJ_ToTU_General_SuperSprinters_Chance", Min = 1, Max = 10000})
 	Panel:ControlHelp("Chance that an infected will spawn as a super sprinter.")
 	Panel:ControlHelp("Default chance is 3.")
@@ -1935,8 +2334,8 @@ end
 		
 		if !IsValid(ent) then delete = true end
 
-		if GetConVar("VJ_LNR_ZombieOverlay"):GetInt() == 1 then
-			hook.Add("RenderScreenspaceEffects","VJ_LNR_InfectedHUD_Overlay",function(zom)
+		if GetConVar("VJ_ToTU_LNR_ZombieOverlay"):GetInt() == 1 then
+			hook.Add("RenderScreenspaceEffects","VJ_ToTU_LNR_InfectedHUD_Overlay",function(zom)
             local threshold = 0.30
             DrawMaterialOverlay("lnr/overlay/infected_vision",threshold)
 			
@@ -1958,34 +2357,13 @@ end
 			end)
 		end
 		if delete then 
-			hook.Remove("RenderScreenspaceEffects","VJ_LNR_InfectedHUD_Overlay") 
+			hook.Remove("RenderScreenspaceEffects","VJ_ToTU_LNR_InfectedHUD_Overlay") 
 			hook.Remove("RenderScreenspaceEffects", "VJ_ToTU_SquallerHud_Colors")
 		end
 		end)
 	end
 	
 	
-	else
-		if CLIENT then
-				local teal = Color(0,255,255)
-				local yellow = Color(255,255,0)
-				local red = Color(255,0,0)
-				local white = Color(255,255,255)
-				local green = Color(33,255,0)
-				timer.Simple(10,function()
-					chat.AddText(teal,"== Terrors of The Unexplored ==")
-					chat.AddText(red,"Lethal Necrotics Reanimated: Half-Life 2 is not installed!")
-					chat.AddText(red,"Terrors of The Unexplored has not been loaded, since it doesn't work without the Half-Life 2 Pack.")
-					chat.AddText(white,"To fix this, install the Half-Life 2 Pack.")
-					chat.AddText(green,"Half-Life 2 Pack Download:")
-					chat.AddText(white,"https://steamcommunity.com/sharedfiles/filedetails/?id=1879776316")
-					chat.AddText(teal,"======================")
-					local pissing = CreateSound(game.GetWorld(), "vo/k_lab/ba_pissinmeoff.wav")
-					pissing:SetSoundLevel(0)
-					pissing:Play()
-				end)
-			end
-		end
 
 
 
@@ -2047,7 +2425,7 @@ end
 				zombie.HasSounds = false
 				zombie.DisableSelectSchedule = true
 
-				timer.Simple(math.random(GetConVar("VJ_LNR_ResurrectionTime1"):GetInt(),GetConVar("VJ_LNR_ResurrectionTime2"):GetInt()),function()
+				timer.Simple(math.random(GetConVar("VJ_ToTU_LNR_ResurrectionTime1"):GetInt(),GetConVar("VJ_ToTU_LNR_ResurrectionTime2"):GetInt()),function()
 
 					if IsValid(zombie) then
 
@@ -2067,7 +2445,7 @@ end
 						bloodeffect:SetScale(125)
 						util.Effect("VJ_Blood1",bloodeffect)
 		
-						local newredead = ents.Create("npc_vj_totu_deimos_redead")
+						local newredead = ents.Create("npc_vj_totu_deimos_reborn")
 						newredead:SetPos(zombie:GetPos())
 						newredead:SetAngles(zombie:GetAngles())
 						newredead.ToTU_Weaponized_Shitter = true
@@ -2124,7 +2502,7 @@ end
 		if attacker.ToTU_Deimos == true && victim:LookupBone("ValveBiped.Bip01_Pelvis") && GetConVar("VJ_ToTU_Weaponized_Deimos_Infection"):GetInt() == 1 then
 
 			local zombie = ents.Create("npc_vj_totu_deimos_redead")
-			local bonemerge = ents.Create("vj_lnr_infection")
+			local bonemerge = ents.Create("vj_totu_lnr_infection")
 			local oldModel = victim:GetModel()
 			local oldSkin = victim:GetSkin()
 			local oldColor = victim:GetColor()
@@ -2163,7 +2541,7 @@ end
 				zombie.HasSounds = false
 				zombie.DisableSelectSchedule = true
 
-				timer.Simple(math.random(GetConVar("VJ_LNR_ResurrectionTime1"):GetInt(),GetConVar("VJ_LNR_ResurrectionTime2"):GetInt()),function()
+				timer.Simple(math.random(GetConVar("VJ_ToTU_LNR_ResurrectionTime1"):GetInt(),GetConVar("VJ_ToTU_LNR_ResurrectionTime2"):GetInt()),function()
 
 					if IsValid(zombie) then
 
@@ -2239,23 +2617,787 @@ end
 
 	 end)
 
+	if CLIENT then
 
+		net.Receive("VJ_TOTU_LNR_Walker_HUD",function(len,pl)
+			local delete = net.ReadBool()
+			local ply = net.ReadEntity()
+			if
+				!IsValid(ply) or
+				GetConVar("VJ_TOTU_LNR_ZombieOverlay"):GetInt() == 0
+			then
+				delete = true
+			end
+			hook.Add("RenderScreenspaceEffects","VJ_TOTU_LNR_WalkerHUD_Overlay",function()
+				local threshold = 0.30
+				DrawMaterialOverlay("overlay/walker_vision",threshold)
+			end)
+			if delete then 
+				hook.Remove("RenderScreenspaceEffects","VJ_TOTU_LNR_WalkerHUD_Overlay")
+			end
+		end)
 
+		net.Receive("VJ_TOTU_LNR_Infected_HUD",function(len,pl)
+			local delete = net.ReadBool()
+			local ply = net.ReadEntity()
+			if
+				!IsValid(ply) or
+				GetConVar("VJ_TOTU_LNR_ZombieOverlay"):GetInt() == 0
+			then
+				delete = true
+			end
+			hook.Add("RenderScreenspaceEffects","VJ_TOTU_LNR_InfectedHUD_Overlay",function()
+				local threshold = 0.30
+				DrawMaterialOverlay("vj_lnr/overlay/infected_vision",threshold)
+			end)
+			if delete then
+				hook.Remove("RenderScreenspaceEffects","VJ_TOTU_LNR_InfectedHUD_Overlay")
+			end
+		end)
 
+		net.Receive("VJ_TOTU_LNR_Drowner_HUD",function(len,pl)
+			local delete = net.ReadBool()
+			local ply = net.ReadEntity()
+			if
+				!IsValid(ply) or
+				GetConVar("VJ_TOTU_LNR_ZombieOverlay"):GetInt() == 0
+			then
+				delete = true
+			end
+			hook.Add("RenderScreenspaceEffects","VJ_TOTU_LNR_DrownerHUD_Overlay",function()
+				local threshold = 0.30
+				DrawMaterialOverlay("vj_lnr/overlay/drowner_vision",threshold)
+			end)
+			if delete then
+				hook.Remove("RenderScreenspaceEffects","VJ_TOTU_LNR_DrownerHUD_Overlay")
+			end
+		end)
 
+		net.Receive("VJ_TOTU_LNR_InfectionScreenEffect",function()
+			local ply = net.ReadEntity()
+			local color = Color(75, 0, 0, 255)			
+			ply.VJ_TOTU_LNR_InfectionEffect_Time = CurTime() +0.1
+			hook.Add("RenderScreenspaceEffects","VJ_TOTU_LNR_InfectionEffect" .. ply:EntIndex(),function()
+				if
+					!IsValid(ply) or
+					IsValid(ply) && (CurTime() > ply.VJ_TOTU_LNR_InfectionEffect_Time)
+				then
+					hook.Remove("RenderScreenspaceEffects","VJ_TOTU_LNR_InfectionEffect" .. ply:EntIndex())
+				return end
+				ply:ScreenFade(SCREENFADE.IN, color, 0.5, 0)
+			end)
+		end)
 
+	end
 
+	if SERVER then
+		util.AddNetworkString("VJ_TOTU_LNR_Walker_HUD") 
+		util.AddNetworkString("VJ_TOTU_LNR_Infected_HUD") 
+		util.AddNetworkString("VJ_TOTU_LNR_Drowner_HUD")
+		util.AddNetworkString("VJ_TOTU_LNR_InfectionScreenEffect")
+	end
 
+	if SERVER then	
+		hook.Add("PlayerSpawn","VJ_TOTU_LNR_PlyInfectionCheck",function(ply)
+			if ply.LNR_InfectedVictim then
+				ply.LNR_InfectedVictim = false
+			end
+			if ply.LNR_Walker or ply.LNR_Infected or ply.LNR_Drowner then
+				ply.LNR_Walker = false
+				ply.LNR_Infected = false
+				ply.LNR_Drowner = false
+			end
+		end)
+	end
 
+	local NPC = FindMetaTable("NPC")
+	local ENT = FindMetaTable("Entity")
+	local Phys = FindMetaTable("PhysObj")
 
+	hook.Add("OnNPCKilled","VJ_ToTU_LNR_Infection_NPC",function(victim,inflictor,attacker)
+		VJ_ToTU_LNR_Infect(victim,inflictor,attacker,false)
+	end)
+	hook.Add("PlayerDeath","VJ_ToTU_LNR_Infection_Player",function(victim,inflictor,attacker)
+		VJ_ToTU_LNR_Infect(victim,inflictor,attacker,true)
+	end)
+---------------------------------------------------------------------------------------------------------------------------------------------
+function VJ_ToTU_LNR_InfectionApply(victim,zombie)
 
+	if
+		victim.CNCR_InfectedVictim or
+		victim.GOTDR_InfectedVictim or
+		victim.NMRIHR_InfectedVictim or
+		victim.ZPS_InfectedVictim or
+		victim:IsNextBot()
+	then return end
 
+	local IgnoreHL2Zombies = {
+		npc_fastzombie_torso = true,
+		npc_zombine = true,
+		npc_zombie_torso = true,
+		npc_zombie = true,
+		npc_poisonzombie = true,
+		npc_headcrab_fast = true,
+		npc_headcrab_black = true,
+		npc_headcrab = true,
+		npc_fastzombie = true,
+		monster_zombie = true,
+		monster_headcrab = true,
+		monster_babycrab = true
+	}
 
+	if
+		GetConVar("VJ_ToTU_LNR_Infection"):GetInt() == 0 or
+		victim.IsLNRZombie or
+		(
+			victim.VJ_NPC_Class && table.HasValue(victim.VJ_NPC_Class,"CLASS_ZOMBIE")
+		) or
+		IgnoreHL2Zombies[victim:GetClass()] or
+		(
+			victim.IsVJBaseSNPC && victim.Dead or
+			victim.DeathAnimationCodeRan or
+			victim.GodMode
+		) or
+		(
+			victim:LookupBone("ValveBiped.Bip01_Pelvis") == nil
+		)
+	then return end
 
+	if zombie.LNR_Walker then victim.LNR_Walker = true end
 
+	if zombie.LNR_Infected then victim.LNR_Infected = true end
 
+	if zombie.LNR_Drowner then victim.LNR_Drowner = true end
 
+	local victimModel = victim:GetModel()
+
+	victim.LNR_NextCoughT = CurTime() + math.Rand(1,30)
+
+	if GetConVar("VJ_ToTU_LNR_InfectionEffects"):GetInt() == 1 then
+
+		hook.Add("Think","VJ_ToTU_LNR_VictimCough",function()
+
+		if
+			!IsValid(victim) or
+			!victim.LNR_InfectedVictim or
+			(
+				victim:IsPlayer() && !victim:Alive()
+			) or
+			(
+				victim:IsPlayer() && victim.IsControlingNPC
+			) or 
+			(
+				victim.IsVJBaseSNPC && victim.Dead or 
+				victim.DeathAnimationCodeRan
+			)
+			then
+				hook.Remove("Think","VJ_ToTU_LNR_VictimCough")
+		return end
+
+		if CurTime() > victim.LNR_NextCoughT then
+			if
+				string.find(victimModel,"female") or 
+				string.find(victimModel,"alyx") or
+				string.find(victimModel,"mossman") or
+				string.find(victimModel,"chell")
+			then
+				VJ_CreateSound(victim,"ambient/voices/cough"..math.random(1,4)..".wav",75,120)
+			else
+				VJ_CreateSound(victim,"ambient/voices/cough"..math.random(1,4)..".wav",75,100)
+			end
+			if victim:IsPlayer() then
+				net.Start("VJ_ToTU_LNR_InfectionScreenEffect")
+				net.WriteEntity(victim)
+				net.Send(victim)
+			end
+			victim.LNR_NextCoughT = CurTime() + math.Rand(1,30)
+		end
+
+		end)
+
+	end
+
+	local deaths
+	if victim:IsPlayer() then
+		deaths = victim:Deaths()
+	end
+
+	timer.Simple(math.random(GetConVar("VJ_ToTU_LNR_InfectionTime1"):GetInt(),GetConVar("VJ_ToTU_LNR_InfectionTime2"):GetInt()),function()
+
+		if IsValid(victim) && victim.LNR_InfectedVictim then
+
+			if 
+			(
+				victim:IsPlayer() && !victim:Alive()
+			) or 
+			(
+				victim:IsPlayer() && victim:Deaths() > deaths
+			) or 
+			(
+				victim:IsPlayer() && victim.IsControlingNPC
+			) or 
+			(
+				victim:IsPlayer() && GetConVar("sbox_godmode"):GetInt() == 1
+			) or 
+			(
+				victim.IsVJBaseSNPC && victim.Dead or 
+				victim.DeathAnimationCodeRan or 
+				victim.GodMode
+			) 
+			then 
+				victim.LNR_InfectedVictim = false 
+			return end
+
+			if victim:IsPlayer() && GetConVar("VJ_ToTU_LNR_PlayerZombie"):GetInt() == 0 then
+				victim:Kill()
+				VJ_ToTU_LNR_CreateZombie(victim,victim)
+			end
+
+			if victim:IsPlayer() && GetConVar("VJ_ToTU_LNR_PlayerZombie"):GetInt() == 1 then
+				VJ_ToTU_LNR_SetPlayerZombie(victim,victim)
+			end
+
+			if victim:IsNPC() then
+				VJ_ToTU_LNR_CreateZombie(victim,victim)
+			end
+
+			if GetConVar("VJ_ToTU_LNR_InfectionEffects"):GetInt() == 1 then
+				if
+					string.find(victimModel,"female") or 
+					string.find(victimModel,"alyx") or 
+					string.find(victimModel,"mossman") or 
+					string.find(victimModel,"chell") 
+				then
+					VJ_CreateSound(victim,"ambient/voices/citizen_beaten"..math.random(1,5)..".wav",75,120)
+				else
+					VJ_CreateSound(victim,"ambient/voices/citizen_beaten"..math.random(1,5)..".wav",75,100)
+                end
+            end
+
+        end
+
+	end)
+
+end
+---------------------------------------------------------------------------------------------------------------------------------------------
+function VJ_ToTU_LNR_Infect(victim,inflictor,attacker,isPlayer)
+
+	if
+		GetConVar("VJ_ToTU_LNR_Infection"):GetInt() == 0 or
+		(
+			victim:LookupBone("ValveBiped.Bip01_Pelvis") == nil
+		) or 
+		victim:IsNextBot()
+		then
+	return end
+
+	if !isPlayer then
+
+		if inflictor.LNR_VirusInfection then
+
+			if inflictor == attacker && victim != inflictor then
+		  
+				if victim.LNR_VictimIsInfected then return end
+			   
+				victim.LNR_VictimIsInfected = true
+			   
+				VJ_ToTU_LNR_CreateZombie(victim,inflictor)
+
+			end
+
+		end
+
+	else
+
+		if inflictor.LNR_VirusInfection then
 		
+			if inflictor == attacker && victim != inflictor then
+			
+				VJ_ToTU_LNR_CreateZombie(victim,inflictor)
+				
+			end
+			
+		end
+		
+	end
+	
+end
+---------------------------------------------------------------------------------------------------------------------------------------------
+function VJ_ToTU_LNR_SetPlayerZombie(victim,inflictor,attacker)
+
+	if 
+		GetConVar("VJ_ToTU_LNR_Infection"):GetInt() == 0 or 
+		GetConVar("VJ_ToTU_LNR_PlayerZombie"):GetInt() == 0 or 
+		GetConVar("sbox_godmode"):GetInt() == 1 or 
+		victim.IsControlingNPC or 
+		(
+			victim:LookupBone("ValveBiped.Bip01_Pelvis") == nil
+		)
+		then
+	return end
+
+	local zombie = NULL
+	local oldModel = victim:GetModel()
+	local oldSkin = victim:GetSkin()
+	local oldMaterial = victim:GetMaterial()	
+	local oldColor = victim:GetColor() 
+	local oldPlayerColor = victim:GetPlayerColor()
+
+	if inflictor.LNR_Walker or victim.LNR_Walker then
+		victim.LNR_Infected = false
+		victim.LNR_Drowner = false
+        -- zombie = ents.Create("npc_vj_totu_lnr_wal_ply")	
+        zombie = ents.Create("npc_vj_totu_base_walker")	
+	end
+
+    if inflictor.LNR_Infected or victim.LNR_Infected then
+		victim.LNR_Walker = false
+		victim.LNR_Drowner = false
+        -- zombie = ents.Create("npc_vj_totu_lnr_inf_ply")	
+        zombie = ents.Create("npc_vj_totu_base_infected")	
+	end
+
+	if inflictor.LNR_Drowner or victim.LNR_Drowner then
+		victim.LNR_Walker = false
+		victim.LNR_Infected = false
+		zombie = ents.Create("npc_vj_totu_lnr_drowned_ply")
+	end
+
+	zombie:SetPos(victim:GetPos())
+
+	zombie:SetAngles(victim:GetAngles())
+
+	zombie:Spawn()
+
+	zombie:VJ_ToTU_LNR_CreateBoneMerge(zombie,oldModel,oldSkin,oldColor,oldMaterial,oldPlayerColor,victim)
+
+	if !IsValid(SpawnControllerObject) then
+	
+        local SpawnControllerObject = ents.Create("obj_vj_npccontroller")
+		
+        SpawnControllerObject.VJCE_Player = victim
+		
+        SpawnControllerObject:SetControlledNPC(zombie)
+		
+        SpawnControllerObject:Spawn()
+		
+        SpawnControllerObject:StartControlling()
+		
+	end
+
+	-- This fixes an error that would pop up if an SNPC or entity infected more than one enemy at a time
+    if zombie.IsVJBaseSNPC && zombie.CurrentPossibleEnemies == nil then
+	    zombie.CurrentPossibleEnemies = {} 
+	end
+
+	if
+		string.find(oldModel,"female") or 
+		string.find(oldModel,"alyx") or 
+		string.find(oldModel,"mossman") or 
+		string.find(oldModel,"chell")
+	then
+
+		if zombie.LNR_Walker then
+			zombie:ZombieVoice_FemaleWal()		   
+		elseif zombie.LNR_Infected then
+			zombie:ZombieVoice_FemaleInf()
+		elseif zombie.LNR_Drowner then
+			zombie:ZombieVoice_FemaleDro()
+		end
+
+	end
+
+	if string.find(oldModel,"police") then
+		zombie:ZombieVoice_CP()	
+	elseif 
+		string.find(oldModel,"combine") or
+		string.find(oldModel,"zombie_soldier")
+	then
+		zombie:ZombieVoice_Combine()
+	end
+
+	local DeathAnims = {ACT_SIGNAL1,ACT_SIGNAL2,ACT_SIGNAL3}	
+	local AnimTime = VJ_GetSequenceDuration(zombie,zombie:GetSequenceName(zombie:GetSequence()))
+	  
+	zombie:VJ_ACT_PLAYACTIVITY(DeathAnims,true,120,false)
+	zombie.LNR_AllowedToStumble = false	
+	zombie.GodMode = true
+	zombie.CanInvestigate = false
+	zombie.HasMeleeAttack = false
+	zombie.HasPoseParameterLooking = false
+	zombie.DisableFindEnemy = true		
+	zombie.DisableMakingSelfEnemyToNPCs = true
+	zombie:AddFlags(FL_NOTARGET)
+	zombie.MovementType = VJ_MOVETYPE_STATIONARY		
+	zombie.CanTurnWhileStationary = false
+	zombie.HasSounds = false
+	zombie.DisableSelectSchedule = true
+
+	timer.Simple(math.random(GetConVar("VJ_ToTU_LNR_ResurrectionTime1"):GetInt(),GetConVar("VJ_ToTU_LNR_ResurrectionTime2"):GetInt()),function()
+
+		if IsValid(zombie) then
+
+			zombie.GodMode = false
+			zombie.CanInvestigate = true
+			zombie.HasMeleeAttack = true		
+			zombie.DisableFindEnemy = false		
+			zombie.DisableMakingSelfEnemyToNPCs = false
+			zombie:RemoveFlags(FL_NOTARGET)
+
+			if 
+				GetConVar("vj_npc_sd_nosounds"):GetInt() == 0 
+			then 
+				zombie.HasSounds = true 
+			end
+
+			if zombie:GetActivity() == ACT_SIGNAL1 then
+
+				zombie:VJ_ACT_PLAYACTIVITY("infectionrise",true,false,false)
+				AnimTime = VJ_GetSequenceDuration(zombie,"infectionrise")		
+
+			elseif zombie:GetActivity() == ACT_SIGNAL2 then
+
+				zombie:VJ_ACT_PLAYACTIVITY("slumprise_a",true,false,false)
+				AnimTime = VJ_GetSequenceDuration(zombie,"slumprise_a")
+		  
+				if zombie:GetActivity() == ACT_SIGNAL2 && math.random(1,3) == 1 then
+					zombie:VJ_ACT_PLAYACTIVITY("slumprise_a2",true,false,false)
+					AnimTime = VJ_GetSequenceDuration(zombie,"slumprise_a2")			
+				end
+
+			elseif zombie:GetActivity() == ACT_SIGNAL3 then
+
+				zombie:VJ_ACT_PLAYACTIVITY("infectionrise2",true,false,false)
+				AnimTime = VJ_GetSequenceDuration(zombie,"infectionrise2")
+
+			end
+
+			if GetConVar("vj_npc_noidleparticle"):GetInt() == 0 && GetConVar("VJ_ToTU_LNR_Eyes"):GetInt() == 1 then
+
+				for i = 1,2 do
+
+					local att = i == 2 && "eye1" or "eye2"	
+					local EyeGlow = ents.Create("env_sprite")			
+					EyeGlow:SetKeyValue("model","vj_base/sprites/vj_glow1.vmt")
+					EyeGlow:SetKeyValue("scale","0.02")
+					EyeGlow:SetKeyValue("rendermode","5")
+					if
+						zombie:GetClass() == "npc_vj_totu_lnr_inf" or
+						zombie:GetClass() == "npc_vj_totu_lnr_inf_ply"
+					then
+						EyeGlow:SetKeyValue("rendercolor","255 0 0")
+					end
+					if
+						zombie:GetClass() == "npc_vj_totu_lnr_drowned" or
+						zombie:GetClass() == "npc_vj_totu_lnr_drowned_ply"
+					then
+						EyeGlow:SetKeyValue("rendercolor","0 255 255 255")
+					end	
+					if
+						zombie:GetClass() == "npc_vj_totu_lnr_wal" or
+						zombie:GetClass() == "npc_vj_totu_lnr_wal_ply"
+					then
+						EyeGlow:SetKeyValue("rendercolor","255 255 0 255")
+					end
+					EyeGlow:SetKeyValue("spawnflags","1") 
+					EyeGlow:SetParent(zombie)
+					EyeGlow:Fire("SetParentAttachment",att,0)
+					EyeGlow:Spawn()
+					EyeGlow:Activate()
+					zombie:DeleteOnRemove(EyeGlow)
+
+				end
+
+			end
+
+			timer.Simple(AnimTime,function()
+			
+				if IsValid(zombie) then 
+					zombie.HasPoseParameterLooking = true	   
+					zombie:DoChangeMovementType(VJ_MOVETYPE_GROUND)
+					if
+						zombie:GetClass() == "npc_vj_totu_lnr_drowned" or
+						zombie:GetClass() == "npc_vj_totu_lnr_drowned_ply"
+					then
+						zombie:DoChangeMovementType(VJ_MOVETYPE_AQUATIC)
+					end
+					zombie.LNR_AllowedToStumble = true
+					zombie.DisableSelectSchedule = false		 
+				end
+
+			end)
+
+        end
+
+    end)
+
+end
+---------------------------------------------------------------------------------------------------------------------------------------------
+function VJ_ToTU_LNR_CreateZombie(victim,inflictor)
+
+	 local findPos = victim:GetPos()
+	 local findMDL = victim:GetModel()
+	 timer.Simple(0.01,function()
+		for _,v in pairs(ents.FindInSphere(findPos,75)) do
+			if v:GetClass() == "prop_ragdoll" && v:GetModel() == findMDL then
+				v:Remove()
+			end
+		end
+	end)
+
+	local zombie = NULL 
+	local sndTbl = nil
+	local oldModel = victim:GetModel()
+	local oldSkin = victim:GetSkin()
+	local oldMaterial = victim:GetMaterial()	
+	local oldColor = victim:GetColor()
+
+	if victim.GetPlayerColor && victim:GetPlayerColor() then  
+		oldPlayerColor = victim:GetPlayerColor()
+	else
+		oldPlayerColor = false
+	end
+
+	local DefaultFootSteps = {
+			"npc/metropolice/gear1.wav",
+			"npc/metropolice/gear2.wav",
+			"npc/metropolice/gear3.wav",
+			"npc/metropolice/gear4.wav",
+			"npc/metropolice/gear5.wav",
+			"npc/metropolice/gear6.wav"
+		}
+
+	if victim.SoundTbl_FootStep && #victim.SoundTbl_FootStep > 0 then
+		sndTbl = victim.SoundTbl_FootStep
+	else
+		if victim.IsVJBaseSNPC_Human && !VJ_PICK(victim.SoundTbl_FootStep) then
+			sndTbl = DefaultFootSteps
+		end
+	end
+
+	if victim:IsNPC() or victim:IsPlayer() then
+		if inflictor.LNR_Walker or victim.LNR_Walker then
+		    victim.LNR_Infected = false
+			victim.LNR_Drowner = false
+            zombie = ents.Create("npc_vj_totu_lnr_wal")
+			if victim:IsPlayer() then
+				zombie = ents.Create("npc_vj_totu_lnr_wal_ply")
+			end
+		end
+        if inflictor.LNR_Infected or victim.LNR_Infected then
+		    victim.LNR_Walker = false
+			victim.LNR_Drowner = false
+            zombie = ents.Create("npc_vj_totu_lnr_inf")
+			if victim:IsPlayer() then
+				zombie = ents.Create("npc_vj_totu_lnr_inf_ply")
+			end
+		end
+		if inflictor.LNR_Drowner or victim.LNR_Drowner then
+		    victim.LNR_Walker = false
+		    victim.LNR_Infected = false
+            zombie = ents.Create("npc_vj_totu_lnr_drowned")
+			if victim:IsPlayer() then
+				zombie = ents.Create("npc_vj_totu_lnr_drowned_ply")
+			end
+		end
+		zombie:SetPos(victim:GetPos())
+		zombie:SetAngles(victim:GetAngles())
+		zombie:Spawn()
+		undo.ReplaceEntity(victim,zombie)			
+		zombie:VJ_ToTU_LNR_CreateBoneMerge(zombie,oldModel,oldSkin,oldColor,oldMaterial,oldPlayerColor,victim)	
+	end
+
+	if sndTbl then
+		zombie.SoundTbl_FootStep = sndTbl
+	end
+	-- This fixes an error that would pop up if an SNPC or entity infected more than one enemy at a time
+	if zombie.IsVJBaseSNPC && zombie.CurrentPossibleEnemies == nil then
+		zombie.CurrentPossibleEnemies = {} 
+	end
+
+	if
+		string.find(oldModel,"female") or
+		string.find(oldModel,"alyx") or
+		string.find(oldModel,"mossman") or
+		string.find(oldModel,"chell")
+	then
+		zombie:ZombieSounds_GiveDefault_Female()
+	end
+
+	if string.find(oldModel,"police") then
+		zombie:ZombieSounds_Custom_MaskBoi()	
+	elseif string.find(oldModel,"combine") or string.find(oldModel,"zombie_soldier") then
+		zombie:ZombieSounds_Custom_RadioCuntFuq()
+	end
+
+	local DeathAnims = {ACT_SIGNAL1,ACT_SIGNAL2,ACT_SIGNAL3}	
+	local AnimTime = VJ_GetSequenceDuration(zombie,zombie:GetSequenceName(zombie:GetSequence()))
+	  
+	zombie:VJ_ACT_PLAYACTIVITY(DeathAnims,true,120,false)
+	zombie.LNR_AllowedToStumble = false		
+	zombie.GodMode = true
+	zombie.CanInvestigate = false
+	zombie.HasPoseParameterLooking = false
+	zombie.DisableFindEnemy = true		
+	zombie.DisableMakingSelfEnemyToNPCs = true
+	zombie:AddFlags(FL_NOTARGET)
+	zombie.MovementType = VJ_MOVETYPE_STATIONARY		
+	zombie.CanTurnWhileStationary = false
+	zombie.HasSounds = false
+	zombie.DisableSelectSchedule = true
+
+	timer.Simple(math.random(GetConVar("VJ_ToTU_LNR_ResurrectionTime1"):GetInt(),GetConVar("VJ_ToTU_LNR_ResurrectionTime2"):GetInt()),function()
+
+		if IsValid(zombie) then	
+
+			zombie.GodMode = false
+			zombie.CanInvestigate = true		
+			zombie.DisableFindEnemy = false		
+			zombie.DisableMakingSelfEnemyToNPCs = false
+			zombie:RemoveFlags(FL_NOTARGET)
+
+			if GetConVar("vj_npc_sd_nosounds"):GetInt() == 0 then zombie.HasSounds = true end
+
+			if zombie:GetActivity() == ACT_SIGNAL1 then
+
+				zombie:VJ_ACT_PLAYACTIVITY("infectionrise",true,false,false)
+				AnimTime = VJ_GetSequenceDuration(zombie,"infectionrise")
+
+			elseif zombie:GetActivity() == ACT_SIGNAL2 then
+
+				zombie:VJ_ACT_PLAYACTIVITY("slumprise_a",true,false,false)
+				AnimTime = VJ_GetSequenceDuration(zombie,"slumprise_a")
+
+				if zombie:GetActivity() == ACT_SIGNAL2 && math.random(1,3) == 1 then
+					zombie:VJ_ACT_PLAYACTIVITY("slumprise_a2",true,false,false)
+					AnimTime = VJ_GetSequenceDuration(zombie,"slumprise_a2")
+				end
+
+			elseif zombie:GetActivity() == ACT_SIGNAL3 then
+
+				zombie:VJ_ACT_PLAYACTIVITY("infectionrise2",true,false,false)
+				AnimTime = VJ_GetSequenceDuration(zombie,"infectionrise2")
+				
+			end
+
+			if GetConVar("vj_npc_noidleparticle"):GetInt() == 0 && GetConVar("VJ_ToTU_LNR_Eyes"):GetInt() == 1 then
+
+				for i = 1,2 do
+					local att = i == 2 && "eye1" or "eye2"	
+					local EyeGlow = ents.Create("env_sprite")			
+					EyeGlow:SetKeyValue("model","vj_base/sprites/vj_glow1.vmt")
+					EyeGlow:SetKeyValue("scale","0.02")
+					EyeGlow:SetKeyValue("rendermode","5")
+					if
+						zombie:GetClass() == "npc_vj_totu_lnr_inf" or
+						zombie:GetClass() == "npc_vj_totu_lnr_inf_ply"
+					then
+						EyeGlow:SetKeyValue("rendercolor","255 0 0")
+					end
+					if
+						zombie:GetClass() == "npc_vj_totu_lnr_drowned" or
+						zombie:GetClass() == "npc_vj_totu_lnr_drowned_ply"
+					then
+						EyeGlow:SetKeyValue("rendercolor","0 255 255 255")
+					end	
+					if
+						zombie:GetClass() == "npc_vj_totu_lnr_wal" or
+						zombie:GetClass() == "npc_vj_totu_lnr_wal_ply"
+					then
+						EyeGlow:SetKeyValue("rendercolor","255 255 0 255")
+					end
+					EyeGlow:SetKeyValue("spawnflags","1") 
+					EyeGlow:SetParent(zombie)
+					EyeGlow:Fire("SetParentAttachment",att,0)
+					EyeGlow:Spawn()
+					EyeGlow:Activate()
+					zombie:DeleteOnRemove(EyeGlow)	
+				end
+			end
+
+		   timer.Simple(AnimTime,function()
+				if IsValid(zombie) then 
+					zombie.HasPoseParameterLooking = true	   
+					zombie:DoChangeMovementType(VJ_MOVETYPE_GROUND)
+				if
+					zombie:GetClass() == "npc_vj_totu_lnr_drowned" or
+					zombie:GetClass() == "npc_vj_totu_lnr_drowned_ply"
+				then
+					zombie:DoChangeMovementType(VJ_MOVETYPE_AQUATIC)
+				end
+				zombie.LNR_AllowedToStumble = true
+				zombie.DisableSelectSchedule = false		 
+				end	
+			end)
+
+		end
+
+	end)
+
+	if victim.IsVJBaseSNPC then
+		victim.HasDeathRagdoll = false
+		victim.HasDeathAnimation = false				
+	end
+
+	if victim:IsPlayer() then
+		if IsValid(victim:GetRagdollEntity()) then
+			SafeRemoveEntity(victim:GetRagdollEntity())
+		end
+	end
+
+	if victim:IsNPC() then
+		SafeRemoveEntity(victim)	
+	end
+
+	if IsValid(victim:GetActiveWeapon()) then
+		SafeRemoveEntity(victim:GetActiveWeapon())			
+	end
+	
+    end
+	
+-- end				
+---------------------------------------------------------------------------------------------------------------------------------------------
+/*
+if SERVER then
+function ENT:VJ_ToTU_LNR_CreateBoneMerge(zombieEnt,oldModel,oldSkin,oldColor,oldMaterial,oldPlayerColor,bgEnt)
+
+	 local creator = NULL
+
+	if zombieEnt:IsNPC() && !zombieEnt.LNR_Crawler then
+		creator = IsValid(zombieEnt:GetCreator()) && zombieEnt:GetCreator()
+		zombieEnt:SetCollisionBounds(zombieEnt:GetCollisionBounds())				
+	end
+
+	local body = ents.Create("vj_totu_lnr_infection")
+	body:SetModel(oldModel)
+	body:SetPos(zombieEnt:GetPos())
+	body:SetAngles(zombieEnt:GetAngles())
+	body.VJ_Owner = zombieEnt
+	body:Spawn()			
+	body:SetParent(zombieEnt)
+	body:SetSkin(oldSkin)
+	body:SetColor(oldColor)
+	body:SetMaterial(oldMaterial)
+	
+	if	oldPlayerColor != false then
+		body:SetPlayerColor(oldPlayerColor)
+	else
+		body:SetPlayerColor(Color(61,87,105):ToVector())
+	end
+
+	if IsValid(bgEnt) then
+		for i = 0, body:GetNumBodyGroups() -1 do
+			body:SetBodygroup(i,bgEnt:GetBodygroup(i))
+		end	
+	end
+
+	zombieEnt.Bonemerge = body
+		
+end
+end
+*/
+---------------------------------------------------------------------------------------------------------------------------------------------
+
 
 -- !!!!!! DON'T TOUCH ANYTHING BELOW THIS !!!!!! -------------------------------------------------------------------------------------------------------------------------
 	AddCSLuaFile(AutorunFile)
