@@ -17,7 +17,7 @@
 	"$phongexponenttexture" "models/totu/milhaz/mil_arms_mask"  ///UV88, 0.8
 	"$phongfresnelranges"	"[0.1 1 5.75]"
 	"$PhongTint" "[1.1 1 1]"
-                  $detail models\lnrhl2\hunter_01_detail
+                  $detail models\totu\detail\hunter_01_detail
                   $detailscale 0.15
                   $detailblendfactor 0.75
                   $detailblendmode 0
