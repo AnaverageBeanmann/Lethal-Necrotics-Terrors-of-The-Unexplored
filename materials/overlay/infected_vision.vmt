@@ -1,0 +1,9 @@
+"UnlitGeneric"
+{
+	"$baseTexture" "vj_lnr/overlay/infected_vision"
+	"$translucent"		"1"
+	"$alpha" 1
+	"$vertexalpha" "1"
+	"$ignorez"     "1"
+	"$no_fullbright" "1"	
+}
