@@ -17,46 +17,7 @@ local LNRExtrasExists = file.Exists("lua/autorun/vj_lnre_autorun.lua","GAME")
 
 if VJExists == true then
 
-
 	include('autorun/vj_controls.lua')
-	
-	if SERVER then
-		resource.AddWorkshop("1879776316") -- Base LNR addon (HL2)
-		-- resource.AddWorkshop("1887964505") -- Specials Pack
-	end
-	
-	local vCat1 = "Lethal Necrotics: Terrors of The Unexplored - Base Zombies"
-	local vCat2 = "Lethal Necrotics: Terrors of The Unexplored - Military Zombies"
-	local vCat3 = "Lethal Necrotics: Terrors of The Unexplored - Nightkin"
-	local vCat4 = "Lethal Necrotics: Terrors of The Unexplored - Deimos"
-	local vCat5 = "Lethal Necrotics: Terrors of The Unexplored - Backcounty"
-	local vCat6 = "Lethal Necrotics: Terrors of The Unexplored - The Rotten"
-	local vCat7 = "Lethal Necrotics: Terrors of The Unexplored - Aquos"
-	local vCat8 = "Lethal Necrotics: Terrors of The Unexplored - Spawners/Bonus"
-	local vCat9 = "Lethal Necrotics: Terrors of The Unexplored - Tundra Wastes"
-	local vCat10 = "Lethal Necrotics: Terrors of The Unexplored - Morti Labs"
-	local vCat11 = "Lethal Necrotics: Terrors of The Unexplored - Freaks of Nature"
-	local vCat12 = "Lethal Necrotics: Terrors of The Unexplored - Cepheus"
-	-- VJ.AddCategoryInfo("Lethal Necrotics: Terrors of The Unexplored", {Icon = "icons/totu_icon.png"})
-	-- VJ.AddCategoryInfo("Lethal Necrotics: Terrors of The Unexplored", {Icon = "icons/icon_new_16.png"})
-	-- VJ.AddCategoryInfo("Lethal Necrotics: Terrors of The Unexplored", {Icon = "icons/icon_new_32.png"})
-	-- VJ.AddCategoryInfo("Lethal Necrotics: Terrors of The Unexplored", {Icon = "icons/icon_new_64.png"})
-	-- VJ.AddCategoryInfo("Lethal Necrotics: Terrors of The Unexplored", {Icon = "icons/icon_new_128.png"})
-	-- VJ.AddCategoryInfo("Lethal Necrotics: Terrors of The Unexplored", {Icon = "icons/icon_new_256.png"})
-	VJ.AddCategoryInfo("Lethal Necrotics: Terrors of The Unexplored - Base Zombies", {Icon = "icons/symbolv3.png"})
-	VJ.AddCategoryInfo("Lethal Necrotics: Terrors of The Unexplored - Military Zombies", {Icon = "icons/symbolv3.png"})
-	VJ.AddCategoryInfo("Lethal Necrotics: Terrors of The Unexplored - Nightkin", {Icon = "icons/symbolv3.png"})
-	VJ.AddCategoryInfo("Lethal Necrotics: Terrors of The Unexplored - Deimos", {Icon = "icons/symbolv3.png"})
-	VJ.AddCategoryInfo("Lethal Necrotics: Terrors of The Unexplored - Backcounty", {Icon = "icons/symbolv3.png"})
-	VJ.AddCategoryInfo("Lethal Necrotics: Terrors of The Unexplored - The Rotten", {Icon = "icons/symbolv3.png"})
-	VJ.AddCategoryInfo("Lethal Necrotics: Terrors of The Unexplored - Water Critters", {Icon = "icons/symbolv3.png"})
-	VJ.AddCategoryInfo("Lethal Necrotics: Terrors of The Unexplored - Spawners/Bonus", {Icon = "icons/symbolv3.png"})
-	VJ.AddCategoryInfo("Lethal Necrotics: Terrors of The Unexplored - Tundra Wastes", {Icon = "icons/symbolv3.png"})
-	VJ.AddCategoryInfo("Lethal Necrotics: Terrors of The Unexplored - Morti Labs", {Icon = "icons/symbolv3.png"})
-	VJ.AddCategoryInfo("Lethal Necrotics: Terrors of The Unexplored - Freaks of Nature", {Icon = "icons/symbolv3.png"})
-	VJ.AddCategoryInfo("Lethal Necrotics: Terrors of The Unexplored - Cepheus", {Icon = "icons/symbolv3.png"})
-	-- local vCat2 = "Lethal Necrotics: Terrors of The Unexplored - Misc & Spawners"
-	-- VJ.AddCategoryInfo("Lethal Necrotics: Terrors of The Unexplored - Misc & Spawners", {Icon = "icons/totu_icon.png"})
 
 	game.AddDecal(
 		"VJ_TOTU_LNR_Blood_Red",
@@ -686,27 +647,35 @@ if VJExists == true then
 		bugbait particles is env_sporeexplosion
 		
 		lacrinimo ideas
-		- make reborn slower
-		- add effects when carcass splits
-		- make deimos zomb eyes sparkle before running
-		- zombies react to being on fire
-		- add some sort of sound w/ effect to headshot hits/kills
-		- see about using the unused bodygroups for nightkin to make the different types more distinct from eachother
-		- see what's going on with crippled shriekers attacking the air
-		- fix cripple shit with everyone
-		- make cyst play headcrab release if it dies from self-damage from range attacking (play barnacle death sound?)
-		- lighting a ghost on fire breaks the cloaker/cloaker breaks faster from heat
-		- if a hazmat is on fire long enough the tank will just explode instantly
-		- lighting a detonator on fire will cause the bomb to short cirquit (play city scanner pain sounds) and then shortly explode (don't make him panic when it's about to go off)
-		- infected ghosts can toss down smoke grenades when they run to charge their cloak
-		- walker ghosts can sometimes drop smoke grenades if you push them over
-		- suit depressurize sound on death for hazmat zombs of some sort (probably smog for now)
-		- detonators drop live bombs when killed (explode if shot)
-		- giant zombies cause aoe damage if you knock them over (or maybe just tank)
-		- some sort of giant deimos zombie that falls over when it stops running
-		- "hazmat suit zombie which explodes into damaging virus cloud"
+		
+		= can do already
+			- make reborn slower
+			- add effects when carcass splits
+			- make deimos zomb eyes sparkle before running
+			- zombies react to being on fire
+			- see about using the unused bodygroups for nightkin to make the different types more distinct from eachother
+			- see what's going on with crippled shriekers attacking the air
+			- fix cripple shit with everyone
+			- make cyst play headcrab release if it dies from self-damage from range attacking (play barnacle death sound?)
+			- lighting a ghost on fire breaks the cloaker/cloaker breaks faster from heat
+			- if a hazmat is on fire long enough the tank will just explode instantly
+			- lighting a detonator on fire will cause the bomb to short cirquit (play city scanner pain sounds) and then shortly explode (don't make him panic when it's about to go off)
+			- infected ghosts can toss down smoke grenades when they run to charge their cloak
+			- walker ghosts can sometimes drop smoke grenades if you push them over
+			- giant zombies cause aoe damage if you knock them over (or maybe just tank)
+
+		= need to add stuff to do
+			- add some sort of sound w/ effect to headshot hits/kills
+			- suit depressurize sound on death for hazmat zombs of some sort (probably smog for now)
+			- detonators drop live bombs when killed (explode if shot)
+			- some sort of giant deimos zombie that falls over when it stops running
+			- "hazmat suit zombie which explodes into damaging virus cloud"
+
 	*/
 
+
+
+/*
 	-- [] = done
 	-- {} = work in progess
 	-- () = hasn't been started
@@ -941,7 +910,7 @@ if VJExists == true then
 			-- https://steamcommunity.com/sharedfiles/filedetails/?id=2879594601
 				-- caretaker
 
-		/*
+
 	-- Morti Research Facility
 		VJ.AddNPC("Morti Scientist (Friendly)","npc_vj_totu_morti_scientist",vCat)
 		-- ()
@@ -968,7 +937,7 @@ if VJExists == true then
 		VJ.AddNPC("Morti N.O.R.U. Agent (Code 4)","npc_vj_totu_morti_noru_nosurvivors",vCat)
 		-- ()
 		-- VJ.AddNPC("","npc_vj_totu_morti_",vCat)
-		*/
+
 	
 	-- Zombified Morti Personnel
 		VJ.AddNPC("Morti Scientist Zombie (Walker)","npc_vj_totu_morti_zombie_scientist_walker",vCat10)
@@ -1305,6 +1274,8 @@ if VJExists == true then
 		-- VJ.AddNPCWeapon("vj_LN_TOTU_LMG","weapon_vj_ln_totu_lmg")
 		-- VJ.AddNPCWeapon("vj_LN_TOTU_KNIFE","weapon_vj_ln_totu_knife")
 
+*/
+
     VJ.AddClientConVar("VJ_ToTU_LNR_ZombieOverlay", 1, {FCVAR_ARCHIVE})
     VJ.AddClientConVar("VJ_ToTU_LNR_BloodDecals", 1, {FCVAR_ARCHIVE})
 	
@@ -1342,6 +1313,8 @@ if VJExists == true then
 	AddConvars["VJ_ToTU_LNR_ResurrectionTime2"] = 10
 	
 	
+	AddConvars["VJ_ToTU_SpawnMenu_SortByCategory"] = 0
+
 	AddConvars["VJ_ToTU_Spawn_UniversalDig"] = 0
 	AddConvars["VJ_ToTU_Spawn_DigChance"] = 5
 	AddConvars["VJ_ToTU_Spawn_AlertSound"] = 1
@@ -1523,6 +1496,8 @@ if VJExists == true then
 
 
 
+			VJ_ToTU_SpawnMenu_SortByCategory = "0",
+			
 			VJ_ToTU_Spawn_UniversalDig = "0",
 			VJ_ToTU_Spawn_DigChance = "5",
 			VJ_ToTU_Spawn_AlertSound = "1",
@@ -1685,6 +1660,10 @@ if VJExists == true then
 
 			
 			
+			
+			Panel:AddControl("Checkbox", {Label ="Sort zombies categorically?", Command ="VJ_ToTU_SpawnMenu_SortByCategory"})
+			Panel:ControlHelp("If enabled, zombies will be sorted by category instead of them all being in one list.")			
+			Panel:ControlHelp("You need to restart the server for this to take effect.")			
 			
 			Panel:AddControl("Checkbox", {Label ="Enable Player-Controlled Zombies Upon Turning?", Command ="VJ_TOTU_LNR_PlayerZombie"})
 			
@@ -2325,7 +2304,144 @@ if VJExists == true then
 	end
 		hook.Add("PopulateToolMenu","VJ_AddToMenu_ToTU", VJ_AddToMenu_ToTU )
 	end
-	
+
+
+
+	if GetConVar("VJ_ToTU_SpawnMenu_SortByCategory"):GetInt() == 1 then
+
+		local vCat2 = "Lethal Necrotics: Terrors of The Unexplored - Military Zombies"
+		local vCat3 = "Lethal Necrotics: Terrors of The Unexplored - Nightkin"
+		local vCat4 = "Lethal Necrotics: Terrors of The Unexplored - Deimos"
+		local vCat8 = "Lethal Necrotics: Terrors of The Unexplored - Spawners/Bonus"
+		/*
+		local vCat1 = "Lethal Necrotics: Terrors of The Unexplored - Base Zombies"
+		local vCat5 = "Lethal Necrotics: Terrors of The Unexplored - Backcounty"
+		local vCat6 = "Lethal Necrotics: Terrors of The Unexplored - The Rotten"
+		local vCat7 = "Lethal Necrotics: Terrors of The Unexplored - Aquos"
+		local vCat9 = "Lethal Necrotics: Terrors of The Unexplored - Tundra Wastes"
+		local vCat10 = "Lethal Necrotics: Terrors of The Unexplored - Morti Labs"
+		local vCat11 = "Lethal Necrotics: Terrors of The Unexplored - Freaks of Nature"
+		local vCat12 = "Lethal Necrotics: Terrors of The Unexplored - Cepheus"
+		*/
+
+		VJ.AddCategoryInfo("Lethal Necrotics: Terrors of The Unexplored - Military Zombies", {Icon = "icons/symbolv3.png"})
+		VJ.AddCategoryInfo("Lethal Necrotics: Terrors of The Unexplored - Nightkin", {Icon = "icons/symbolv3.png"})
+		VJ.AddCategoryInfo("Lethal Necrotics: Terrors of The Unexplored - Deimos", {Icon = "icons/symbolv3.png"})
+		VJ.AddCategoryInfo("Lethal Necrotics: Terrors of The Unexplored - Spawners/Bonus", {Icon = "icons/symbolv3.png"})
+		/*
+		VJ.AddCategoryInfo("Lethal Necrotics: Terrors of The Unexplored - Base Zombies", {Icon = "icons/symbolv3.png"})
+		VJ.AddCategoryInfo("Lethal Necrotics: Terrors of The Unexplored - Backcounty", {Icon = "icons/symbolv3.png"})
+		VJ.AddCategoryInfo("Lethal Necrotics: Terrors of The Unexplored - The Rotten", {Icon = "icons/symbolv3.png"})
+		VJ.AddCategoryInfo("Lethal Necrotics: Terrors of The Unexplored - Aquos", {Icon = "icons/symbolv3.png"})
+		VJ.AddCategoryInfo("Lethal Necrotics: Terrors of The Unexplored - Tundra Wastes", {Icon = "icons/symbolv3.png"})
+		VJ.AddCategoryInfo("Lethal Necrotics: Terrors of The Unexplored - Morti Labs", {Icon = "icons/symbolv3.png"})
+		VJ.AddCategoryInfo("Lethal Necrotics: Terrors of The Unexplored - Freaks of Nature", {Icon = "icons/symbolv3.png"})
+		VJ.AddCategoryInfo("Lethal Necrotics: Terrors of The Unexplored - Cepheus", {Icon = "icons/symbolv3.png"})
+		*/
+
+		-- MilZombs
+			VJ.AddNPC("Airman (Walker)","npc_vj_totu_milzomb_airman",vCat2)
+			VJ.AddNPC("Airman (Infected)","npc_vj_totu_milzomb_airman_infected",vCat2)
+			VJ.AddNPC("Hazmat (Walker)","npc_vj_totu_milzomb_hazmat",vCat2)
+			VJ.AddNPC("Hazmat (Infected)","npc_vj_totu_milzomb_hazmat_infected",vCat2)
+			VJ.AddNPC("Grunt (Walker)","npc_vj_totu_milzomb_walker",vCat2)
+			VJ.AddNPC("Grunt (Infected)","npc_vj_totu_milzomb_infected",vCat2)
+			VJ.AddNPC("Ghillie (Walker)","npc_vj_totu_milzomb_ghillie_walker",vCat2)
+			VJ.AddNPC("Ghillie (Infected)","npc_vj_totu_milzomb_ghillie",vCat2)
+			VJ.AddNPC("Ghost (Walker)","npc_vj_totu_milzomb_ghost_walker",vCat2)
+			VJ.AddNPC("Ghost (Infected)","npc_vj_totu_milzomb_ghost",vCat2)
+			VJ.AddNPC("Juggernaut","npc_vj_totu_milzomb_juggernaut",vCat2)
+			VJ.AddNPC("Bulldozer","npc_vj_totu_milzomb_bulldozer",vCat2)
+			VJ.AddNPC("Tank","npc_vj_totu_milzomb_tank",vCat2)
+			VJ.AddNPC("Detonator","npc_vj_totu_milzomb_detonator",vCat2)
+			VJ.AddNPC("Bulk Detonator","npc_vj_totu_milzomb_detonator_bulk",vCat2)
+
+		-- Nightkin
+			VJ.AddNPC("Scragg","npc_vj_totu_nightkin_scragg",vCat3)
+			VJ.AddNPC("Skitter","npc_vj_totu_nightkin_skitter",vCat3)
+			VJ.AddNPC("Scourge","npc_vj_totu_nightkin_spitballer",vCat3)
+			VJ.AddNPC("Squaller","npc_vj_totu_nightkin_squaller",vCat3)
+			VJ.AddNPC("Spectre","npc_vj_totu_nightkin_spectre",vCat3)
+			VJ.AddNPC("Scylla","npc_vj_totu_nightkin_scylla",vCat3)
+			VJ.AddNPC("Shrieker","npc_vj_totu_nightkin_shrieker",vCat3)
+
+		-- Deimos
+			VJ.AddNPC("Reborn","npc_vj_totu_deimos_reborn",vCat4)
+			VJ.AddNPC("Redead","npc_vj_totu_deimos_redead",vCat4)
+			VJ.AddNPC("Remort (Researcher)","npc_vj_totu_deimos_redead_sci",vCat4)
+			VJ.AddNPC("Remort (Guard)","npc_vj_totu_deimos_redead_guard",vCat4)
+			VJ.AddNPC("Remort (Drone)","npc_vj_totu_deimos_redead_grunt",vCat4)
+			VJ.AddNPC("Carcass","npc_vj_totu_deimos_carcass",vCat4)
+			VJ.AddNPC("Carcass Thorax","npc_vj_totu_deimos_carcass_torso",vCat4)
+			VJ.AddNPC("Cazador","npc_vj_totu_deimos_cazador",vCat4)
+			VJ.AddNPC("Cazador Thorax","npc_vj_totu_deimos_cazador_torso",vCat4)
+			VJ.AddNPC("Cyst","npc_vj_totu_deimos_cyst",vCat4)
+			VJ.AddNPC("Cancer","npc_vj_totu_deimos_cancer",vCat4)
+			VJ.AddNPC("Revenant","npc_vj_totu_deimos_revenant",vCat4)
+			VJ.AddNPC("Corrupt","npc_vj_totu_deimos_corrupt",vCat4)
+			VJ.AddNPC("Reaper","npc_vj_totu_deimos_corrupt_brute",vCat4)
+
+		-- Spawners/Bonus
+			VJ.AddNPC("Base Walker","npc_vj_totu_base_walker",vCat8)
+			VJ.AddNPC("Base Infected","npc_vj_totu_base_infected",vCat8)
+
+	else
+
+		local vCatt = "Lethal Necrotics: Terrors of The Unexplored"
+		VJ.AddCategoryInfo("Lethal Necrotics: Terrors of The Unexplored", {Icon = "icons/symbolv3.png"})
+		local vCatr = "Lethal Necrotics: Terrors of The Unexplored - Spawners/Bonus"
+		VJ.AddCategoryInfo("Lethal Necrotics: Terrors of The Unexplored - Spawners/Bonus", {Icon = "icons/symbolv3.png"})
+
+		-- MilZombs
+			VJ.AddNPC("Airman (Walker)","npc_vj_totu_milzomb_airman",vCatt)
+			VJ.AddNPC("Airman (Infected)","npc_vj_totu_milzomb_airman_infected",vCatt)
+			VJ.AddNPC("Hazmat (Walker)","npc_vj_totu_milzomb_hazmat",vCatt)
+			VJ.AddNPC("Hazmat (Infected)","npc_vj_totu_milzomb_hazmat_infected",vCatt)
+			VJ.AddNPC("Grunt (Walker)","npc_vj_totu_milzomb_walker",vCatt)
+			VJ.AddNPC("Grunt (Infected)","npc_vj_totu_milzomb_infected",vCatt)
+			VJ.AddNPC("Ghillie (Walker)","npc_vj_totu_milzomb_ghillie_walker",vCatt)
+			VJ.AddNPC("Ghillie (Infected)","npc_vj_totu_milzomb_ghillie",vCatt)
+			VJ.AddNPC("Ghost (Walker)","npc_vj_totu_milzomb_ghost_walker",vCatt)
+			VJ.AddNPC("Ghost (Infected)","npc_vj_totu_milzomb_ghost",vCatt)
+			VJ.AddNPC("Juggernaut","npc_vj_totu_milzomb_juggernaut",vCatt)
+			VJ.AddNPC("Bulldozer","npc_vj_totu_milzomb_bulldozer",vCatt)
+			VJ.AddNPC("Tank","npc_vj_totu_milzomb_tank",vCatt)
+			VJ.AddNPC("Detonator","npc_vj_totu_milzomb_detonator",vCatt)
+			VJ.AddNPC("Bulk Detonator","npc_vj_totu_milzomb_detonator_bulk",vCatt)
+
+		-- Nightkin
+			VJ.AddNPC("Scragg","npc_vj_totu_nightkin_scragg",vCatt)
+			VJ.AddNPC("Skitter","npc_vj_totu_nightkin_skitter",vCatt)
+			VJ.AddNPC("Scourge","npc_vj_totu_nightkin_spitballer",vCatt)
+			VJ.AddNPC("Squaller","npc_vj_totu_nightkin_squaller",vCatt)
+			VJ.AddNPC("Spectre","npc_vj_totu_nightkin_spectre",vCatt)
+			VJ.AddNPC("Scylla","npc_vj_totu_nightkin_scylla",vCatt)
+			VJ.AddNPC("Shrieker","npc_vj_totu_nightkin_shrieker",vCatt)
+
+		-- Deimos
+			VJ.AddNPC("Reborn","npc_vj_totu_deimos_reborn",vCatt)
+			VJ.AddNPC("Redead","npc_vj_totu_deimos_redead",vCatt)
+			VJ.AddNPC("Remort (Researcher)","npc_vj_totu_deimos_redead_sci",vCatt)
+			VJ.AddNPC("Remort (Guard)","npc_vj_totu_deimos_redead_guard",vCatt)
+			VJ.AddNPC("Remort (Drone)","npc_vj_totu_deimos_redead_grunt",vCatt)
+			VJ.AddNPC("Carcass","npc_vj_totu_deimos_carcass",vCatt)
+			VJ.AddNPC("Carcass Thorax","npc_vj_totu_deimos_carcass_torso",vCatt)
+			VJ.AddNPC("Cazador","npc_vj_totu_deimos_cazador",vCatt)
+			VJ.AddNPC("Cazador Thorax","npc_vj_totu_deimos_cazador_torso",vCatt)
+			VJ.AddNPC("Cyst","npc_vj_totu_deimos_cyst",vCatt)
+			VJ.AddNPC("Cancer","npc_vj_totu_deimos_cancer",vCatt)
+			VJ.AddNPC("Revenant","npc_vj_totu_deimos_revenant",vCatt)
+			VJ.AddNPC("Corrupt","npc_vj_totu_deimos_corrupt",vCatt)
+			VJ.AddNPC("Reaper","npc_vj_totu_deimos_corrupt_brute",vCatt)
+
+		-- Spawners/Bonus
+			VJ.AddNPC("Base Walker","npc_vj_totu_base_walker",vCatr)
+			VJ.AddNPC("Base Infected","npc_vj_totu_base_infected",vCatr)
+
+	end
+
+
+
 	-- thank you to darkborn for this bit
 	if CLIENT then
 		net.Receive("VJ_ToTU_Squaller_Hud",function(len,pl)
