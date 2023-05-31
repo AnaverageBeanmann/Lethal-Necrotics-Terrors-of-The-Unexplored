@@ -111,7 +111,7 @@ function ENT:Zombie_Difficulty()
 	elseif GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 2 then
 
 		-- Hey, Not Too Rough
-		self.StartHealth = 75
+		self.StartHealth = 25
 		self.MeleeAttackDamage = math.Rand(5,10)
 
 	elseif GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 3 then
@@ -123,7 +123,7 @@ function ENT:Zombie_Difficulty()
 	elseif GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 4 then
 
 		-- Ultra Violence
-		self.StartHealth = 275
+		self.StartHealth = 150
 		self.MeleeAttackDamage = math.Rand(15,20)
 
 	elseif GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 5 then

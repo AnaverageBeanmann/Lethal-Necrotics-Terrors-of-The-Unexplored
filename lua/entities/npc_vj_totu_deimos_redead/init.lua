@@ -189,6 +189,13 @@ function ENT:Zombie_CustomOnInitialize()
 		self:SetModelScale(1.1)
 	end
 
+	if self:GetClass() == "npc_vj_totu_deimos_reborn" && !self.LNR_Crippled then
+		timer.Simple(0.1,function() if IsValid(self) then
+			self.AnimTbl_Walk = {ACT_WALK}
+			self.AnimTbl_Run = {ACT_RUN}
+		end end)
+	end
+
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:Zombie_GlowEyes_Give()
@@ -869,7 +876,7 @@ function ENT:Zombie_Difficulty()
 
 	elseif GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 2 then
 
-		self.StartHealth = 150
+		self.StartHealth = 65
 		self.MeleeAttackDamage = math.Rand(10,15)
 
 	elseif GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 3 then
@@ -880,7 +887,7 @@ function ENT:Zombie_Difficulty()
 	elseif GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 4 then
 
 		self.StartHealth = 250
-		self.MeleeAttackDamage = math.Rand(20,25)
+		self.MeleeAttackDamage = math.Rand(15,20)
 
 	elseif GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 5 then
 
@@ -916,9 +923,15 @@ function ENT:Zombie_CustomOnThink_AIEnabled()
 		self.ToTU_Weaponized_Redead_Running = true
 		self.ToTU_Weaponized_Redead_RunT = CurTime() + math.random(6,14)
 
+
 		self.AnimTbl_Walk = {ACT_SPRINT}
 		self.AnimTbl_Run = {ACT_RUN_RELAXED}
 		
+		if self:GetClass() == "npc_vj_totu_deimos_reborn" then
+			self.AnimTbl_Walk = {ACT_MP_MELEE_GRENADE1_IDLE}
+			self.AnimTbl_Run = {ACT_SPRINT}
+		end
+
 		if self:GetClass() == "npc_vj_totu_deimos_revenant" then
 			self.AnimTbl_Walk = {ACT_MP_MELEE_GRENADE1_IDLE}
 			self.AnimTbl_Run = {ACT_SPRINT}
@@ -943,6 +956,9 @@ function ENT:Zombie_CustomOnThink_AIEnabled()
 			self.AnimTbl_Walk = {ACT_MP_MELEE_GRENADE1_IDLE}
 			self.AnimTbl_Run = {ACT_RUN_AIM}
 		elseif self:GetClass() == "npc_vj_totu_deimos_revenant" then
+			self.AnimTbl_Walk = {ACT_MP_MELEE_GRENADE1_IDLE}
+			self.AnimTbl_Run = {ACT_RUN}
+		elseif self:GetClass() == "npc_vj_totu_deimos_reborn" then
 			self.AnimTbl_Walk = {ACT_MP_MELEE_GRENADE1_IDLE}
 			self.AnimTbl_Run = {ACT_RUN}
 		else

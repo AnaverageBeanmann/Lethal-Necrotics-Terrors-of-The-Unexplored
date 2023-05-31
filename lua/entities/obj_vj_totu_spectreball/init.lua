@@ -9,7 +9,7 @@ ENT.Model = {"models/spitball_large.mdl"}
 ENT.DoesRadiusDamage = true
 ENT.RadiusDamageRadius = 75
 ENT.RadiusDamageUseRealisticRadius = false
-ENT.RadiusDamage = 150
+ENT.RadiusDamage = 0
 ENT.RadiusDamageType = DMG_DISSOLVE
 ENT.RadiusDamageForce = -150
 ENT.RadiusDamageForce_Up = 0
@@ -44,7 +44,7 @@ function ENT:CustomOnInitialize()
 		
 		local spawnglow = ents.Create("env_sprite")
 		spawnglow:SetKeyValue("model","vj_base/sprites/vj_glow1.vmt")
-		spawnglow:SetKeyValue("scale", "1")
+		spawnglow:SetKeyValue("scale", "1.25")
 		spawnglow:SetKeyValue("rendermode","5")
 		spawnglow:SetKeyValue("rendercolor","110 77 127")
 		spawnglow:SetKeyValue("spawnflags","1") -- If animated
@@ -58,7 +58,7 @@ function ENT:CustomOnInitialize()
 		
 		local bombglow = ents.Create("env_sprite")
 		bombglow:SetKeyValue("model","vj_base/sprites/vj_glow1.vmt")
-		bombglow:SetKeyValue("scale", "0.15")
+		bombglow:SetKeyValue("scale", "0.3")
 		bombglow:SetKeyValue("rendermode","5")
 		bombglow:SetKeyValue("rendercolor","200 200 200")
 		bombglow:SetKeyValue("spawnflags","1") -- If animated
@@ -71,7 +71,7 @@ function ENT:CustomOnInitialize()
 		
 		local bombglow2 = ents.Create("env_sprite")
 		bombglow2:SetKeyValue("model","vj_base/sprites/vj_glow1.vmt")
-		bombglow2:SetKeyValue("scale", "0.45")
+		bombglow2:SetKeyValue("scale", "0.65")
 		bombglow2:SetKeyValue("rendermode","5")
 		bombglow2:SetKeyValue("rendercolor","5 62 103")
 		bombglow2:SetKeyValue("spawnflags","1") -- If animated
@@ -85,10 +85,10 @@ function ENT:CustomOnInitialize()
 	
 	self.Light1 = ents.Create("light_dynamic")
 	self.Light1:SetKeyValue("brightness", "5")
-	self.Light1:SetKeyValue("distance", "95")
+	self.Light1:SetKeyValue("distance", "200")
 	self.Light1:SetLocalPos(self:GetPos() + self:GetUp()*0 + self:GetForward()*0)
 	self.Light1:SetLocalAngles(self:GetAngles())
-	self.Light1:Fire("Color", "0 69 125")
+	self.Light1:Fire("Color", "0 111 196")
 	self.Light1:SetParent(self)
 	self.Light1:Spawn()
 	self.Light1:Activate()
@@ -104,6 +104,9 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:CustomOnThink()
 	util.VJ_SphereDamage(self, self, self:GetPos(), 75, 1, DMG_DISSOLVE, true, true)
+			ParticleEffectAttach("electrical_arc_01_parent",PATTACH_POINT_FOLLOW,self,self:LookupAttachment("origin"))
+			ParticleEffectAttach("electrical_arc_01_parent",PATTACH_POINT_FOLLOW,self,self:LookupAttachment("origin"))
+			ParticleEffectAttach("electrical_arc_01_parent",PATTACH_POINT_FOLLOW,self,self:LookupAttachment("origin"))
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:DeathEffects(data,phys)

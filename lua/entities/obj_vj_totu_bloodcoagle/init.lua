@@ -28,7 +28,7 @@ function ENT:CustomOnInitialize()
      elseif GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 2 then
         self.RadiusDamage = 10	 
      elseif GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 3 then
-        self.RadiusDamage = 10
+        self.RadiusDamage = math.random(10,15)
      elseif GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 4 then
         self.RadiusDamage = 20
      elseif GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 5 then

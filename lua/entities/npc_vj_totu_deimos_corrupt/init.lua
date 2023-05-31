@@ -48,6 +48,8 @@ end
 function ENT:Zombie_CustomOnInitialize()
 
 	self:SetModelScale(1.28)
+	
+	-- self:SetCollisionBounds(Vector(11, 11, 71), Vector(-11, -11, 0))
 	-- self:SetModelScale(1.31)
 	self.AnimTbl_Flinch = {}
 
@@ -150,19 +152,19 @@ function ENT:Zombie_Difficulty()
 
 	elseif GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 2 then
 
-		self.StartHealth = 750
+		self.StartHealth = 500
 		self.MeleeAttackDamage = math.Rand(30,35)
 		self.HealthRegenerationAmount = 36
 
 	elseif GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 3 then
 
-		self.StartHealth = 900
+		self.StartHealth = 1500
 		self.MeleeAttackDamage = math.Rand(35,40)
 		self.HealthRegenerationAmount = 45
 
 	elseif GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 4 then
 
-		self.StartHealth = 1050
+		self.StartHealth = 2250
 		self.MeleeAttackDamage = math.Rand(40,45)
 		self.HealthRegenerationAmount = 52
 
@@ -174,9 +176,9 @@ function ENT:Zombie_Difficulty()
 
 	else
 
-		self.StartHealth = 750
-		self.MeleeAttackDamage = math.Rand(30,35)
-		self.HealthRegenerationAmount = 36
+		self.StartHealth = 1500
+		self.MeleeAttackDamage = math.Rand(35,40)
+		self.HealthRegenerationAmount = 45
 
 	end
 
@@ -199,7 +201,7 @@ function ENT:Zombie_Difficulty()
 		elseif GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 5 then
 			self.MeleeAttackBleedEnemyDamage = math.random(20,25)
 		else
-			self.MeleeAttackBleedEnemyDamage = math.random(5,10)
+			self.MeleeAttackBleedEnemyDamage = math.random(10,15)
 		end
 	end
 
@@ -351,7 +353,7 @@ function ENT:Zombie_CustomOnMeleeAttack_BeforeStartTimer(seed)
 		elseif GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 5 then
 			self.MeleeAttackDamage = math.Rand(45,50)
 		else
-			self.MeleeAttackDamage = math.Rand(30,35)
+			self.MeleeAttackDamage = math.Rand(35,40)
 		end
 
 		self.HasMeleeAttackKnockBack = false
@@ -389,7 +391,7 @@ function ENT:Zombie_CustomOnMeleeAttack_BeforeStartTimer(seed)
 			elseif GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 5 then
 				self.MeleeAttackDamage = math.Rand(45,50)
 			else
-				self.MeleeAttackDamage = math.Rand(30,35)
+				self.MeleeAttackDamage = math.Rand(35,40)
 			end
 
 			self.HasMeleeAttackKnockBack = false
@@ -428,9 +430,9 @@ function ENT:Zombie_CustomOnMeleeAttack_BeforeStartTimer(seed)
 			elseif GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 4 then
 				self.MeleeAttackDamage = math.Rand(20,25)
 			elseif GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 5 then
-				self.MeleeAttackDamage = math.Rand(30,35)
+				self.MeleeAttackDamage = math.Rand(25,30)
 			else
-				self.MeleeAttackDamage = math.Rand(10,15)
+				self.MeleeAttackDamage = math.Rand(15,20)
 			end
 
 			self.HasMeleeAttackKnockBack = true
@@ -480,7 +482,7 @@ function ENT:CustomOnTakeDamage_AfterDamage(dmginfo,hitgroup)
 		dmginfo:IsDamageType(DMG_MISSILEDEFENSE) or
 		dmginfo:IsDamageType(DMG_ALWAYSGIB)
 	then	
-		if self.LNR_NextShoveT < CurTime() then
+		if self.ToTU_NextSplodeStumbleT < CurTime() then
 			self:VJ_ACT_PLAYACTIVITY(ACT_BIG_FLINCH,true,1.6)
 			if self:GetClass() == "npc_vj_totu_fon_lament" then
 				self.ToTU_NextSplodeStumbleT = CurTime() + 7

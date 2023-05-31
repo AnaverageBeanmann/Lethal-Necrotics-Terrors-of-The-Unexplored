@@ -232,6 +232,41 @@ function ENT:ZombieSounds_Custom()
 	end
 
 end
+---------------------------------------------------------------------------------------------------------------------------------------------
+function ENT:Zombie_Difficulty()
+
+	if GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 1 then
+
+		self.StartHealth = 500
+		self.MeleeAttackDamage = math.Rand(20,25)
+
+	elseif GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 2 then
+
+		self.StartHealth = 400
+		self.MeleeAttackDamage = math.Rand(20,25)
+
+	elseif GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 3 then
+
+		self.StartHealth = 1750
+		self.MeleeAttackDamage = math.Rand(25,30)
+
+	elseif GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 4 then
+
+		self.StartHealth = 2500
+		self.MeleeAttackDamage = math.Rand(30,35)
+
+	elseif GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 5 then
+
+		self.StartHealth = 1500
+		self.MeleeAttackDamage = math.Rand(40,45)
+
+	end
+	
+	self:SetHealth(self.StartHealth)	
+
+	self.LNR_LegHP = self.StartHealth * 0.20
+
+end 
 /*-----------------------------------------------
 	*** Copyright (c) 2012-2019 by DrVrej, All rights reserved. ***
 	No parts of this code or any of its contents may be reproduced, copied, modified or adapted,

@@ -201,6 +201,19 @@ function ENT:CustomOnPreInitialize()
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:CustomOnInitialize()
+
+     if GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 1 then
+        self.RadiusDamage = 5	 
+     elseif GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 2 then
+        self.RadiusDamage = 10	 
+     elseif GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 3 then
+        self.RadiusDamage = math.random(5,10)
+     elseif GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 4 then
+        self.RadiusDamage = 20
+     elseif GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 5 then
+        self.RadiusDamage = 25
+	end
+
 	self:SetSkin(math.random(0,99))
 	if self.ToTU_Trash_Type == 0 then
 		self.SoundTbl_OnCollide = {

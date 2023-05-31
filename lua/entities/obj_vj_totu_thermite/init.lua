@@ -69,6 +69,11 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:CustomOnThink()
 	if self.IsIgnited then
-		util.VJ_SphereDamage(self, self, self:GetPos(), 115, 5, DMG_BURN, true, true)
+		-- util.VJ_SphereDamage(self, self, self:GetPos(), 115, 5, DMG_BURN, true, true)
+				for _,v in ipairs(ents.FindInSphere(self:GetPos(),75)) do
+					if !v:IsOnFire() then
+						v:Ignite(4)
+					end
+				end
 	end
 end

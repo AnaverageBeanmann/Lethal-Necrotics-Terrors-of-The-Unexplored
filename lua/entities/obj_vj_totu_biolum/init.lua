@@ -22,17 +22,20 @@ function ENT:CustomPhysicsObjectOnInitialize(phys)
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:CustomOnInitialize()
-     if GetConVar("VJ_LNR_Difficulty"):GetInt() == 1 then // Easy
+
+
+	if GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 1 then
         self.RadiusDamage = 5	 
-     elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 2 then // Normal
+	elseif GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 2 then
         self.RadiusDamage = 10	 
-     elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 3 then // Hard
-        self.RadiusDamage = 15	
-     elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 4 then // Nightmare
+	elseif GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 3 then
+        self.RadiusDamage = math.random(15,20)
+	elseif GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 4 then
         self.RadiusDamage = 20
-     elseif GetConVar("VJ_LNR_Difficulty"):GetInt() == 5 then // Apocalypse
-        self.RadiusDamage = 25
-end 
+	elseif GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 5 then
+		self.RadiusDamage = 25
+	end
+
 	ParticleEffectAttach("antlion_spit_trail", PATTACH_ABSORIGIN_FOLLOW, self, 0)
 	self:SetNoDraw(true)
 	

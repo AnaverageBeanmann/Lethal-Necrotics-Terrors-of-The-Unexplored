@@ -141,19 +141,19 @@ function ENT:Zombie_Difficulty()
 
 	elseif GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 2 then
 
-		self.StartHealth = 1500
+		self.StartHealth = 900
 		self.MeleeAttackDamage = math.Rand(45,50)
 		self.HealthRegenerationAmount = 50
 
 	elseif GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 3 then
 
-		self.StartHealth = 1500
+		self.StartHealth = 2750
 		self.MeleeAttackDamage = math.Rand(50,55)
 		self.HealthRegenerationAmount = 53
 
 	elseif GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 4 then
 
-		self.StartHealth = 1700
+		self.StartHealth = 4000
 		self.MeleeAttackDamage = math.Rand(55,60)
 		self.HealthRegenerationAmount = 56
 
@@ -165,9 +165,9 @@ function ENT:Zombie_Difficulty()
 
 	else
 
-		self.StartHealth = 1500
-		self.MeleeAttackDamage = math.Rand(45,50)
-		self.HealthRegenerationAmount = 50
+		self.StartHealth = 2750
+		self.MeleeAttackDamage = math.Rand(50,55)
+		self.HealthRegenerationAmount = 53
 
 	end
 
@@ -190,7 +190,7 @@ function ENT:Zombie_Difficulty()
 		elseif GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 5 then
 			self.MeleeAttackBleedEnemyDamage = math.random(25,30)
 		else
-			self.MeleeAttackBleedEnemyDamage = math.random(10,15)
+			self.MeleeAttackBleedEnemyDamage = math.random(15,20)
 		end
 	end
 
@@ -248,7 +248,7 @@ function ENT:Zombie_CustomOnMeleeAttack_BeforeStartTimer(seed)
 		elseif GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 5 then
 			self.MeleeAttackDamage = math.Rand(45,50)
 		else
-			self.MeleeAttackDamage = math.Rand(30,35)
+			self.MeleeAttackDamage = math.Rand(35,40)
 		end
 
 		self.HasMeleeAttackKnockBack = false
@@ -298,7 +298,7 @@ function ENT:Zombie_CustomOnMeleeAttack_BeforeStartTimer(seed)
 			elseif GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 5 then
 				self.MeleeAttackDamage = math.Rand(45,50)
 			else
-				self.MeleeAttackDamage = math.Rand(30,35)
+				self.MeleeAttackDamage = math.Rand(35,40)
 			end
 
 			self.HasMeleeAttackKnockBack = false
@@ -341,7 +341,7 @@ function ENT:Zombie_CustomOnMeleeAttack_BeforeStartTimer(seed)
 			elseif GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 5 then
 				self.MeleeAttackDamage = math.Rand(30,35)
 			else
-				self.MeleeAttackDamage = math.Rand(10,15)
+				self.MeleeAttackDamage = math.Rand(15,20)
 			end
 
 			self.HasMeleeAttackKnockBack = true
@@ -416,6 +416,19 @@ function ENT:ArmorDamage(dmginfo,hitgroup)
 		end
 
 	end
+
+	-- if hitgroup != HITGROUP_GEAR && hitgroup != HITGROUP_GENERIC then
+		-- if
+			-- dmginfo:IsBulletDamage() or
+			-- dmginfo:IsDamageType(DMG_BUCKSHOT) or
+			-- dmginfo:IsDamageType(DMG_SLASH) or
+			-- dmginfo:IsDamageType(DMG_CLUB)
+		-- then
+
+			-- dmginfo:ScaleDamage(0.5)
+
+		-- end
+	-- end
 
 end
 /*-----------------------------------------------

@@ -8,6 +8,8 @@ include("shared.lua")
 ENT.Model = {"models/spitball_small.mdl"}
 ENT.SoundTbl_Idle = {"weapons/molotov/fire_loop_1.wav"}
 ENT.SoundTbl_OnRemove = {"weapons/molotov/fire_loop_fadeout_01.wav"}
+
+ENT.ApplyBurnT = 0
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:CustomPhysicsObjectOnInitialize(phys)
 
@@ -60,5 +62,15 @@ function ENT:CustomOnInitialize()
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:CustomOnThink()
-	util.VJ_SphereDamage(self, self, self:GetPos(), 160, 5, DMG_BURN, true, true)	
+	-- util.VJ_SphereDamage(self, self, self:GetPos(), 160, 5, DMG_BURN, true, true)
+	
+				for _,v in ipairs(ents.FindInSphere(self:GetPos(),160)) do
+					if !v:IsOnFire() && CurTime() > self.ApplyBurnT then
+						v:Ignite(1)
+						v:Ignite(2)
+						v:Ignite(3)
+						v:Ignite(4)
+						self.ApplyBurnT = CurTime() + 0.9
+					end
+				end
 end
