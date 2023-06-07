@@ -9,15 +9,13 @@ ENT.Model = {"models/props_junk/GlassBottle01a.mdl"}
 ENT.SoundTbl_Startup = {"ambient/fire/mtov_flame2.wav"}
 ENT.SoundTbl_Idle = {"ambient/fire/fire_small1.wav"}
 ENT.SoundTbl_OnCollide = {
-		"weapons/molotov/molotov_detonate_1.wav",
-		"weapons/molotov/molotov_detonate_2.wav",
-		"weapons/molotov/molotov_detonate_3.wav",
-		"weapons/molotov/molotov_detonate_4.wav"
+		"fx/weapon/gren/molotov_detonate_3.wav"
 	}
 ENT.SoundTbl_OnRemove = {"ambient/fire/ignite.wav"}
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:CustomPhysicsObjectOnInitialize(phys)
 	phys:Wake()
+	phys:SetMass(1)
 	phys:EnableGravity(true)
 	phys:EnableDrag(false)
 	phys:SetBuoyancyRatio(0)
@@ -56,15 +54,15 @@ function ENT:CustomOnInitialize()
 
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
-function ENT:CustomOnThink()
-	-- ParticleEffectAttach("antlion_spit", PATTACH_ABSORIGIN_FOLLOW, self, 0)
-end
----------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:CustomOnRemove()
-	local carproj = ents.Create("obj_vj_totu_molotov_flame")
-	carproj:SetPos(self:LocalToWorld(Vector(0,0,0)))
-	carproj:SetAngles(Angle(math.random(0,360),math.random(0,360),math.random(0,360)))
-	carproj:SetOwner(self)
-	carproj:Spawn()
-	carproj:Activate()
+
+	if self:WaterLevel() == 0 then
+		local carproj = ents.Create("obj_vj_totu_molotov_flame")
+		carproj:SetPos(self:LocalToWorld(Vector(0,0,0)))
+		carproj:SetAngles(Angle(math.random(0,360),math.random(0,360),math.random(0,360)))
+		carproj:SetOwner(self)
+		carproj:Spawn()
+		carproj:Activate()
+	end
+
 end

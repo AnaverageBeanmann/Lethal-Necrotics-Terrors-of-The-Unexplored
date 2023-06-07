@@ -55,13 +55,13 @@ function ENT:Zombie_Difficulty()
 
 	if GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 1 then
 
-		self.StartHealth = 50
-		self.MeleeAttackDamage = math.Rand(5,10)
+		self.StartHealth = 15
+		self.MeleeAttackDamage = math.Rand(1,5)
 
 	elseif GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 2 then
 
 		self.StartHealth = 35
-		self.MeleeAttackDamage = math.Rand(10,15)
+		self.MeleeAttackDamage = math.Rand(5,10)
 
 	elseif GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 3 then
 
@@ -80,14 +80,14 @@ function ENT:Zombie_Difficulty()
 
 	else
 
-		self.StartHealth = 100
+		self.StartHealth = 75
 		self.MeleeAttackDamage = math.Rand(10,15)
 
 	end
 
 	self:SetHealth(self.StartHealth)	
 
-	self.LNR_LegHP = self.StartHealth * 0.20
+	self.TOTU_LNR_LegHP = self.StartHealth * 0.20
 
 end
 /*-----------------------------------------------

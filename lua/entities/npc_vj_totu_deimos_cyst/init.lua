@@ -79,8 +79,8 @@ function ENT:Zombie_Difficulty()
 
 	if GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 1 then
 
-		self.StartHealth = 200
-		self.MeleeAttackDamage = math.Rand(15,20)
+		self.StartHealth = 65
+		self.MeleeAttackDamage = math.Rand(10,15)
 
 	elseif GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 2 then
 
@@ -99,12 +99,12 @@ function ENT:Zombie_Difficulty()
 
 	elseif GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 5 then
 
-		self.StartHealth = 600
+		self.StartHealth = 675
 		self.MeleeAttackDamage = math.Rand(40,45)
 
 	else
 
-		self.StartHealth = 300
+		self.StartHealth = 275
 		self.MeleeAttackDamage = math.Rand(20,25)
 
 	end
@@ -126,7 +126,7 @@ function ENT:RangeAttackCode_GetShootPos(projectile)
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:CustomRangeAttackCode_AfterProjectileSpawn(projectile)
-	if GetConVar("VJ_ToTU_Weaponized_Cyst_HurtOnRanged"):GetInt() == 1 then
+	if GetConVar("VJ_ToTU_Deimos_Cyst_HurtOnRanged"):GetInt() == 1 then
 		local d = DamageInfo()
 		d:SetDamage(math.random(25,30))
 		d:SetAttacker(self)
@@ -147,9 +147,9 @@ function ENT:CustomOnTakeDamage_AfterDamage(dmginfo,hitgroup)
 		dmginfo:IsDamageType(DMG_PHYSGUN) or
 		dmginfo:IsDamageType(DMG_CRUSH)
 	then	
-		if self.LNR_NextShoveT < CurTime() then
+		if self.TOTU_LNR_NextShoveT < CurTime() then
 			self:VJ_ACT_PLAYACTIVITY(ACT_FLINCH_PHYSICS,true,0.6)
-			self.LNR_NextShoveT = CurTime() + 3.5
+			self.TOTU_LNR_NextShoveT = CurTime() + 3.5
 		end
 	end
 	if
@@ -158,7 +158,7 @@ function ENT:CustomOnTakeDamage_AfterDamage(dmginfo,hitgroup)
 		dmginfo:IsDamageType(DMG_MISSILEDEFENSE) or
 		dmginfo:IsDamageType(DMG_ALWAYSGIB)
 	then	
-		if self.LNR_NextShoveT < CurTime() then
+		if self.TOTU_LNR_NextShoveT < CurTime() then
 			self:VJ_ACT_PLAYACTIVITY(ACT_FLINCH_PHYSICS,true,0.6)
 			self.ToTU_NextSplodeStumbleT = CurTime() + 3.5
 		end

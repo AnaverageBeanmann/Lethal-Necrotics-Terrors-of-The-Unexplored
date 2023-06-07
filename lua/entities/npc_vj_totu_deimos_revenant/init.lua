@@ -9,11 +9,11 @@ function ENT:Zombie_CustomOnPreInitialize()
 
 	self.Model = {"models/totu/revenant.mdl"}
 
-	timer.Simple(0.1,function() if IsValid(self) && !self.LNR_Crippled then
+	timer.Simple(0.1,function() if IsValid(self) && !self.TOTU_LNR_Crippled then
 		self.AnimTbl_Walk = {ACT_MP_MELEE_GRENADE1_IDLE}
 		self.AnimTbl_Run = {ACT_RUN}
 		self.AnimTbl_IdleStand = {ACT_IDLE_AIM_STIMULATED}
-		if self.LNR_UsingRelaxedIdle == true then
+		if self.TOTU_LNR_UsingRelaxedIdle == true then
 			self.AnimTbl_IdleStand = {ACT_IDLE}
 		end
 	end end)
@@ -40,7 +40,7 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:Zombie_GlowEyes_Give()
 
-	if GetConVar("VJ_ToTU_Weaponized_Deimos_Eyes"):GetInt() == 0 or GetConVar("vj_npc_noidleparticle"):GetInt() == 1 then return end
+	if GetConVar("VJ_ToTU_Deimos_Deimos_Eyes"):GetInt() == 0 or GetConVar("vj_npc_noidleparticle"):GetInt() == 1 then return end
 
 	local TrailColor = Color(220,0,255,255)
 
@@ -60,7 +60,7 @@ function ENT:Zombie_GlowEyes_Give()
 			self:DeleteOnRemove(EyeGlow)
 		end
 
-		if GetConVar("VJ_ToTU_Weaponized_Deimos_Eyes"):GetInt() == 2 then
+		if GetConVar("VJ_ToTU_Deimos_Deimos_Eyes"):GetInt() == 2 then
 			local EyeTrail = util.SpriteTrail(self,8,TrailColor,false,5,0,0.25,1,"vj_base/sprites/vj_trial1")
 			local EyeTrail2 = util.SpriteTrail(self,9,TrailColor,false,5,0,0.25,1,"vj_base/sprites/vj_trial1")
 		end
@@ -82,7 +82,7 @@ function ENT:Zombie_GlowEyes_Give()
 			self:DeleteOnRemove(EyeGlow)
 		end
 
-		if GetConVar("VJ_ToTU_Weaponized_Deimos_Eyes"):GetInt() == 2 then
+		if GetConVar("VJ_ToTU_Deimos_Deimos_Eyes"):GetInt() == 2 then
 			local EyeTrail = util.SpriteTrail(self,10,TrailColor,false,5,0,0.25,1,"vj_base/sprites/vj_trial1")
 			local EyeTrail2 = util.SpriteTrail(self,11,TrailColor,false,5,0,0.25,1,"vj_base/sprites/vj_trial1")
 		end
@@ -104,7 +104,7 @@ function ENT:Zombie_GlowEyes_Give()
 			self:DeleteOnRemove(EyeGlow)
 		end
 
-		if GetConVar("VJ_ToTU_Weaponized_Deimos_Eyes"):GetInt() == 2 then
+		if GetConVar("VJ_ToTU_Deimos_Deimos_Eyes"):GetInt() == 2 then
 			local EyeTrail = util.SpriteTrail(self,12,TrailColor,false,5,0,0.25,1,"vj_base/sprites/vj_trial1")
 			local EyeTrail2 = util.SpriteTrail(self,13,TrailColor,false,5,0,0.25,1,"vj_base/sprites/vj_trial1")
 		end
@@ -124,7 +124,7 @@ function ENT:Zombie_GlowEyes_Give()
 		EyeGlow:Activate()
 		self:DeleteOnRemove(EyeGlow)
 
-		if GetConVar("VJ_ToTU_Weaponized_Deimos_Eyes"):GetInt() == 2 then
+		if GetConVar("VJ_ToTU_Deimos_Deimos_Eyes"):GetInt() == 2 then
 			local EyeTrail = util.SpriteTrail(self,14,TrailColor,false,5,0,0.25,1,"vj_base/sprites/vj_trial1")
 		end
 	end
@@ -145,7 +145,7 @@ function ENT:Zombie_GlowEyes_Give()
 			self:DeleteOnRemove(EyeGlow)
 		end
 
-		if GetConVar("VJ_ToTU_Weaponized_Deimos_Eyes"):GetInt() == 2 then
+		if GetConVar("VJ_ToTU_Deimos_Deimos_Eyes"):GetInt() == 2 then
 			local EyeTrail = util.SpriteTrail(self,15,TrailColor,false,5,0,0.25,1,"vj_base/sprites/vj_trial1")
 			local EyeTrail2 = util.SpriteTrail(self,16,TrailColor,false,5,0,0.25,1,"vj_base/sprites/vj_trial1")
 		end
@@ -167,7 +167,7 @@ function ENT:Zombie_GlowEyes_Give()
 			self:DeleteOnRemove(EyeGlow)
 		end
 
-		if GetConVar("VJ_ToTU_Weaponized_Deimos_Eyes"):GetInt() == 2 then
+		if GetConVar("VJ_ToTU_Deimos_Deimos_Eyes"):GetInt() == 2 then
 			local EyeTrail = util.SpriteTrail(self,17,TrailColor,false,5,0,0.25,1,"vj_base/sprites/vj_trial1")
 			local EyeTrail2 = util.SpriteTrail(self,18,TrailColor,false,5,0,0.25,1,"vj_base/sprites/vj_trial1")
 		end
@@ -187,7 +187,7 @@ function ENT:Zombie_GlowEyes_Give()
 		EyeGlow:Activate()
 		self:DeleteOnRemove(EyeGlow)
 
-		if GetConVar("VJ_ToTU_Weaponized_Deimos_Eyes"):GetInt() == 2 then
+		if GetConVar("VJ_ToTU_Deimos_Deimos_Eyes"):GetInt() == 2 then
 			local EyeTrail = util.SpriteTrail(self,19,TrailColor,false,5,0,0.25,1,"vj_base/sprites/vj_trial1")
 		end
 	end
@@ -198,8 +198,8 @@ function ENT:Zombie_Difficulty()
 
 	if GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 1 then
 
-		self.StartHealth = 150
-		self.MeleeAttackDamage = math.Rand(5,10)
+		self.StartHealth = 75
+		self.MeleeAttackDamage = math.Rand(1,5)
 
 	elseif GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 2 then
 
@@ -218,19 +218,19 @@ function ENT:Zombie_Difficulty()
 
 	elseif GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 5 then
 
-		self.StartHealth = 350
+		self.StartHealth = 750
 		self.MeleeAttackDamage = math.Rand(25,30)
 
 	else
 
-		self.StartHealth = 200
+		self.StartHealth = 300
 		self.MeleeAttackDamage = math.Rand(10,15)
 
 	end
 
 	self:SetHealth(self.StartHealth)
 
-	self.LNR_LegHP = self.StartHealth * 0.20
+	self.TOTU_LNR_LegHP = self.StartHealth * 0.20
 
 end
 /*-----------------------------------------------

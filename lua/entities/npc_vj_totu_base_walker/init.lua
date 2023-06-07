@@ -20,7 +20,6 @@ ENT.CanEat = true
 ---------------------------------------------------------------------------------------------------------------------------------------------
 ENT.CustomBlood_Particle = {"lnr_bullet_impact_01","lnr_bullet_impact_02","lnr_bullet_impact_03","lnr_bullet_impact_04"}
 ENT.CustomBlood_Decal = {"VJ_TOTU_LNR_Blood_Red"}
-ENT.ImmuneDamagesTable = {DMG_RADIATION,DMG_NERVEGAS}
 ENT.CanFlinch = 1
 ENT.FlinchChance = 1
 ENT.NextFlinchTime = 1
@@ -53,21 +52,21 @@ ENT.FootStepPitch = VJ_Set(100, 95)
 ENT.MeleeAttackSoundPitch = VJ_Set(100,95)
 ---------------------------------------------------------------------------------------------------------------------------------------------
 --custom
-ENT.LNR_VirusInfection = true
-ENT.LNR_Walker = true
-ENT.LNR_Biter = false
-ENT.LNR_Runner = false
-ENT.LNR_Infected = false
-ENT.LNR_AllowedToStumble = true
-ENT.LNR_NextStumbleT = 0
-ENT.LNR_NextShoveT = 0
-ENT.LNR_UsingRelaxedIdle = false
-ENT.LNR_Crippled = false
-ENT.LNR_LegHP = 25
-ENT.LNR_CanBreakDoors = false
-ENT.LNR_CanBeHeadshot = true 
-ENT.LNR_DoorToBreak = NULL
-ENT.LNR_SuperSprinter = false
+ENT.TOTU_LNR_VirusInfection = true
+ENT.TOTU_LNR_Walker = true
+ENT.TOTU_LNR_Biter = false
+ENT.TOTU_LNR_Runner = false
+ENT.TOTU_LNR_Infected = false
+ENT.TOTU_LNR_AllowedToStumble = true
+ENT.TOTU_LNR_NextStumbleT = 0
+ENT.TOTU_LNR_NextShoveT = 0
+ENT.TOTU_LNR_UsingRelaxedIdle = false
+ENT.TOTU_LNR_Crippled = false
+ENT.TOTU_LNR_LegHP = 25
+ENT.TOTU_LNR_CanBreakDoors = false
+ENT.TOTU_LNR_CanBeHeadshot = true 
+ENT.TOTU_LNR_DoorToBreak = NULL
+ENT.TOTU_LNR_SuperSprinter = false
 
 ENT.ToTU_IsToTUZombie = true
 ENT.ToTU_Rusher = false
@@ -384,7 +383,7 @@ function ENT:CustomOnPreInitialize()
 
 	if GetConVar("VJ_TOTU_LNR_BreakDoors"):GetInt() == 1 then
 
-        self.LNR_CanBreakDoors = true
+        self.TOTU_LNR_CanBreakDoors = true
 		self.CanOpenDoors = false
 
 	end
@@ -392,6 +391,20 @@ function ENT:CustomOnPreInitialize()
 	if GetConVar("VJ_ToTU_General_RestingSystem"):GetInt() == 1 && !self.ToTU_Weaponized_IsHL2Zomb then
 
 		self.ToTU_CanRest = true
+
+	end
+
+	if GetConVar("VJ_ToTU_General_DamageImmunity"):GetInt() == 1 then
+
+		self.ImmuneDamagesTable = {DMG_RADIATION}
+
+	elseif GetConVar("VJ_ToTU_General_DamageImmunity"):GetInt() == 2 then
+
+		self.ImmuneDamagesTable = {DMG_NERVEGAS}
+
+	elseif GetConVar("VJ_ToTU_General_DamageImmunity"):GetInt() == 3 then
+
+		self.ImmuneDamagesTable = {DMG_RADIATION,DMG_NERVEGAS}
 
 	end
 
@@ -443,6 +456,8 @@ function ENT:CustomOnPreInitialize()
 
 	if
 		self:GetClass() == "npc_vj_totu_base_infected" or
+		self:GetClass() == "npc_vj_totu_lnr_inf" or
+		self:GetClass() == "npc_vj_totu_lnr_inf_ply" or
 		self:GetClass() == "npc_vj_totu_milzomb_infected" or
 		self:GetClass() == "npc_vj_totu_milzomb_bulldozer" or
 		self:GetClass() == "npc_vj_totu_milzomb_detonator" or
@@ -457,8 +472,8 @@ function ENT:CustomOnPreInitialize()
 	then
 		self.AnimTbl_Walk = {ACT_RUN}
 		self.AnimTbl_Run = {ACT_SPRINT}
-		self.LNR_Walker = false
-		self.LNR_Infected = true
+		self.TOTU_LNR_Walker = false
+		self.TOTU_LNR_Infected = true
 		self.ToTU_Almanac_Strain = "Strain: Infected"
 	end
 
@@ -487,8 +502,8 @@ function ENT:CustomOnPreInitialize()
 		end
 
 
-		self.LNR_Walker = true
-		self.LNR_Infected = false
+		self.TOTU_LNR_Walker = true
+		self.TOTU_LNR_Infected = false
 
 	end
 
@@ -586,6 +601,8 @@ function ENT:CustomOnInitialize()
 	end
 
 	if
+		self:GetClass() == "npc_vj_totu_deimos_redead_inf" or
+		self:GetClass() == "npc_vj_totu_deimos_redead_inf_ply" or
 		self:GetClass() == "npc_vj_totu_deimos_reborn" or
 		self:GetClass() == "npc_vj_totu_deimos_redead" or
 		self:GetClass() == "npc_vj_totu_deimos_redead_sci" or
@@ -603,8 +620,9 @@ function ENT:CustomOnInitialize()
 		self:GetClass() == "npc_vj_totu_fon_gail" or
 		self:GetClass() == "npc_vj_totu_fon_lament"
 	then
-		self.LNR_VirusInfection = false
-		self.LNR_Walker = false
+		-- self.TOTU_LNR_VirusInfection = false
+		self.TOTU_LNR_Walker = false
+		self.TOTU_LNR_Infected = false
 		self.ToTU_Deimos = true
 		self.ToTU_Almanac_Strain = "Strain: Deimos"
 	end
@@ -619,7 +637,7 @@ function ENT:CustomOnInitialize()
 
 	self.ToTU_NextRestT = CurTime() + math.random(10,120)
 
-	if self.LNR_Walker then
+	if self.TOTU_LNR_Walker then
 		self.AnimTbl_Walk = {ACT_WALK_RELAXED}
 	end
 
@@ -632,12 +650,18 @@ function ENT:CustomOnInitialize()
 		self:GetClass() == "npc_vj_totu_deimos_redead_guard" or
 		self:GetClass() == "npc_vj_totu_deimos_redead_sci" or
 		self:GetClass() == "npc_vj_totu_deimos_redead_grunt" or
-		self:GetClass() == "npc_vj_totu_deimos_revenant"))
+		self:GetClass() == "npc_vj_totu_deimos_revenant")) &&
+		self:GetClass() != "npc_vj_totu_lnr_wal" &&
+		self:GetClass() != "npc_vj_totu_lnr_wal_ply" &&
+		self:GetClass() != "npc_vj_totu_lnr_inf" &&
+		self:GetClass() != "npc_vj_totu_lnr_inf_ply" &&
+		self:GetClass() != "npc_vj_totu_deimos_readead_inf" &&
+		self:GetClass() != "npc_vj_totu_deimos_readead_inf_ply"
 	then
 
 		if math.random(1,GetConVar("VJ_ToTU_General_Crawler_Chance"):GetInt()) == 1 && GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() != 5 then
 
-			self.LNR_Crippled = true
+			self.TOTU_LNR_Crippled = true
 			self:Cripple()
 
 		end
@@ -656,17 +680,23 @@ function ENT:CustomOnInitialize()
 		end
 	end
 
-	if self.LNR_Infected then
+	if self.TOTU_LNR_Infected then
 		if self:GetClass() == "npc_vj_totu_squaller" then
 			util.AddNetworkString("VJ_ToTU_Squaller_Hud")
 		else
 			util.AddNetworkString("VJ_TOTU_LNR_Infected_HUD")
 		end
-	else
+	end
+
+	if self.TOTU_LNR_Walker then
 		util.AddNetworkString("VJ_TOTU_LNR_Walker_HUD")
 	end
 
-	if !self.LNR_Crippled then
+	if self.ToTU_Deimos then
+		util.AddNetworkString("VJ_TOTU_Deimos_HUD")
+	end
+
+	if !self.TOTU_LNR_Crippled then
 
 		if
 			math.random(1,3) == 1 &&
@@ -675,7 +705,7 @@ function ENT:CustomOnInitialize()
 			self:GetClass() != "npc_vj_totu_milzomb_detonator_bulk" &&
 			self:GetClass() != "npc_vj_totu_milzomb_tank"
 		then
-			self.LNR_UsingRelaxedIdle = true
+			self.TOTU_LNR_UsingRelaxedIdle = true
 			self.AnimTbl_IdleStand = {ACT_IDLE_RELAXED}
 		end
 
@@ -683,7 +713,7 @@ function ENT:CustomOnInitialize()
 			self.MaxJumpLegalDistance = VJ_Set(5, 550)
 		end
 
-		if self.LNR_Walker && !self.ToTU_IsFreakOfNature && !self.ToTU_Deimos then
+		if self.TOTU_LNR_Walker && !self.ToTU_IsFreakOfNature && !self.ToTU_Deimos then
 
 			if
 				GetConVar("VJ_TOTU_LNR_Runner"):GetInt() == 1 &&
@@ -695,7 +725,7 @@ function ENT:CustomOnInitialize()
 					(self:GetClass() == "npc_vj_totu_milzomb_tank" && GetConVar("VJ_ToTU_MilZ_Tank_SubtypeBlacklisted"):GetInt() == 0) or
 					(self:GetClass() == "npc_vj_totu_milzomb_detonator_bulk" && GetConVar("VJ_ToTU_MilZ_Det_Bulk_SubtypeBlacklisted"):GetInt() == 0)
 				then
-					self.LNR_Runner = true
+					self.TOTU_LNR_Runner = true
 					self.AnimTbl_Run = {ACT_RUN}
 				end
 			end
@@ -705,8 +735,9 @@ function ENT:CustomOnInitialize()
 				!self.ToTU_IsFreakOfNature
 			then
 				if
-					math.random(1,3) == 1 && 
+					math.random(1,GetConVar("VJ_TOTU_LNR_Biter_Chance"):GetInt()) == 1 && 
 					self:GetClass() != "npc_vj_totu_milzomb_ghost_walker" && 
+					self:GetClass() != "npc_vj_totu_milzomb_hazmat" && 
 					self:GetClass() != "npc_vj_totu_milzomb_juggernaut" && 
 					self:GetClass() != "npc_vj_totu_milzomb_tank" && 
 					self:GetClass() != "npc_vj_totu_milzomb_ghillie_walker" && 
@@ -716,16 +747,21 @@ function ENT:CustomOnInitialize()
 					self:GetClass() != "npc_vj_totu_lnr_wal_ply" && 
 					!self.MilZ_HasGasmask
 				then
-					self.LNR_Biter = true
+					self.TOTU_LNR_Biter = true
 				end
 			end
 
 			if
 				GetConVar("VJ_ToTU_General_Rushers_Allow"):GetInt() == 2 or
 				GetConVar("VJ_ToTU_General_Rushers_Allow"):GetInt() == 3 or
-				GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 5
+				GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 5 or
+				self:GetClass() == "npc_vj_totu_lnr_wal_ply"
 			then
-				if math.random(1,GetConVar("VJ_ToTU_General_Rushers_Chance"):GetInt()) == 1 or GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 5 then
+				if
+					math.random(1,GetConVar("VJ_ToTU_General_Rushers_Chance"):GetInt()) == 1 or
+					GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 5 or
+					self:GetClass() == "npc_vj_totu_lnr_wal_ply"
+				then
 					if
 						(self:GetClass() != "npc_vj_totu_milzomb_tank" && self:GetClass() != "npc_vj_totu_milzomb_detonator_bulk") or
 						(self:GetClass() == "npc_vj_totu_milzomb_tank" && GetConVar("VJ_ToTU_MilZ_Tank_SubtypeBlacklisted"):GetInt() == 0) or
@@ -739,7 +775,7 @@ function ENT:CustomOnInitialize()
 			end
 		end
 
-		if self.LNR_Infected && !self.ToTU_IsFreakOfNature && !self.ToTU_Deimos then
+		if self.TOTU_LNR_Infected && !self.ToTU_IsFreakOfNature && !self.ToTU_Deimos then
 
 			if 
 				GetConVar("VJ_TOTU_LNR_SuperSprinter"):GetInt() == 1 &&
@@ -753,7 +789,7 @@ function ENT:CustomOnInitialize()
 						(self:GetClass() == "npc_vj_totu_milzomb_detonator" && GetConVar("VJ_ToTU_MilZ_Det_SubtypeBlacklisted"):GetInt() == 0) or
 						(self:GetClass() == "npc_vj_totu_nightkin_scylla" && GetConVar("VJ_ToTU_Nightkin_Scylla_SubtypeBlacklisted"):GetInt() == 0)
 					then
-						self.LNR_SuperSprinter = true
+						self.TOTU_LNR_SuperSprinter = true
 						self.AnimTbl_Walk = {ACT_RUN_AIM}
 						self.AnimTbl_Run = {ACT_RUN_AIM}
 					end
@@ -763,9 +799,14 @@ function ENT:CustomOnInitialize()
 			if
 				GetConVar("VJ_ToTU_General_Rushers_Allow"):GetInt() == 1 or
 				GetConVar("VJ_ToTU_General_Rushers_Allow"):GetInt() == 3 or
-				GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 5
+				GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 5 or
+				self:GetClass() == "npc_vj_totu_lnr_inf_ply"
 			then
-				if math.random(1,GetConVar("VJ_ToTU_General_Rushers_Chance"):GetInt()) == 1 or GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 5 then
+				if
+					math.random(1,GetConVar("VJ_ToTU_General_Rushers_Chance"):GetInt()) == 1 or
+					GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 5 or
+					self:GetClass() == "npc_vj_totu_lnr_inf_ply"
+				then
 					if
 						(self:GetClass() != "npc_vj_totu_milzomb_detonator" && self:GetClass() != "npc_vj_totu_nightkin_scylla") or
 						(self:GetClass() == "npc_vj_totu_milzomb_detonator" && GetConVar("VJ_ToTU_MilZ_Det_SubtypeBlacklisted"):GetInt() == 0) or
@@ -810,7 +851,7 @@ function ENT:CustomOnInitialize()
 	end
 
 	if self:GetClass() == "npc_vj_totu_milzomb_ghost" or self:GetClass() == "npc_vj_totu_nightkin_skitter" then
-		if !self.LNR_Crippled then
+		if !self.TOTU_LNR_Crippled then
 		self.SoundTbl_LeapAttackJump = {self.SoundTbl_BeforeMeleeAttack}
 
 		self.SoundTbl_LeapAttackDamage = {
@@ -1169,7 +1210,7 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:ZombieSounds_GiveDefault()
 
-	if self.LNR_Infected then
+	if self.TOTU_LNR_Infected then
 
 		self.SoundTbl_Idle = {
 			"voices/default/infected/zomb_runner_male1-idle-01.wav",
@@ -1705,7 +1746,7 @@ function ENT:ZombieSounds_GiveDefault()
 			
 			self.ToTU_Almanac_VoiceActor = "Biter (Dying Light)"
 
-			if self.LNR_Runner then
+			if self.TOTU_LNR_Runner then
 				self.SoundTbl_CombatIdle = {
 					"voices/dlbiter/berserker_short_1.mp3",
 					"voices/dlbiter/berserker_short_2.mp3",
@@ -1735,7 +1776,7 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:ZombieSounds_GiveDefault_Female()
 
-	if self.LNR_Infected then
+	if self.TOTU_LNR_Infected then
 
 		self.SoundTbl_Idle = {
 			"voices/default/infected/zomb_runner_male1-idle-01.wav",
@@ -1850,6 +1891,14 @@ function ENT:ZombieSounds_GiveDefault_Female()
 			"voices/default/infected/zomb_runner_male1-death-19.wav",
 			"voices/default/infected/zomb_runner_male1-death-20.wav"
 		}
+
+		self.IdleSoundPitch = VJ_Set(120, 120)
+		self.CombatIdleSoundPitch = VJ_Set(120, 120)
+		self.AlertSoundPitch = VJ_Set(120, 120)
+		self.CallForHelpSoundPitch = VJ_Set(120, 120)
+		self.BeforeMeleeAttackSoundPitch = VJ_Set(120, 120)
+		self.PainSoundPitch = VJ_Set(120, 120)
+		self.DeathSoundPitch = VJ_Set(120, 120)
 
 		self.ToTU_Almanac_VoiceActor = "Male Zombie (No More Room In Hell)"
 
@@ -2173,46 +2222,60 @@ function ENT:ZombieSounds_GiveDefault_Female()
 		if GetConVar("VJ_ToTU_General_DefaultVoices_AltWalker"):GetInt() == 1 then
 
 			self.SoundTbl_Idle = {
+				"voices/dlbiter/fem/idle_1.mp3",
+				"voices/dlbiter/fem/idle_2.mp3",
+				"voices/dlbiter/fem/idle_3.mp3",
+				"voices/dlbiter/fem/idle_4.mp3"
 			}
 
 			self.SoundTbl_Alert = {
-				"voices/dlbiter/fem/walker_female00_enemy_spotted_00_0.wav",
-				"voices/dlbiter/fem/walker_female00_enemy_spotted_01_0.wav",
-				"voices/dlbiter/fem/walker_female00_enemy_spotted_02_0.wav",
-				"voices/dlbiter/fem/walker_female00_enemy_spotted_03_0.wav",
-				"voices/dlbiter/fem/walker_female00_enemy_spotted_04_0.wav",
+				"voices/dlbiter/fem/alert_1.mp3",
+				"voices/dlbiter/fem/alert_2.mp3",
+				"voices/dlbiter/fem/alert_3.mp3",
+				"voices/dlbiter/fem/alert_4.mp3",
+				"voices/dlbiter/fem/alert_5.mp3"
 			}
 
 			self.SoundTbl_CombatIdle = {
+				"voices/dlbiter/fem/idle_1.mp3",
+				"voices/dlbiter/fem/idle_2.mp3",
+				"voices/dlbiter/fem/idle_3.mp3",
+				"voices/dlbiter/fem/idle_4.mp3"
 			}
 
 			self.SoundTbl_BeforeMeleeAttack = {
-				"voices/dlbiter/fem/walker_female00_attack_00_0.wav",
-				"voices/dlbiter/fem/walker_female00_attack_01_0.wav",
-				"voices/dlbiter/fem/walker_female00_attack_02_0.wav",
-				"voices/dlbiter/fem/walker_female00_attack_03_0.wav",
-				"voices/dlbiter/fem/walker_female00_attack_04_0.wav",
-				"voices/dlbiter/fem/walker_female00_attack_05_0.wav",
+				"voices/dlbiter/fem/attack_1.mp3",
+				"voices/dlbiter/fem/attack_2.mp3",
+				"voices/dlbiter/fem/attack_3.mp3",
+				"voices/dlbiter/fem/attack_4.mp3",
+				"voices/dlbiter/fem/attack_5.mp3",
+				"voices/dlbiter/fem/attack_6.mp3"
 			}
 		
 			self.SoundTbl_Pain = {
+				"voices/dlbiter/fem/pain_1.mp3",
+				"voices/dlbiter/fem/pain_2.mp3",
+				"voices/dlbiter/fem/pain_3.mp3",
+				"voices/dlbiter/fem/pain_4.mp3",
+				"voices/dlbiter/fem/pain_5.mp3",
+				"voices/dlbiter/fem/pain_6.mp3"
 			}
 
 			self.SoundTbl_Death = {
-				"voices/dlbiter/fem/walker_female00_death_00_0.wav",
-				"voices/dlbiter/fem/walker_female00_death_01_0.wav",
-				"voices/dlbiter/fem/walker_female00_death_02_0.wav",
-				"voices/dlbiter/fem/walker_female00_death_03_0.wav",
+				"voices/dlbiter/fem/death_1.mp3",
+				"voices/dlbiter/fem/death_2.mp3",
+				"voices/dlbiter/fem/death_3.mp3",
+				"voices/dlbiter/fem/death_4.mp3"
 			}
 			
 			self.ToTU_Almanac_VoiceActor = "Biter (Dying Light)"
 
-			if self.LNR_Runner or self.ToTU_Rusher then
+			if self.TOTU_LNR_Runner or self.ToTU_Rusher then
 				self.SoundTbl_CombatIdle = {
-					"voices/dlbiter/fem/walker_female00_berserker_00_0.wav",
-					"voices/dlbiter/fem/walker_female00_berserker_01_0.wav",
-					"voices/dlbiter/fem/walker_female00_berserker_02_0.wav",
-					"voices/dlbiter/fem/walker_female00_berserker_03_0.wav",
+					"voices/dlbiter/fem/berserker_1.mp3",
+					"voices/dlbiter/fem/berserker_2.mp3",
+					"voices/dlbiter/fem/berserker_3.mp3",
+					"voices/dlbiter/fem/berserker_4.mp3"
 				}
 			end
 
@@ -2223,6 +2286,8 @@ function ENT:ZombieSounds_GiveDefault_Female()
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:ZombieWeapons()
+
+	if self.TOTU_LNR_Crippled then return end
 
 	self.ToTU_WeHaveAWeapon = true
 
@@ -2257,6 +2322,8 @@ function ENT:ZombieWeapons()
 	end	
 
 	if self:GetClass() == "npc_vj_totu_deimos_redead" && !self.ToTU_Weaponized_PoopShitter && !self.ToTU_Weaponized_Shitter then
+
+		self.ToTU_Weaponized_HasWeapon = true
 
 		self.WeaponModel = ents.Create("prop_physics")
 	
@@ -2337,6 +2404,8 @@ function ENT:ZombieWeapons()
 
 
 	if self:GetClass() == "npc_vj_totu_deimos_redead_grunt" then
+
+		self.ToTU_Weaponized_HasWeapon = true
 
 		self.WeaponModel = ents.Create("prop_physics")
 	
@@ -2476,11 +2545,11 @@ function ENT:MilZ_GiveGun()
 		self.NextRangeAttackTime = 1
 		self.NextRangeAttackTime_DoRand = 0.1
 
-		if self.LNR_Walker then
+		if self.TOTU_LNR_Walker then
 
 			self.AnimTbl_Run = {ACT_WALK_PISTOL}
 
-			if self.LNR_Runner then
+			if self.TOTU_LNR_Runner then
 
 				self.AnimTbl_Run = {ACT_RUN_PISTOL}
 
@@ -2492,9 +2561,9 @@ function ENT:MilZ_GiveGun()
 
 			end
 
-		elseif self.LNR_Infected then
+		elseif self.TOTU_LNR_Infected then
 
-			if !self.LNR_SuperSprinter && !self.ToTU_Rusher then
+			if !self.TOTU_LNR_SuperSprinter && !self.ToTU_Rusher then
 
 				self.AnimTbl_Run = {ACT_RUN_AIM_PISTOL}
 
@@ -2548,7 +2617,7 @@ function ENT:Zombie_Difficulty()
 
 	self:SetHealth(self.StartHealth)	
 
-	self.LNR_LegHP = self.StartHealth * 0.20
+	self.TOTU_LNR_LegHP = self.StartHealth * 0.20
 
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
@@ -2739,7 +2808,24 @@ function ENT:CustomOnAcceptInput(key,activator,caller,data)
 
 		if self:GetClass() == "npc_vj_totu_nightkin_scylla" then
 			VJ_EmitSound(self,"fx/footsteps/gol/step_"..math.random(1,5)..".wav",75,self:VJ_DecideSoundPitch(self.FootStepPitch.a,self.FootStepPitch.b))
-			VJ_EmitSound(self,"zombies/weaponized/smog/step_"..math.random(1,5)..".wav",75,self:VJ_DecideSoundPitch(self.FootStepPitch.a,self.FootStepPitch.b))
+			VJ_EmitSound(self,"fx/footsteps/smog/step_"..math.random(1,5)..".wav",75,self:VJ_DecideSoundPitch(self.FootStepPitch.a,self.FootStepPitch.b))
+		end
+
+		if (self:GetClass() == "npc_vj_totu_milzomb_ghost_walker" or self:GetClass() == "npc_vj_totu_milzomb_ghost") && self.MilZ_Ghost_CloakBroke then
+			if GetConVar("VJ_ToTU_MilZ_Ghost_Smokes"):GetInt() == 1 then		
+				if math.random(1,GetConVar("VJ_ToTU_MilZ_Ghost_Smokes"):GetInt()) == 1 then
+					local carproj = ents.Create("obj_vj_totu_smokeg")
+					carproj:SetPos(self:LocalToWorld(Vector(0,0,0)))
+					carproj:SetAngles(Angle(math.random(0,360),math.random(0,360),math.random(0,360)))
+					carproj:SetOwner(self)
+					carproj:Spawn()
+					carproj:Activate()
+					local phys = carproj:GetPhysicsObject()
+					if IsValid(phys) then
+						phys:SetVelocity(Vector(math.Rand(-25,25),math.Rand(-25,25),math.Rand(0,50)))
+					end
+				end
+			end
 		end
 
 	end
@@ -2779,10 +2865,10 @@ function ENT:CustomOnAcceptInput(key,activator,caller,data)
 	
 	if key == "break_door" then
 
-		if IsValid(self.LNR_DoorToBreak) then
+		if IsValid(self.TOTU_LNR_DoorToBreak) then
 
 			local doorDmg = self.MeleeAttackDamage
-			local door = self.LNR_DoorToBreak
+			local door = self.TOTU_LNR_DoorToBreak
 
 			VJ_CreateSound(self,self.SoundTbl_BeforeMeleeAttack,self.BeforeMeleeAttackSoundLevel,self:VJ_DecideSoundPitch(self.BeforeMeleeAttackSoundPitch.a, self.BeforeMeleeAttackSoundPitch.b))
 
@@ -3147,7 +3233,7 @@ function ENT:CustomOnThink()
 
 	if
 		GetConVar("VJ_TOTU_LNR_BreakDoors"):GetInt() == 0 or
-		self.LNR_Crippled or
+		self.TOTU_LNR_Crippled or
 		self.Dead or
 		self.DeathAnimationCodeRan or
 		self.Flinching or
@@ -3185,29 +3271,29 @@ function ENT:CustomOnThink()
 		self.RangeAttacking == true or
 		self.LeapAttacking == true
 	then
-		self.LNR_DoorToBreak = NULL
+		self.TOTU_LNR_DoorToBreak = NULL
 	return end
 
 	if VJ_AnimationExists(self,ACT_OPEN_DOOR) then
-		if !IsValid(self.LNR_DoorToBreak) then
+		if !IsValid(self.TOTU_LNR_DoorToBreak) then
 			if ((!self.VJ_IsBeingControlled) or (self.VJ_IsBeingControlled && self.VJ_TheController:KeyDown(IN_DUCK))) then
 				for _,v in pairs(ents.FindInSphere(self:GetPos(),40)) do
-					if v:GetClass() == "func_door_rotating" && v:Visible(self) then self.LNR_DoorToBreak = v end
-					if v:GetClass() == "prop_door_dynamic" && !v.ToTU_DynamDoor_Broken && v:Visible(self) then self.LNR_DoorToBreak = v end
+					if v:GetClass() == "func_door_rotating" && v:Visible(self) then self.TOTU_LNR_DoorToBreak = v end
+					if v:GetClass() == "prop_door_dynamic" && !v.ToTU_DynamDoor_Broken && v:Visible(self) then self.TOTU_LNR_DoorToBreak = v end
 					if v:GetClass() == "prop_door_rotating" && v:Visible(self) then
 						local anim = string.lower(v:GetSequenceName(v:GetSequence()))
 						if string.find(anim,"idle") or string.find(anim,"open") /*or string.find(anim,"locked")*/ then
-							self.LNR_DoorToBreak = v
+							self.TOTU_LNR_DoorToBreak = v
 							break
 						end
 					end
 				end
 			end
 		else
-		    if self.PlayingAttackAnimation or !self.LNR_DoorToBreak:Visible(self) /*or (self:GetActivity() == ACT_OPEN_DOOR && dist <= 100)*/ then self.LNR_DoorToBreak = NULL return end
+		    if self.PlayingAttackAnimation or !self.TOTU_LNR_DoorToBreak:Visible(self) /*or (self:GetActivity() == ACT_OPEN_DOOR && dist <= 100)*/ then self.TOTU_LNR_DoorToBreak = NULL return end
 			if self:GetActivity() != ACT_OPEN_DOOR then
 				local ang = self:GetAngles()
-				self:SetAngles(Angle(ang.x,(self.LNR_DoorToBreak:GetPos() -self:GetPos()):Angle().y,ang.z))
+				self:SetAngles(Angle(ang.x,(self.TOTU_LNR_DoorToBreak:GetPos() -self:GetPos()):Angle().y,ang.z))
 				self:VJ_ACT_PLAYACTIVITY(ACT_OPEN_DOOR,true,false,false)
 			end
 		end
@@ -3219,7 +3305,7 @@ function ENT:CustomOnThink_AIEnabled()
 
 	self:Zombie_CustomOnThink_AIEnabled()
 
-	if !self.ToTU_Weaponized_IsHL2Zomb && !self.LNR_Crippled && !self.VJ_IsBeingControlled && self.ToTU_CanRest then
+	if !self.ToTU_Weaponized_IsHL2Zomb && !self.TOTU_LNR_Crippled && !self.VJ_IsBeingControlled && self.ToTU_CanRest then
 		if
 			!self.Alerted &&
 			!IsValid(self:GetEnemy()) &&
@@ -3275,7 +3361,7 @@ function ENT:CustomOnThink_AIEnabled()
 								self.CanTurnWhileStationary = true
 								self.TurningSpeed = 15
 								self.AnimTbl_IdleStand = {ACT_IDLE}
-								if self.LNR_UsingRelaxedIdle == true then
+								if self.TOTU_LNR_UsingRelaxedIdle == true then
 									self.AnimTbl_IdleStand = {ACT_IDLE_RELAXED}
 								end
 							end
@@ -3295,7 +3381,7 @@ function ENT:CustomOnThink_AIEnabled()
 						self.CanTurnWhileStationary = true
 						self.TurningSpeed = 15
 						self.AnimTbl_IdleStand = {ACT_IDLE}
-						if self.LNR_UsingRelaxedIdle == true then
+						if self.TOTU_LNR_UsingRelaxedIdle == true then
 							self.AnimTbl_IdleStand = {ACT_IDLE_RELAXED}
 						end
 					end
@@ -3304,7 +3390,7 @@ function ENT:CustomOnThink_AIEnabled()
 		end
 	end
 
-	if self.ToTU_CanDodge && !self.LNR_Crippled then
+	if self.ToTU_CanDodge && !self.TOTU_LNR_Crippled then
 
 		if
 			self.MeleeAttacking or
@@ -3312,7 +3398,7 @@ function ENT:CustomOnThink_AIEnabled()
 			self.LeapAttacking or
 			self.Dead or
 			self:GetEnemy() == nil or
-			self.LNR_Crippled or
+			self.TOTU_LNR_Crippled or
 			self.ToTU_Crawling or
 			self:GetActivity() == ACT_STEP_BACK or
 			self:GetActivity() == ACT_STEP_FORE or
@@ -3334,7 +3420,7 @@ function ENT:CustomOnThink_AIEnabled()
 
 			if self:GetEnemy() != nil && self:Visible(TheHammerIsOperationalAgain) && !self.VJ_IsBeingControlled && !self.ToTU_Dodge_CloseIn then
 
-				if self.LNR_Infected then
+				if self.TOTU_LNR_Infected then
 
 					self:VJ_ACT_PLAYACTIVITY(InfectedDodgeAnims,true,false,false)
 
@@ -3345,10 +3431,13 @@ function ENT:CustomOnThink_AIEnabled()
 				end
 
 				if self.ToTU_Deimos then
-					self:VJ_ACT_PLAYACTIVITY(InfectedDodgeAnims,true,false,false)
-					self.ToTU_NextDodgeT = CurTime() + math.random(3,7)
-				else
-					self.ToTU_NextDodgeT = CurTime() + math.random(5,15)
+					if self.ToTU_Weaponized_Redead_Running then
+						self:VJ_ACT_PLAYACTIVITY(InfectedDodgeAnims,true,false,false)
+						self.ToTU_NextDodgeT = CurTime() + math.random(3,7)
+					else
+						self:VJ_ACT_PLAYACTIVITY(WalkerDodgeAnims,true,false,false)
+						self.ToTU_NextDodgeT = CurTime() + math.random(5,15)
+					end
 				end
 
 
@@ -3361,7 +3450,7 @@ function ENT:CustomOnThink_AIEnabled()
 					(self.VJ_TheController:KeyDown(IN_MOVELEFT)))
 				then
 				
-					if self.LNR_Infected or self.ToTU_Mutated then
+					if self.TOTU_LNR_Infected or self.ToTU_Mutated or (self.ToTU_Deimos && self.ToTU_Weaponized_Redead_Running) then
 
 						self:VJ_ACT_PLAYACTIVITY(ACT_STRAFE_LEFT,true,false,false)
 
@@ -3380,7 +3469,7 @@ function ENT:CustomOnThink_AIEnabled()
 					(self.VJ_TheController:KeyDown(IN_MOVERIGHT)))
 				then
 				
-					if self.LNR_Infected or self.ToTU_Mutated then
+					if self.TOTU_LNR_Infected or self.ToTU_Mutated or (self.ToTU_Deimos && self.ToTU_Weaponized_Redead_Running) then
 
 						self:VJ_ACT_PLAYACTIVITY(ACT_STRAFE_RIGHT,true,false,false)
 
@@ -3411,17 +3500,20 @@ function ENT:CustomOnThink_AIEnabled()
 		end
 	end
 
+	/*
 	if self.VJ_IsBeingControlled && !self.ToTU_Mutated then
 		if self.VJ_TheController:KeyDown(IN_USE) && self.VJ_TheController:KeyDown(IN_RELOAD) then
 			self:ToTU_Mutate()
 		end
 	end
-	
+	*/
+
+	/*
 	if
 		self.VJ_IsBeingControlled &&
 		self.VJ_TheController:KeyDown(IN_ZOOM) &&
 		self.ToTU_CanJumpT < CurTime() &&
-		!self.LNR_Crippled
+		!self.TOTU_LNR_Crippled
 	then
 
 		local doot = CreateSound(self.VJ_TheController, "hl1/fvox/blip.wav")
@@ -3439,6 +3531,7 @@ function ENT:CustomOnThink_AIEnabled()
 		end
 		self.ToTU_CanJumpT = CurTime() + 1
 	end
+	*/
 
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
@@ -3736,7 +3829,7 @@ function ENT:ToTU_Mutate()
 		local mymaxhealth = self:Health()
 		self:SetMaxHealth(mymaxhealth)
 
-		self.LNR_LegHP = self.LNR_LegHP *3
+		self.TOTU_LNR_LegHP = self.TOTU_LNR_LegHP *3
 
 		self.Light1 = ents.Create("light_dynamic")
 		self.Light1:SetKeyValue("brightness", "5")
@@ -3778,7 +3871,7 @@ function ENT:ToTU_Mutate()
 			self.DeathSoundPitch = VJ_Set(45, 50)
 		end
 
-		if self.LNR_Infected then
+		if self.TOTU_LNR_Infected then
 
 			self.AnimTbl_Walk = {ACT_SPRINT}
 			self.AnimTbl_Run = {ACT_RUN_RELAXED}
@@ -3809,14 +3902,26 @@ function ENT:ToTU_Mutate_PainSound()
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:CustomOnChangeActivity(newAct)
-    if self.LNR_Crippled or self.VJ_IsBeingControlled then self.NextIdleStandTime = 0 end 
+    if self.TOTU_LNR_Crippled or self.VJ_IsBeingControlled then self.NextIdleStandTime = 0 end 
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:CustomOnChangeMovementType(movType)
-	if GetConVar("VJ_TOTU_LNR_JumpClimb"):GetInt() == 0 or self.LNR_Crippled then
+
+	if
+		GetConVar("VJ_TOTU_LNR_JumpClimb"):GetInt() == 0 or
+		self.TOTU_LNR_Crippled
+	then
         self:CapabilitiesRemove(bit.bor(CAP_MOVE_JUMP))
+	end
+
+	if
+		GetConVar("VJ_TOTU_LNR_JumpClimb"):GetInt() == 0 or
+		GetConVar("VJ_TOTU_LNR_JumpClimb"):GetInt() == 1 or
+		self.TOTU_LNR_Crippled
+	then
 	    self:CapabilitiesRemove(bit.bor(CAP_MOVE_CLIMB)) 
 	end
+
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:GetSightDirection()
@@ -3827,7 +3932,7 @@ function ENT:CustomOn_PoseParameterLookingCode(pitch,yaw,roll)
 
 	if self.ToTU_Weaponized_IsHL2Zomb then return end
 
-    if self.LNR_Crippled then
+    if self.TOTU_LNR_Crippled then
 		self:SetPoseParameter("aim_pitch",0) 
 		self:SetPoseParameter("spine_yaw",0)
 		self.PoseParameterLooking_Names = {pitch={"head_pitch"}, yaw={"head_yaw"}, roll={}}
@@ -3837,8 +3942,76 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:Controller_IntMsg(ply)
 
-	ply:ChatPrint("INTERACT/USE + RELOAD: Mutate. (Jank)")
-	ply:ChatPrint("ZOOM: Toggle Jumping.")
+	-- ply:ChatPrint("INTERACT/USE + RELOAD: Mutate. (Jank)")
+	-- ply:ChatPrint("ZOOM: Toggle Jumping.")
+
+	if self.ToTU_Deimos then
+		ply:ChatPrint("RELOAD: Speed Up.")
+		self.ToTU_Weaponized_Redead_NextRunT = 0
+	end
+
+	if self:GetClass() == "npc_vj_totu_deimos_redead" then
+
+		ply:ChatPrint("JUMP: Give yourself a weapon (if you have none).")
+
+		self.HasRangeAttack = true
+		self.RangeAttackAnimationFaceEnemy = true
+		self.AnimTbl_RangeAttack = {"vjseq_throwsomeshit"}
+		self.RangeDistance = 750 
+		self.RangeToMeleeDistance = 1 
+		self.RangeAttackAngleRadius = 100
+		self.TimeUntilRangeAttackProjectileRelease = 1.6
+		self.NextRangeAttackTime = math.random(5,10)
+		self.RangeAttackPos_Up = 65
+		self.RangeAttackPos_Right = -10
+
+	end
+
+	if self:GetClass() == "npc_vj_totu_deimos_redead_guard" then
+		self.ToTU_Weaponized_Redead_Guard_HasVest = true
+		self:SetBodygroup(3,1)
+		if math.random(1,3) == 1 then
+			self:SetBodygroup(3,2)
+		end
+		self.ToTU_Weaponized_Redead_Guard_HasHelmet = true
+		self:SetBodygroup(2,0)
+		self.ToTU_Weaponized_Redead_Guard_HelmetHealth = 100
+		local badtotheboner = CreateSound(self, "ui/gascan_spawn.wav")
+		badtotheboner:SetSoundLevel(70)
+		badtotheboner:Play()
+		effects.BeamRingPoint(self:GetPos()+self:GetUp()*55, 0.25, 2, 100, 5, 0, Color(220, 0, 255), {material="sprites/physgbeamb", framerate=20})
+		effects.BeamRingPoint(self:GetPos()+self:GetUp()*35, 0.25, 2, 150, 5, 0, Color(220, 0, 255), {material="sprites/physgbeamb", framerate=20})
+		effects.BeamRingPoint(self:GetPos()+self:GetUp()*15, 0.25, 2, 100, 5, 0, Color(220, 0, 255), {material="sprites/physgbeamb", framerate=20})
+	end
+
+	if self:GetClass() == "npc_vj_totu_deimos_redead_grunt" then
+
+		ply:ChatPrint("JUMP: Give yourself a weapon (if you have none).")
+
+		self.HasRangeAttack = true
+		self.RangeAttackAnimationFaceEnemy = true
+		self.AnimTbl_RangeAttack = {"vjseq_throwsomeshit"}
+		self.RangeDistance = 750 
+		self.RangeToMeleeDistance = 1 
+		self.RangeAttackAngleRadius = 100
+		self.TimeUntilRangeAttackProjectileRelease = 1.6
+		self.NextRangeAttackTime = math.random(5,10)
+		self.RangeAttackPos_Up = 65
+		self.RangeAttackPos_Right = -10
+		self.MilZ_Grenades = math.random(99,99)
+
+		self.MilZ_HasFlakSuit = true
+		self:SetBodygroup(2,3)
+
+		self:SetModel("models/totu/remort_med.mdl")
+		self.ToTU_Weaponized_Redead_Grunt_IsCaretaker = true
+		local badtotheboner = CreateSound(self, "ui/gascan_spawn.wav")
+		badtotheboner:SetSoundLevel(70)
+		badtotheboner:Play()
+		effects.BeamRingPoint(self:GetPos()+self:GetUp()*55, 0.25, 2, 100, 5, 0, Color(220, 0, 255), {material="sprites/physgbeamb", framerate=20})
+		effects.BeamRingPoint(self:GetPos()+self:GetUp()*35, 0.25, 2, 150, 5, 0, Color(220, 0, 255), {material="sprites/physgbeamb", framerate=20})
+		effects.BeamRingPoint(self:GetPos()+self:GetUp()*15, 0.25, 2, 100, 5, 0, Color(220, 0, 255), {material="sprites/physgbeamb", framerate=20})
+	end
 
 	if GetConVar("VJ_TOTU_LNR_BreakDoors"):GetInt() == 1 then
 
@@ -3853,7 +4026,7 @@ function ENT:Controller_IntMsg(ply)
 
 	end
 
-	if self.MilZ_CanShuutDeGun == true && (!self.LNR_Infected or (self.LNR_Infected && !self.LNR_SuperSprinter && !self.ToTU_Rusher)) then
+	if self.MilZ_CanShuutDeGun == true && (!self.TOTU_LNR_Infected or (self.TOTU_LNR_Infected && !self.TOTU_LNR_SuperSprinter && !self.ToTU_Rusher)) then
 		ply:ChatPrint("RMB While Running: Shoot Gun")
 	end
 
@@ -3892,7 +4065,9 @@ function ENT:Controller_Initialize(ply)
 			net.Send(ply)
 		end
 
-	elseif self.LNR_Walker then
+	end
+
+	if self.TOTU_LNR_Walker then
 
 		net.Start("VJ_TOTU_LNR_Walker_HUD")
 		net.WriteBool(false)
@@ -3906,7 +4081,9 @@ function ENT:Controller_Initialize(ply)
 			net.Send(ply)
 		end
 
-	else
+	end
+
+	if self.TOTU_LNR_Infected then
 
 		net.Start("VJ_TOTU_LNR_Infected_HUD")
 		net.WriteBool(false)
@@ -3915,6 +4092,22 @@ function ENT:Controller_Initialize(ply)
 
 		function self.VJ_TheControllerEntity:CustomOnStopControlling()
 			net.Start("VJ_TOTU_LNR_Infected_HUD")
+			net.WriteBool(true)
+			net.WriteEntity(self)
+			net.Send(ply)
+		end
+
+	end
+	
+	if self.ToTU_Deimos then
+
+		net.Start("VJ_TOTU_Deimos_HUD")
+		net.WriteBool(false)
+		net.WriteEntity(self)
+		net.Send(ply)
+
+		function self.VJ_TheControllerEntity:CustomOnStopControlling()
+			net.Start("VJ_TOTU_Deimos_HUD")
 			net.WriteBool(true)
 			net.WriteEntity(self)
 			net.Send(ply)
@@ -3941,7 +4134,7 @@ function ENT:CustomOnInvestigate(ent)
 		self.CanTurnWhileStationary = true
 		self.TurningSpeed = 15
 		self.AnimTbl_IdleStand = {ACT_IDLE}
-		if self.LNR_UsingRelaxedIdle == true then
+		if self.TOTU_LNR_UsingRelaxedIdle == true then
 			self.AnimTbl_IdleStand = {ACT_IDLE_RELAXED}
 		end
 	end
@@ -3961,20 +4154,22 @@ function ENT:CustomOnAlert(ent)
 
 	end
 
-	if
-		self:GetClass() == "npc_vj_totu_deimos_redead" or
-		self:GetClass() == "npc_vj_totu_deimos_redead_guard" or
-		self:GetClass() == "npc_vj_totu_deimos_redead_sci" or
-		self:GetClass() == "npc_vj_totu_deimos_corrupt" or
-		self:GetClass() == "npc_vj_totu_deimos_corrupt_brute" or
-		self:GetClass() == "npc_vj_totu_fon_lament" or
-		self:GetClass() == "npc_vj_totu_deimos_redead_grunt" or
-		self:GetClass() == "npc_vj_totu_deimos_reborn" or
-		self:GetClass() == "npc_vj_totu_deimos_cancer"
-	then
+	if !self.VJ_IsBeingControlled then
+		if
+			self:GetClass() == "npc_vj_totu_deimos_redead" or
+			self:GetClass() == "npc_vj_totu_deimos_redead_guard" or
+			self:GetClass() == "npc_vj_totu_deimos_redead_sci" or
+			self:GetClass() == "npc_vj_totu_deimos_corrupt" or
+			self:GetClass() == "npc_vj_totu_deimos_corrupt_brute" or
+			self:GetClass() == "npc_vj_totu_fon_lament" or
+			self:GetClass() == "npc_vj_totu_deimos_redead_grunt" or
+			self:GetClass() == "npc_vj_totu_deimos_reborn" or
+			self:GetClass() == "npc_vj_totu_deimos_cancer"
+		then
 
-		self.ToTU_Weaponized_Redead_NextRunT = CurTime() + math.random(3,7)
+			self.ToTU_Weaponized_Redead_NextRunT = CurTime() + math.random(3,7)
 
+		end
 	end
 
 	if self.ToTU_Resting != 0 then
@@ -3992,31 +4187,31 @@ function ENT:CustomOnAlert(ent)
 		self.CanTurnWhileStationary = true
 		self.TurningSpeed = 15
 		self.AnimTbl_IdleStand = {ACT_IDLE}
-		if self.LNR_UsingRelaxedIdle == true then
+		if self.TOTU_LNR_UsingRelaxedIdle == true then
 			self.AnimTbl_IdleStand = {ACT_IDLE_RELAXED}
 		end
 	end
 
 
-	if self.MiLZ_Ghillie_IsGhillie && self.MilZ_Ghillie_PlayChangeStateAnim == 1 && !self.LNR_Crippled then
+	if self.MiLZ_Ghillie_IsGhillie && self.MilZ_Ghillie_PlayChangeStateAnim == 1 && !self.TOTU_LNR_Crippled then
 		self:ToTU_Ghillie_StartCrawling()
 		self.MilZ_Ghillie_PlayChangeStateAnim_T = CurTime() + (0.5)
 		local anim = {"vjseq_Stand_to_crouch"}
 		self:VJ_ACT_PLAYACTIVITY(anim,true,false,false)
 	end
 
-	if self:GetClass() == "npc_vj_totu_nightkin_skitter" && self.ToTU_Nightkin_Skitter_PlayChangeStateAnim == 1 && !self.LNR_Crippled then
+	if self:GetClass() == "npc_vj_totu_nightkin_skitter" && self.ToTU_Nightkin_Skitter_PlayChangeStateAnim == 1 && !self.TOTU_LNR_Crippled then
 		self:ToTU_Skitter_StartCrawling()
 		self.ToTU_Nightkin_Skitter_PlayChangeStateAnimT = CurTime() + (0.5)
 		local anim = {"vjseq_Stand_to_crouch"}
 		self:VJ_ACT_PLAYACTIVITY(anim,true,false,false)
 	end
 
-	if self.VJ_IsBeingControlled or self.LNR_Crippled or self.ToTU_Weaponized_IsHL2Zomb then return end
+	if self.VJ_IsBeingControlled or self.TOTU_LNR_Crippled or self.ToTU_Weaponized_IsHL2Zomb then return end
 
 	self.ToTU_NextDodgeT = CurTime() + math.random(5,10)
 
-	if self.LNR_Infected or (self.ToTU_Deimos && !self.ToTU_Weaponized_IsHL2Zomb && self:GetClass() != "npc_vj_totu_deimos_corrupt" && self:GetClass() != "npc_vj_totu_deimos_corrupt_brute" && self:GetClass() != "npc_vj_totu_fon_lament") then
+	if self.TOTU_LNR_Infected or (self.ToTU_Deimos && !self.ToTU_Weaponized_IsHL2Zomb && self:GetClass() != "npc_vj_totu_deimos_corrupt" && self:GetClass() != "npc_vj_totu_deimos_corrupt_brute" && self:GetClass() != "npc_vj_totu_fon_lament") then
 
 		if self:GetClass() == "npc_vj_totu_milzomb_ghost" then
 
@@ -4038,11 +4233,11 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:CustomOnResetEnemy()
 
-	if self.VJ_IsBeingControlled or self.LNR_Crippled or self.ToTU_Weaponized_IsHL2Zomb then return end
+	if self.VJ_IsBeingControlled or self.TOTU_LNR_Crippled or self.ToTU_Weaponized_IsHL2Zomb then return end
 
-	if self.LNR_Infected or (self.ToTU_Deimos && !self.ToTU_Weaponized_IsHL2Zomb && self:GetClass() != "npc_vj_totu_deimos_corrupt") then
+	if self.TOTU_LNR_Infected or (self.ToTU_Deimos && !self.ToTU_Weaponized_IsHL2Zomb && self:GetClass() != "npc_vj_totu_deimos_corrupt") then
 
-		if self.LNR_UsingRelaxedIdle then
+		if self.TOTU_LNR_UsingRelaxedIdle then
 
 			if (self.ToTU_Deimos && !self.ToTU_Weaponized_IsHL2Zomb && self:GetClass() != "npc_vj_totu_deimos_corrupt" && self:GetClass() != "npc_vj_totu_deimos_corrupt_brute" && self:GetClass() != "npc_vj_totu_fon_lament") then
 				self.AnimTbl_IdleStand = {ACT_IDLE}
@@ -4082,7 +4277,7 @@ function ENT:CustomOnMeleeAttack_AfterChecks(hitEnt, isProp)
 
 	if self:IsOnFire() then hitEnt:Ignite(4) end
 
-    if self.LNR_Biter && !isProp && !self.LNR_Crippled then	
+    if self.TOTU_LNR_Biter && !isProp && !self.TOTU_LNR_Crippled then	
 
 		if hitEnt.IsVJBaseSNPC && VJ_PICK(hitEnt.CustomBlood_Particle) then
 
@@ -4172,20 +4367,25 @@ function ENT:CustomOnMeleeAttack_AfterChecks(hitEnt, isProp)
 		end
 	end
 
-    if hitEnt:IsPlayer() && hitEnt:Health() < self.MeleeAttackDamage + 1 && GetConVar("VJ_ToTU_LNR_Infection"):GetInt() == 1 then
-       VJ_TOTU_LNR_SetPlayerZombie(hitEnt,self,self)	
+    -- if hitEnt:IsPlayer() && hitEnt:Health() < self.MeleeAttackDamage + 1 && GetConVar("VJ_ToTU_LNR_Infection"):GetInt() == 1 then
+       -- VJ_TOTU_LNR_SetPlayerZombie(hitEnt,self,self)
+	-- end
+
+    if hitEnt:IsPlayer() && hitEnt:Health() < self.MeleeAttackDamage + 1 then
+		VJ_TOTU_LNR_SetPlayerZombie(hitEnt,self,self)
 	end
 
 	if GetConVar("VJ_TOTU_LNR_InfectionHit"):GetInt() == 0 then return end
 
-	if math.random(1,GetConVar("VJ_TOTU_LNR_InfectionChance"):GetInt()) == 1 && (hitEnt:LookupBone("ValveBiped.Bip01_Pelvis") != nil) && !hitEnt.LNR_InfectedVictim then
+	if math.random(1,GetConVar("VJ_TOTU_LNR_InfectionChance"):GetInt()) == 1 && (hitEnt:LookupBone("ValveBiped.Bip01_Pelvis") != nil) && !hitEnt.TOTU_LNR_InfectedVictim then
 
 		if (hitEnt:IsPlayer() && hitEnt:Armor() < 25 && GetConVar("sbox_godmode"):GetInt() == 0) or hitEnt:IsNPC() then
 
-			if hitEnt.LNR_InfectedVictim then return end
+			if hitEnt.TOTU_InfectedVictim then return end
 
-			hitEnt.LNR_InfectedVictim = true
-			VJ_TOTU_LNR_InfectionApply(hitEnt,self)
+			VJ_EmitSound(self,"test/laughnow.mp3",70,70)
+			hitEnt.TOTU_InfectedVictim = true
+			VJ_ToTU_LNR_InfectionApply(hitEnt,self)
 
 		end
 
@@ -4197,7 +4397,7 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:CustomOnMeleeAttack_Miss()
 
-	if self.LNR_Biter then
+	if self.TOTU_LNR_Biter then
 
 		if self.MeleeAttacking && !self:IsMoving() && self:GetSequence() != self:LookupSequence("choke_eat") then
 
@@ -4212,8 +4412,8 @@ function ENT:CustomOnMeleeAttack_Miss()
 
 	if 
 		(
-			self.LNR_Infected or
-			self.LNR_Walker && GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 5 or
+			self.TOTU_LNR_Infected or
+			self.TOTU_LNR_Walker && GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 5 or
 			self.ToTU_Deimos && 
 			!self.ToTU_Weaponized_IsHL2Zomb && 
 			self:GetClass() != "npc_vj_totu_deimos_corrupt" && 
@@ -4221,7 +4421,7 @@ function ENT:CustomOnMeleeAttack_Miss()
 			self:GetClass() != "npc_vj_totu_fon_lament"
 		) &&
 		!self:IsMoving() && 
-		!self.LNR_Crippled && 
+		!self.TOTU_LNR_Crippled && 
 		!self.ToTU_WeHaveAWeapon
 
 	then
@@ -4250,7 +4450,7 @@ function ENT:CustomOnMeleeAttack_BeforeStartTimer(seed)
 	return end
 
 	-- Melee Sounds	--
-	if self.LNR_Biter && !self.LNR_Crippled then
+	if self.TOTU_LNR_Biter && !self.TOTU_LNR_Crippled then
 
         self.SoundTbl_MeleeAttackExtra = {
         "fx/zombie_bite1.wav",
@@ -4335,10 +4535,10 @@ function ENT:CustomOnMeleeAttack_BeforeStartTimer(seed)
 		if self.WeaponModel:GetModel() == "models/weapons/w_crowbar.mdl" then
 
 			self.SoundTbl_MeleeAttackExtra = {
-				"weapons/axe/axe_impact_flesh1.wav",
-				"weapons/axe/axe_impact_flesh2.wav",
-				"weapons/axe/axe_impact_flesh3.wav",
-				"weapons/axe/axe_impact_flesh4.wav"
+				"fx/weapon/axe_impact_flesh1.wav",
+				"fx/weapon/axe_impact_flesh2.wav",
+				"fx/weapon/axe_impact_flesh3.wav",
+				"fx/weapon/axe_impact_flesh4.wav"
 			}
 
 			self.SoundTbl_MeleeAttackMiss = {
@@ -4373,9 +4573,9 @@ function ENT:CustomOnMeleeAttack_BeforeStartTimer(seed)
 		if self.WeaponModel:GetModel() == "models/totu/wep_axe.mdl" then
 
 			self.SoundTbl_MeleeAttackExtra = {
-				"weapons/axe/melee_axe_01.wav",
-				"weapons/axe/melee_axe_02.wav",
-				"weapons/axe/melee_axe_03.wav"
+				"fx/weapon/melee_axe_01.wav",
+				"fx/weapon/melee_axe_02.wav",
+				"fx/weapon/melee_axe_03.wav"
 			}
 
 			self.SoundTbl_MeleeAttackMiss = {
@@ -4393,28 +4593,28 @@ function ENT:CustomOnMeleeAttack_BeforeStartTimer(seed)
 
 		if self.WeaponModel:GetModel() == "models/totu/wep_pot.mdl" or self.WeaponModel:GetModel() == "models/totu/wep_pan.mdl" then
 			self.SoundTbl_MeleeAttackExtra = {
-				"weapons/pan/melee_frying_pan_01.wav",
-				"weapons/pan/melee_frying_pan_02.wav",
-				"weapons/pan/melee_frying_pan_03.wav",
-				"weapons/pan/melee_frying_pan_04.wav"
+				"fx/weapon/melee_frying_pan_01.wav",
+				"fx/weapon/melee_frying_pan_02.wav",
+				"fx/weapon/melee_frying_pan_03.wav",
+				"fx/weapon/melee_frying_pan_04.wav"
 			}
 		end
 
 	end
 
 	-- When Crawling or Crippled --
-    if self.LNR_Crippled then
-		if self.LNR_Walker then
+    if self.TOTU_LNR_Crippled then
+		if self.TOTU_LNR_Walker then
 			self.AnimTbl_MeleeAttack = {"vjseq_crawl_attack"}	
-		elseif self.LNR_Infected or self.ToTU_Deimos then
+		elseif self.TOTU_LNR_Infected or self.ToTU_Deimos then
 			self.AnimTbl_MeleeAttack = {"vjseq_crawl_attack2"}
 		end
 	end
 
-	if self.LNR_Crippled then return end
+	if self.TOTU_LNR_Crippled then return end
 
 	-- When Dismembered or for Biters --
-	if self.LNR_Biter && !self.LNR_Crippled then
+	if self.TOTU_LNR_Biter && !self.TOTU_LNR_Crippled then
 
 		if self:IsMoving() then
 		
@@ -4424,7 +4624,7 @@ function ENT:CustomOnMeleeAttack_BeforeStartTimer(seed)
 			self.HasMeleeAttackKnockBack = false 	
 			self.SlowPlayerOnMeleeAttack = false
 			
-		elseif !self:IsMoving() && !self.LNR_Crippled then
+		elseif !self:IsMoving() && !self.TOTU_LNR_Crippled then
 		
 			self.MeleeAttackAnimationAllowOtherTasks = false
 			self.AnimTbl_MeleeAttack = {"vjseq_Choke_Eating"}	
@@ -4442,17 +4642,17 @@ function ENT:CustomOnMeleeAttack_BeforeStartTimer(seed)
 
 	end
 
-    if !self.LNR_Crippled or !self.LNR_Biter or !self.ToTU_Crawling then
+    if !self.TOTU_LNR_Crippled or !self.TOTU_LNR_Biter or !self.ToTU_Crawling then
 
 		-- When Standing --
-		if !self:IsMoving() && !self.LNR_Biter then
+		if !self:IsMoving() && !self.TOTU_LNR_Biter then
 
 			self.MeleeAttackAnimationAllowOtherTasks = false
 
 			if self.ToTU_WeHaveAWeapon == true then
 
 				if self.WeaponModel:GetModel() == "models/totu/wep_knife_ct.mdl" then
-					if self.LNR_Walker then
+					if self.TOTU_LNR_Walker then
 						if math.random(1,3) == 1 then
 							self.SoundTbl_MeleeAttackExtra = {
 								"fx/knife/knife_stab.wav"
@@ -4496,7 +4696,7 @@ function ENT:CustomOnMeleeAttack_BeforeStartTimer(seed)
 				end
 
 				if self.WeaponModel:GetModel() == "models/vj_weapons/w_glock.mdl" then
-					if self.LNR_Walker then
+					if self.TOTU_LNR_Walker then
 						self.AnimTbl_MeleeAttack = {
 							"vjseq_weapon_swing_overhead_slow",
 							"vjseq_weapon_swing_side_slow"
@@ -4510,7 +4710,7 @@ function ENT:CustomOnMeleeAttack_BeforeStartTimer(seed)
 				end
 
 				if self.WeaponModel:GetModel() == "models/weapons/w_crowbar.mdl" then
-					if self.LNR_Walker then
+					if self.TOTU_LNR_Walker then
 						self.AnimTbl_MeleeAttack = {
 							"vjseq_weapon_swing_overhead_slow",
 							"vjseq_weapon_swing_side_slow"
@@ -4524,7 +4724,7 @@ function ENT:CustomOnMeleeAttack_BeforeStartTimer(seed)
 				end
 
 				if self.WeaponModel:GetModel() == "models/props_canal/mattpipe.mdl" then
-					if self.LNR_Walker then
+					if self.TOTU_LNR_Walker then
 						self.AnimTbl_MeleeAttack = {
 							"vjseq_weapon_swing_overhead_slow",
 							"vjseq_weapon_swing_side_slow"
@@ -4538,7 +4738,7 @@ function ENT:CustomOnMeleeAttack_BeforeStartTimer(seed)
 				end
 
 				if self.WeaponModel:GetModel() == "models/totu/wep_axe.mdl" then
-					if self.LNR_Walker then
+					if self.TOTU_LNR_Walker then
 						self.AnimTbl_MeleeAttack = {
 							"vjseq_weapon_swing_overhead_slow",
 							"vjseq_weapon_swing_side_slow"
@@ -4562,7 +4762,7 @@ function ENT:CustomOnMeleeAttack_BeforeStartTimer(seed)
 				end
 
 				if self.WeaponModel:GetModel() == "models/totu/wep_pot.mdl" or self.WeaponModel:GetModel() == "models/totu/wep_pan.mdl" then
-					if self.LNR_Walker then
+					if self.TOTU_LNR_Walker then
 						self.AnimTbl_MeleeAttack = {
 							"vjseq_weapon_swing_overhead_slow",
 							"vjseq_weapon_swing_side_slow"
@@ -4574,16 +4774,16 @@ function ENT:CustomOnMeleeAttack_BeforeStartTimer(seed)
 						}
 					end
 					self.SoundTbl_MeleeAttackExtra = {
-						"weapons/pan/melee_frying_pan_01.wav",
-						"weapons/pan/melee_frying_pan_02.wav",
-						"weapons/pan/melee_frying_pan_03.wav",
-						"weapons/pan/melee_frying_pan_04.wav"
+						"fx/weapon/melee_frying_pan_01.wav",
+						"fx/weapon/melee_frying_pan_02.wav",
+						"fx/weapon/melee_frying_pan_03.wav",
+						"fx/weapon/melee_frying_pan_04.wav"
 					}
 				end
 
 			else
 			
-			if self.LNR_Infected or self.ToTU_Deimos or self.LNR_Walker && GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 5 then
+			if self.TOTU_LNR_Infected or self.ToTU_Deimos or self.TOTU_LNR_Walker && GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 5 then
 
 				self.AnimTbl_MeleeAttack = {
 					"vjseq_CI_Standing_Melee_1",
@@ -4615,7 +4815,7 @@ function ENT:CustomOnMeleeAttack_BeforeStartTimer(seed)
 
 	end
 
-	if self:IsMoving() && !self.LNR_Crippled && self:GetClass() == "npc_vj_totu_milzomb_tank" then
+	if self:IsMoving() && !self.TOTU_LNR_Crippled && self:GetClass() == "npc_vj_totu_milzomb_tank" then
 		self.MeleeAttackAnimationAllowOtherTasks = false
 		if math.random(1,3) == 1 then
 			self.AnimTbl_MeleeAttack = {"vjseq_attack_jumpstomp"}
@@ -4634,7 +4834,7 @@ function ENT:CustomOnMeleeAttack_BeforeStartTimer(seed)
 	end
 	
 	-- When Walking --
-	if self:IsMoving() && !self.LNR_Crippled && !self.LNR_Biter && self.ToTU_CanUseMovingAttacks then
+	if self:IsMoving() && !self.TOTU_LNR_Crippled && !self.TOTU_LNR_Biter && self.ToTU_CanUseMovingAttacks then
 
 		self.MeleeAttackAnimationAllowOtherTasks = true
 
@@ -4723,7 +4923,7 @@ function ENT:CustomOnFlinch_BeforeFlinch(dmginfo,hitgroup)
 
 	if
 		GetConVar("VJ_ToTU_General_Stumbling_Disable"):GetInt() == 1 or
-		self.LNR_Crippled or
+		self.TOTU_LNR_Crippled or
 		self.ToTU_Crawling or
 		self:GetClass() == "npc_vj_totu_deimos_cyst" or
 		self:GetActivity() == ACT_STEP_BACK or
@@ -4792,7 +4992,7 @@ function ENT:CustomOnFlinch_BeforeFlinch(dmginfo,hitgroup)
 		}
 	end
 
-	if self.ToTU_CanDoTheFunny == false or self.LNR_Crippled or self:GetActivity() == ACT_GLIDE or self.ToTU_Resting != 0 then return end
+	if self.ToTU_CanDoTheFunny == false or self.TOTU_LNR_Crippled or self:GetActivity() == ACT_GLIDE or self.ToTU_Resting != 0 then return end
 
 	-- melee stumbles
 	if
@@ -4809,59 +5009,59 @@ function ENT:CustomOnFlinch_BeforeFlinch(dmginfo,hitgroup)
 		if self:GetSequence() != self:LookupSequence(ACT_BIG_FLINCH) && self:GetSequence() != self:LookupSequence(ACT_GMOD_SHOWOFF_STAND_01) && self.ToTU_Resting == 0 && self.ToTU_CanStumble then
 			if self.ToTU_GiantZombie then
 				if dmginfo:GetDamage() >= 150 or dmginfo:GetDamageForce():Length() >= 45000 then
-					if self.LNR_NextShoveT < CurTime() then
+					if self.TOTU_LNR_NextShoveT < CurTime() then
 						self:VJ_ACT_PLAYACTIVITY(ACT_BIG_FLINCH,true,false,false)
-						self.LNR_NextShoveT = CurTime() + 7
+						self.TOTU_LNR_NextShoveT = CurTime() + 7
 						self:ToTU_ResetFlinchHitgroups()
 					end
 				elseif dmginfo:GetDamage() >= 100 or dmginfo:GetDamageForce():Length() >= 30000 then
-					if self.LNR_NextShoveT < CurTime() then
+					if self.TOTU_LNR_NextShoveT < CurTime() then
 						self:VJ_ACT_PLAYACTIVITY(ACT_SMALL_FLINCH,true,false,false)
-						self.LNR_NextShoveT = CurTime() + 7
+						self.TOTU_LNR_NextShoveT = CurTime() + 7
 						self:ToTU_ResetFlinchHitgroups()
 					end
 				elseif dmginfo:GetDamage() <= 100 or dmginfo:GetDamageForce():Length() <= 30000 then
-					if self.LNR_NextShoveT < CurTime() then
+					if self.TOTU_LNR_NextShoveT < CurTime() then
 						self:VJ_ACT_PLAYACTIVITY(ACT_STEP_BACK,true,1.6)
-						self.LNR_NextShoveT = CurTime() + 3
+						self.TOTU_LNR_NextShoveT = CurTime() + 3
 					end
 				end
 			elseif self.ToTU_BigZombie then
 				if dmginfo:GetDamage() >= 100 or dmginfo:GetDamageForce():Length() >= 30000 then
-					if self.LNR_NextShoveT < CurTime() then
+					if self.TOTU_LNR_NextShoveT < CurTime() then
 						self:VJ_ACT_PLAYACTIVITY(ACT_BIG_FLINCH,true,false,false)
-						self.LNR_NextShoveT = CurTime() + 7
+						self.TOTU_LNR_NextShoveT = CurTime() + 7
 						self:ToTU_ResetFlinchHitgroups()
 					end
 				elseif dmginfo:GetDamage() >= 50 or dmginfo:GetDamageForce():Length() >= 15000 then
-					if self.LNR_NextShoveT < CurTime() then
+					if self.TOTU_LNR_NextShoveT < CurTime() then
 						self:VJ_ACT_PLAYACTIVITY(ACT_SMALL_FLINCH,true,false,false)
-						self.LNR_NextShoveT = CurTime() + 7
+						self.TOTU_LNR_NextShoveT = CurTime() + 7
 						self:ToTU_ResetFlinchHitgroups()
 					end
 				elseif dmginfo:GetDamage() <= 50 or dmginfo:GetDamageForce():Length() <= 15000 then
-					if self.LNR_NextShoveT < CurTime() then
+					if self.TOTU_LNR_NextShoveT < CurTime() then
 						self:VJ_ACT_PLAYACTIVITY(ACT_STEP_BACK,true,1.6)
-						self.LNR_NextShoveT = CurTime() + 3
+						self.TOTU_LNR_NextShoveT = CurTime() + 3
 					end
 				end
 			else
 				if dmginfo:GetDamage() >= 30 or dmginfo:GetDamageForce():Length() >= 10000 then
-					if self.LNR_NextShoveT < CurTime() then
+					if self.TOTU_LNR_NextShoveT < CurTime() then
 						self:VJ_ACT_PLAYACTIVITY(ACT_BIG_FLINCH,true,false,false)
-						self.LNR_NextShoveT = CurTime() + 7
+						self.TOTU_LNR_NextShoveT = CurTime() + 7
 						self:ToTU_ResetFlinchHitgroups()
 					end
 				elseif dmginfo:GetDamage() >= 15 or dmginfo:GetDamageForce():Length() >= 5000 then
-					if self.LNR_NextShoveT < CurTime() then
+					if self.TOTU_LNR_NextShoveT < CurTime() then
 						self:VJ_ACT_PLAYACTIVITY(ACT_SMALL_FLINCH,true,false,false)
-						self.LNR_NextShoveT = CurTime() + 7
+						self.TOTU_LNR_NextShoveT = CurTime() + 7
 						self:ToTU_ResetFlinchHitgroups()
 					end
 				elseif dmginfo:GetDamage() <= 15 or dmginfo:GetDamageForce():Length() <= 5000 then
-					if self.LNR_NextShoveT < CurTime() then
+					if self.TOTU_LNR_NextShoveT < CurTime() then
 						self:VJ_ACT_PLAYACTIVITY(ACT_STEP_BACK,true,1.6)
-						self.LNR_NextShoveT = CurTime() + 3
+						self.TOTU_LNR_NextShoveT = CurTime() + 3
 					end
 				end
 			end
@@ -4877,87 +5077,87 @@ function ENT:CustomOnFlinch_BeforeFlinch(dmginfo,hitgroup)
 		&& self.ToTU_CanStumble
 	then
 		if hitgroup == HITGROUP_HEAD or hitgroup == HITGROUP_CHEST or hitgroup == HITGROUP_STOMACH then
-			if self.LNR_NextStumbleT < CurTime() && self:GetSequence() != self:LookupSequence(ACT_GMOD_SHOWOFF_STAND_01) && self:GetSequence() != self:LookupSequence(ACT_BIG_FLINCH) then
+			if self.TOTU_LNR_NextStumbleT < CurTime() && self:GetSequence() != self:LookupSequence(ACT_GMOD_SHOWOFF_STAND_01) && self:GetSequence() != self:LookupSequence(ACT_BIG_FLINCH) then
 				if self.ToTU_GiantZombie then
 					if dmginfo:GetDamage() >= 210 or dmginfo:GetDamageForce():Length() >= 48000 then
 						self:VJ_ACT_PLAYACTIVITY(ACT_BIG_FLINCH,true,false,false)
-						self.LNR_NextStumbleT = CurTime() + 7
+						self.TOTU_LNR_NextStumbleT = CurTime() + 7
 						self:ToTU_ResetFlinchHitgroups()
 					elseif dmginfo:GetDamage() >= 120 or dmginfo:GetDamageForce():Length() >= 33000 then
 						if math.random (1,2) == 1 then
 							self:VJ_ACT_PLAYACTIVITY(ACT_SMALL_FLINCH,true,false,false)
-							self.LNR_NextStumbleT = CurTime() + 7
+							self.TOTU_LNR_NextStumbleT = CurTime() + 7
 							self:ToTU_ResetFlinchHitgroups()
 						end
 					else
 						if math.random (1,3) == 1 then
 							self:VJ_ACT_PLAYACTIVITY(ACT_STEP_BACK,true,1.6)
-							self.LNR_NextStumbleT = CurTime() + 3
+							self.TOTU_LNR_NextStumbleT = CurTime() + 3
 							self:ToTU_ResetFlinchHitgroups()
 						end
 					end
 				elseif self.ToTU_BigZombie then
 					if dmginfo:GetDamage() >= 70 or dmginfo:GetDamageForce():Length() >= 16000 then
 						self:VJ_ACT_PLAYACTIVITY(ACT_BIG_FLINCH,true,false,false)
-						self.LNR_NextStumbleT = CurTime() + 7			
+						self.TOTU_LNR_NextStumbleT = CurTime() + 7			
 						self:ToTU_ResetFlinchHitgroups()
 					elseif dmginfo:GetDamage() >= 40 or dmginfo:GetDamageForce():Length() >= 11000 then
 						if math.random (1,2) == 1 then
 							self:VJ_ACT_PLAYACTIVITY(ACT_SMALL_FLINCH,true,false,false)
-							self.LNR_NextStumbleT = CurTime() + 7
+							self.TOTU_LNR_NextStumbleT = CurTime() + 7
 							self:ToTU_ResetFlinchHitgroups()
 						end
 					else
 						if math.random (1,3) == 1 then
 							self:VJ_ACT_PLAYACTIVITY(ACT_STEP_BACK,true,1.6)
-							self.LNR_NextStumbleT = CurTime() + 3
+							self.TOTU_LNR_NextStumbleT = CurTime() + 3
 							self:ToTU_ResetFlinchHitgroups()
 						end
 					end
 				else
 					if dmginfo:GetDamage() >= 55 or dmginfo:GetDamageForce():Length() >= 8000 then
 						self:VJ_ACT_PLAYACTIVITY(ACT_BIG_FLINCH,true,false,false)
-						self.LNR_NextStumbleT = CurTime() + 7			
+						self.TOTU_LNR_NextStumbleT = CurTime() + 7			
 						self:ToTU_ResetFlinchHitgroups()
 					elseif dmginfo:GetDamage() >= 25 or dmginfo:GetDamageForce():Length() >= 5500 then
 						if math.random (1,2) == 1 then
 							self:VJ_ACT_PLAYACTIVITY(ACT_SMALL_FLINCH,true,false,false)
-							self.LNR_NextStumbleT = CurTime() + 7
+							self.TOTU_LNR_NextStumbleT = CurTime() + 7
 							self:ToTU_ResetFlinchHitgroups()
 						end
 					else
 						if math.random (1,3) == 1 then
 							self:VJ_ACT_PLAYACTIVITY(ACT_STEP_BACK,true,1.6)
-							self.LNR_NextStumbleT = CurTime() + 3
+							self.TOTU_LNR_NextStumbleT = CurTime() + 3
 							self:ToTU_ResetFlinchHitgroups()
 						end
 					end
 				end
 			end
 		elseif hitgroup == HITGROUP_LEFTLEG or hitgroup == HITGROUP_RIGHTLEG then		 
-			if self.LNR_NextStumbleT < CurTime() && self:GetSequence() != self:LookupSequence(ACT_BIG_FLINCH) && self:GetSequence() != self:LookupSequence(ACT_GMOD_SHOWOFF_STAND_01) then
+			if self.TOTU_LNR_NextStumbleT < CurTime() && self:GetSequence() != self:LookupSequence(ACT_BIG_FLINCH) && self:GetSequence() != self:LookupSequence(ACT_GMOD_SHOWOFF_STAND_01) then
 				if self:GetActivity() == ACT_SPRINT or self:GetActivity() == ACT_RUN_AIM or self:GetActivity() == ACT_RUN_RELAXED or self:GetActivity() == ACT_RUN_AIM_PISTOL then
 					if self.ToTU_GiantZombie then
 						if dmginfo:GetDamage() >= 75 or dmginfo:GetDamageForce():Length() >= 15000 then
 							self:VJ_ACT_PLAYACTIVITY("vjseq_Run_Stumble_01",true,false,false)
-							self.LNR_NextStumbleT = CurTime() + 7
+							self.TOTU_LNR_NextStumbleT = CurTime() + 7
 							self:ToTU_ResetFlinchHitgroups()
 						elseif dmginfo:GetDamage() <= 75 or dmginfo:GetDamageForce():Length() <= 15000 then
 							if math.random (1,2) == 1 then
 								self:VJ_ACT_PLAYACTIVITY("vjseq_shove_forward_01",true,false,false)
-								self.LNR_NextStumbleT = CurTime() + 7
+								self.TOTU_LNR_NextStumbleT = CurTime() + 7
 								self:ToTU_ResetFlinchHitgroups()
 							end
 						end
 					else
 						if dmginfo:GetDamage() >= 20 or dmginfo:GetDamageForce():Length() >= 2500 then
 							self:VJ_ACT_PLAYACTIVITY("vjseq_Run_Stumble_01",true,false,false)
-							self.LNR_NextStumbleT = CurTime() + 7
+							self.TOTU_LNR_NextStumbleT = CurTime() + 7
 							self:ToTU_ResetFlinchHitgroups()
 						elseif dmginfo:GetDamage() <= 20 or dmginfo:GetDamageForce():Length() <= 2500 then
 							if math.random (1,2) == 1 then
 								self:VJ_ACT_PLAYACTIVITY("vjseq_shove_forward_01",true,false,false)
-								self.LNR_NextStumbleT = CurTime() + 7
+								self.TOTU_LNR_NextStumbleT = CurTime() + 7
 								self:ToTU_ResetFlinchHitgroups()
 							end
 						end
@@ -4965,7 +5165,7 @@ function ENT:CustomOnFlinch_BeforeFlinch(dmginfo,hitgroup)
 				else
 					if math.random (1,3) == 1 then
 						self:VJ_ACT_PLAYACTIVITY(ACT_STEP_FORE,true,1.6)
-						self.LNR_NextStumbleT = CurTime() + 3
+						self.TOTU_LNR_NextStumbleT = CurTime() + 3
 						self:ToTU_ResetFlinchHitgroups()
 					end
 				end
@@ -4989,7 +5189,7 @@ function ENT:ToTU_ResetFlinchHitgroups()
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:CustomOnTakeDamage_BeforeDamage(dmginfo,hitgroup)
-	if GetConVar("VJ_TOTU_LNR_Headshot"):GetInt() == 1 && self.LNR_CanBeHeadshot && hitgroup == HITGROUP_HEAD then
+	if GetConVar("VJ_TOTU_LNR_Headshot"):GetInt() == 1 && self.TOTU_LNR_CanBeHeadshot && hitgroup == HITGROUP_HEAD then
 		dmginfo:SetDamage(self:Health())
 	end
 	self:ArmorDamage(dmginfo,hitgroup)
@@ -5021,7 +5221,7 @@ function ENT:DropTheFuckignWeaponGoddamn()
 
 		if self.VJ_IsBeingControlled then
 			self.VJ_TheController:ChatPrint("You lost your weapon!")
-			local badtotheboner = CreateSound(self.VJ_TheController, "common/warning.wav")
+			local badtotheboner = CreateSound(self.VJ_TheController, "common/warning.wav", self.VJ_TheController)
 			badtotheboner:SetSoundLevel(0)
 			badtotheboner:Play()
 		end
@@ -5034,11 +5234,11 @@ function ENT:DropTheFuckignWeaponGoddamn()
 
 			self.MilZ_HasGun = false
 
-			if self.LNR_Walker then
+			if self.TOTU_LNR_Walker then
 
 				self.AnimTbl_Run = {ACT_WALK}
 
-				if self.LNR_Runner then
+				if self.TOTU_LNR_Runner then
 					self.AnimTbl_Run = {ACT_RUN}
 				end
 
@@ -5046,14 +5246,18 @@ function ENT:DropTheFuckignWeaponGoddamn()
 					self.AnimTbl_Run = {ACT_SPRINT}
 				end
 
-			elseif self.LNR_Infected then
+			elseif self.TOTU_LNR_Infected then
 
-				if !self.LNR_SuperSprinter && !self.ToTU_Rusher then
+				if !self.TOTU_LNR_SuperSprinter && !self.ToTU_Rusher then
 					self.AnimTbl_Run = {ACT_SPRINT}
 				end
 
 			end
 
+		end
+
+		if self.ToTU_Weaponized_HasWeapon then
+			self.ToTU_Weaponized_HasWeapon = false
 		end
 
 	end
@@ -5077,7 +5281,7 @@ function ENT:CustomOnTakeDamage_AfterDamage(dmginfo,hitgroup)
 		self.CanTurnWhileStationary = true
 		self.TurningSpeed = 15
 		self.AnimTbl_IdleStand = {ACT_IDLE}
-		if self.LNR_UsingRelaxedIdle == true then
+		if self.TOTU_LNR_UsingRelaxedIdle == true then
 			self.AnimTbl_IdleStand = {ACT_IDLE_RELAXED}
 		end
 	end
@@ -5093,7 +5297,7 @@ function ENT:CustomOnTakeDamage_AfterDamage(dmginfo,hitgroup)
 	then
 		if
 			GetConVar("VJ_ToTU_General_Stumbling_Disable"):GetInt() == 1 or
-			self.LNR_Crippled or
+			self.TOTU_LNR_Crippled or
 			self.ToTU_Crawling or
 			self:GetActivity() == ACT_BIG_FLINCH or
 			self:GetActivity() == ACT_FLINCH_STOMACH or
@@ -5126,14 +5330,14 @@ function ENT:CustomOnTakeDamage_AfterDamage(dmginfo,hitgroup)
 				self:GetActivity() != ACT_GMOD_SHOWOFF_STAND_01 or
 				self.ToTU_Resting == 0
 			then
-				self.LNR_LegHP = self.LNR_LegHP -dmginfo:GetDamage()
+				self.TOTU_LNR_LegHP = self.TOTU_LNR_LegHP -dmginfo:GetDamage()
 			end
 		end
 	end
 
-	if self.LNR_LegHP <= 0 && !self.LNR_Crippled && !self.ToTU_Nightkin_Squaller_UsingIronWill && !self.ToTU_IsFreakOfNature then
+	if self.TOTU_LNR_LegHP <= 0 && !self.TOTU_LNR_Crippled && !self.ToTU_Nightkin_Squaller_UsingIronWill && !self.ToTU_IsFreakOfNature then
 
-		self.LNR_Crippled = true
+		self.TOTU_LNR_Crippled = true
 		self:Cripple()
 
 		if self.ToTU_Crawling then return end
@@ -5172,12 +5376,12 @@ function ENT:Cripple()
 
 		self.VJ_TheController:ChatPrint("Your legs have been crippled!")
 
-		local badtotheboner = CreateSound(self.VJ_TheController, "common/warning.wav")
+		local badtotheboner = CreateSound(self.VJ_TheController, "common/warning.wav", self.VJ_TheController)
 		badtotheboner:SetSoundLevel(0)
 		badtotheboner:Play()
 
-		local badtomyballs = CreateSound(self.VJ_TheController,"physics/body/body_medium_break"..math.random(2,4)..".wav")
-		badtomyballs:SetSoundLevel(40)
+		local badtomyballs = CreateSound(self.VJ_TheController,"physics/body/body_medium_break"..math.random(2,4)..".wav", self.VJ_TheController)
+		badtomyballs:SetSoundLevel(0)
 		badtomyballs:Play()
 
 	end
@@ -5189,7 +5393,7 @@ function ENT:Cripple()
 			self.AnimTbl_IdleStand = {ACT_IDLE_RELAXED}
 			self.AnimTbl_Walk = {ACT_WALK_AGITATED}
 			self.AnimTbl_Run = {ACT_WALK_AGITATED}
-			self.LNR_Crippled = true
+			self.TOTU_LNR_Crippled = true
 		elseif self:GetClass() == "npc_vj_totu_deimos_carcass" or self:GetClass() == "npc_vj_totu_deimos_cazador" then
 			self.AnimTbl_IdleStand = {ACT_IDLE_STIMULATED}
 			self.AnimTbl_Walk = {ACT_IDLE_STIMULATED}
@@ -5212,11 +5416,11 @@ function ENT:Cripple()
 	self:DropTheFuckignWeaponGoddamn()
 	self.HasRangeAttack = false
 
-	if self.LNR_Walker then
+	if self.TOTU_LNR_Walker then
 		self.AnimTbl_IdleStand = {ACT_IDLE_STIMULATED}
 		self.AnimTbl_Walk = {ACT_WALK_STIMULATED}
 		self.AnimTbl_Run = {ACT_WALK_STIMULATED}
-	elseif self.LNR_Infected or self.ToTU_Mutated or self.ToTU_Deimos then
+	elseif self.TOTU_LNR_Infected or self.ToTU_Mutated or self.ToTU_Deimos then
 		self.AnimTbl_IdleStand = {ACT_IDLE_AGITATED}
 		self.AnimTbl_Walk = {ACT_WALK_AGITATED}
 		self.AnimTbl_Run = {ACT_WALK_AGITATED}
@@ -5343,7 +5547,7 @@ function ENT:CustomOnPriorToKilled(dmginfo, hitgroup)
 	end
 
 	if
-		self.LNR_Crippled or
+		self.TOTU_LNR_Crippled or
 		self.ToTU_Crawling or
 		self:GetActivity() == ACT_SMALL_FLINCH or
 		self:GetActivity() == ACT_BIG_FLINCH or
@@ -5365,11 +5569,41 @@ function ENT:CustomOnPriorToKilled(dmginfo, hitgroup)
 		end
 	end
 
+	if self.MilZ_Hazmat_IsHazmat && self.MilZ_Det_DeathExplosionAllowed == true then
+
+		local effectdata = EffectData()
+		effectdata:SetOrigin(self:GetPos())
+		effectdata:SetScale( 500 )
+		util.Effect( "HelicopterMegaBomb", effectdata )
+		util.Effect( "ThumperDust", effectdata )
+		util.Effect( "Explosion", effectdata )
+		util.Effect( "VJ_Small_Explosion1", effectdata )
+
+		VJ_EmitSound(self,"fx/funny.mp3",85)
+		ParticleEffect("vj_explosion2",self:GetPos() + self:GetUp()*48 + self:GetForward()*1,Angle(0,0,0),nil) 
+		ParticleEffect("vj_explosion1",self:GetPos() + self:GetUp()*15,Angle(0,0,0),nil)
+		ParticleEffect("vj_explosionfire2",self:GetPos() + self:GetUp()*20,Angle(0,0,0),nil)
+		ParticleEffect("vj_explosionfire1",self:GetPos() + self:GetUp()*20,Angle(0,0,0),nil)
+
+		if GetConVar("VJ_ToTU_MilZ_Det_ExplosionSetup"):GetInt() == true then
+			util.VJ_SphereDamage(self, self, self:GetPos(), 40, 25, DMG_BLAST, true, true, {Force=70})
+			util.VJ_SphereDamage(self, self, self:GetPos(), 80, 25, DMG_BLAST, true, true, {Force=70})
+			util.VJ_SphereDamage(self, self, self:GetPos(), 120, 25, DMG_BLAST, true, true, {Force=70})
+			util.VJ_SphereDamage(self, self, self:GetPos(), 160, 25, DMG_BLAST, true, true, {Force=70})
+			util.VJ_SphereDamage(self, self, self:GetPos(), 200, 25, DMG_BLAST, true, true, {Force=70})
+		else
+			util.VJ_SphereDamage(self, self, self:GetPos(), 200, 125, DMG_BLAST, true, true, {Force=70})
+		end
+		util.ScreenShake(self:GetPos(), 300, 500, 1.6, 1200)
+
+	end
+
+
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:CustomDeathAnimationCode(dmginfo,hitgroup)
 
-	if self.LNR_Crippled or self.ToTU_Resting == 1 or self.ToTU_Resting == 2 or self:GetClass() == "npc_vj_totu_deimos_cyst" or self:GetClass() == "npc_vj_totu_deimos_corrupt" or self:GetClass() == "npc_vj_totu_deimos_corrupt_brute" or self:GetClass() == "npc_vj_totu_fon_lament" then return end
+	if self.TOTU_LNR_Crippled or self.ToTU_Resting == 1 or self.ToTU_Resting == 2 or self:GetClass() == "npc_vj_totu_deimos_cyst" or self:GetClass() == "npc_vj_totu_deimos_corrupt" or self:GetClass() == "npc_vj_totu_deimos_corrupt_brute" or self:GetClass() == "npc_vj_totu_fon_lament" then return end
 	
 	if self:IsMoving() && GetConVar("VJ_ToTU_General_MovingDeathAnimations"):GetInt() == 1 && !self.ToTU_GiantZombie && !self.ToTU_IsFreakOfNature && !self.ToTU_Weaponized_IsHL2Zomb then
 
@@ -5718,26 +5952,20 @@ function ENT:CustomOnDeath_AfterCorpseSpawned(dmginfo,hitgroup,GetCorpse)
 
 	end
 
-	if (self:GetClass() == "npc_vj_totu_lnr_wal" or self:GetClass() == "npc_vj_totu_lnr_wal_ply") && IsValid(GetCorpse) then
+	if	(
+			self:GetClass() == "npc_vj_totu_lnr_wal" or
+			self:GetClass() == "npc_vj_totu_lnr_wal_ply" or
+			self:GetClass() == "npc_vj_totu_lnr_inf" or
+			self:GetClass() == "npc_vj_totu_lnr_inf_ply" or
+			self:GetClass() == "npc_vj_totu_deimos_redead_inf" or
+			self:GetClass() == "npc_vj_totu_deimos_redead_inf_ply"
+		) &&
+		IsValid(GetCorpse)
+	then
 
-		local bloodspray = EffectData()
-		bloodspray:SetOrigin(GetCorpse:GetPos())
-		bloodspray:SetScale(10)
-		bloodspray:SetFlags(3)
-		bloodspray:SetColor(0)
-		util.Effect("bloodspray",bloodspray)
-		util.Effect("bloodspray",bloodspray)
-
-		local bloodeffect = EffectData()
-		bloodeffect:SetOrigin(GetCorpse:GetPos() + GetCorpse:GetUp()*-20)
-		bloodeffect:SetColor(VJ_Color2Byte(Color(127,0,0,255)))
-		bloodeffect:SetScale(75)
-		util.Effect("VJ_Blood1",bloodeffect)
-		util.Effect("VJ_Blood1",bloodeffect)
-
-					GetCorpse:EmitSound(Sound("zombies/anywhere/ghoul/hit_"..math.random(1,3)..".mp3",80,math.random(100,90)))
-					
-		GetCorpse:Remove()
+		if IsValid(self.Bonemerge) then
+			GetCorpse:VJ_LNR_CreateBoneMerge(GetCorpse,self.Bonemerge:GetModel(),self.Bonemerge:GetSkin(),self.Bonemerge:GetColor(),self.Bonemerge:GetMaterial(),self.Bonemerge:GetPlayerColor(),self.Bonemerge)		
+		end
 
 	end
 
@@ -5852,9 +6080,9 @@ function ENT:CustomOnDeath_AfterCorpseSpawned(dmginfo,hitgroup,GetCorpse)
 
 	if self.ToTU_Weaponized_Carcass_Exploder == true then
 
-		GetCorpse:EmitSound(Sound("zombies/residential/exploder/explode_ ("..math.random(1,3)..").wav", 100, math.random(100,100)))
-		GetCorpse:EmitSound(Sound("zombies/residential/exploder/explode_ ("..math.random(1,3)..").wav", 100, math.random(100,100)))
-		GetCorpse:EmitSound(Sound("zombies/residential/exploder/explode_ ("..math.random(1,3)..").wav", 100, math.random(100,100)))
+		GetCorpse:EmitSound(Sound("fx/explode_ ("..math.random(1,3)..").wav", 100, math.random(100,100)))
+		GetCorpse:EmitSound(Sound("fx/explode_ ("..math.random(1,3)..").wav", 100, math.random(100,100)))
+		GetCorpse:EmitSound(Sound("fx/explode_ ("..math.random(1,3)..").wav", 100, math.random(100,100)))
 
 		local bloodspray = EffectData()
 		bloodspray:SetOrigin(GetCorpse:GetPos())
@@ -5965,181 +6193,184 @@ function ENT:CustomOnDeath_AfterCorpseSpawned(dmginfo,hitgroup,GetCorpse)
 		local AnimTime2 = VJ_GetSequenceDuration(self,"vjseq_Lying_to_Standing_Alert03d")
 		local RevSqSpawnH = self.StartHealth * 0.10
 
-		local RandRevive = math.random(1,6)
 
-		timer.Simple(math.random(5,10),function() if IsValid(GetCorpse) && GetConVar("VJ_ToTU_Weaponized_Cancer_Reviving"):GetInt() == 1 then
+		timer.Simple(math.random(5,10),function() if IsValid(GetCorpse) && GetConVar("VJ_ToTU_Deimos_Cancer_Reviving"):GetInt() == 1 then
 
-			if RandRevive == 1 then
-
-				local RevivedSquall = ents.Create("npc_vj_totu_deimos_carcass")
-				RevivedSquall.CanFlinch = 0
-				RevivedSquall.CanInvestigate = false
-				RevivedSquall.HasDeathAnimation = false
-				RevivedSquall.CanTurnWhileStationary = false
+			if math.random(1,GetConVar("VJ_ToTU_Deimos_Cancer_Mutation_Chance"):GetInt()) == 1 && GetConVar("VJ_ToTU_Deimos_Cancer_Mutation"):GetInt() == 1 then
+				local RandMutate = math.random(1,3)
 				
-				RevivedSquall:SetPos(GetCorpse:GetPos())
-				RevivedSquall:SetAngles(GetCorpse:GetAngles())
-				RevivedSquall.ToTU_Weaponized_CarcRevivee = true
-				RevivedSquall.ToTU_Weaponized_Redead_CannotDigout = true
-				RevivedSquall:Spawn()
-				RevivedSquall:Activate()
-				undo.ReplaceEntity(self,RevivedSquall)
+				if RandMutate == 1 then
 
-				timer.Simple(0.01,function() if IsValid(RevivedSquall) then
-
-					RevivedSquall:EmitSound(Sound("zombies/anywhere/ghoul/hit_"..math.random(1,3)..".mp3",80,math.random(100,90)))
-
-					local bloodspray = EffectData()
-					bloodspray:SetOrigin(RevivedSquall:GetPos())
-					bloodspray:SetScale(10)
-					bloodspray:SetFlags(3)
-					bloodspray:SetColor(0)
-					util.Effect("bloodspray",bloodspray)
-					util.Effect("bloodspray",bloodspray)
+					local RevivedSquall = ents.Create("npc_vj_totu_deimos_carcass")
+					RevivedSquall.CanFlinch = 0
+					RevivedSquall.CanInvestigate = false
+					RevivedSquall.HasDeathAnimation = false
+					RevivedSquall.CanTurnWhileStationary = false
 					
-					local bloodeffect = EffectData()
-					bloodeffect:SetOrigin(RevivedSquall:GetPos())
-					bloodeffect:SetColor(VJ_Color2Byte(Color(17,6,6,255)))
-					bloodeffect:SetScale(125)
-					util.Effect("VJ_Blood1",bloodeffect)
+					RevivedSquall:SetPos(GetCorpse:GetPos())
+					RevivedSquall:SetAngles(GetCorpse:GetAngles())
+					RevivedSquall.ToTU_Weaponized_CarcRevivee = true
+					RevivedSquall.ToTU_Weaponized_Redead_CannotDigout = true
+					RevivedSquall:Spawn()
+					RevivedSquall:Activate()
+					undo.ReplaceEntity(self,RevivedSquall)
 
-					if math.random(1,2) == 1 then
-						if math.random(1,3) == 1 then
-							RevivedSquall:VJ_ACT_PLAYACTIVITY("vjseq_slumprise_a",true,false,false)
+					timer.Simple(0.01,function() if IsValid(RevivedSquall) then
+
+						RevivedSquall:EmitSound(Sound("fx/deimos_mutate_"..math.random(1,3)..".mp3",80,math.random(100,90)))
+
+						local bloodspray = EffectData()
+						bloodspray:SetOrigin(RevivedSquall:GetPos())
+						bloodspray:SetScale(10)
+						bloodspray:SetFlags(3)
+						bloodspray:SetColor(0)
+						util.Effect("bloodspray",bloodspray)
+						util.Effect("bloodspray",bloodspray)
+						
+						local bloodeffect = EffectData()
+						bloodeffect:SetOrigin(RevivedSquall:GetPos())
+						bloodeffect:SetColor(VJ_Color2Byte(Color(17,6,6,255)))
+						bloodeffect:SetScale(125)
+						util.Effect("VJ_Blood1",bloodeffect)
+
+						if math.random(1,2) == 1 then
+							if math.random(1,3) == 1 then
+								RevivedSquall:VJ_ACT_PLAYACTIVITY("vjseq_slumprise_a",true,false,false)
+							else
+								RevivedSquall:VJ_ACT_PLAYACTIVITY("vjseq_slumprise_a2",true,false,false)
+							end
 						else
-							RevivedSquall:VJ_ACT_PLAYACTIVITY("vjseq_slumprise_a2",true,false,false)
+							RevivedSquall:VJ_ACT_PLAYACTIVITY("vjseq_slumprise_b",true,false,false)
 						end
-					else
-						RevivedSquall:VJ_ACT_PLAYACTIVITY("vjseq_slumprise_b",true,false,false)
-					end
 
-					RevivedSquall:SetPos(RevivedSquall:GetPos() + RevivedSquall:GetUp()*6)
-						
-					if IsValid(GetCorpse) then
-						GetCorpse:Remove()
-					end
+						RevivedSquall:SetPos(RevivedSquall:GetPos() + RevivedSquall:GetUp()*6)
+							
+						if IsValid(GetCorpse) then
+							GetCorpse:Remove()
+						end
 
-					timer.Simple(AnimTime,function() if IsValid(RevivedSquall) then
-						RevivedSquall.CanFlinch = 1
-						RevivedSquall.HasDeathAnimation = true
-						RevivedSquall.CanInvestigate = true
-						RevivedSquall.CanTurnWhileStationary = true
+						timer.Simple(AnimTime,function() if IsValid(RevivedSquall) then
+							RevivedSquall.CanFlinch = 1
+							RevivedSquall.HasDeathAnimation = true
+							RevivedSquall.CanInvestigate = true
+							RevivedSquall.CanTurnWhileStationary = true
+							
+						end end)
+
+					end end)
+				
+				elseif RandMutate == 2 then
+
+					local RevivedSquall = ents.Create("npc_vj_totu_deimos_cazador")
+					RevivedSquall.CanFlinch = 0
+					RevivedSquall.CanInvestigate = false
+					RevivedSquall.HasDeathAnimation = false
+					RevivedSquall.CanTurnWhileStationary = false
+					
+					RevivedSquall:SetPos(GetCorpse:GetPos())
+					RevivedSquall:SetAngles(GetCorpse:GetAngles())
+					RevivedSquall.ToTU_Weaponized_Redead_CannotDigout = true
+					RevivedSquall:Spawn()
+					RevivedSquall:Activate()
+					undo.ReplaceEntity(self,RevivedSquall)
+
+					timer.Simple(0.01,function() if IsValid(RevivedSquall) then
+					
+						RevivedSquall:EmitSound(Sound("fx/deimos_mutate_"..math.random(1,3)..".mp3",80,math.random(100,90)))
+
+						local bloodspray = EffectData()
+						bloodspray:SetOrigin(RevivedSquall:GetPos())
+						bloodspray:SetScale(10)
+						bloodspray:SetFlags(3)
+						bloodspray:SetColor(0)
+						util.Effect("bloodspray",bloodspray)
+						util.Effect("bloodspray",bloodspray)
 						
+						local bloodeffect = EffectData()
+						bloodeffect:SetOrigin(RevivedSquall:GetPos())
+						bloodeffect:SetColor(VJ_Color2Byte(Color(17,6,6,255)))
+						bloodeffect:SetScale(125)
+						util.Effect("VJ_Blood1",bloodeffect)
+							
+						local RandCazRevAnims = math.random(1,3)
+						if RandCazRevAnims == 1 then
+							RevivedSquall:VJ_ACT_PLAYACTIVITY("vjseq_slumprise_b",true,false,false)
+						elseif RandCazRevAnims == 1 then
+							RevivedSquall:VJ_ACT_PLAYACTIVITY("vjseq_slumprise_c",true,false,false)
+						else
+							RevivedSquall:VJ_ACT_PLAYACTIVITY("vjseq_slumprise_a",true,false,false)
+						end
+
+						RevivedSquall:SetPos(RevivedSquall:GetPos() + RevivedSquall:GetUp()*6)
+							
+						if IsValid(GetCorpse) then
+							GetCorpse:Remove()
+						end
+
+						timer.Simple(AnimTime,function() if IsValid(RevivedSquall) then
+							RevivedSquall.CanFlinch = 1
+							RevivedSquall.HasDeathAnimation = true
+							RevivedSquall.CanInvestigate = true
+							RevivedSquall.CanTurnWhileStationary = true
+							
+						end end)
+
 					end end)
 
-				end end)
-			
-			elseif RandRevive == 2 then
+				elseif RandMutate == 3 then
 
-				local RevivedSquall = ents.Create("npc_vj_totu_deimos_cazador")
-				RevivedSquall.CanFlinch = 0
-				RevivedSquall.CanInvestigate = false
-				RevivedSquall.HasDeathAnimation = false
-				RevivedSquall.CanTurnWhileStationary = false
-				
-				RevivedSquall:SetPos(GetCorpse:GetPos())
-				RevivedSquall:SetAngles(GetCorpse:GetAngles())
-				RevivedSquall.ToTU_Weaponized_Redead_CannotDigout = true
-				RevivedSquall:Spawn()
-				RevivedSquall:Activate()
-				undo.ReplaceEntity(self,RevivedSquall)
-
-				timer.Simple(0.01,function() if IsValid(RevivedSquall) then
-				
-					RevivedSquall:EmitSound(Sound("zombies/anywhere/ghoul/hit_"..math.random(1,3)..".mp3",80,math.random(100,90)))
-
-					local bloodspray = EffectData()
-					bloodspray:SetOrigin(RevivedSquall:GetPos())
-					bloodspray:SetScale(10)
-					bloodspray:SetFlags(3)
-					bloodspray:SetColor(0)
-					util.Effect("bloodspray",bloodspray)
-					util.Effect("bloodspray",bloodspray)
+					local RevivedSquall = ents.Create("npc_vj_totu_deimos_cyst")
+					RevivedSquall.CanFlinch = 0
+					RevivedSquall.CanInvestigate = false
+					RevivedSquall.HasDeathAnimation = false
+					RevivedSquall.CanTurnWhileStationary = false
 					
-					local bloodeffect = EffectData()
-					bloodeffect:SetOrigin(RevivedSquall:GetPos())
-					bloodeffect:SetColor(VJ_Color2Byte(Color(17,6,6,255)))
-					bloodeffect:SetScale(125)
-					util.Effect("VJ_Blood1",bloodeffect)
+					RevivedSquall:SetPos(GetCorpse:GetPos())
+					RevivedSquall:SetAngles(GetCorpse:GetAngles())
+					RevivedSquall.ToTU_Weaponized_Redead_CannotDigout = true
+					RevivedSquall:Spawn()
+					RevivedSquall:Activate()
+					undo.ReplaceEntity(self,RevivedSquall)
+
+					timer.Simple(0.01,function() if IsValid(RevivedSquall) then
+
+						RevivedSquall:EmitSound(Sound("fx/deimos_mutate_"..math.random(1,3)..".mp3",80,math.random(100,90)))
+
+						local bloodspray = EffectData()
+						bloodspray:SetOrigin(RevivedSquall:GetPos())
+						bloodspray:SetScale(10)
+						bloodspray:SetFlags(3)
+						bloodspray:SetColor(0)
+						util.Effect("bloodspray",bloodspray)
+						util.Effect("bloodspray",bloodspray)
 						
-					local RandCazRevAnims = math.random(1,3)
-					if RandCazRevAnims == 1 then
-						RevivedSquall:VJ_ACT_PLAYACTIVITY("vjseq_slumprise_b",true,false,false)
-					elseif RandCazRevAnims == 1 then
-						RevivedSquall:VJ_ACT_PLAYACTIVITY("vjseq_slumprise_c",true,false,false)
-					else
+						local bloodeffect = EffectData()
+						bloodeffect:SetOrigin(RevivedSquall:GetPos())
+						bloodeffect:SetColor(VJ_Color2Byte(Color(17,6,6,255)))
+						bloodeffect:SetScale(125)
+						util.Effect("VJ_Blood1",bloodeffect)
+
 						RevivedSquall:VJ_ACT_PLAYACTIVITY("vjseq_slumprise_a",true,false,false)
-					end
 
-					RevivedSquall:SetPos(RevivedSquall:GetPos() + RevivedSquall:GetUp()*6)
-						
-					if IsValid(GetCorpse) then
-						GetCorpse:Remove()
-					end
+						RevivedSquall:SetPos(RevivedSquall:GetPos() + RevivedSquall:GetUp()*6)
+							
+						if IsValid(GetCorpse) then
+							GetCorpse:Remove()
+						end
 
-					timer.Simple(AnimTime,function() if IsValid(RevivedSquall) then
-						RevivedSquall.CanFlinch = 1
-						RevivedSquall.HasDeathAnimation = true
-						RevivedSquall.CanInvestigate = true
-						RevivedSquall.CanTurnWhileStationary = true
-						
+						timer.Simple(AnimTime,function() if IsValid(RevivedSquall) then
+							RevivedSquall.CanFlinch = 1
+							RevivedSquall.HasDeathAnimation = true
+							RevivedSquall.CanInvestigate = true
+							RevivedSquall.CanTurnWhileStationary = true
+							
+						end end)
+
 					end end)
-
-				end end)
-
-			elseif RandRevive == 3 then
-
-				local RevivedSquall = ents.Create("npc_vj_totu_deimos_cyst")
-				RevivedSquall.CanFlinch = 0
-				RevivedSquall.CanInvestigate = false
-				RevivedSquall.HasDeathAnimation = false
-				RevivedSquall.CanTurnWhileStationary = false
-				
-				RevivedSquall:SetPos(GetCorpse:GetPos())
-				RevivedSquall:SetAngles(GetCorpse:GetAngles())
-				RevivedSquall.ToTU_Weaponized_Redead_CannotDigout = true
-				RevivedSquall:Spawn()
-				RevivedSquall:Activate()
-				undo.ReplaceEntity(self,RevivedSquall)
-
-				timer.Simple(0.01,function() if IsValid(RevivedSquall) then
-
-					RevivedSquall:EmitSound(Sound("zombies/anywhere/ghoul/hit_"..math.random(1,3)..".mp3",80,math.random(100,90)))
-
-					local bloodspray = EffectData()
-					bloodspray:SetOrigin(RevivedSquall:GetPos())
-					bloodspray:SetScale(10)
-					bloodspray:SetFlags(3)
-					bloodspray:SetColor(0)
-					util.Effect("bloodspray",bloodspray)
-					util.Effect("bloodspray",bloodspray)
-					
-					local bloodeffect = EffectData()
-					bloodeffect:SetOrigin(RevivedSquall:GetPos())
-					bloodeffect:SetColor(VJ_Color2Byte(Color(17,6,6,255)))
-					bloodeffect:SetScale(125)
-					util.Effect("VJ_Blood1",bloodeffect)
-
-					RevivedSquall:VJ_ACT_PLAYACTIVITY("vjseq_slumprise_a",true,false,false)
-
-					RevivedSquall:SetPos(RevivedSquall:GetPos() + RevivedSquall:GetUp()*6)
-						
-					if IsValid(GetCorpse) then
-						GetCorpse:Remove()
-					end
-
-					timer.Simple(AnimTime,function() if IsValid(RevivedSquall) then
-						RevivedSquall.CanFlinch = 1
-						RevivedSquall.HasDeathAnimation = true
-						RevivedSquall.CanInvestigate = true
-						RevivedSquall.CanTurnWhileStationary = true
-						
-					end end)
-
-				end end)
+				end
 
 			else
-			
+
 				local RevivedSquall = ents.Create("npc_vj_totu_deimos_cancer")
 				RevivedSquall.CanEat = false
 				RevivedSquall.CanFlinch = 0
@@ -6206,9 +6437,7 @@ function ENT:CustomOnDeath_AfterCorpseSpawned(dmginfo,hitgroup,GetCorpse)
 		local AnimTime2 = VJ_GetSequenceDuration(self,"vjseq_Lying_to_Standing_Alert03d")
 		-- local RevSqSpawnH = self.StartHealth * 0.10
 
-		local RandRevive = math.random(1,6)
-
-		timer.Simple(math.random(5,10),function() if IsValid(GetCorpse) && GetConVar("VJ_ToTU_Weaponized_Cancer_Reviving"):GetInt() == 1 then
+		timer.Simple(math.random(5,10),function() if IsValid(GetCorpse) && GetConVar("VJ_ToTU_Deimos_RebornMutation"):GetInt() == 1 then
 			
 			local RevivedSquall = ents.Create("npc_vj_totu_deimos_reborn")
 			RevivedSquall.CanEat = false
@@ -6236,7 +6465,7 @@ function ENT:CustomOnDeath_AfterCorpseSpawned(dmginfo,hitgroup,GetCorpse)
 
 				RevivedSquall:SetPos(RevivedSquall:GetPos() + RevivedSquall:GetUp()*6)
 				
-				RevivedSquall:EmitSound(Sound("zombies/anywhere/ghoul/hit_"..math.random(1,3)..".mp3",80,math.random(100,90)))
+				RevivedSquall:EmitSound(Sound("fx/deimos_mutate_"..math.random(1,3)..".mp3",80,math.random(100,90)))
 
 				local bloodspray = EffectData()
 				bloodspray:SetOrigin(RevivedSquall:GetPos())

@@ -12,18 +12,13 @@ function ENT:Zombie_CustomOnPreInitialize()
 
 	self.MilZ_HelmetHealth = GetConVar("VJ_ToTU_MilZ_Helmet_Health"):GetInt()
 
-	if GetConVar("VJ_ToTU_General_TF2Mode"):GetInt() == 0 then
-		self.GeneralSoundPitch1 = 85
-		self.GeneralSoundPitch2 = 80
-	end
-
 	self.Model = {"models/totu/remort.mdl"}
 
-	timer.Simple(0.1,function() if IsValid(self) && !self.LNR_Crippled  then
+	timer.Simple(0.1,function() if IsValid(self) && !self.TOTU_LNR_Crippled  then
 		self.AnimTbl_Walk = {ACT_MP_MELEE_GRENADE1_IDLE}
 		self.AnimTbl_Run = {ACT_SPRINT}
 		self.AnimTbl_IdleStand = {ACT_IDLE_AIM_STIMULATED}
-		if self.LNR_UsingRelaxedIdle == true then
+		if self.TOTU_LNR_UsingRelaxedIdle == true then
 			self.AnimTbl_IdleStand = {ACT_IDLE}
 		end
 	end end)
@@ -255,16 +250,16 @@ function ENT:Zombie_CustomOnPreInitialize()
 	end
 
 	if
-		GetConVar("VJ_ToTU_Weaponized_Remort_Gasmasks_Allow"):GetInt() == 1 &&
-		math.random(1,GetConVar("VJ_ToTU_Weaponized_Remort_Gasmasks_Chance"):GetInt()) == 1
+		GetConVar("VJ_ToTU_Deimos_Remort_Gasmasks_Allow"):GetInt() == 1 &&
+		math.random(1,GetConVar("VJ_ToTU_Deimos_Remort_Gasmasks_Chance"):GetInt()) == 1
 	then
 		self.MilZ_HasGasmask = true
 		self.CanEat = false
 	end
 
 	if 
-		GetConVar("VJ_ToTU_Weaponized_Remort_FlakArmor_Allow"):GetInt() == 1 &&
-		math.random(1,GetConVar("VJ_ToTU_Weaponized_Remort_FlakArmor_Chance"):GetInt()) == 1 &&
+		GetConVar("VJ_ToTU_Deimos_Remort_FlakArmor_Allow"):GetInt() == 1 &&
+		math.random(1,GetConVar("VJ_ToTU_Deimos_Remort_FlakArmor_Chance"):GetInt()) == 1 &&
 		!self.MilZ_Det_IsDetonator
 	then
 		self.MilZ_HasFlakSuit = true
@@ -272,8 +267,8 @@ function ENT:Zombie_CustomOnPreInitialize()
 
 	
 	if
-		GetConVar("VJ_ToTU_Weaponized_Remort_Caretakers_Allow"):GetInt() == 1 &&
-		math.random(1,GetConVar("VJ_ToTU_Weaponized_Remort_Caretakers_Chance"):GetInt()) == 1
+		GetConVar("VJ_ToTU_Deimos_Remort_Caretakers_Allow"):GetInt() == 1 &&
+		math.random(1,GetConVar("VJ_ToTU_Deimos_Remort_Caretakers_Chance"):GetInt()) == 1
 	then
 
 		self.ToTU_Weaponized_Redead_Grunt_IsCaretaker = true
@@ -303,6 +298,8 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:Zombie_CustomOnInitialize()
 
+	self.MilZ_HelmetHealth = GetConVar("VJ_ToTU_Deimos_Remort_Drone_Helmet_Health"):GetInt()
+
 	self.ItemDropsOnDeath_EntityList = {
 		"item_ammo_pistol",
 		"item_ammo_357",
@@ -311,22 +308,17 @@ function ENT:Zombie_CustomOnInitialize()
 		"item_box_buckshot",
 	}
 
-	if
-		(GetConVar("VJ_ToTU_MilZ_Grenades_Ammount"):GetInt() == -1 or GetConVar("VJ_ToTU_MilZ_Grenades_Ammount"):GetInt() != -1) &&
-		GetConVar("VJ_ToTU_MilZ_Grenades_Ammount"):GetInt() != 0
-	then
-		self.ItemDropsOnDeath_EntityList = {
-			"item_ammo_pistol",
-			"item_ammo_357",
-			"item_ammo_smg1",
-			"item_ammo_ar2",
-			"item_box_buckshot",
-			"weapon_frag",
-			"weapon_frag",
-			"obj_vj_totu_milzgren",
-			"obj_vj_totu_flashbang",
-		}
-	end
+	self.ItemDropsOnDeath_EntityList = {
+		"item_ammo_pistol",
+		"item_ammo_357",
+		"item_ammo_smg1",
+		"item_ammo_ar2",
+		"item_box_buckshot",
+		"weapon_frag",
+		"weapon_frag",
+		"obj_vj_totu_milzgren",
+		"obj_vj_totu_flashbang",
+	}
 
 	if math.random(1,2) == 1 then
 
@@ -356,7 +348,7 @@ function ENT:Zombie_CustomOnInitialize()
 			self.ToTU_Weaponized_Redead_Grunt_ShouldHaveEyetrail = false
 		end
 
-		if self.LNR_Biter == false then
+		if self.TOTU_LNR_Biter == false then
 
 			if math.random(1,2) == 1 then
 				self:SetBodygroup(1,1)
@@ -376,9 +368,9 @@ function ENT:Zombie_CustomOnInitialize()
 	end
 	
 
-	if GetConVar("VJ_ToTU_MilZ_Grenades"):GetInt() == 1 then
+	if GetConVar("VJ_ToTU_Deimos_Remort_Drone_Grenades"):GetInt() == 1 then
 
-		if math.random(1,GetConVar("VJ_ToTU_MilZ_Grenades_Chance"):GetInt()) == 1 && !self.LNR_Crippled && !self.MilZ_CanShuutDeGun then
+		if math.random(1,GetConVar("VJ_ToTU_Deimos_Remort_Drone_Grenades_Chance"):GetInt()) == 1 && !self.TOTU_LNR_Crippled then
 
 			self.HasRangeAttack = true
 			self.RangeAttackAnimationFaceEnemy = true
@@ -390,24 +382,6 @@ function ENT:Zombie_CustomOnInitialize()
 			self.NextRangeAttackTime = math.random(15,20)
 			self.RangeAttackPos_Up = 65
 			self.RangeAttackPos_Right = -10
-
-			self.MilZ_HasGrenades = true
-
-			if GetConVar("VJ_ToTU_MilZ_Grenades_Ammount"):GetInt() == -1 then
-
-				self.MilZ_Grenades = math.random(1,3)
-
-			elseif GetConVar("VJ_ToTU_MilZ_Grenades_Ammount"):GetInt() == 0 then
-
-				-- i mean what did you expect?
-				self.MilZ_Grenades = 0
-				self.HasRangeAttack = false
-
-			elseif GetConVar("VJ_ToTU_MilZ_Grenades_Ammount"):GetInt() != -1 then
-
-				self.MilZ_Grenades = GetConVar("VJ_ToTU_MilZ_Grenades_Ammount"):GetInt()
-
-			end
 
 		end
 
@@ -477,111 +451,11 @@ function ENT:MilZ_GiveGasmaskSounds()
 
 	self.ToTU_Almanac_VoiceActor = "Security Zombie (Nightmare House 2)"
 
-	if GetConVar("VJ_ToTU_General_TF2Mode"):GetInt() == 1 then
-
-		self.SoundTbl_Idle = {
-			"vo/pyro_laughevil02.mp3",
-			"vo/pyro_laughevil03.mp3",
-			"vo/pyro_laughevil04.mp3"
-		}
-
-		self.SoundTbl_Alert = {
-			"vo/pyro_battlecry01.mp3",
-			"vo/pyro_battlecry02.mp3",
-			"vo/pyro_headleft01.mp3",
-			"vo/taunts/pyro/pyro_taunt_head_int_01.mp3",
-			"vo/taunts/pyro/pyro_taunt_head_int_03.mp3",
-			"vo/taunts/pyro/pyro_taunt_head_int_04.mp3"
-		}
-
-		self.SoundTbl_CallForHelp = {
-			"vo/pyro_activatecharge01.mp3",
-			"vo/pyro_go01.mp3",
-			"vo/pyro_headleft01.mp3",
-			"vo/pyro_helpme01.mp3",
-			"vo/pyro_moveup01.mp3"
-		}
-
-		self.SoundTbl_CombatIdle = {
-			"vo/pyro_laugh_addl04.mp3",
-			"vo/pyro_laughevil01.mp3",
-			"vo/pyro_laughevil02.mp3",
-			"vo/pyro_laughevil03.mp3",
-			"vo/pyro_laughevil04.mp3",
-			"vo/pyro_laughshort01.mp3",
-			"vo/taunts/pyro/pyro_taunt_cong_fun_05.mp3",
-			"vo/taunts/pyro/pyro_taunt_cong_fun_08.mp3",
-			"vo/taunts/pyro/pyro_taunt_cong_fun_09.mp3",
-			"vo/taunts/pyro/pyro_taunt_cong_fun_10.mp3",
-			"vo/taunts/pyro/pyro_taunt_cong_fun_11.mp3",
-			"vo/taunts/pyro/pyro_taunt_cong_fun_12.mp3",
-			"vo/taunts/pyro/pyro_taunt_cong_fun_13.mp3",
-			"vo/taunts/pyro/pyro_taunt_cong_fun_14.mp3"
-		}
-
-		self.SoundTbl_BeforeMeleeAttack = {
-			"vo/taunts/pyro_highfive01.mp3",
-			"vo/taunts/pyro_highfive02.mp3",
-			"vo/taunts/pyro/pyro_taunt_flip_exert_02.mp3",
-			"vo/taunts/pyro/pyro_taunt_flip_exert_04.mp3",
-			"vo/taunts/pyro/pyro_taunt_flip_exert_05.mp3",
-			"vo/taunts/pyro/pyro_taunt_head_exert_03.mp3"
-		}
-
-		self.SoundTbl_OnKilledEnemy = {
-			"vo/pyro_autocappedcontrolpoint01.mp3",
-			"vo/pyro_autocappedintelligence01.mp3",
-			"vo/pyro_cheers01.mp3",
-			"vo/pyro_goodjob01.mp3",
-			"vo/pyro_positivevocalization01.mp3",
-			"vo/taunts/pyro_taunts01.mp3",
-			"vo/taunts/pyro_taunts02.mp3",
-			"vo/taunts/pyro_taunts03.mp3",
-			"vo/taunts/pyro_taunts04.mp3",
-			"vo/taunts/pyro_highfive_success02.mp3",
-			"vo/taunts/pyro_highfive_success03.mp3",
-			"vo/taunts/pyro/pyro_taunt_ballon_07.mp3",
-			"vo/taunts/pyro/pyro_taunt_ballon_11.mp3"
-		}
-
-		self.SoundTbl_AllyDeath = {
-			"vo/pyro_autodejectedtie01.mp3",
-			"vo/pyro_jeers01.mp3",
-			"vo/pyro_jeers02.mp3",
-			"vo/pyro_negativevocalization01.mp3"
-		}
-
-		self.SoundTbl_Pain = {
-			"vo/pyro_medic01.mp3",
-			"vo/pyro_painsevere01.mp3",
-			"vo/pyro_painsevere02.mp3",
-			"vo/pyro_painsevere03.mp3",
-			"vo/pyro_painsevere04.mp3",
-			"vo/pyro_painsevere05.mp3",
-			"vo/pyro_painsevere06.mp3",
-			"vo/pyro_painsharp01.mp3",
-			"vo/pyro_painsharp02.mp3",
-			"vo/pyro_painsharp03.mp3",
-			"vo/pyro_painsharp04.mp3",
-			"vo/pyro_painsharp05.mp3",
-			"vo/pyro_painsharp06.mp3",
-			"vo/pyro_painsharp07.mp3"
-		}
-
-		self.SoundTbl_Death = {
-			"vo/pyro_paincrticialdeath01.mp3",
-			"vo/pyro_paincrticialdeath02.mp3",
-			"vo/pyro_paincrticialdeath03.mp3"
-		}
-		
-		self.ToTU_Almanac_VoiceActor = "Pyro (Team Fortress 2)"
-	end
-
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:Zombie_GlowEyes_Give()
 
-	if GetConVar("VJ_ToTU_Weaponized_Deimos_Eyes"):GetInt() == 0 or GetConVar("vj_npc_noidleparticle"):GetInt() == 1  then return end
+	if GetConVar("VJ_ToTU_Deimos_Deimos_Eyes"):GetInt() == 0 or GetConVar("vj_npc_noidleparticle"):GetInt() == 1  then return end
 
 	for i = 1,2 do	
 		local att = i == 2 && "eyeglow1" or "eyeglow2"		
@@ -598,7 +472,7 @@ function ENT:Zombie_GlowEyes_Give()
 		self:DeleteOnRemove(EyeGlow)
 	end
 
-	if self.ToTU_Weaponized_Redead_Grunt_ShouldHaveEyetrail && !self.MilZ_HasGasmask && GetConVar("VJ_ToTU_Weaponized_Deimos_Eyes"):GetInt() == 2 then
+	if self.ToTU_Weaponized_Redead_Grunt_ShouldHaveEyetrail && !self.MilZ_HasGasmask && GetConVar("VJ_ToTU_Deimos_Deimos_Eyes"):GetInt() == 2 then
 		local TrailColor = Color(220,0,255,255)
 		local EyeTrail = util.SpriteTrail(self,10,TrailColor,false,5,0,0.25,1,"vj_base/sprites/vj_trial1")
 		local EyeTrail2 = util.SpriteTrail(self,9,TrailColor,false,5,0,0.25,1,"vj_base/sprites/vj_trial1")
@@ -610,13 +484,13 @@ function ENT:Zombie_Difficulty()
 
 	if GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 1 then
 
-		self.StartHealth = 150
-		self.MeleeAttackDamage = math.Rand(5,10)
+		self.StartHealth = 75
+		self.MeleeAttackDamage = math.Rand(1,5)
 
 	elseif GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 2 then
 
 		self.StartHealth = 120
-		self.MeleeAttackDamage = math.Rand(10,15)
+		self.MeleeAttackDamage = math.Rand(5,10)
 
 	elseif GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 3 then
 
@@ -630,25 +504,23 @@ function ENT:Zombie_Difficulty()
 
 	elseif GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 5 then
 
-		self.StartHealth = 350
+		self.StartHealth = 800
 		self.MeleeAttackDamage = math.Rand(25,30)
 
 	else
 
-		self.StartHealth = 200
+		self.StartHealth = 300
 		self.MeleeAttackDamage = math.Rand(10,15)
 
 	end
 
 	self:SetHealth(self.StartHealth)
 
-	self.LNR_LegHP = self.StartHealth * 0.20
+	self.TOTU_LNR_LegHP = self.StartHealth * 0.20
 
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:ArmorDamage(dmginfo,hitgroup)
-
-	if GetConVar("VJ_ToTU_General_Armor_Allow"):GetInt() == 0 then return end
 
 	if self.MilZ_HasFlakSuit == true then
 
@@ -690,67 +562,63 @@ function ENT:ArmorDamage(dmginfo,hitgroup)
 		!self.MilZ_HelmetBroken
 	then
 
-		if GetConVar("VJ_ToTU_MilZ_Helmet_Breakable"):GetInt() == 1 then
+		self.MilZ_HelmetHealth = self.MilZ_HelmetHealth -dmginfo:GetDamage()
 
-			self.MilZ_HelmetHealth = self.MilZ_HelmetHealth -dmginfo:GetDamage()
+		if self.MilZ_HelmetHealth <= 0 && !self.MilZ_HelmetBroken then
 
-			if self.MilZ_HelmetHealth <= 0 && !self.MilZ_HelmetBroken then
+			self.MilZ_HelmetBroken = true
 
-				self.MilZ_HelmetBroken = true
+			if self.VJ_IsBeingControlled then
+				self.VJ_TheController:ChatPrint("Your helmet broke!")
+				local badtotheboner = CreateSound(self.VJ_TheController, "common/warning.wav")
+				badtotheboner:SetSoundLevel(0)
+				badtotheboner:Play()
+			end
 
-				if self.VJ_IsBeingControlled then
-					self.VJ_TheController:ChatPrint("Your helmet broke!")
-					local badtotheboner = CreateSound(self.VJ_TheController, "common/warning.wav")
-					badtotheboner:SetSoundLevel(0)
-					badtotheboner:Play()
+			if self.HasSounds && self.HasImpactSounds then VJ_EmitSound(self,{"physics/wood/wood_box_break1.wav","physics/wood/wood_box_break2.wav"},70) end
+			if self.HasSounds && self.HasImpactSounds then VJ_EmitSound(self,{"physics/plastic/plastic_box_break1.wav","physics/plastic/plastic_box_break2.wav"},70) end
+			if self.HasSounds && self.HasImpactSounds then VJ_EmitSound(self,{"physics/wood/wood_strain2.wav","physics/wood/wood_strain3.wav","physics/wood/wood_strain4.wav"},70) end
+
+			self:RemoveAllDecals()
+
+			if !self.ToTU_Weaponized_Redead_Grunt_ShouldHaveEyetrail && !self.MilZ_HasGasmask then
+				if GetConVar("VJ_ToTU_Deimos_Deimos_Eyes"):GetInt() == 2 && GetConVar("vj_npc_noidleparticle"):GetInt() == 0  then
+					local TrailColor = Color(220,0,255,255)
+					local EyeTrail = util.SpriteTrail(self,10,TrailColor,false,5,0,0.25,1,"vj_base/sprites/vj_trial1")
+					local EyeTrail2 = util.SpriteTrail(self,9,TrailColor,false,5,0,0.25,1,"vj_base/sprites/vj_trial1")
 				end
-
-				if self.HasSounds && self.HasImpactSounds then VJ_EmitSound(self,{"physics/wood/wood_box_break1.wav","physics/wood/wood_box_break2.wav"},70) end
-				if self.HasSounds && self.HasImpactSounds then VJ_EmitSound(self,{"physics/plastic/plastic_box_break1.wav","physics/plastic/plastic_box_break2.wav"},70) end
-				if self.HasSounds && self.HasImpactSounds then VJ_EmitSound(self,{"physics/wood/wood_strain2.wav","physics/wood/wood_strain3.wav","physics/wood/wood_strain4.wav"},70) end
-
-				self:RemoveAllDecals()
-
-				if !self.ToTU_Weaponized_Redead_Grunt_ShouldHaveEyetrail && !self.MilZ_HasGasmask then
-					if GetConVar("VJ_ToTU_Weaponized_Deimos_Eyes"):GetInt() == 2 && GetConVar("vj_npc_noidleparticle"):GetInt() == 0  then
-						local TrailColor = Color(220,0,255,255)
-						local EyeTrail = util.SpriteTrail(self,10,TrailColor,false,5,0,0.25,1,"vj_base/sprites/vj_trial1")
-						local EyeTrail2 = util.SpriteTrail(self,9,TrailColor,false,5,0,0.25,1,"vj_base/sprites/vj_trial1")
-					end
-				end
+			end
 
 
-				local spark = ents.Create("env_spark")
-				spark:SetKeyValue("Magnitude","1")
-				spark:SetKeyValue("Spark Trail Length","1")
-				spark:SetPos(dmginfo:GetDamagePosition())
-				spark:SetAngles(self:GetAngles())
-				spark:SetParent(self)
-				spark:Spawn()
-				spark:Activate()
-				spark:Fire("StartSpark","",0)
-				spark:Fire("StopSpark","",0.001)
-				self:DeleteOnRemove(spark)
+			local spark = ents.Create("env_spark")
+			spark:SetKeyValue("Magnitude","1")
+			spark:SetKeyValue("Spark Trail Length","1")
+			spark:SetPos(dmginfo:GetDamagePosition())
+			spark:SetAngles(self:GetAngles())
+			spark:SetParent(self)
+			spark:Spawn()
+			spark:Activate()
+			spark:Fire("StartSpark","",0)
+			spark:Fire("StopSpark","",0.001)
+			self:DeleteOnRemove(spark)
 
-				if self:GetBodygroup(4) == 5 then
-					self:Zombie_GlowEyes_Give()
-				end
+			if self:GetBodygroup(4) == 5 then
+				self:Zombie_GlowEyes_Give()
+			end
 
-				if self.MilZ_HasGasmask then
+			if self.MilZ_HasGasmask then
 
-					self:SetBodygroup(4,8)
+				self:SetBodygroup(4,8)
 
-				else
+			else
 
-					self:SetBodygroup(4,7)
+				self:SetBodygroup(4,7)
 
-				end
+			end
 
-				self.Bleeds = true
+			self.Bleeds = true
 
-		return end
-
-		end
+	return end
 
 		if self.HasSounds && self.HasImpactSounds then VJ_EmitSound(self,"fx/armor/bhit_helmet-1.wav",70) end
 

@@ -14,8 +14,6 @@ ENT.MilZ_HasKnife = false
 ENT.MilZ_CanShuutDeGun = false
 ENT.MilZ_HasGun = false
 ENT.MilZ_GunAmmo = 0
-ENT.MilZ_HasGrenades = false
-ENT.MilZ_Grenades = 0
 ENT.MilZ_IsMilZ = true
 ENT.MilZ_HelmetHealth = 1
 ENT.MilZ_HelmetBroken = false
@@ -56,6 +54,7 @@ ENT.MilZ_FoN_SpawnCoolDownT = 5
 ENT.MilZ_Hazmat_IsHazmat = false
 ENT.MilZ_Hazmat_TankHealth = 5
 ENT.MilZ_Hazmat_TankHit = false
+ENT.MilZ_Hazmat_Heat = 0
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:Zombie_CustomOnPreInitialize()
 
@@ -569,10 +568,6 @@ function ENT:Zombie_UpdateAlmanacStuff()
 			end
 		end
 
-		if self.MilZ_HasGrenades then
-			self.ToTU_Almanac_Notes4 = "This Grunt has grenades."
-		end
-
 		if self.MilZ_Corpsman then
 			self.ToTU_Almanac_Notes5 = "This Grunt is a Corpsman, and can heal nearby allies."
 		end
@@ -921,7 +916,7 @@ function ENT:Zombie_CustomOnInitialize()
 
 		self:SetBodygroup(4,math.random(1,6))
 
-		if self.LNR_Biter == false then
+		if self.TOTU_LNR_Biter == false then
 
 			if math.random(1,2) == 1 then
 				self:SetBodygroup(1,1)
@@ -967,7 +962,7 @@ function ENT:Zombie_CustomOnInitialize()
 		self.MilZ_Ghost_IsGhost
 	then return end
 
-	if math.random(1,GetConVar("VJ_ToTU_MilZ_Weapons_Chance"):GetInt()) == 1 && !self.LNR_Crippled && !self.LNR_Biter then
+	if math.random(1,GetConVar("VJ_ToTU_MilZ_Weapons_Chance"):GetInt()) == 1 && !self.TOTU_LNR_Crippled && !self.TOTU_LNR_Biter then
 
 		self:ZombieWeapons()
 
@@ -975,7 +970,7 @@ function ENT:Zombie_CustomOnInitialize()
 
 	if GetConVar("VJ_ToTU_MilZ_Grenades"):GetInt() == 1 then
 
-		if math.random(1,GetConVar("VJ_ToTU_MilZ_Grenades_Chance"):GetInt()) == 1 && !self.LNR_Crippled && !self.MilZ_CanShuutDeGun then
+		if math.random(1,GetConVar("VJ_ToTU_MilZ_Grenades_Chance"):GetInt()) == 1 && !self.TOTU_LNR_Crippled && !self.MilZ_CanShuutDeGun then
 
 			self.HasRangeAttack = true
 			self.RangeAttackEntityToSpawn = "obj_vj_totu_milzgren"
@@ -991,39 +986,16 @@ function ENT:Zombie_CustomOnInitialize()
 			self.RangeAttackPos_Forward = 20
 			self.RangeAttackPos_Up = 20
 
-			self.MilZ_HasGrenades = true
-
-			if GetConVar("VJ_ToTU_MilZ_Grenades_Ammount"):GetInt() == -1 then
-
-				self.MilZ_Grenades = math.random(1,3)
-
-			elseif GetConVar("VJ_ToTU_MilZ_Grenades_Ammount"):GetInt() == 0 then
-
-				-- i mean what did you expect?
-				self.MilZ_Grenades = 0
-				self.HasRangeAttack = false
-
-			elseif GetConVar("VJ_ToTU_MilZ_Grenades_Ammount"):GetInt() != -1 then
-
-				self.MilZ_Grenades = GetConVar("VJ_ToTU_MilZ_Grenades_Ammount"):GetInt()
-
-			end
-
-			if
-				(GetConVar("VJ_ToTU_MilZ_Grenades_Ammount"):GetInt() == -1 or GetConVar("VJ_ToTU_MilZ_Grenades_Ammount"):GetInt() != -1) &&
-				GetConVar("VJ_ToTU_MilZ_Grenades_Ammount"):GetInt() != 0
-			then
-				self.ItemDropsOnDeath_EntityList = {
-					"item_ammo_pistol",
-					"item_ammo_357",
-					"item_ammo_smg1",
-					"item_ammo_ar2",
-					"item_box_buckshot",
-					"weapon_frag",
-					"weapon_frag",
-					"obj_vj_totu_milzgren",
-				}
-			end
+			self.ItemDropsOnDeath_EntityList = {
+				"item_ammo_pistol",
+				"item_ammo_357",
+				"item_ammo_smg1",
+				"item_ammo_ar2",
+				"item_box_buckshot",
+				"weapon_frag",
+				"weapon_frag",
+				"obj_vj_totu_milzgren",
+			}
 
 			if self.ToTU_WeHaveAWeapon then
 
@@ -1116,7 +1088,7 @@ function ENT:Zombie_Difficulty()
 
 	if GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 1 then
 
-		self.StartHealth = 75
+		self.StartHealth = 40
 		self.MeleeAttackDamage = math.Rand(5,10)
 
 	elseif GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 2 then
@@ -1136,45 +1108,19 @@ function ENT:Zombie_Difficulty()
 
 	elseif GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 5 then
 
-		self.StartHealth = 275
+		self.StartHealth = 775
 		self.MeleeAttackDamage = math.Rand(25,30)
 
 	else
 
-		self.StartHealth = 125
+		self.StartHealth = 250
 		self.MeleeAttackDamage = math.Rand(10,15)
 
 	end
 
 	self:SetHealth(self.StartHealth)	
 
-	self.LNR_LegHP = self.StartHealth * 0.20
-
-end
----------------------------------------------------------------------------------------------------------------------------------------------
-function ENT:CustomOnRangeAttack_AfterStartTimer(seed)
-
-	if self.MilZ_CanShuutDeGun == true then return end
-
-	if self.MilZ_Grunt_IsGrunt then
-
-		if self.MilZ_Grenades == 1 or self.MilZ_Grenades > 1 then
-
-			self.MilZ_Grenades = self.MilZ_Grenades - 1
-
-			if self.VJ_IsBeingControlled then
-				self.VJ_TheController:ChatPrint("Grenades left: "..self.MilZ_Grenades.."")
-			end
-
-		end
-
-		if self.MilZ_Grenades < 1 then
-
-			self.HasRangeAttack = false
-
-		end
-
-	end
+	self.TOTU_LNR_LegHP = self.StartHealth * 0.20
 
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
@@ -1227,7 +1173,7 @@ function ENT:Zombie_CustomOnThink_AIEnabled()
 
 	if self.MiLZ_Ghillie_IsGhillie then
 
-		if self:IsOnFire() && !self.MilZ_Ghillie_IsOnFire && !LNR_Crippled then
+		if self:IsOnFire() && !self.MilZ_Ghillie_IsOnFire && !TOTU_LNR_Crippled then
 
 			if self.MilZ_Ghillie_PlayChangeStateAnim == 2 then
 
@@ -1241,18 +1187,18 @@ function ENT:Zombie_CustomOnThink_AIEnabled()
 
 		end
 
-		if !self:IsOnFire() && self.MilZ_Ghillie_IsOnFire && !LNR_Crippled then
+		if !self:IsOnFire() && self.MilZ_Ghillie_IsOnFire && !TOTU_LNR_Crippled then
 
 			self:ToTU_Ghillie_StopBurning()
 
 		end
 
-		if self.Dead == false && self:GetEnemy() != nil && self.VJ_IsBeingControlled == false && !self.LNR_Crippled then
+		if self.Dead == false && self:GetEnemy() != nil && self.VJ_IsBeingControlled == false && !self.TOTU_LNR_Crippled then
 
 			local enemydist = self:GetPos():Distance(self:GetEnemy():GetPos())
 
 			if
-				self.LNR_Crippled or
+				self.TOTU_LNR_Crippled or
 				self.ToTU_Crawling or
 				self:GetActivity() == ACT_STEP_BACK or
 				self:GetActivity() == ACT_STEP_FORE or
@@ -1312,7 +1258,7 @@ function ENT:Zombie_CustomOnThink_AIEnabled()
 
 		end
 
-		if !self.Dead && self.VJ_IsBeingControlled && !self.LNR_Crippled then
+		if !self.Dead && self.VJ_IsBeingControlled && !self.TOTU_LNR_Crippled then
 			if self.VJ_TheController:KeyDown(IN_JUMP) then
 				if self.MilZ_Ghillie_PlayChangeStateAnim == 1 && CurTime() > self.MilZ_Ghillie_PlayChangeStateAnim_T then
 					self:ToTU_Ghillie_StartCrawling()
@@ -1360,7 +1306,7 @@ function ENT:Zombie_CustomOnThink_AIEnabled()
 			self.MilZ_FoN_Rage = true
 			if self:GetClass() == "npc_vj_totu_fon_bulldozer" then
 				self.AnimTbl_Run = {ACT_RUN_AIM}
-				self.LNR_SuperSprinter = true
+				self.TOTU_LNR_SuperSprinter = true
 				self:VJ_ACT_PLAYACTIVITY("vjseq_nz_sonic_attack_1",true,false,false)
 				VJ_EmitSound(self,self.SoundTbl_Alert,self.AlertSoundLevel,self:VJ_DecideSoundPitch(self.AlertSoundPitch.a,self.AlertSoundPitch.b))
 			end
@@ -1380,6 +1326,10 @@ function ENT:Zombie_CustomOnThink_AIEnabled()
 				VJ_EmitSound(self,"voices/mil_jugg/run_start_"..math.random(1,3)..".mp3",self.AlertSoundLevel,self:VJ_DecideSoundPitch(self.AlertSoundPitch.a,self.AlertSoundPitch.b))
 			end
 		end
+	end
+
+	if self.MilZ_Hazmat_IsHazmat && self.MilZ_Hazmat_Heat >= GetConVar("VJ_ToTU_MilZ_Hazmat_HeatSystem_Limit"):GetInt() then
+		self:ToTU_Hazmat_FuckingBlowUpAndShit()
 	end
 
 end
@@ -1477,7 +1427,7 @@ function ENT:ToTU_Ghillie_StartCrawling()
 
 	self.CanTurnWhileStationary = false
 	self.HasIdleSounds = false
-	if self.LNR_Walker then
+	if self.TOTU_LNR_Walker then
 		self.FootStepSoundLevel = 55
 	else
 		self.FootStepSoundLevel = 65
@@ -1487,7 +1437,7 @@ function ENT:ToTU_Ghillie_StartCrawling()
 	self.AnimTbl_IdleStand = {ACT_CROUCHIDLE}
 	self.AnimTbl_Walk = {ACT_WALK_CROUCH_AIM}
 
-	if self.LNR_Walker then
+	if self.TOTU_LNR_Walker then
 
 		self.AnimTbl_Run = {ACT_WALK_CROUCH_AIM}
 
@@ -1520,11 +1470,11 @@ function ENT:ToTU_Ghillie_GetTheUp()
 	end end)
 
 	self.AnimTbl_IdleStand = {ACT_IDLE}
-	if self.LNR_UsingRelaxedIdle == true then
+	if self.TOTU_LNR_UsingRelaxedIdle == true then
 		self.AnimTbl_IdleStand = {ACT_IDLE_RELAXED}
 	end
 
-	if self.LNR_Walker then
+	if self.TOTU_LNR_Walker then
 
 		self.AnimTbl_Walk = {ACT_WALK}
 		self.AnimTbl_Run = {ACT_RUN}
@@ -1557,7 +1507,7 @@ function ENT:ToTU_Ghillie_StartBurning()
 	self.AnimTbl_IdleStand = {ACT_IDLE}
 	self.AnimTbl_Walk = {ACT_WALK_ON_FIRE}
 
-	if self.LNR_Walker then
+	if self.TOTU_LNR_Walker then
 
 		self.AnimTbl_Run = {ACT_WALK_ON_FIRE}
 
@@ -1617,11 +1567,11 @@ function ENT:ToTU_Ghillie_StopBurning()
 	self.Light1:Fire("Kill", "", 0)
 
 	self.AnimTbl_IdleStand = {ACT_IDLE}
-	if self.LNR_UsingRelaxedIdle == true then
+	if self.TOTU_LNR_UsingRelaxedIdle == true then
 		self.AnimTbl_IdleStand = {ACT_IDLE_RELAXED}
 	end
 
-	if self.LNR_Walker then
+	if self.TOTU_LNR_Walker then
 
 		self.AnimTbl_Walk = {ACT_WALK}
 		self.AnimTbl_Run = {ACT_RUN}
@@ -1723,7 +1673,14 @@ function ENT:ArmorDamage(dmginfo,hitgroup)
 			dmginfo:IsDamageType(DMG_DISSOLVE) or
 			dmginfo:IsDamageType (DMG_PLASMA)
 		then
-			self.MilZ_Ghost_CloakHP = self.MilZ_Ghost_CloakHP -dmginfo:GetDamage()*5
+			self.MilZ_Ghost_CloakHP = self.MilZ_Ghost_CloakHP -dmginfo:GetDamage()*3
+			self:ToTU_Ghost_CloakFlicker()
+			self.MilZ_Ghost_CloakT = CurTime() + math.random(1,3)
+		elseif
+			dmginfo:IsDamageType(DMG_BURN) or 
+			dmginfo:IsDamageType(DMG_SLOWBURN)
+		then
+			self.MilZ_Ghost_CloakHP = self.MilZ_Ghost_CloakHP -dmginfo:GetDamage()*3
 		else
 			self.MilZ_Ghost_CloakHP = self.MilZ_Ghost_CloakHP -dmginfo:GetDamage()
 		end
@@ -1736,8 +1693,6 @@ function ENT:ArmorDamage(dmginfo,hitgroup)
 		end
 
 	end
-
-	if GetConVar("VJ_ToTU_General_Armor_Allow"):GetInt() == 0 then return end
 
 	if self.MilZ_HasFlakSuit == true then
 
@@ -1782,54 +1737,50 @@ function ENT:ArmorDamage(dmginfo,hitgroup)
 		!self.MiLZ_Ghillie_IsGhillie
 	then
 
-		if GetConVar("VJ_ToTU_MilZ_Helmet_Breakable"):GetInt() == 1 then
+		self.MilZ_HelmetHealth = self.MilZ_HelmetHealth -dmginfo:GetDamage()
 
-			self.MilZ_HelmetHealth = self.MilZ_HelmetHealth -dmginfo:GetDamage()
+		if self.MilZ_HelmetHealth <= 0 && !self.MilZ_HelmetBroken then
 
-			if self.MilZ_HelmetHealth <= 0 && !self.MilZ_HelmetBroken then
+			self.MilZ_HelmetBroken = true
 
-				self.MilZ_HelmetBroken = true
+			if self.VJ_IsBeingControlled then
+				self.VJ_TheController:ChatPrint("Your helmet broke!")
+				local badtotheboner = CreateSound(self.VJ_TheController, "common/warning.wav")
+				badtotheboner:SetSoundLevel(0)
+				badtotheboner:Play()
+			end
 
-				if self.VJ_IsBeingControlled then
-					self.VJ_TheController:ChatPrint("Your helmet broke!")
-					local badtotheboner = CreateSound(self.VJ_TheController, "common/warning.wav")
-					badtotheboner:SetSoundLevel(0)
-					badtotheboner:Play()
-				end
+			if self.HasSounds && self.HasImpactSounds then VJ_EmitSound(self,{"physics/wood/wood_box_break1.wav","physics/wood/wood_box_break2.wav"},70) end
+			if self.HasSounds && self.HasImpactSounds then VJ_EmitSound(self,{"physics/plastic/plastic_box_break1.wav","physics/plastic/plastic_box_break2.wav"},70) end
+			if self.HasSounds && self.HasImpactSounds then VJ_EmitSound(self,{"physics/wood/wood_strain2.wav","physics/wood/wood_strain3.wav","physics/wood/wood_strain4.wav"},70) end
 
-				if self.HasSounds && self.HasImpactSounds then VJ_EmitSound(self,{"physics/wood/wood_box_break1.wav","physics/wood/wood_box_break2.wav"},70) end
-				if self.HasSounds && self.HasImpactSounds then VJ_EmitSound(self,{"physics/plastic/plastic_box_break1.wav","physics/plastic/plastic_box_break2.wav"},70) end
-				if self.HasSounds && self.HasImpactSounds then VJ_EmitSound(self,{"physics/wood/wood_strain2.wav","physics/wood/wood_strain3.wav","physics/wood/wood_strain4.wav"},70) end
+			self:RemoveAllDecals()
 
-				self:RemoveAllDecals()
+			local spark = ents.Create("env_spark")
+			spark:SetKeyValue("Magnitude","1")
+			spark:SetKeyValue("Spark Trail Length","1")
+			spark:SetPos(dmginfo:GetDamagePosition())
+			spark:SetAngles(self:GetAngles())
+			spark:SetParent(self)
+			spark:Spawn()
+			spark:Activate()
+			spark:Fire("StartSpark","",0)
+			spark:Fire("StopSpark","",0.001)
+			self:DeleteOnRemove(spark)
 
-				local spark = ents.Create("env_spark")
-				spark:SetKeyValue("Magnitude","1")
-				spark:SetKeyValue("Spark Trail Length","1")
-				spark:SetPos(dmginfo:GetDamagePosition())
-				spark:SetAngles(self:GetAngles())
-				spark:SetParent(self)
-				spark:Spawn()
-				spark:Activate()
-				spark:Fire("StartSpark","",0)
-				spark:Fire("StopSpark","",0.001)
-				self:DeleteOnRemove(spark)
+			if self.MilZ_HasGasmask then
 
-				if self.MilZ_HasGasmask then
+				self:SetBodygroup(4,8)
 
-					self:SetBodygroup(4,8)
+			else
 
-				else
+				self:SetBodygroup(4,7)
 
-					self:SetBodygroup(4,7)
+			end
 
-				end
-
-				self.Bleeds = true
+			self.Bleeds = true
 
 		return end
-
-		end
 
 		if self.HasSounds && self.HasImpactSounds then VJ_EmitSound(self,"fx/armor/bhit_helmet-1.wav",70) end
 

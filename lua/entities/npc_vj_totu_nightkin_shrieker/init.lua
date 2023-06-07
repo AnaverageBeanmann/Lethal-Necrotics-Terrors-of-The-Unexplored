@@ -32,11 +32,16 @@ function ENT:Zombie_Difficulty()
 		self.StartHealth = 250
 		self.MeleeAttackDamage = math.Rand(25,30)
 
+	else
+
+		self.StartHealth = 75
+		self.MeleeAttackDamage = math.Rand(10,15)
+
 	end
 
 	self:SetHealth(self.StartHealth)	
 
-	self.LNR_LegHP = self.StartHealth * 0.20
+	self.TOTU_LNR_LegHP = self.StartHealth * 0.20
 
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
@@ -125,7 +130,7 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:Zombie_CustomOnMeleeAttack_BeforeStartTimer()
 
-	if self.ToTU_Nightkin_Shrieker_CanShriek && !self.LNR_Crippled then
+	if self.ToTU_Nightkin_Shrieker_CanShriek && !self.TOTU_LNR_Crippled then
 
 		self.AnimTbl_MeleeAttack = {"vjseq_nz_sonic_attack_1"}
 		self.NextMeleeAttackTime = 5
@@ -185,7 +190,7 @@ function ENT:Zombie_CustomOnThink_AIEnabled()
 
 	end
 
-	if self.ToTU_Nightkin_Shrieker_ShriekCoolDownT < CurTime() && !self.ToTU_Nightkin_Shrieker_CanShriek && !self.LNR_Crippled && self:GetActivity() != ACT_GLIDE then
+	if self.ToTU_Nightkin_Shrieker_ShriekCoolDownT < CurTime() && !self.ToTU_Nightkin_Shrieker_CanShriek && !self.TOTU_LNR_Crippled && self:GetActivity() != ACT_GLIDE then
 
 		self.ToTU_Nightkin_Shrieker_CanShriek = true
 		if !self.ToTU_Nightkin_Shrieker_OriginalBehavior then
@@ -199,7 +204,7 @@ function ENT:Zombie_CustomOnThink_AIEnabled()
 		self:GetEnemy() != nil &&
 		self.VJ_IsBeingControlled == false &&
 		self.ToTU_Nightkin_Shrieker_CanShriek == false &&
-		!self.LNR_Crippled
+		!self.TOTU_LNR_Crippled
 	then
 		local enemydist = self:GetPos():Distance(self:GetEnemy():GetPos())
 		if enemydist >= 450 then

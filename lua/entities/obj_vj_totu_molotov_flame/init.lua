@@ -6,8 +6,8 @@ include("shared.lua")
 	without the prior written consent of the author, unless otherwise indicated for stand-alone materials.
 --------------------------------------------------*/
 ENT.Model = {"models/spitball_small.mdl"}
-ENT.SoundTbl_Idle = {"weapons/molotov/fire_loop_1.wav"}
-ENT.SoundTbl_OnRemove = {"weapons/molotov/fire_loop_fadeout_01.wav"}
+ENT.SoundTbl_Idle = {"fx/weapon/gren/fire_loop_1.wav"}
+ENT.SoundTbl_OnRemove = {"fx/weapon/gren/fire_loop_fadeout_01.wav"}
 
 ENT.ApplyBurnT = 0
 ---------------------------------------------------------------------------------------------------------------------------------------------
@@ -65,12 +65,12 @@ function ENT:CustomOnThink()
 	-- util.VJ_SphereDamage(self, self, self:GetPos(), 160, 5, DMG_BURN, true, true)
 	
 				for _,v in ipairs(ents.FindInSphere(self:GetPos(),160)) do
-					if !v:IsOnFire() && CurTime() > self.ApplyBurnT then
+					-- if CurTime() < self.ApplyBurnT then
 						v:Ignite(1)
 						v:Ignite(2)
 						v:Ignite(3)
 						v:Ignite(4)
-						self.ApplyBurnT = CurTime() + 0.9
-					end
+						-- self.ApplyBurnT = CurTime() + 0.9
+					-- end
 				end
 end

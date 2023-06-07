@@ -30,6 +30,18 @@ function ENT:CustomOnInitialize()
 	
 	util.SpriteTrail(self, 0, Color(255,0,0), true, 15, 15, 0.35, 1/(6+6)*0.5, "VJ_Base/sprites/vj_trial1.vmt")
 
+	if GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 1 then
+        self.RadiusDamage = 5	 
+	elseif GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 2 then
+        self.RadiusDamage = 10	 
+	elseif GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 3 then
+        self.RadiusDamage = math.random(75,80)
+	elseif GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 4 then
+        self.RadiusDamage = 20
+	elseif GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 5 then
+		self.RadiusDamage = 25
+	end
+
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 local defAngle = Angle(0, 0, 0)

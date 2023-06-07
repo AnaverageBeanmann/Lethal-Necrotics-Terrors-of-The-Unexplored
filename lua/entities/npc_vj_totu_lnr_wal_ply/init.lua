@@ -5,34 +5,55 @@ include('shared.lua')
 	No parts of this code or any of its contents may be reproduced, copied, modified or adapted,
 	without the prior written consent of the author, unless otherwise indicated for stand-alone materials.
 -----------------------------------------------*/
-	-- ====== Controller Data ====== --
-ENT.VJC_Data = {
-	CameraMode = 2, -- Sets the default camera mode | 1 = Third Person, 2 = First Person
-	ThirdP_Offset = Vector(30, 25, -50), -- The offset for the controller when the camera is in third person
-	FirstP_Bone = "ValveBiped.Bip01_Head1", -- If left empty, the base will attempt to calculate a position for first person
-	FirstP_Offset = Vector(0, 0, 5), -- The offset for the controller when the camera is in first person
-}
--- Custom
-ENT.LNR_Gib = false
-ENT.LNR_Dismember = false
----------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:Zombie_CustomOnPreInitialize()
-	if self:GetClass() == "npc_vj_lnr_wal_ply" then
-		self.Model = {
-			"models/vj_lnrhl2/misc/breen_walply.mdl",
-		}
-    end	
+	self.Model = {"models/totu/theshootpitter.mdl"}
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
-/*function ENT:Controller_IntMsg(ply)
-	ply:ChatPrint("RELOAD: Respawn and stop playing as the zombie.")
-end*/
----------------------------------------------------------------------------------------------------------------------------------------------
-/*function ENT:Zombie_CustomOnThink()
-      if self.ZombieCont:KeyDown(IN_RELOAD) then
-           self:TakeDamage(self:Health())
-    end
-end*/
+function ENT:Zombie_Difficulty()
+
+	if GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 1 then
+
+		-- I'm Too Young To Die
+		self.StartHealth = 70
+		self.MeleeAttackDamage = math.Rand(1,5)
+
+	elseif GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 2 then
+
+		-- Hey, Not Too Rough
+		self.StartHealth = 150
+		self.MeleeAttackDamage = math.Rand(5,10)
+
+	elseif GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 3 then
+
+		-- Hurt Me Plenty
+		self.StartHealth = 400
+		self.MeleeAttackDamage = math.Rand(10,15)
+
+	elseif GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 4 then
+
+		-- Ultra Violence
+		self.StartHealth = 550
+		self.MeleeAttackDamage = math.Rand(15,20)
+
+	elseif GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 5 then
+
+		-- NIGHTMARE!
+		self.StartHealth = 1200
+		self.MeleeAttackDamage = math.Rand(25,30)
+
+	else
+
+		-- HMP failsafe incase the convar is set to an unsupported number
+		self.StartHealth = 400
+		self.MeleeAttackDamage = math.Rand(10,15)
+
+	end
+
+	self:SetHealth(self.StartHealth)
+
+	self.TOTU_LNR_LegHP = self.StartHealth * 0.20
+
+end
 /*-----------------------------------------------
 	*** Copyright (c) 2012-2023 by DrVrej, All rights reserved. ***
 	No parts of this code or any of its contents may be reproduced, copied, modified or adapted,

@@ -6,39 +6,56 @@ include('shared.lua')
 	without the prior written consent of the author, unless otherwise indicated for stand-alone materials.
 -----------------------------------------------*/
 function ENT:Zombie_CustomOnPreInitialize()
-	self.Model = {"models/totu/thepoopshitter.mdl"}
+
+	self.Model = {"models/totu/thepissshitter.mdl"}
+
+	timer.Simple(0.1,function() if IsValid(self) && !self.TOTU_LNR_Crippled  then
+		self.AnimTbl_Walk = {ACT_MP_MELEE_GRENADE1_IDLE}
+		if self:GetClass() == "npc_vj_totu_fon_gail" then
+			self.AnimTbl_Run = {ACT_RUN_AIM}
+		else
+			self.AnimTbl_Run = {ACT_SPRINT}
+		end
+		self.AnimTbl_IdleStand = {ACT_IDLE_AIM_STIMULATED}
+		if self.TOTU_LNR_UsingRelaxedIdle == true then
+			self.AnimTbl_IdleStand = {ACT_IDLE}
+		end
+	end end)
+
+	self.ToTU_Weaponized_Redead_NextRunT = CurTime() + math.random(3,10)
+
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:Zombie_CustomOnInitialize()
 
 	self:SetMaterial("models/totu/bonemerge")
 
-	for i = 1,2 do
-		local att = i == 2 && "eye1" or "eye2"	
-		local EyeGlow = ents.Create("env_sprite")			
+	if GetConVar("VJ_ToTU_Deimos_Deimos_Eyes"):GetInt() == 0 or GetConVar("vj_npc_noidleparticle"):GetInt() == 1  then return end
+
+	for i = 1,2 do	
+		local att = i == 2 && "eye1" or "eye2"		
+		local EyeGlow = ents.Create("env_sprite")
 		EyeGlow:SetKeyValue("model","vj_base/sprites/vj_glow1.vmt")
 		EyeGlow:SetKeyValue("scale","0.035")
 		EyeGlow:SetKeyValue("rendermode","5")
-		if
-			self:GetClass() == "npc_vj_totu_lnr_inf" or
-			self:GetClass() == "npc_vj_totu_lnr_inf_ply"
-		then
-			EyeGlow:SetKeyValue("rendercolor","255 0 0")
-		end
-		if
-			self:GetClass() == "npc_vj_totu_lnr_wal" or
-			self:GetClass() == "npc_vj_totu_lnr_wal_ply"
-		then
-			EyeGlow:SetKeyValue("rendercolor","255 255 0 255")
-		end
+		EyeGlow:SetKeyValue("rendercolor","220 0 255 255")
 		EyeGlow:SetKeyValue("spawnflags","1") 
 		EyeGlow:SetParent(self)
 		EyeGlow:Fire("SetParentAttachment",att,0)
 		EyeGlow:Spawn()
 		EyeGlow:Activate()
-		self:DeleteOnRemove(EyeGlow)	
+		self:DeleteOnRemove(EyeGlow)
 	end
 
+	if GetConVar("VJ_ToTU_Deimos_Deimos_Eyes"):GetInt() == 2 then
+		local TrailColor = Color(220,0,255,255)
+		local EyeTrail = util.SpriteTrail(self,9,TrailColor,false,5,0,0.25,1,"vj_base/sprites/vj_trial1")
+		local EyeTrail2 = util.SpriteTrail(self,10,TrailColor,false,5,0,0.25,1,"vj_base/sprites/vj_trial1")
+	end
+
+end
+---------------------------------------------------------------------------------------------------------------------------------------------
+function ENT:Zombie_GlowEyes_Give()
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:ZombieSounds_Custom_RadioCuntFuq()
@@ -88,6 +105,13 @@ function ENT:ZombieSounds_Custom_RadioCuntFuq()
 	}
 
 	self.ToTU_Almanac_VoiceActor = "Security Zombie (Nightmare House 2)"
+
+	self.IdleSoundPitch = VJ_Set(90, 85)
+	self.AlertSoundPitch = VJ_Set(90, 85)
+	self.CombatIdleSoundPitch = VJ_Set(90, 85)
+	self.BeforeMeleeAttackSoundPitch = VJ_Set(90, 85)
+	self.PainSoundPitch = VJ_Set(90, 85)
+	self.DeathSoundPitch = VJ_Set(90, 85)
 
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
@@ -192,6 +216,13 @@ function ENT:ZombieSounds_Custom_MaskBoi()
 	}
 
 	self.ToTU_Almanac_VoiceActor = "Gas Tank (Dying Light 1)"
+
+	self.IdleSoundPitch = VJ_Set(90, 85)
+	self.AlertSoundPitch = VJ_Set(90, 85)
+	self.CombatIdleSoundPitch = VJ_Set(90, 85)
+	self.BeforeMeleeAttackSoundPitch = VJ_Set(90, 85)
+	self.PainSoundPitch = VJ_Set(90, 85)
+	self.DeathSoundPitch = VJ_Set(90, 85)
 
 end
 /*-----------------------------------------------

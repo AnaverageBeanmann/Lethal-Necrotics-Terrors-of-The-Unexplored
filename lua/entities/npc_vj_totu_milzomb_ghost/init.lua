@@ -9,8 +9,8 @@ function ENT:Zombie_Difficulty()
 
 	if GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 1 then
 
-		self.StartHealth = 75
-		self.MeleeAttackDamage = math.Rand(5,10)
+		self.StartHealth = 35
+		self.MeleeAttackDamage = math.Rand(1,5)
 
 	elseif GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 2 then
 
@@ -29,19 +29,19 @@ function ENT:Zombie_Difficulty()
 
 	elseif GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 5 then
 
-		self.StartHealth = 275
+		self.StartHealth = 500
 		self.MeleeAttackDamage = math.Rand(25,30)
 
 	else
 
-		self.StartHealth = 125
+		self.StartHealth = 225
 		self.MeleeAttackDamage = math.Rand(10,15)
 
 	end
 
 	self:SetHealth(self.StartHealth)	
 
-	self.LNR_LegHP = self.StartHealth * 0.20
+	self.TOTU_LNR_LegHP = self.StartHealth * 0.20
 
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
@@ -114,7 +114,7 @@ function ENT:ToTU_Ghost_BreakCloak()
 	self.MilZ_Ghost_CloakT = CurTime() + math.random(1,10)	
 	self.NextChaseTime = 1
 
-	if !self.LNR_Crippled && self:GetClass() == "npc_vj_totu_milzomb_ghost" then
+	if !self.TOTU_LNR_Crippled && self:GetClass() == "npc_vj_totu_milzomb_ghost" then
 		self.AnimTbl_Run = {ACT_RUN_RELAXED}
 	end
 
@@ -173,8 +173,8 @@ function ENT:ToTU_Ghost_FixCloak()
 		self.NextChaseTime = 1
 
 		if self:GetClass() == "npc_vj_totu_milzomb_ghost" then
-			if !self.LNR_Crippled then
-				if self.LNR_SuperSprinter then
+			if !self.TOTU_LNR_Crippled then
+				if self.TOTU_LNR_SuperSprinter then
 					self.AnimTbl_Run = {ACT_RUN_AIM}
 				elseif self.ToTU_Rusher then
 					self.AnimTbl_Run = {ACT_RUN_RELAXED}
@@ -238,7 +238,7 @@ function ENT:Zombie_CustomOnThink_AIEnabled()
 		GetConVar("VJ_ToTU_MilZ_Ghost_Cloak_Recharge_RunWhileCharging"):GetInt() == 1
 	then
 		local enemydist = self:GetPos():Distance(self:GetEnemy():GetPos())
-		if self.MilZ_Ghost_CloakBroke && !self.LNR_Crippled then
+		if self.MilZ_Ghost_CloakBroke && !self.TOTU_LNR_Crippled then
 			if enemydist >= 450 then
 				self.Behavior = VJ_BEHAVIOR_PASSIVE
 			else

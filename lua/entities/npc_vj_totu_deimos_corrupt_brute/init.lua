@@ -18,7 +18,7 @@ function ENT:Zombie_CustomOnInitialize()
 	self.MeleeAttackDamageDistance = 70
 	self.BeforeMeleeAttackSoundLevel = 80
 
-	if GetConVar("VJ_ToTU_Weaponized_Deimos_Eyes"):GetInt() == 0 or GetConVar("vj_npc_noidleparticle"):GetInt() == 1 then return end
+	if GetConVar("VJ_ToTU_Deimos_Deimos_Eyes"):GetInt() == 0 or GetConVar("vj_npc_noidleparticle"):GetInt() == 1 then return end
 		
 		local EyeGlow = ents.Create("env_sprite")
 		EyeGlow:SetKeyValue("model","vj_base/sprites/vj_glow1.vmt")
@@ -32,7 +32,7 @@ function ENT:Zombie_CustomOnInitialize()
 		EyeGlow:Activate()
 		self:DeleteOnRemove(EyeGlow)
 
-	if GetConVar("VJ_ToTU_Weaponized_Deimos_Eyes"):GetInt() == 2 then
+	if GetConVar("VJ_ToTU_Deimos_Deimos_Eyes"):GetInt() == 2 then
 		local TrailColor = Color(220,0,255,255)
 		local EyeTrail = util.SpriteTrail(self,1,TrailColor,false,5,0,0.25,1,"vj_base/sprites/vj_trial1")
 	end
@@ -135,9 +135,9 @@ function ENT:Zombie_Difficulty()
 
 	if GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 1 then
 
-		self.StartHealth = 1400
-		self.MeleeAttackDamage = math.Rand(40,45)
-		self.HealthRegenerationAmount = 46
+		self.StartHealth = 500
+		self.MeleeAttackDamage = math.Rand(20,25)
+		self.HealthRegenerationAmount = 20
 
 	elseif GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 2 then
 
@@ -159,7 +159,7 @@ function ENT:Zombie_Difficulty()
 
 	elseif GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 5 then
 
-		self.StartHealth = 1800
+		self.StartHealth = 7000
 		self.MeleeAttackDamage = math.Rand(60,65)
 		self.HealthRegenerationAmount = 60
 
@@ -172,7 +172,7 @@ function ENT:Zombie_Difficulty()
 	end
 
 
-	if GetConVar("VJ_ToTU_Weaponized_Carcass_Bleed"):GetInt() == 1 then
+	if GetConVar("VJ_ToTU_Deimos_Carcass_Bleed"):GetInt() == 1 then
 
 		self.MeleeAttackBleedEnemy = true
 		self.MeleeAttackBleedEnemyChance = 3
@@ -238,7 +238,7 @@ function ENT:Zombie_CustomOnMeleeAttack_BeforeStartTimer(seed)
 			self.MeleeAttackSoundPitch = VJ_Set(80, 75)
 
 		if GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 1 then
-			self.MeleeAttackDamage = math.Rand(25,30)
+			self.MeleeAttackDamage = math.Rand(20,25)
 		elseif GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 2 then
 			self.MeleeAttackDamage = math.Rand(30,35)
 		elseif GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 3 then
@@ -255,7 +255,7 @@ function ENT:Zombie_CustomOnMeleeAttack_BeforeStartTimer(seed)
 
 		self.MeleeAttackDamageType = DMG_SLASH
 		
-		if GetConVar("VJ_ToTU_Weaponized_Carcass_Bleed"):GetInt() == 1 then
+		if GetConVar("VJ_ToTU_Deimos_Carcass_Bleed"):GetInt() == 1 then
 			self.MeleeAttackBleedEnemy = true
 		end
 
@@ -288,7 +288,7 @@ function ENT:Zombie_CustomOnMeleeAttack_BeforeStartTimer(seed)
 			self.MeleeAttackSoundPitch = VJ_Set(80, 75)
 
 			if GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 1 then
-				self.MeleeAttackDamage = math.Rand(25,30)
+				self.MeleeAttackDamage = math.Rand(20,25)
 			elseif GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 2 then
 				self.MeleeAttackDamage = math.Rand(30,35)
 			elseif GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 3 then
@@ -305,7 +305,7 @@ function ENT:Zombie_CustomOnMeleeAttack_BeforeStartTimer(seed)
 			
 			self.MeleeAttackDamageType = DMG_SLASH
 
-			if GetConVar("VJ_ToTU_Weaponized_Carcass_Bleed"):GetInt() == 1 then
+			if GetConVar("VJ_ToTU_Deimos_Carcass_Bleed"):GetInt() == 1 then
 				self.MeleeAttackBleedEnemy = true
 			end
 
@@ -360,8 +360,6 @@ function ENT:Zombie_CustomOnMeleeAttack_BeforeStartTimer(seed)
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:ArmorDamage(dmginfo,hitgroup)
-
-	if GetConVar("VJ_ToTU_General_Armor_Allow"):GetInt() == 0 then return end
 
 	if
 		(hitgroup == HITGROUP_GEAR or

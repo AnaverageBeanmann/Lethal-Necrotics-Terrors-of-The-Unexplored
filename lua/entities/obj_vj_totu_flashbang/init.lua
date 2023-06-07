@@ -5,16 +5,17 @@ include("shared.lua")
 	No parts of this code or any of its contents may be reproduced, copied, modified or adapted,
 	without the prior written consent of the author, unless otherwise indicated for stand-alone materials.
 --------------------------------------------------*/
-ENT.Model = {"models/weapons/w_eq_flashbang_thrown.mdl"}
-ENT.SoundTbl_Idle = {"weapons/c4/c4_beep1.wav"}
+ENT.Model = {"models/totu/w_eq_flashbang_thrown.mdl"}
+ENT.SoundTbl_Idle = {"fx/weapon/gren/c4_beep1.wav"}
 
-ENT.SoundTbl_OnRemove = {"weapons/flashbang/flashbang_explode2.wav"}
-ENT.SoundTbl_OnCollide = {"weapons/smokegrenade/grenade_hit1.wav"}
+ENT.SoundTbl_OnRemove = {"fx/weapon/gren/flashbang_explode2.wav"}
+ENT.SoundTbl_OnCollide = {"fx/weapon/gren/grenade_hit1.wav"}
 ENT.IdleSoundLevel = 65
 ENT.RemoveOnHit = false
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:CustomPhysicsObjectOnInitialize(phys)
 	phys:Wake()
+	phys:SetMass(1)
 	phys:EnableGravity(true)
 	phys:EnableDrag(false)
 	phys:SetBuoyancyRatio(0)

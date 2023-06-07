@@ -29,19 +29,19 @@ function ENT:Zombie_Difficulty()
 
 	elseif GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 5 then
 
-		self.StartHealth = 450
-		self.MeleeAttackDamage = math.Rand(25,30)
+		self.StartHealth = 1200
+		self.MeleeAttackDamage = math.Rand(30,35)
 
 	else
 
-		self.StartHealth = 300
-		self.MeleeAttackDamage = math.Rand(10,15)
+		self.StartHealth = 500
+		self.MeleeAttackDamage = math.Rand(15,20)
 
 	end
 
 	self:SetHealth(self.StartHealth)	
 
-	self.LNR_LegHP = self.StartHealth * 0.20
+	self.TOTU_LNR_LegHP = self.StartHealth * 0.20
 
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
@@ -142,10 +142,10 @@ function ENT:ToTU_Spectre_RevealSelfJumpscare()
 
 	self.FootStepSoundLevel = 70
 	
-	self.LNR_VirusInfection = false
+	self.TOTU_LNR_VirusInfection = false
 	util.VJ_SphereDamage(self, self, self:GetPos(), 5, 9999, DMG_DISSOLVE, true, true, {Force=100})
 	util.VJ_SphereDamage(self, self, self:GetPos()+self:GetUp()*90, 5, 9999, DMG_DISSOLVE, true, true, {Force=100})
-	self.LNR_VirusInfection = true
+	self.TOTU_LNR_VirusInfection = true
 
 	self.SoundTbl_Idle = {
 		"voices/nightkin/spectre/flesher_bark_generic_01.mp3",

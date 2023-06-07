@@ -9,7 +9,7 @@ function ENT:Zombie_Difficulty()
 
 	if GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 1 then
 
-		self.StartHealth = 75
+		self.StartHealth = 25
 		self.MeleeAttackDamage = math.Rand(5,10)
 
 	elseif GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 2 then
@@ -29,19 +29,19 @@ function ENT:Zombie_Difficulty()
 
 	elseif GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 5 then
 
-		self.StartHealth = 275
-		self.MeleeAttackDamage = math.Rand(25,30)
+		self.StartHealth = 400
+		self.MeleeAttackDamage = math.Rand(30,35)
 
 	else
 
-		self.StartHealth = 125
-		self.MeleeAttackDamage = math.Rand(10,15)
+		self.StartHealth = 175
+		self.MeleeAttackDamage = math.Rand(15,20)
 
 	end
 
 	self:SetHealth(self.StartHealth)	
 
-	self.LNR_LegHP = self.StartHealth * 0.20
+	self.TOTU_LNR_LegHP = self.StartHealth * 0.20
 
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
@@ -117,7 +117,7 @@ end
 function ENT:Zombie_CustomOnThink_AIEnabled()
 
 	if
-		self.LNR_Crippled or
+		self.TOTU_LNR_Crippled or
 		self.ToTU_Crawling or
 		self.LeapAttacking or
 		self:GetActivity() == ACT_STEP_BACK or
@@ -155,7 +155,7 @@ function ENT:Zombie_CustomOnThink_AIEnabled()
 		self:GetSequence() == self:LookupSequence("Climb96_05_InPlace")
 	then return end
 
-	if self.Dead == false && self:GetEnemy() != nil && self.VJ_IsBeingControlled == false && !self.LNR_Crippled then
+	if self.Dead == false && self:GetEnemy() != nil && self.VJ_IsBeingControlled == false && !self.TOTU_LNR_Crippled then
 
 		local enemydist = self:GetPos():Distance(self:GetEnemy():GetPos())
 
@@ -187,7 +187,7 @@ function ENT:Zombie_CustomOnThink_AIEnabled()
 
 	end
 
-	if !self.Dead && self.VJ_IsBeingControlled && !self.LNR_Crippled then
+	if !self.Dead && self.VJ_IsBeingControlled && !self.TOTU_LNR_Crippled then
 		if self.VJ_TheController:KeyDown(IN_JUMP) then
 			if self.ToTU_Nightkin_Skitter_PlayChangeStateAnim == 1 && CurTime() > self.ToTU_Nightkin_Skitter_PlayChangeStateAnimT then
 				self:ToTU_Skitter_StartCrawling()
@@ -235,7 +235,7 @@ function ENT:ToTU_Skitter_GetTheUp()
 	self.HasMeleeAttack = true
 
 	self.AnimTbl_IdleStand = {ACT_IDLE}
-	if self.LNR_UsingRelaxedIdle == true then
+	if self.TOTU_LNR_UsingRelaxedIdle == true then
 		self.AnimTbl_IdleStand = {ACT_IDLE_RELAXED}
 	end
 

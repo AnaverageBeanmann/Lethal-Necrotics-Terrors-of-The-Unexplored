@@ -16,6 +16,7 @@ ENT.RadiusDamageType = DMG_ACID
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:CustomPhysicsObjectOnInitialize(phys)
 	phys:Wake()
+	phys:SetMass(1)
 	phys:EnableGravity(true)
 	phys:EnableDrag(false)
 	phys:SetBuoyancyRatio(0)

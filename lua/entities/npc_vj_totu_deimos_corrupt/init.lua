@@ -56,7 +56,7 @@ function ENT:Zombie_CustomOnInitialize()
 	-- self.MeleeAttackDistance = 50
 	-- self.MeleeAttackDamageDistance = 70
 
-	if GetConVar("VJ_ToTU_Weaponized_Deimos_Eyes"):GetInt() == 0 or GetConVar("vj_npc_noidleparticle"):GetInt() == 1 then return end
+	if GetConVar("VJ_ToTU_Deimos_Deimos_Eyes"):GetInt() == 0 or GetConVar("vj_npc_noidleparticle"):GetInt() == 1 then return end
 
 	for i = 1,2 do	
 		local att = i == 2 && "eyeglow1" or "eyeglow2"		
@@ -73,7 +73,7 @@ function ENT:Zombie_CustomOnInitialize()
 		self:DeleteOnRemove(EyeGlow)
 	end
 
-	if GetConVar("VJ_ToTU_Weaponized_Deimos_Eyes"):GetInt() == 2 then
+	if GetConVar("VJ_ToTU_Deimos_Deimos_Eyes"):GetInt() == 2 then
 		local TrailColor = Color(220,0,255,255)
 		local EyeTrail = util.SpriteTrail(self,1,TrailColor,false,5,0,0.25,1,"vj_base/sprites/vj_trial1")
 		local EyeTrail2 = util.SpriteTrail(self,2,TrailColor,false,5,0,0.25,1,"vj_base/sprites/vj_trial1")
@@ -146,8 +146,8 @@ function ENT:Zombie_Difficulty()
 
 	if GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 1 then
 
-		self.StartHealth = 600
-		self.MeleeAttackDamage = math.Rand(25,30)
+		self.StartHealth = 300
+		self.MeleeAttackDamage = math.Rand(15,20)
 		self.HealthRegenerationAmount = 30
 
 	elseif GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 2 then
@@ -170,7 +170,7 @@ function ENT:Zombie_Difficulty()
 
 	elseif GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 5 then
 
-		self.StartHealth = 1200
+		self.StartHealth = 3750
 		self.MeleeAttackDamage = math.Rand(45,50)
 		self.HealthRegenerationAmount = 60
 
@@ -183,7 +183,7 @@ function ENT:Zombie_Difficulty()
 	end
 
 
-	if GetConVar("VJ_ToTU_Weaponized_Carcass_Bleed"):GetInt() == 1 then
+	if GetConVar("VJ_ToTU_Deimos_Carcass_Bleed"):GetInt() == 1 then
 
 		self.MeleeAttackBleedEnemy = true
 		self.MeleeAttackBleedEnemyChance = 3
@@ -261,7 +261,7 @@ function ENT:Zombie_CustomOnThink_AIEnabled()
 	if
 		self.ToTU_Weaponized_Redead_Running &&
 		self.ToTU_Weaponized_Redead_RunT < CurTime() &&
-		!self.LNR_Crippled
+		!self.TOTU_LNR_Crippled
 	then
 
 		self.ToTU_Weaponized_Redead_Running = false
@@ -343,7 +343,7 @@ function ENT:Zombie_CustomOnMeleeAttack_BeforeStartTimer(seed)
 		self.SoundTbl_MeleeAttack = {""}
 
 		if GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 1 then
-			self.MeleeAttackDamage = math.Rand(25,30)
+			self.MeleeAttackDamage = math.Rand(15,20)
 		elseif GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 2 then
 			self.MeleeAttackDamage = math.Rand(30,35)
 		elseif GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 3 then
@@ -360,7 +360,7 @@ function ENT:Zombie_CustomOnMeleeAttack_BeforeStartTimer(seed)
 
 		self.MeleeAttackDamageType = DMG_SLASH
 		
-		if GetConVar("VJ_ToTU_Weaponized_Carcass_Bleed"):GetInt() == 1 then
+		if GetConVar("VJ_ToTU_Deimos_Carcass_Bleed"):GetInt() == 1 then
 			self.MeleeAttackBleedEnemy = true
 		end
 
@@ -381,7 +381,7 @@ function ENT:Zombie_CustomOnMeleeAttack_BeforeStartTimer(seed)
 			self.SoundTbl_MeleeAttack = {""}
 
 			if GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 1 then
-				self.MeleeAttackDamage = math.Rand(25,30)
+				self.MeleeAttackDamage = math.Rand(15,20)
 			elseif GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 2 then
 				self.MeleeAttackDamage = math.Rand(30,35)
 			elseif GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 3 then
@@ -398,7 +398,7 @@ function ENT:Zombie_CustomOnMeleeAttack_BeforeStartTimer(seed)
 			
 			self.MeleeAttackDamageType = DMG_SLASH
 
-			if GetConVar("VJ_ToTU_Weaponized_Carcass_Bleed"):GetInt() == 1 then
+			if GetConVar("VJ_ToTU_Deimos_Carcass_Bleed"):GetInt() == 1 then
 				self.MeleeAttackBleedEnemy = true
 			end
 
@@ -422,7 +422,7 @@ function ENT:Zombie_CustomOnMeleeAttack_BeforeStartTimer(seed)
 			self.AnimTbl_MeleeAttack = {"vjseq_attack2"}
 
 			if GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 1 then
-				self.MeleeAttackDamage = math.Rand(5,10)
+				self.MeleeAttackDamage = math.Rand(1,5)
 			elseif GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 2 then
 				self.MeleeAttackDamage = math.Rand(10,15)
 			elseif GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 3 then
@@ -466,13 +466,15 @@ function ENT:CustomOnTakeDamage_AfterDamage(dmginfo,hitgroup)
 		dmginfo:IsDamageType(DMG_PHYSGUN) or
 		dmginfo:IsDamageType(DMG_CRUSH)
 	then	
-		if self.LNR_NextShoveT < CurTime() then
+		if self.TOTU_LNR_NextShoveT < CurTime() then
 			self:VJ_ACT_PLAYACTIVITY(ACT_BIG_FLINCH,true,1.6)
 			
 			if self:GetClass() == "npc_vj_totu_fon_lament" then
-				self.LNR_NextShoveT = CurTime() + 7
+				self.TOTU_LNR_NextShoveT = CurTime() + 7
+			elseif self:GetClass() == "npc_vj_totu_deimos_corrupt_brute" then
+				self.TOTU_LNR_NextShoveT = CurTime() + 5
 			else
-				self.LNR_NextShoveT = CurTime() + 3.5
+				self.TOTU_LNR_NextShoveT = CurTime() + 3.5
 			end
 		end
 	end
@@ -486,6 +488,8 @@ function ENT:CustomOnTakeDamage_AfterDamage(dmginfo,hitgroup)
 			self:VJ_ACT_PLAYACTIVITY(ACT_BIG_FLINCH,true,1.6)
 			if self:GetClass() == "npc_vj_totu_fon_lament" then
 				self.ToTU_NextSplodeStumbleT = CurTime() + 7
+			elseif self:GetClass() == "npc_vj_totu_deimos_corrupt_brute" then
+				self.ToTU_NextSplodeStumbleT = CurTime() + 5
 			else
 				self.ToTU_NextSplodeStumbleT = CurTime() + 3.5
 			end

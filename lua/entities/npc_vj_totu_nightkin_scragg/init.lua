@@ -96,7 +96,7 @@ function ENT:Zombie_CustomOnInitialize()
 		self.DeathAnimationChance = 1
 		self:SetKeyValue("rendercolor","255 187 164 255")
 
-		if !self.LNR_Crippled then
+		if !self.TOTU_LNR_Crippled then
 			self.AnimTbl_Walk = {ACT_WALK_AIM}
 			self.AnimTbl_Run = {ACT_RUN_RELAXED}
 			self.ToTU_Rusher = true
@@ -116,7 +116,7 @@ function ENT:Zombie_CustomOnInitialize()
 			self.AnimTbl_Walk = {ACT_SPRINT}
 			self.AnimTbl_Run = {ACT_RUN_AIM}
 			self.IdleAlwaysWander = true
-			self.LNR_SuperSprinter = true
+			self.TOTU_LNR_SuperSprinter = true
 
 			local IronWillLight1 = ents.Create("light_dynamic")
 			IronWillLight1:SetKeyValue("brightness", "8")
@@ -185,7 +185,7 @@ function ENT:Zombie_CustomOnInitialize()
 		self:DeleteOnRemove(LightGlow)
 		self.LightGlow = LightGlow
 
-		if !self.LNR_Crippled then
+		if !self.TOTU_LNR_Crippled then
 			self.HasRangeAttack = true
 			self.RangeAttackEntityToSpawn = "obj_vj_totu_biolum"
 			self.AnimTbl_RangeAttack = {"vjseq_nz_taunt_7"}
@@ -215,7 +215,7 @@ function ENT:Zombie_CustomOnInitialize()
 		self.AnimTbl_Death = {"vjseq_death_04"}
 		self.DeathAnimationChance = 1
 
-		if !self.LNR_Crippled then
+		if !self.TOTU_LNR_Crippled then
 			self.MeleeAttackDistance = 50
 			self.MeleeAttackDamageDistance = 70
 			self.HasMeleeAttackKnockBack = true
@@ -247,7 +247,7 @@ function ENT:Zombie_CustomOnInitialize()
 		self.AlertSoundLevel = 75
 		self.CombatIdleSoundLevel = 75
 
-		if !self.LNR_Crippled && GetConVar("VJ_ToTU_Nightkin_Spectre_RangeAttack"):GetInt() == 1 then
+		if !self.TOTU_LNR_Crippled && GetConVar("VJ_ToTU_Nightkin_Spectre_RangeAttack"):GetInt() == 1 then
 			self.RangeAttackEntityToSpawn = "obj_vj_totu_spectreball"
 			self.RangeAttackAnimationFaceEnemy = true
 			self.AnimTbl_RangeAttack = {"vjseq_nz_sonic_attack_2"}
@@ -270,7 +270,7 @@ function ENT:Zombie_Difficulty()
 
 	if GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 1 then
 
-		self.StartHealth = 100
+		self.StartHealth = 45
 		self.MeleeAttackDamage = math.Rand(5,10)
 
 	elseif GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 2 then
@@ -290,19 +290,19 @@ function ENT:Zombie_Difficulty()
 
 	elseif GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 5 then
 
-		self.StartHealth = 300
-		self.MeleeAttackDamage = math.Rand(25,30)
+		self.StartHealth = 600
+		self.MeleeAttackDamage = math.Rand(30,35)
 
 	else
 
-		self.StartHealth = 150
-		self.MeleeAttackDamage = math.Rand(10,15)
+		self.StartHealth = 250
+		self.MeleeAttackDamage = math.Rand(15,20)
 
 	end
 
 	self:SetHealth(self.StartHealth)	
 
-	self.LNR_LegHP = self.StartHealth * 0.20
+	self.TOTU_LNR_LegHP = self.StartHealth * 0.20
 
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------

@@ -115,7 +115,7 @@ function ENT:ToTU_Detonator_BombHitExplode()
 
 	timer.Simple(0.5,function() if IsValid(self) && !self.Dead then
 
-		if !self.LNR_Crippled then
+		if !self.TOTU_LNR_Crippled then
 			if self.LNR_Infected then
 				self.AnimTbl_Walk = {ACT_SPRINT}
 				self.AnimTbl_Run = {ACT_RUN_RELAXED}
@@ -147,7 +147,7 @@ function ENT:ToTU_Detonator_BombHitExplode()
 		self.HasDeathSounds = false
 
 		if GetConVar("VJ_ToTU_MilZ_Det_Infection"):GetInt() == 0 then
-			self.LNR_VirusInfection = false
+			self.TOTU_LNR_VirusInfection = false
 		end
 
 		local d = DamageInfo()
@@ -157,6 +157,28 @@ function ENT:ToTU_Detonator_BombHitExplode()
 		self:TakeDamageInfo(d)
 
 	end end)
+
+end
+---------------------------------------------------------------------------------------------------------------------------------------------
+function ENT:ToTU_Hazmat_FuckingBlowUpAndShit()
+	
+	self.MilZ_Det_DeathExplosionAllowed = true
+	self.GodMode = false
+	self.HasDeathRagdoll = false
+	self.HasDeathAnimation = false
+	self.HasGibOnDeath = true
+	self.GibOnDeathDamagesTable = {"All"}
+	self.HasDeathSounds = false
+
+	if GetConVar("VJ_ToTU_MilZ_Det_Infection"):GetInt() == 0 then
+		self.TOTU_LNR_VirusInfection = false
+	end
+
+	local d = DamageInfo()
+	d:SetDamage(self:GetMaxHealth())
+	d:SetAttacker(self)
+	d:SetDamageType(DMG_GENERIC) 
+	self:TakeDamageInfo(d)
 
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
@@ -176,52 +198,21 @@ function ENT:ArmorDamage(dmginfo,hitgroup)
 		spark:Fire("StopSpark","",0.001)
 		self:DeleteOnRemove(spark)
 
-		if GetConVar("VJ_ToTU_MilZ_Det_Bomb_Bustable"):GetInt() == 1 then
+		self.MilZ_Hazmat_TankHealth = self.MilZ_Hazmat_TankHealth -dmginfo:GetDamage()
 
-			self.MilZ_Hazmat_TankHealth = self.MilZ_Hazmat_TankHealth -dmginfo:GetDamage()
+		if self.MilZ_Hazmat_TankHealth <= 0 && !self.MilZ_Hazmat_TankHit then
 
-			if self.MilZ_Hazmat_TankHealth <= 0 && !self.MilZ_Hazmat_TankHit then
+			self.MilZ_Hazmat_TankHit = true
+			self:ToTU_Detonator_BombHitExplode()
 
-				self.MilZ_Hazmat_TankHit = true
-				self:ToTU_Detonator_BombHitExplode()
-
-			end
-		
-		end
+		end		
 
 	end
 
-end
----------------------------------------------------------------------------------------------------------------------------------------------
-function ENT:CustomOnKilled(dmginfo,hitgroup)
-
-	if self.MilZ_Det_DeathExplosionAllowed == true then
-
-		local effectdata = EffectData()
-		effectdata:SetOrigin(self:GetPos())
-		effectdata:SetScale( 500 )
-		util.Effect( "HelicopterMegaBomb", effectdata )
-		util.Effect( "ThumperDust", effectdata )
-		util.Effect( "Explosion", effectdata )
-		util.Effect( "VJ_Small_Explosion1", effectdata )
-
-		VJ_EmitSound(self,"fx/funny.mp3",85)
-		ParticleEffect("vj_explosion2",self:GetPos() + self:GetUp()*48 + self:GetForward()*1,Angle(0,0,0),nil) 
-		ParticleEffect("vj_explosion1",self:GetPos() + self:GetUp()*15,Angle(0,0,0),nil)
-		ParticleEffect("vj_explosionfire2",self:GetPos() + self:GetUp()*20,Angle(0,0,0),nil)
-		ParticleEffect("vj_explosionfire1",self:GetPos() + self:GetUp()*20,Angle(0,0,0),nil)
-
-		if GetConVar("VJ_ToTU_MilZ_Det_ExplosionSetup"):GetInt() == true then
-			util.VJ_SphereDamage(self, self, self:GetPos(), 40, 25, DMG_BLAST, true, true, {Force=70})
-			util.VJ_SphereDamage(self, self, self:GetPos(), 80, 25, DMG_BLAST, true, true, {Force=70})
-			util.VJ_SphereDamage(self, self, self:GetPos(), 120, 25, DMG_BLAST, true, true, {Force=70})
-			util.VJ_SphereDamage(self, self, self:GetPos(), 160, 25, DMG_BLAST, true, true, {Force=70})
-			util.VJ_SphereDamage(self, self, self:GetPos(), 200, 25, DMG_BLAST, true, true, {Force=70})
-		else
-			util.VJ_SphereDamage(self, self, self:GetPos(), 200, 125, DMG_BLAST, true, true, {Force=70})
+	if GetConVar("VJ_ToTU_MilZ_Hazmat_HeatSystem"):GetInt() == 1 then
+		if dmginfo:IsDamageType(DMG_BURN) or dmginfo:IsDamageType(DMG_SLOWBURN) then
+			self.MilZ_Hazmat_Heat = self.MilZ_Hazmat_Heat + dmginfo:GetDamage()
 		end
-		util.ScreenShake(self:GetPos(), 300, 500, 1.6, 1200)
-
 	end
 
 end

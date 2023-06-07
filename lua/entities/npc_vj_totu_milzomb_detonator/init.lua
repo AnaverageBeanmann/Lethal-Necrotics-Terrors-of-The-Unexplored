@@ -396,22 +396,16 @@ function ENT:ArmorDamage(dmginfo,hitgroup)
 		spark:Fire("StopSpark","",0.001)
 		self:DeleteOnRemove(spark)
 
-		if GetConVar("VJ_ToTU_MilZ_Det_Bomb_Bustable"):GetInt() == 1 then
+		self.MilZ_Det_BombHealth = self.MilZ_Det_BombHealth -dmginfo:GetDamage()
 
-			self.MilZ_Det_BombHealth = self.MilZ_Det_BombHealth -dmginfo:GetDamage()
+		if self.MilZ_Det_BombHealth <= 0 then
 
-			if self.MilZ_Det_BombHealth <= 0 then
+			self:ToTU_Detonator_BombHitExplode()
+			dmginfo:ScaleDamage(999999999999)
 
-				self:ToTU_Detonator_BombHitExplode()
-				dmginfo:ScaleDamage(999999999999)
-
-			end
-		
 		end
 
 	end
-
-	if GetConVar("VJ_ToTU_General_Armor_Allow"):GetInt() == 0 then return end
 
 	if
 		dmginfo:IsExplosionDamage() or
@@ -434,124 +428,120 @@ function ENT:ArmorDamage(dmginfo,hitgroup)
 
 	if hitgroup == HITGROUP_HEAD && !self.MilZ_Det_Faceplate_Broken then
 
-		if GetConVar("VJ_ToTU_MilZ_Det_Faceplate_Breakable"):GetInt() == 1 then
+		self.MilZ_Det_Faceplate_Health = self.MilZ_Det_Faceplate_Health -dmginfo:GetDamage()
 
-			self.MilZ_Det_Faceplate_Health = self.MilZ_Det_Faceplate_Health -dmginfo:GetDamage()
+		local halfhp = self.MilZ_Det_Faceplate_StartingHP * 0.5
 
-			local halfhp = self.MilZ_Det_Faceplate_StartingHP * 0.5
+		if self.MilZ_Det_Faceplate_Health <= halfhp then
 
-			if self.MilZ_Det_Faceplate_Health <= halfhp then
+			if self.HasSounds && self.HasImpactSounds then VJ_EmitSound(self,{"physics/glass/glass_cup_break"..math.random(1,2)..".wav"},70) end
 
-				if self.HasSounds && self.HasImpactSounds then VJ_EmitSound(self,{"physics/glass/glass_cup_break"..math.random(1,2)..".wav"},70) end
+			self:SetBodygroup(1,1)
 
-				self:SetBodygroup(1,1)
+		end
 
-			end
+		if self.MilZ_Det_Faceplate_Health <= 0 && !self.MilZ_Det_Faceplate_Broken then
 
-			if self.MilZ_Det_Faceplate_Health <= 0 && !self.MilZ_Det_Faceplate_Broken then
+			self.MilZ_Det_Faceplate_Broken = true
+			self:StopAllCommonSounds()
+			self.BreathSoundLevel = 60
+			self.CanEat = true
 
-				self.MilZ_Det_Faceplate_Broken = true
-				self:StopAllCommonSounds()
-				self.BreathSoundLevel = 60
-				self.CanEat = true
+			if self.HasSounds && self.HasImpactSounds then VJ_EmitSound(self,{"physics/glass/glass_sheet_break"..math.random(1,3)..".wav"},70) end
+			if self.HasSounds && self.HasImpactSounds then VJ_EmitSound(self,{"physics/glass/glass_pottery_break"..math.random(1,3)..".wav"},70) end
 
-				if self.HasSounds && self.HasImpactSounds then VJ_EmitSound(self,{"physics/glass/glass_sheet_break"..math.random(1,3)..".wav"},70) end
-				if self.HasSounds && self.HasImpactSounds then VJ_EmitSound(self,{"physics/glass/glass_pottery_break"..math.random(1,3)..".wav"},70) end
+			self:RemoveAllDecals()
 
-				self:RemoveAllDecals()
+			if self:GetClass() == "npc_vj_totu_milzomb_detonator_bulk" then
 
-				if self:GetClass() == "npc_vj_totu_milzomb_detonator_bulk" then
+				self.SoundTbl_Idle = {
+					"voices/mil_jugg/idle_1.mp3",
+					"voices/mil_jugg/idle_2.mp3",
+					"voices/mil_jugg/idle_3.mp3",
+					"voices/mil_jugg/idle_4.mp3",
+					"voices/mil_jugg/idle_5.mp3",
+					"voices/mil_jugg/idle_6.mp3",
+					"voices/mil_jugg/idle_7.mp3",
+					"voices/mil_jugg/idle_8.mp3"
+				}
 
-					self.SoundTbl_Idle = {
-						"voices/mil_jugg/idle_1.mp3",
-						"voices/mil_jugg/idle_2.mp3",
-						"voices/mil_jugg/idle_3.mp3",
-						"voices/mil_jugg/idle_4.mp3",
-						"voices/mil_jugg/idle_5.mp3",
-						"voices/mil_jugg/idle_6.mp3",
-						"voices/mil_jugg/idle_7.mp3",
-						"voices/mil_jugg/idle_8.mp3"
-					}
+				self.SoundTbl_Alert = {
+					"voices/mil_jugg/alert_1.mp3",
+					"voices/mil_jugg/alert_2.mp3"
+				}
+
+				self.SoundTbl_CombatIdle = {
+					"voices/mil_jugg/idle_1.mp3",
+					"voices/mil_jugg/idle_2.mp3",
+					"voices/mil_jugg/idle_3.mp3",
+					"voices/mil_jugg/idle_4.mp3",
+					"voices/mil_jugg/idle_5.mp3",
+					"voices/mil_jugg/idle_6.mp3",
+					"voices/mil_jugg/idle_7.mp3",
+					"voices/mil_jugg/idle_8.mp3"
+				}
+
+				self.SoundTbl_BeforeMeleeAttack = {
+					"voices/mil_jugg/attack_1.mp3",
+					"voices/mil_jugg/attack_2.mp3",
+					"voices/mil_jugg/attack_3.mp3",
+					"voices/mil_jugg/attack_4.mp3",
+					"voices/mil_jugg/attack_5.mp3",
+					"voices/mil_jugg/attack_6.mp3",
+					"voices/mil_jugg/attack_7.mp3"
+				}
+
+				self.SoundTbl_Pain = {
+					"voices/mil_jugg/pain_1.mp3",
+					"voices/mil_jugg/pain_2.mp3",
+					"voices/mil_jugg/pain_3.mp3",
+					"voices/mil_jugg/pain_4.mp3",
+					"voices/mil_jugg/pain_5.mp3"
+				}
+
+				self.SoundTbl_Death = {
+					"voices/mil_jugg/death_cutoff.mp3"
+				}
+
+				self.ToTU_Almanac_VoiceActor = "Demolisher (Dying Light 1)"
+
+				self.IdleSoundPitch = VJ_Set(90, 80)
+				self.AlertSoundPitch = VJ_Set(90, 80)
+				self.CombatIdleSoundPitch = VJ_Set(90, 80)
+				self.BeforeMeleeAttackSoundPitch = VJ_Set(90, 80)
+				self.PainSoundPitch = VJ_Set(90, 80)
+				self.DeathSoundPitch = VJ_Set(90, 80)
+
+				if self.LNR_Runner or self.ToTU_Rusher then
 
 					self.SoundTbl_Alert = {
-						"voices/mil_jugg/alert_1.mp3",
-						"voices/mil_jugg/alert_2.mp3"
+						"voices/mil_jugg/run_start_1.mp3",
+						"voices/mil_jugg/run_start_2.mp3",
+						"voices/mil_jugg/run_start_3.mp3"
 					}
 
 					self.SoundTbl_CombatIdle = {
-						"voices/mil_jugg/idle_1.mp3",
-						"voices/mil_jugg/idle_2.mp3",
-						"voices/mil_jugg/idle_3.mp3",
-						"voices/mil_jugg/idle_4.mp3",
-						"voices/mil_jugg/idle_5.mp3",
-						"voices/mil_jugg/idle_6.mp3",
-						"voices/mil_jugg/idle_7.mp3",
-						"voices/mil_jugg/idle_8.mp3"
+						"voices/mil_jugg/cidle_1.mp3",
+						"voices/mil_jugg/cidle_2.mp3"
 					}
-
-					self.SoundTbl_BeforeMeleeAttack = {
-						"voices/mil_jugg/attack_1.mp3",
-						"voices/mil_jugg/attack_2.mp3",
-						"voices/mil_jugg/attack_3.mp3",
-						"voices/mil_jugg/attack_4.mp3",
-						"voices/mil_jugg/attack_5.mp3",
-						"voices/mil_jugg/attack_6.mp3",
-						"voices/mil_jugg/attack_7.mp3"
-					}
-
-					self.SoundTbl_Pain = {
-						"voices/mil_jugg/pain_1.mp3",
-						"voices/mil_jugg/pain_2.mp3",
-						"voices/mil_jugg/pain_3.mp3",
-						"voices/mil_jugg/pain_4.mp3",
-						"voices/mil_jugg/pain_5.mp3"
-					}
-
-					self.SoundTbl_Death = {
-						"voices/mil_jugg/death_cutoff.mp3"
-					}
-
-					self.ToTU_Almanac_VoiceActor = "Demolisher (Dying Light 1)"
-	
-					self.IdleSoundPitch = VJ_Set(90, 80)
-					self.AlertSoundPitch = VJ_Set(90, 80)
-					self.CombatIdleSoundPitch = VJ_Set(90, 80)
-					self.BeforeMeleeAttackSoundPitch = VJ_Set(90, 80)
-					self.PainSoundPitch = VJ_Set(90, 80)
-					self.DeathSoundPitch = VJ_Set(90, 80)
-
-					if self.LNR_Runner or self.ToTU_Rusher then
-
-						self.SoundTbl_Alert = {
-							"voices/mil_jugg/run_start_1.mp3",
-							"voices/mil_jugg/run_start_2.mp3",
-							"voices/mil_jugg/run_start_3.mp3"
-						}
-
-						self.SoundTbl_CombatIdle = {
-							"voices/mil_jugg/cidle_1.mp3",
-							"voices/mil_jugg/cidle_2.mp3"
-						}
-
-					end
-
-				else
-
-					self:ZombieSounds_GiveDefault()
 
 				end
 
-			local effectData = EffectData()
-			effectData:SetOrigin(dmginfo:GetDamagePosition())
-			effectData:SetScale(1)
-			util.Effect("GlassImpact", effectData)
+			else
 
-			self:SetBodygroup(1,2)
-			self.Bleeds = true
+				self:ZombieSounds_GiveDefault()
 
-			return end
+			end
 
-		end
+		local effectData = EffectData()
+		effectData:SetOrigin(dmginfo:GetDamagePosition())
+		effectData:SetScale(1)
+		util.Effect("GlassImpact", effectData)
+
+		self:SetBodygroup(1,2)
+		self.Bleeds = true
+
+		return end
 
 		if self.HasSounds && self.HasImpactSounds then VJ_EmitSound(self,"physics/glass/glass_impact_bullet"..math.random(1,4)..".wav",70) end
 

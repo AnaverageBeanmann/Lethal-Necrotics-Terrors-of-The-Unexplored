@@ -5,7 +5,7 @@ include('shared.lua')
 	No parts of this code or any of its contents may be reproduced, copied, modified or adapted,
 	without the prior written consent of the author, unless otherwise indicated for stand-alone materials.
 -----------------------------------------------*/
-ENT.LNR_Walker = true
+ENT.TOTU_LNR_Walker = true
 ENT.LNR_Infected = false
 ENT.AnimTbl_Walk = {ACT_WALK}
 ENT.AnimTbl_Run = {ACT_WALK_CROUCH_AIM}
@@ -15,8 +15,8 @@ function ENT:Zombie_Difficulty()
 
 	if GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 1 then
 
-		self.StartHealth = 75
-		self.MeleeAttackDamage = math.Rand(5,10)
+		self.StartHealth = 55
+		self.MeleeAttackDamage = math.Rand(1,5)
 
 	elseif GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 2 then
 
@@ -35,19 +35,19 @@ function ENT:Zombie_Difficulty()
 
 	elseif GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 5 then
 
-		self.StartHealth = 275
+		self.StartHealth = 750
 		self.MeleeAttackDamage = math.Rand(25,30)
 
 	else
 
-		self.StartHealth = 125
+		self.StartHealth = 350
 		self.MeleeAttackDamage = math.Rand(10,15)
 
 	end
 
 	self:SetHealth(self.StartHealth)	
 
-	self.LNR_LegHP = self.StartHealth * 0.20
+	self.TOTU_LNR_LegHP = self.StartHealth * 0.20
 
 end
 /*-----------------------------------------------

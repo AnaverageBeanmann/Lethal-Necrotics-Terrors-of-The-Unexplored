@@ -27,10 +27,10 @@ ENT.ToTU_Weaponized_CarcRevivee = false
 function ENT:Zombie_CustomOnPreInitialize()
 
 	self.CanEat = false
-	self.LNR_Walker = false
+	self.TOTU_LNR_Walker = false
 	self.MeleeAttackDamageType = DMG_SLASH
 
-	if GetConVar("VJ_ToTU_Weaponized_Carcass_Bleed"):GetInt() == 1 then
+	if GetConVar("VJ_ToTU_Deimos_Carcass_Bleed"):GetInt() == 1 then
 		self.MeleeAttackBleedEnemy = true
 		self.MeleeAttackBleedEnemyChance = 3
 		self.MeleeAttackBleedEnemyDamage = math.random(3,4)
@@ -68,8 +68,8 @@ function ENT:Zombie_CustomOnPreInitialize()
 		self.ToTU_Weaponized_Carcass_CanZombineRun = true
 
 		if 
-			GetConVar("VJ_ToTU_Weaponized_Carcass_Exploders"):GetInt() == 1 && 
-			math.random(1,GetConVar("VJ_ToTU_Weaponized_Carcass_Exploders_Chance"):GetInt()) == 1 &&
+			GetConVar("VJ_ToTU_Deimos_Carcass_Exploders"):GetInt() == 1 && 
+			math.random(1,GetConVar("VJ_ToTU_Deimos_Carcass_Exploders_Chance"):GetInt()) == 1 &&
 			!self.ToTU_Weaponized_CarcRevivee
 		then
 			self.ToTU_Weaponized_Carcass_Exploder = true
@@ -88,7 +88,12 @@ function ENT:Zombie_CustomOnPreInitialize()
 			self.DeathSoundPitch = VJ_Set(85, 75)
 		end
 
-		if math.random(1,4) == 1 && !self.ToTU_Weaponized_Carcass_Exploder && !self.ToTU_Weaponized_CarcRevivee then
+		if
+			GetConVar("VJ_ToTU_Deimos_Carcass_RemortSubtypes"):GetInt() == 1 &&
+			math.random(1,GetConVar("VJ_ToTU_Deimos_Carcass_RemortSubtypes_Chance"):GetInt()) == 1 &&
+			!self.ToTU_Weaponized_Carcass_Exploder &&
+			!self.ToTU_Weaponized_CarcRevivee
+		then
 			if math.random(1,2) == 1 then
 				self.ToTU_Weaponized_Carcass_Type = 3
 				self.Model = {"models/totu/carcass_sci.mdl"}
@@ -147,8 +152,8 @@ function ENT:Zombie_CustomOnPreInitialize()
 		self:SetSkin(math.random(0,3))
 
 		if 
-			GetConVar("VJ_ToTU_Weaponized_Cyst_Exploders"):GetInt() == 1 && 
-			math.random(1,GetConVar("VJ_ToTU_Weaponized_Cyst_Exploders_Chance"):GetInt()) == 1 
+			GetConVar("VJ_ToTU_Deimos_Cyst_Exploders"):GetInt() == 1 && 
+			math.random(1,GetConVar("VJ_ToTU_Deimos_Cyst_Exploders_Chance"):GetInt()) == 1 
 		then
 			self.ToTU_Weaponized_Carcass_Exploder = true
 			self.DeathAnimationTime = 1.25
@@ -213,7 +218,7 @@ function ENT:Zombie_CustomOnInitialize()
 	end
 
 	-- add deimos hud, recolor other one to purple
-	-- util.AddNetworkString("vj_lnr_walker_hud")
+	-- util.AddNetworkString("vj_TOTU_LNR_Walker_hud")
 
 	if self:GetClass() == "npc_vj_totu_deimos_carcass" then
 
@@ -265,7 +270,7 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:Zombie_GlowEyes_Give()
 
-	if GetConVar("VJ_ToTU_Weaponized_Deimos_Eyes"):GetInt() == 0 or GetConVar("vj_npc_noidleparticle"):GetInt() == 1 then return end
+	if GetConVar("VJ_ToTU_Deimos_Deimos_Eyes"):GetInt() == 0 or GetConVar("vj_npc_noidleparticle"):GetInt() == 1 then return end
 
 	for i = 1,2 do	
 		local att = i == 2 && "eyeglow1" or "eyeglow2"		
@@ -282,7 +287,7 @@ function ENT:Zombie_GlowEyes_Give()
 		self:DeleteOnRemove(EyeGlow)
 	end
 
-	if GetConVar("VJ_ToTU_Weaponized_Deimos_Eyes"):GetInt() == 2 then
+	if GetConVar("VJ_ToTU_Deimos_Deimos_Eyes"):GetInt() == 2 then
 		local TrailColor = Color(220,0,255,255)
 
 		if self:GetClass() == "npc_vj_totu_deimos_carcass" then
@@ -370,13 +375,13 @@ function ENT:Zombie_Difficulty()
 
 	if GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 1 then
 
-		self.StartHealth = 150
-		self.MeleeAttackDamage = math.Rand(10,15)
+		self.StartHealth = 100
+		self.MeleeAttackDamage = math.Rand(5,10)
 
 	elseif GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 2 then
 
 		self.StartHealth = 175
-		self.MeleeAttackDamage = math.Rand(15,20)
+		self.MeleeAttackDamage = math.Rand(10,15)
 
 	elseif GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 3 then
 
@@ -390,24 +395,24 @@ function ENT:Zombie_Difficulty()
 
 	elseif GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 5 then
 
-		self.StartHealth = 350
+		self.StartHealth = 1000
 		self.MeleeAttackDamage = math.Rand(35,40)
 
 	else
 
-		self.StartHealth = 200
+		self.StartHealth = 400
 		self.MeleeAttackDamage = math.Rand(15,20)
 
 	end
 
 	self:SetHealth(self.StartHealth)
 
-	if self.ToTU_Weaponized_Carcass_Type == 2 then
+	if self.ToTU_Weaponized_Carcass_Type == 2 && GetConVar("VJ_ToTU_Deimos_Carcass_RemortSubtypes_Mechanics"):GetInt() == 1 then
 		self.StartHealth = self.StartHealth * 1.5
 		self:SetHealth(self.StartHealth)
 	end
 
-	self.LNR_LegHP = self.StartHealth * 0.20
+	self.TOTU_LNR_LegHP = self.StartHealth * 0.20
 
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
@@ -491,13 +496,13 @@ function ENT:Zombie_CustomOnThink_AIEnabled()
 			if self:GetClass() == "npc_vj_totu_deimos_cyst" then
 
 				self.SoundTbl_CombatIdle = {
-					"zombies/coastline/whale/cidle_1.mp3",
-					"zombies/coastline/whale/cidle_2.mp3",
-					"zombies/coastline/whale/cidle_3.mp3",
-					"zombies/coastline/whale/cidle_4.mp3",
-					"zombies/coastline/whale/cidle_5.mp3",
-					"zombies/coastline/whale/cidle_6.mp3",
-					"zombies/coastline/whale/cidle_7.mp3",
+					"voices/deimos/cyst/cidle_1.mp3",
+					"voices/deimos/cyst/cidle_2.mp3",
+					"voices/deimos/cyst/cidle_3.mp3",
+					"voices/deimos/cyst/cidle_4.mp3",
+					"voices/deimos/cyst/cidle_5.mp3",
+					"voices/deimos/cyst/cidle_6.mp3",
+					"voices/deimos/cyst/cidle_7.mp3",
 				}
 
 				VJ_EmitSound(self,self.SoundTbl_Alert,self.AlertSoundLevel,self:VJ_DecideSoundPitch(self.BeforeMeleeAttackSoundPitch.a,self.BeforeMeleeAttackSoundPitch.b))
@@ -528,7 +533,7 @@ function ENT:Zombie_CustomOnThink_AIEnabled()
 		if
 			self.ToTU_Weaponized_Carcass_ZombineRunning &&
 			self.ToTU_Weaponized_Carcass_ZombineRunT < CurTime() &&
-			!self.LNR_Crippled &&
+			!self.TOTU_LNR_Crippled &&
 			self.ToTU_Weaponized_Carcass_CanZombineRun
 		then
 		
@@ -541,7 +546,7 @@ function ENT:Zombie_CustomOnThink_AIEnabled()
 				}
 			end
 
-			if self.LNR_Crippled then
+			if self.TOTU_LNR_Crippled then
 				self.AnimTbl_IdleStand = {ACT_IDLE_STIMULATED}
 				self.AnimTbl_Walk = {ACT_IDLE_STIMULATED}
 				self.AnimTbl_Run = {ACT_IDLE_STIMULATED}
@@ -574,7 +579,7 @@ function ENT:Zombie_CustomOnThink_AIEnabled()
 
 			local enemydist = self:GetPos():Distance(self:GetEnemy():GetPos())
 
-			if !self.LNR_Crippled && !self.LNR_Crawler then
+			if !self.TOTU_LNR_Crippled && !self.LNR_Crawler then
 
 				if enemydist >= 450 then
 
@@ -616,7 +621,7 @@ function ENT:Zombie_CustomOnThink_AIEnabled()
 		end
 	end
 
-	if self.ToTU_Weaponized_Carcass_Type == 3 then
+	if self.ToTU_Weaponized_Carcass_Type == 3 && GetConVar("VJ_ToTU_Deimos_Carcass_RemortSubtypes_Mechanics"):GetInt() == 1 then
 
 		for _,v in ipairs(ents.FindInSphere(self:GetPos(),150)) do
 
@@ -661,7 +666,7 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:Zombie_CustomOnMeleeAttack_BeforeStartTimer(seed)
 
-	if self.LNR_Crippled then
+	if self.TOTU_LNR_Crippled then
 		self.AnimTbl_MeleeAttack = {"vjseq_crawl_attack2"}
 	return end
 

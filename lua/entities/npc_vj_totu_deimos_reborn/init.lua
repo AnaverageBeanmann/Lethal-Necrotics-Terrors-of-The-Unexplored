@@ -7,7 +7,7 @@ include('shared.lua')
 -----------------------------------------------*/
 function ENT:Zombie_GlowEyes_Give()
 
-	if GetConVar("VJ_ToTU_Weaponized_Deimos_Eyes"):GetInt() == 0 or GetConVar("vj_npc_noidleparticle"):GetInt() == 1  then return end
+	if GetConVar("VJ_ToTU_Deimos_Deimos_Eyes"):GetInt() == 0 or GetConVar("vj_npc_noidleparticle"):GetInt() == 1  then return end
 
 	for i = 1,2 do	
 		local att = i == 2 && "eyeglow1" or "eyeglow2"		
@@ -24,7 +24,7 @@ function ENT:Zombie_GlowEyes_Give()
 		self:DeleteOnRemove(EyeGlow)
 	end
 
-	if GetConVar("VJ_ToTU_Weaponized_Deimos_Eyes"):GetInt() == 2 then
+	if GetConVar("VJ_ToTU_Deimos_Deimos_Eyes"):GetInt() == 2 then
 		local TrailColor = Color(220,0,255,255)
 		local EyeTrail = util.SpriteTrail(self,8,TrailColor,false,5,0,0.25,1,"vj_base/sprites/vj_trial1")
 		local EyeTrail2 = util.SpriteTrail(self,9,TrailColor,false,5,0,0.25,1,"vj_base/sprites/vj_trial1")
@@ -105,7 +105,7 @@ function ENT:Zombie_Difficulty()
 	if GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 1 then
 
 		-- I'm Too Young To Die
-		self.StartHealth = 35
+		self.StartHealth = 10
 		self.MeleeAttackDamage = math.Rand(1,5)
 
 	elseif GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 2 then
@@ -129,7 +129,7 @@ function ENT:Zombie_Difficulty()
 	elseif GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 5 then
 
 		-- NIGHTMARE!
-		self.StartHealth = 600
+		self.StartHealth = 250
 		self.MeleeAttackDamage = math.Rand(25,30)
 
 	else
@@ -142,7 +142,7 @@ function ENT:Zombie_Difficulty()
 
 	self:SetHealth(self.StartHealth)	
 
-	self.LNR_LegHP = self.StartHealth * 0.20
+	self.TOTU_LNR_LegHP = self.StartHealth * 0.20
 
 end
 /*-----------------------------------------------

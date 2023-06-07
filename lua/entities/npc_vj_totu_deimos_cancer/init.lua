@@ -13,7 +13,7 @@ function ENT:Zombie_CustomOnPreInitialize()
 		self.AnimTbl_Walk = {ACT_WALK_AIM}
 		self.AnimTbl_Run = {ACT_WALK_AIM}
 		self.AnimTbl_IdleStand = {ACT_IDLE_AIM_STIMULATED}
-		if self.LNR_UsingRelaxedIdle == true then
+		if self.TOTU_LNR_UsingRelaxedIdle == true then
 			self.AnimTbl_IdleStand = {ACT_IDLE}
 		end
 	end end)
@@ -93,9 +93,9 @@ function ENT:Zombie_Difficulty()
 
 	if GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 1 then
 
-		self.StartHealth = 200
-		self.MeleeAttackDamage = math.Rand(10,15)
-		self.HealthRegenerationAmount = 2
+		self.StartHealth = 100
+		self.MeleeAttackDamage = math.Rand(5,10)
+		self.HealthRegenerationAmount = 1
 
 	elseif GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 2 then
 
@@ -117,21 +117,21 @@ function ENT:Zombie_Difficulty()
 
 	elseif GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 5 then
 
-		self.StartHealth = 600
+		self.StartHealth = 1250
 		self.MeleeAttackDamage = math.Rand(30,35)
 		self.HealthRegenerationAmount = 10
 
 	else
 
-		self.StartHealth = 300
+		self.StartHealth = 700
 		self.MeleeAttackDamage = math.Rand(15,20)
-		self.HealthRegenerationAmount = 4
+		self.HealthRegenerationAmount = 6
 
 	end
 
 	self:SetHealth(self.StartHealth)
 
-	self.LNR_LegHP = self.StartHealth * 0.20
+	self.TOTU_LNR_LegHP = self.StartHealth * 0.20
 
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
@@ -145,7 +145,7 @@ function ENT:UnCripple()
 
 	self.CanTurnWhileStationary = true
 
-	if self.LNR_UsingRelaxedIdle then
+	if self.TOTU_LNR_UsingRelaxedIdle then
 		self.AnimTbl_IdleStand = {ACT_IDLE_RELAXED}
 	else	
 		self.AnimTbl_IdleStand = {ACT_IDLE}
@@ -160,15 +160,23 @@ function ENT:UnCripple()
 		FirstP_Offset = Vector(0, 0, 5),
 	}	
 
-	if GetConVar("VJ_TOTU_LNR_JumpClimb"):GetInt() != 0 then
-		self:CapabilitiesAdd(bit.bor(CAP_MOVE_JUMP))
+	if
+		GetConVar("VJ_TOTU_LNR_JumpClimb"):GetInt() == 2
+	then
 		self:CapabilitiesAdd(bit.bor(CAP_MOVE_CLIMB))
 	end
 
-	self.HasDeathAnimation = true
-	self.LNR_Crippled = false
+	if
+		GetConVar("VJ_TOTU_LNR_JumpClimb"):GetInt() == 1 or
+		GetConVar("VJ_TOTU_LNR_JumpClimb"):GetInt() == 2
+	then
+		self:CapabilitiesAdd(bit.bor(CAP_MOVE_JUMP))
+	end
 
-	self.LNR_LegHP = self.StartHealth * 0.20
+	self.HasDeathAnimation = true
+	self.TOTU_LNR_Crippled = false
+
+	self.TOTU_LNR_LegHP = self.StartHealth * 0.20
 
 end
 /*-----------------------------------------------
