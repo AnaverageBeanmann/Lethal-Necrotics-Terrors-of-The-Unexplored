@@ -5,14 +5,15 @@ include("shared.lua")
 	No parts of this code or any of its contents may be reproduced, copied, modified or adapted,
 	without the prior written consent of the author, unless otherwise indicated for stand-alone materials.
 --------------------------------------------------*/
-ENT.Model = {"models/weapons/w_eq_smokegrenade_thrown.mdl"}
-ENT.SoundTbl_OnCollide = {"weapons/smokegrenade/grenade_hit1.wav"}
+ENT.Model = {"models/totu/w_eq_smokegrenade_thrown.mdl"}
+ENT.SoundTbl_OnCollide = {"fx/weapon/gren/grenade_hit1.wav"}
 ENT.IdleSoundLevel = 65
 ENT.RemoveOnHit = false
 ENT.IsIgnited = false
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:CustomPhysicsObjectOnInitialize(phys)
 	phys:Wake()
+	phys:SetMass(1)
 	phys:EnableGravity(true)
 	phys:EnableDrag(false)
 	phys:SetBuoyancyRatio(0)
@@ -22,26 +23,29 @@ end
 function ENT:CustomOnInitialize()
 
 	timer.Simple(2,function() if IsValid(self) then
-		self.IsIgnited = true
-		VJ_EmitSound(self,"weapons/smokegrenade/sg_explode.wav",80)
 
-		/*
-		-- add this when attachment is added to model
+		self.IsIgnited = true
+		VJ_EmitSound(self,"fx/weapon/gren/sg_explode.wav",80)
+
 		self.bullseye = ents.Create("obj_vj_bullseye")
 		self.bullseye:SetModel("models/hunter/plates/plate.mdl")
 		self.bullseye:SetParent(self)
-		self.bullseye:Fire("SetParentAttachment", "origin")
+		self.bullseye:Fire("SetParentAttachment", "bullseye")
 		self.bullseye:Spawn()
 		self.bullseye:SetNoDraw(true)
 		self.bullseye:DrawShadow(false)
-		self.bullseye.VJ_NPC_Class = self.VJ_NPC_Class
-		table.insert(self.VJ_AddCertainEntityAsFriendly, self.bullseye) -- In case relation class is changed dynamically!
+		
+		if GetConVar("VJ_ToTU_General_NotZombieAllied"):GetInt() == 1 then
+			self.bullseye.VJ_NPC_Class = {"CLASS_TOTU"}
+		else
+			self.bullseye.VJ_NPC_Class = {"CLASS_ZOMBIE"}
+		end
 		self:DeleteOnRemove(self.bullseye)
-		*/		
+
 	end end)
 
 	timer.Simple(10,function() if IsValid(self) then
-			self:Remove()
+		self:Remove()
 	end end)
 
 end

@@ -5,7 +5,7 @@ include("shared.lua")
 	No parts of this code or any of its contents may be reproduced, copied, modified or adapted,
 	without the prior written consent of the author, unless otherwise indicated for stand-alone materials.
 --------------------------------------------------*/
-ENT.Model = {"models/weapons/w_eq_smokegrenade_thrown.mdl"}
+ENT.Model = {"models/totu/w_eq_thermitegrenade_thrown.mdl"}
 ENT.SoundTbl_Idle = {"weapons/flaregun/burn.wav"}
 
 ENT.IdleSoundLevel = 65
@@ -69,11 +69,10 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:CustomOnThink()
 	if self.IsIgnited then
-		-- util.VJ_SphereDamage(self, self, self:GetPos(), 115, 5, DMG_BURN, true, true)
-				for _,v in ipairs(ents.FindInSphere(self:GetPos(),75)) do
-					if !v:IsOnFire() then
-						v:Ignite(4)
-					end
-				end
+		for _,v in ipairs(ents.FindInSphere(self:GetPos(),75)) do
+			if !v:IsOnFire() then
+				v:Ignite(4)
+			end
+		end
 	end
 end
