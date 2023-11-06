@@ -1,0 +1,18 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models/totu/milzombs/detonator/bulldozer_tan"
+	"$bumpmap" "models/totu/milzombs/detonator/bulldozer_n"
+
+	"$phong" "1"
+	"$phongboost" "1"
+	"$phongexponent" "150"
+
+	"$lightwarptexture"	"models/totu/lightwarp_soft_white"
+	"$phongalbedotint"      "1" 
+	"$phongfresnelranges"   "[0.5 1.5 8.0]"
+
+	"$detail" "models\totu\detail\ci_detail_dirt"
+	"$detailscale" "7.74"
+	"$detailblendfactor" "0.4"
+	"$detailblendmode" "0"
+}

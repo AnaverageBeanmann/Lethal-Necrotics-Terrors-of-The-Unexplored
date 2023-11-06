@@ -1,0 +1,9 @@
+vertexLitGeneric
+{
+	"$baseTexture" "models\totu\milzombs\detonator_bomb\blip2_peacemaker"
+
+	"$detail"	        "models/totu/detail/hunter_01_detail"
+	"$detailscale"          "1.20"
+	"$detailblendfactor"    "0.6"
+	"$detailblendmode"      "0"
+}
