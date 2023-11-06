@@ -20,6 +20,7 @@ ENT.MilZ_HelmetBroken = false
 ENT.MilZ_Corpsman = false
 ENT.MilZ_Corpsman_NextHealTime = CurTime()
 ENT.MilZ_Grunt_IsGrunt = false
+ENT.MilZ_HasGrenades = false
 
 ENT.MilZ_Det_Faceplate_Health = 1
 ENT.MilZ_Det_Faceplate_Broken = false
@@ -31,6 +32,7 @@ ENT.MiLZ_Det_Hector = false
 ENT.MilZ_Det_IsDetonator = false
 ENT.MilZ_Det_Kamikaze = false
 ENT.MilZ_Det_BombHealth = 1
+ENT.MilZ_Det_Bulk_GoingOff = false
 
 ENT.MilZ_Ghost_CloakBroke = false
 ENT.MilZ_Ghost_CloakHP = 1
@@ -55,6 +57,10 @@ ENT.MilZ_Hazmat_IsHazmat = false
 ENT.MilZ_Hazmat_TankHealth = 5
 ENT.MilZ_Hazmat_TankHit = false
 ENT.MilZ_Hazmat_Heat = 0
+
+ENT.MilZ_Tank_NextShumbleT = 0
+ENT.MilZ_Tank_NextShieldT = 0
+ENT.MilZ_Tank_PrintNotice = false
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:Zombie_CustomOnPreInitialize()
 
@@ -167,6 +173,7 @@ function ENT:Zombie_CustomOnPreInitialize()
 		self:GetClass() == "npc_vj_totu_milzomb_detonator_bulk"
 	then
 		self.MilZ_Det_IsDetonator = true
+		self.VJ_IsDetectableDanger = true
 	end
 
 	if
@@ -301,7 +308,7 @@ function ENT:Zombie_CustomOnPreInitialize()
 
 	elseif self:GetClass() == "npc_vj_totu_milzomb_detonator" then
 
-		self.Model = {"models/totu/detonator.mdl"}
+		self.Model = {"models/totu/milzombs/detonator.mdl"}
 
 		self.CanEat = false
 
@@ -325,7 +332,7 @@ function ENT:Zombie_CustomOnPreInitialize()
 
 	elseif self:GetClass() == "npc_vj_totu_milzomb_detonator_bulk" then
 
-		self.Model = {"models/totu/detonator_bulk.mdl"}
+		self.Model = {"models/totu/milzombs/detonator_bulk.mdl"}
 
 		self.CanEat = false
 
@@ -422,17 +429,19 @@ function ENT:Zombie_CustomOnPreInitialize()
 
 			end
 
-			self.ToTU_CanUseMovingAttacks = false
-			self.AnimTbl_MeleeAttack = {
-				"vjseq_nz_attack_stand_ad_1",
-				"vjseq_nz_attack_stand_ad_2-2",
-				"vjseq_nz_attack_stand_ad_2-3",
-				"vjseq_nz_attack_stand_ad_2-4",
-				"vjseq_nz_attack_stand_au_1",
-				"vjseq_nz_attack_stand_au_2-2",
-				"vjseq_nz_attack_stand_au_2-3",
-				"vjseq_nz_attack_stand_au_2-4"
-			}
+			if GetConVar("VJ_ToTU_MilZ_Tank_MovingAttacks"):GetInt() == 0 then
+				self.ToTU_CanUseMovingAttacks = false
+				self.AnimTbl_MeleeAttack = {
+					"vjseq_nz_attack_stand_ad_1",
+					"vjseq_nz_attack_stand_ad_2-2",
+					"vjseq_nz_attack_stand_ad_2-3",
+					"vjseq_nz_attack_stand_ad_2-4",
+					"vjseq_nz_attack_stand_au_1",
+					"vjseq_nz_attack_stand_au_2-2",
+					"vjseq_nz_attack_stand_au_2-3",
+					"vjseq_nz_attack_stand_au_2-4"
+				}
+			end
 
 		end
 
@@ -451,15 +460,13 @@ function ENT:Zombie_CustomOnPreInitialize()
 
 		self.VJ_IsHugeMonster = true
 
-		self.HasWorldShakeOnMove = true
-
 		if self:GetClass() == "npc_vj_totu_milzomb_tank" or self:GetClass() == "npc_vj_totu_fon_juggernaut" then
 
-			self.WorldShakeOnMoveAmplitude = 2
+			self.ToTU_WorldShakeOnMoveAmplitude = 1
 
 		else
 
-			self.WorldShakeOnMoveAmplitude = 1
+			self.ToTU_WorldShakeOnMoveAmplitude = 0.5
 
 		end
 
@@ -504,9 +511,9 @@ function ENT:Zombie_CustomOnPreInitialize()
 
 		self.bobm = ents.Create("prop_physics")	
 		if self:GetClass() == "npc_vj_totu_milzomb_detonator_bulk" then
-			self.bobm:SetModel("models/totu/detonator_bomb_bulk.mdl")
+			self.bobm:SetModel("models/totu/milzombs/detonator_bomb_bulk.mdl")
 		else
-			self.bobm:SetModel("models/totu/detonator_bomb.mdl")
+			self.bobm:SetModel("models/totu/milzombs/detonator_bomb.mdl")
 		end
 		self.bobm:SetLocalPos(self:GetPos())
 		self.bobm:SetLocalAngles(self:GetAngles())			
@@ -830,7 +837,7 @@ function ENT:Zombie_CustomOnInitialize()
 
 	end
 
-	if self:GetClass() == "npc_vj_totu_milzomb_tank" then
+	if self:GetClass() == "npc_vj_totu_milzomb_tank" && GetConVar("VJ_ToTU_MilZ_Tank_MovingAttacks"):GetInt() == 0 then
 
 		-- remove or reduce this?
 		self.MeleeAttackDistance = 25
@@ -986,6 +993,8 @@ function ENT:Zombie_CustomOnInitialize()
 			self.RangeAttackPos_Forward = 20
 			self.RangeAttackPos_Up = 20
 
+			self.MilZ_HasGrenades = true
+
 			self.ItemDropsOnDeath_EntityList = {
 				"item_ammo_pistol",
 				"item_ammo_357",
@@ -1104,7 +1113,7 @@ function ENT:Zombie_Difficulty()
 	elseif GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 4 then
 
 		self.StartHealth = 450
-		self.MeleeAttackDamage = math.Rand(20,25)
+		self.MeleeAttackDamage = math.Rand(15,20)
 
 	elseif GetConVar("VJ_TOTU_LNR_Difficulty"):GetInt() == 5 then
 
@@ -1233,22 +1242,23 @@ function ENT:Zombie_CustomOnThink_AIEnabled()
 				self:GetSequence() == self:LookupSequence("Climb96_03a_InPlace") or
 				self:GetSequence() == self:LookupSequence("Climb96_04a_InPlace") or
 				self:GetSequence() == self:LookupSequence("Climb96_05_InPlace") or
-				self:IsOnFire()
+				self:IsOnFire() or
+				self.ToTU_IsStumbling
 			then return end
 
 			if enemydist >= 350 && self.MilZ_Ghillie_PlayChangeStateAnim == 1 && CurTime() > self.MilZ_Ghillie_PlayChangeStateAnim_T then
 
-				self:ToTU_Ghillie_StartCrawling()
-				self.MilZ_Ghillie_PlayChangeStateAnim_T = CurTime() + (0.5)
 				local anim = {"vjseq_Stand_to_crouch"}
 				self:VJ_ACT_PLAYACTIVITY(anim,true,false,false)
+				self:ToTU_Ghillie_StartCrawling()
+				self.MilZ_Ghillie_PlayChangeStateAnim_T = CurTime() + (0.5)
 
 			elseif enemydist <= 150 && self.MilZ_Ghillie_PlayChangeStateAnim == 2 && CurTime() > self.MilZ_Ghillie_PlayChangeStateAnim_T then
 
-				self:ToTU_Ghillie_GetTheUp()
-				self.MilZ_Ghillie_PlayChangeStateAnim_T = CurTime() + (0.5)
 				local anim = {"vjseq_Crouch_to_stand"}				
 				self:VJ_ACT_PLAYACTIVITY(anim,true,false,false)
+				self:ToTU_Ghillie_GetTheUp()
+				self.MilZ_Ghillie_PlayChangeStateAnim_T = CurTime() + (0.5)
 				VJ_EmitSound(self,{"fx/ghille_rustling_"..math.random(1,3)..".mp3"},60,100)
 				VJ_EmitSound(self,{"fx/ghille_rustling_"..math.random(1,3)..".mp3"},60,100)
 				VJ_EmitSound(self,{"fx/ghille_rustling_"..math.random(1,3)..".mp3"},60,100)
@@ -1259,7 +1269,7 @@ function ENT:Zombie_CustomOnThink_AIEnabled()
 		end
 
 		if !self.Dead && self.VJ_IsBeingControlled && !self.TOTU_LNR_Crippled then
-			if self.VJ_TheController:KeyDown(IN_JUMP) then
+			if self.VJ_TheController:KeyDown(IN_ATTACK2) && !self:IsOnFire() then
 				if self.MilZ_Ghillie_PlayChangeStateAnim == 1 && CurTime() > self.MilZ_Ghillie_PlayChangeStateAnim_T then
 					self:ToTU_Ghillie_StartCrawling()
 					self.MilZ_Ghillie_PlayChangeStateAnim_T = CurTime() + (0.5)
@@ -1328,8 +1338,42 @@ function ENT:Zombie_CustomOnThink_AIEnabled()
 		end
 	end
 
-	if self.MilZ_Hazmat_IsHazmat && self.MilZ_Hazmat_Heat >= GetConVar("VJ_ToTU_MilZ_Hazmat_HeatSystem_Limit"):GetInt() then
-		self:ToTU_Hazmat_FuckingBlowUpAndShit()
+	if self.MilZ_Hazmat_IsHazmat then
+		if self.VJ_IsBeingControlled && self.VJ_TheController:KeyDown(IN_ATTACK2) && !self.MilZ_Hazmat_TankHit then
+			self.MilZ_Hazmat_TankHit = true
+			self:ToTU_Detonator_BombHitExplode()
+		end
+		if self.MilZ_Hazmat_Heat >= GetConVar("VJ_ToTU_MilZ_Hazmat_HeatSystem_Limit"):GetInt() then
+			self:ToTU_Hazmat_FuckingBlowUpAndShit()
+		end
+	end
+
+	if self:GetClass() == "npc_vj_totu_milzomb_tank" then
+		if self.VJ_IsBeingControlled && self.MilZ_Tank_NextShumbleT < CurTime() && self.MilZ_Tank_PrintNotice then
+			self.VJ_TheController:ChatPrint("You can stumble again.")
+			local badtotheboner = CreateSound(self.VJ_TheController, "ui/beepclear.wav", self.VJ_TheController)
+			badtotheboner:SetSoundLevel(0)
+			badtotheboner:Play()
+			self.MilZ_Tank_PrintNotice = false
+		end
+		if (self:GetEnemy() != nil && self:Visible(self:GetEnemy()) && !self.VJ_IsBeingControlled && !self.IsGuard && !self.ToTU_IsStumbling && !self:IsBusy() && self:IsMoving()) or (self.VJ_IsBeingControlled && self.VJ_TheController:KeyDown(IN_JUMP)) then
+			if self.MilZ_Tank_NextShumbleT < CurTime() then
+				self:VJ_ACT_PLAYACTIVITY("vjseq_shove_forward_01",true,2.6,false)
+				self.TOTU_LNR_NextStumbleT = CurTime() + 7
+				self:ToTU_ResetFlinchHitgroups()
+				if self.VJ_IsBeingControlled then
+					local randnexttankstumbletime = math.random(5,10)
+					self.MilZ_Tank_NextShumbleT = CurTime() + randnexttankstumbletime
+					self.VJ_TheController:ChatPrint("Can stumble again in "..randnexttankstumbletime.." seconds.")
+					local badtotheboner = CreateSound(self.VJ_TheController, "physics/nearmiss/whoosh_large1.wav")
+					badtotheboner:SetSoundLevel(0)
+					badtotheboner:Play()
+					self.MilZ_Tank_PrintNotice = true
+				else
+					self.MilZ_Tank_NextShumbleT = CurTime() + math.random(5,35)
+				end
+			end
+		end
 	end
 
 end
@@ -1425,6 +1469,45 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:ToTU_Ghillie_StartCrawling()
 
+	if
+		self.TOTU_LNR_Crippled or
+		self.ToTU_Crawling or
+		self:GetActivity() == ACT_STEP_BACK or
+		self:GetActivity() == ACT_STEP_FORE or
+		self:GetActivity() == ACT_SMALL_FLINCH or
+		self:GetActivity() == ACT_BIG_FLINCH or
+		self:GetActivity() == ACT_FLINCH_STOMACH or
+		self:GetActivity() == ACT_GMOD_SHOWOFF_STAND_01 or
+		self:GetActivity() == ACT_VM_DEPLOYED_FIRE or
+		self:GetSequence() == self:LookupSequence("jump_attack") or
+		self:GetSequence() == self:LookupSequence("nz_spawn_jump") or
+		self:GetSequence() == self:LookupSequence("nz_spawn_climbout_fast") or
+		self:GetSequence() == self:LookupSequence("Run_Stumble_01") or
+		self:GetSequence() == self:LookupSequence("Climb120_00_InPlace") or
+		self:GetSequence() == self:LookupSequence("Climb120_00a_InPlace") or
+		self:GetSequence() == self:LookupSequence("Climb120_03_InPlace") or
+		self:GetSequence() == self:LookupSequence("Climb120_03a_InPlace") or
+		self:GetSequence() == self:LookupSequence("Climb120_04_InPlace") or
+		self:GetSequence() == self:LookupSequence("Climb144_00_InPlace") or
+		self:GetSequence() == self:LookupSequence("Climb144_00a_InPlace") or
+		self:GetSequence() == self:LookupSequence("Climb144_01_InPlace") or
+		self:GetSequence() == self:LookupSequence("Climb144_03_InPlace") or
+		self:GetSequence() == self:LookupSequence("Climb144_03a_InPlace") or
+		self:GetSequence() == self:LookupSequence("Climb144_04_InPlace") or
+		self:GetSequence() == self:LookupSequence("Climb72_03_InPlace") or
+		self:GetSequence() == self:LookupSequence("Climb72_04_InPlace") or
+		self:GetSequence() == self:LookupSequence("Climb72_05_InPlace") or
+		self:GetSequence() == self:LookupSequence("Climb72_06_InPlace") or
+		self:GetSequence() == self:LookupSequence("Climb72_07_InPlace") or
+		self:GetSequence() == self:LookupSequence("Climb96_00_InPlace") or
+		self:GetSequence() == self:LookupSequence("Climb96_00a_InPlace") or
+		self:GetSequence() == self:LookupSequence("Climb96_03_InPlace") or
+		self:GetSequence() == self:LookupSequence("Climb96_03a_InPlace") or
+		self:GetSequence() == self:LookupSequence("Climb96_04a_InPlace") or
+		self:GetSequence() == self:LookupSequence("Climb96_05_InPlace") or
+		self:IsOnFire()
+	then return end
+
 	self.CanTurnWhileStationary = false
 	self.HasIdleSounds = false
 	if self.TOTU_LNR_Walker then
@@ -1449,7 +1532,7 @@ function ENT:ToTU_Ghillie_StartCrawling()
 
 	self.VJC_Data = {
 		CameraMode = 1,
-		ThirdP_Offset = Vector(30, 25, -20),
+		ThirdP_Offset = Vector(30, 25, -90),
 		FirstP_Bone = "ValveBiped.Bip01_Head1",
 		FirstP_Offset = Vector(5, 0, -1),
 	}
@@ -1460,6 +1543,46 @@ function ENT:ToTU_Ghillie_StartCrawling()
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:ToTU_Ghillie_GetTheUp()
+
+	if
+		self.TOTU_LNR_Crippled or
+		self.ToTU_Crawling or
+		self:GetActivity() == ACT_STEP_BACK or
+		self:GetActivity() == ACT_STEP_FORE or
+		self:GetActivity() == ACT_SMALL_FLINCH or
+		self:GetActivity() == ACT_BIG_FLINCH or
+		self:GetActivity() == ACT_FLINCH_STOMACH or
+		self:GetActivity() == ACT_GMOD_SHOWOFF_STAND_01 or
+		self:GetActivity() == ACT_VM_DEPLOYED_FIRE or
+		self:GetSequence() == self:LookupSequence("jump_attack") or
+		self:GetSequence() == self:LookupSequence("nz_spawn_jump") or
+		self:GetSequence() == self:LookupSequence("nz_spawn_climbout_fast") or
+		self:GetSequence() == self:LookupSequence("Run_Stumble_01") or
+		self:GetSequence() == self:LookupSequence("Climb120_00_InPlace") or
+		self:GetSequence() == self:LookupSequence("Climb120_00a_InPlace") or
+		self:GetSequence() == self:LookupSequence("Climb120_03_InPlace") or
+		self:GetSequence() == self:LookupSequence("Climb120_03a_InPlace") or
+		self:GetSequence() == self:LookupSequence("Climb120_04_InPlace") or
+		self:GetSequence() == self:LookupSequence("Climb144_00_InPlace") or
+		self:GetSequence() == self:LookupSequence("Climb144_00a_InPlace") or
+		self:GetSequence() == self:LookupSequence("Climb144_01_InPlace") or
+		self:GetSequence() == self:LookupSequence("Climb144_03_InPlace") or
+		self:GetSequence() == self:LookupSequence("Climb144_03a_InPlace") or
+		self:GetSequence() == self:LookupSequence("Climb144_04_InPlace") or
+		self:GetSequence() == self:LookupSequence("Climb72_03_InPlace") or
+		self:GetSequence() == self:LookupSequence("Climb72_04_InPlace") or
+		self:GetSequence() == self:LookupSequence("Climb72_05_InPlace") or
+		self:GetSequence() == self:LookupSequence("Climb72_06_InPlace") or
+		self:GetSequence() == self:LookupSequence("Climb72_07_InPlace") or
+		self:GetSequence() == self:LookupSequence("Climb96_00_InPlace") or
+		self:GetSequence() == self:LookupSequence("Climb96_00a_InPlace") or
+		self:GetSequence() == self:LookupSequence("Climb96_03_InPlace") or
+		self:GetSequence() == self:LookupSequence("Climb96_03a_InPlace") or
+		self:GetSequence() == self:LookupSequence("Climb96_04a_InPlace") or
+		self:GetSequence() == self:LookupSequence("Climb96_05_InPlace") or
+		self:IsOnFire()
+	then return end
+
 
 	self.CanTurnWhileStationary = true
 	self.FootStepSoundLevel = 70
@@ -1519,7 +1642,7 @@ function ENT:ToTU_Ghillie_StartBurning()
 
 	self.VJC_Data = {
 		CameraMode = 1,
-		ThirdP_Offset = Vector(30, 25, -20),
+		ThirdP_Offset = Vector(40, 20, -50),
 		FirstP_Bone = "ValveBiped.Bip01_Head1",
 		FirstP_Offset = Vector(5, 0, -1),
 	}
@@ -1604,13 +1727,13 @@ function ENT:CustomRangeAttackCode()
 		(!self.VJ_IsBeingControlled or self.VJ_IsBeingControlled && self.VJ_TheController:KeyDown(IN_ATTACK2))
 	then
 
-		if self.MilZ_GunAmmo >= 0  then
+		if self.MilZ_GunAmmo <= 0  then
 
 			VJ_EmitSound(self, "vj_weapons/dryfire_pistol.wav", 70, 100)
 
 		end
 
-		if self.MilZ_GunAmmo < 18 and self.MilZ_GunAmmo > 0 then
+		if self.MilZ_GunAmmo >= 1 then
 
 			local bullet = {}
 			bullet.Num = 1
@@ -1648,10 +1771,9 @@ function ENT:CustomRangeAttackCode()
 			effectData:SetOrigin(self:GetPos())
 			util.Effect("ShellEject", effectData)
 
-			if GetConVar("VJ_ToTU_MilZ_ShootableGun_Bullets_Infinite"):GetInt() == 0 then
-				self.MilZ_GunAmmo = self.MilZ_GunAmmo - 1
-				if self.VJ_IsBeingControlled then
-					self.VJ_TheController:ChatPrint("Ammo left: "..self.MilZ_GunAmmo.."")
+			if !self.VJ_IsBeingControlled or self.VJ_IsBeingControlled && GetConVar("VJ_ToTU_General_PossessionUpgrades"):GetInt() == 0 then
+				if GetConVar("VJ_ToTU_MilZ_ShootableGun_Bullets_Infinite"):GetInt() == 0 then
+					self.MilZ_GunAmmo = self.MilZ_GunAmmo - 1
 				end
 			end
 

@@ -123,37 +123,27 @@ function ENT:Zombie_CustomOnThink_AIEnabled()
 	if self.MilZ_Det_Beep_BeepT < CurTime() && self.MilZ_Det_Beep_CanBeep && !self.Dead then
 
 		if self:GetClass() == "npc_vj_totu_milzomb_detonator_bulk" then
-
-			VJ_EmitSound(self,{"fx/detonator_beep.mp3"},65,45)
-
+			VJ_EmitSound(self,{"fx/detonator_beep.mp3"},65,45) -- get a new sound please
+			VJ_EmitSound(self,{"weapons/c4/c4_beep1.wav"},65,70) -- get a new sound please
+			VJ_EmitSound(self,{"npc/roller/mine/combine_mine_deploy1.wav"},65,45) -- get a new sound please
+			VJ_EmitSound(self,{"npc/scanner/combat_scan"..math.random(1,5)..".wav"},70,math.random(95,105)) -- get a new sound please
 		else
-
 			if self.MiLZ_Det_Hector then
-
 				VJ_EmitSound(self,{"fx/egg/ding.mp3"},65,100)
-
 			elseif self.MilZ_Det_Kamikaze then
-
 				if self:GetEnemy() != nil then
-
 					VJ_EmitSound(self,{"fx/egg/kamikaze_yell.wav"},70,100)
-
 				else
-
 					VJ_EmitSound(self,{"fx/egg/kamikaze_yell2.wav"},65,100)
-
 				end
-
 			else
-
 				VJ_EmitSound(self,{"fx/detonator_beep.mp3"},65,100)
-
 			end
-
 		end
 
 		if GetConVar("VJ_ToTU_MilZ_Det_BombLights"):GetInt() == 1 or GetConVar("VJ_ToTU_MilZ_Det_BombLights"):GetInt() == 2 then
 
+			-- sprite glow
 			local bombglow = ents.Create("env_sprite")
 			bombglow:SetKeyValue("model","vj_base/sprites/vj_glow1.vmt")
 			bombglow:SetKeyValue("scale", "0.07")
@@ -169,6 +159,7 @@ function ENT:Zombie_CustomOnThink_AIEnabled()
 
 			if GetConVar("VJ_ToTU_MilZ_Det_BombLights"):GetInt() == 2 then
 
+				-- light glow
 				local bomblight = ents.Create("light_dynamic")
 				bomblight:SetKeyValue("brightness", "7")
 				bomblight:SetKeyValue("distance", "35")
@@ -184,9 +175,52 @@ function ENT:Zombie_CustomOnThink_AIEnabled()
 
 		end
 
+		if math.random(1,20) == 1 && self:GetEnemy() != nil && !self.Dead && self:Visible(self:GetEnemy()) then -- also add a distance check of about 750 units or so
+			if self:GetClass() == "npc_vj_totu_milzomb_detonator_bulk" && !self.MilZ_Det_Bulk_GoingOff then
+				self.MilZ_Det_Bulk_GoingOff = true
+				self.MilZ_Det_Beep_CanBeep = false
+				VJ_EmitSound(self,{"npc/scanner/scanner_siren2.wav"},80,100)
+				VJ_EmitSound(self,{"fx/detonator_preexplode.mp3"},100,60)
+				timer.Simple(2,function() if IsValid(self) then
+					if GetConVar("VJ_ToTU_General_EasterEggs"):GetInt() == 1 then
+						if math.random(1,100) == 1 then
+							if math.random(1,2) == 1 then
+								VJ_EmitSound(self,{"fx/egg/shitssshit.mp3"},80,100)
+								VJ_EmitSound(self,{"fx/egg/shitssshit.mp3"},80,100)
+							else
+								timer.Simple(0.2,function() if IsValid(self) && !self.Dead then
+									VJ_EmitSound(self,{"fx/egg/wa.mp3"},80,100)
+									VJ_EmitSound(self,{"fx/egg/wa.mp3"},80,100)
+									VJ_EmitSound(self,{"fx/egg/wa.mp3"},100,100)
+								end end)
+							end
+						end
+					end
+				end end)
+				timer.Simple(4,function() if IsValid(self) then
+					self:ToTU_Detonator_CommitDie()
+				end end)
+			else
+				-- if math.random(1,2) == 1 then
+					self:ToTU_Detonator_CommitDie()
+				-- end
+			end
+		return end
+
 		if self:GetClass() == "npc_vj_totu_milzomb_detonator_bulk" then
 
-			self.MilZ_Det_Beep_BeepT = CurTime() + 4
+			if self.Dead == false && self:GetEnemy() != nil && self.VJ_IsBeingControlled == false then
+				local EnemyDistance = self:VJ_GetNearestPointToEntityDistance(self:GetEnemy(),self:GetPos():Distance(self:GetEnemy():GetPos()))
+				if EnemyDistance <= 250 then
+					self.MilZ_Det_Beep_BeepT = CurTime() + 1
+				elseif EnemyDistance <= 700 then
+					self.MilZ_Det_Beep_BeepT = CurTime() + 2
+				else
+					self.MilZ_Det_Beep_BeepT = CurTime() + 4
+				end
+			else
+				self.MilZ_Det_Beep_BeepT = CurTime() + 4
+			end
 
 		else
 
@@ -200,15 +234,15 @@ function ENT:Zombie_CustomOnThink_AIEnabled()
 
 				else
 
-					if EnemyDistance <= 300 then
+					if EnemyDistance <= 150 then
 
 						self.MilZ_Det_Beep_BeepT = CurTime() + 0.35
 
-					elseif EnemyDistance <= 750 then
+					elseif EnemyDistance <= 450 then
 
 						self.MilZ_Det_Beep_BeepT = CurTime() + 0.70
 
-					elseif EnemyDistance <= 1100 then
+					elseif EnemyDistance <= 800 then
 
 						self.MilZ_Det_Beep_BeepT = CurTime() + 1.05
 
@@ -238,26 +272,30 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:Zombie_CustomOnMeleeAttack_BeforeStartTimer()
 
-	if !self.MilZ_Det_DeathExplosionAllowed then
+	-- if IsValid(self) then return end
+
+	if self.VJ_IsBeingControlled then
+		self.MeleeAttackAnimationAllowOtherTasks = false
+	end
+
+	if self:GetClass() == "npc_vj_totu_milzomb_detonator" && !self.MilZ_Det_DeathExplosionAllowed && math.random(1,3) == 1 then
 
 		self.HasMeleeAttack = false
 		self.MilZ_Det_Beep_CanBeep = false
 
 		if self.LNR_Crippled then
 
-			if self:GetClass() == "npc_vj_totu_milzomb_detonator_bulk" then
-
-				self.AnimTbl_MeleeAttack = {"vjseq_crawl_idle"}
-
-			else
-
-				self.AnimTbl_MeleeAttack = {"vjseq_crawl_idle2"}
-
-			end
+			self.AnimTbl_MeleeAttack = {"vjseq_crawl_idle2"}
 
 		end
 
 		if self:GetClass() == "npc_vj_totu_milzomb_detonator" && !self.MilZ_Det_Faceplate_Broken then
+
+			self.AnimTbl_MeleeAttack = {
+				"vjseq_nz_sonic_attack_2",
+				"vjseq_nz_death_microwave_2",
+				"vjseq_nz_death_microwave_3",
+			}
 
 			self.SoundTbl_BeforeMeleeAttack = {
 				"voices/det/pain_critical_1.mp3",
@@ -290,53 +328,11 @@ function ENT:Zombie_CustomOnMeleeAttack_BeforeStartTimer()
 
 		end
 
-	if self:GetClass() == "npc_vj_totu_milzomb_detonator_bulk" then
-
-		VJ_EmitSound(self,{"fx/detonator_preexplode.mp3"},100,60)
-
-	else
-
 		VJ_EmitSound(self,{"fx/detonator_preexplode.mp3"},75,100)
 
-	end
-
-	if self:GetClass() == "npc_vj_totu_milzomb_detonator_bulk" then
-
-		if GetConVar("VJ_ToTU_General_EasterEggs"):GetInt() == 1 then
-
-			if math.random(1,100) == 1 then
-
-				if math.random(1,2) == 1 then
-
-					VJ_EmitSound(self,{"fx/egg/shitssshit.mp3"},100,100)
-
-				else
-
-					timer.Simple(0.2,function() if IsValid(self) && !self.Dead then
-						VJ_EmitSound(self,{"fx/egg/wa.mp3"},100,100)
-					end end)
-
-				end
-
-			end
-
-		end
-
-			timer.Simple(2,function() if IsValid(self) && !self.Dead then
-
-				self:ToTU_Detonator_CommitDie()
-
-			end	end)
-
-		else
-
-			timer.Simple(1.25,function() if IsValid(self) && !self.Dead then
-
-				self:ToTU_Detonator_CommitDie()
-
-			end	end)
-
-		end
+		timer.Simple(1.25,function() if IsValid(self) && !self.Dead then
+			self:ToTU_Detonator_CommitDie()
+		end	end)
 
 	end
 
@@ -357,7 +353,7 @@ function ENT:ToTU_Detonator_CommitDie()
 	end
 
 	local d = DamageInfo()
-	d:SetDamage(self:GetMaxHealth())
+	d:SetDamage(self:GetMaxHealth() + 99999)
 	d:SetAttacker(self)
 	d:SetDamageType(DMG_GENERIC) 
 	self:TakeDamageInfo(d)
@@ -573,7 +569,6 @@ function ENT:CustomOnKilled(dmginfo,hitgroup)
 		util.Effect( "Explosion", effectdata )
 		util.Effect( "VJ_Small_Explosion1", effectdata )
 
-		VJ_EmitSound(self,"fx/funny.mp3",85)
 		ParticleEffect("vj_explosion2",self:GetPos() + self:GetUp()*48 + self:GetForward()*1,Angle(0,0,0),nil) 
 		ParticleEffect("vj_explosion1",self:GetPos() + self:GetUp()*15,Angle(0,0,0),nil)
 		ParticleEffect("vj_explosionfire2",self:GetPos() + self:GetUp()*20,Angle(0,0,0),nil)
@@ -607,6 +602,7 @@ function ENT:CustomOnKilled(dmginfo,hitgroup)
 			VJ_EmitSound(self,"fx/funny.mp3",180)
 			VJ_EmitSound(self,"fx/funny.mp3",0)
 			VJ_EmitSound(self,"fx/funny.mp3",180)
+			VJ_EmitSound(self,"fx/funny.mp3",85)
 			VJ_EmitSound(self,"ambient/explosions/explode_"..math.random(1,9)..".wav",180)
 			VJ_EmitSound(self,"ambient/explosions/explode_"..math.random(1,9)..".wav",70)
 
@@ -626,6 +622,7 @@ function ENT:CustomOnKilled(dmginfo,hitgroup)
 				util.VJ_SphereDamage(self, self, self:GetPos(), 200, 125, DMG_BLAST, true, true, {Force=70})
 			end
 			util.ScreenShake(self:GetPos(), 300, 500, 1.6, 1200)
+			VJ_EmitSound(self,"fx/funny.mp3",85,150)
 
 		end
 
