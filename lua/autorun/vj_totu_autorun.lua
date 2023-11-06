@@ -11,9 +11,6 @@ local AddonType = "SNPC"
 local AutorunFile = "autorun/vj_totu_autorun.lua"
 -------------------------------------------------------
 local VJExists = file.Exists("lua/autorun/vj_base_autorun.lua","GAME")
-local LNRHL2Exists = file.Exists("lua/autorun/vj_lnrhl2_autorun.lua","GAME")
-local LNRSpecialsExists = file.Exists("lua/autorun/vj_lnrspecials_autorun.lua","GAME")
-local LNRExtrasExists = file.Exists("lua/autorun/vj_lnre_autorun.lua","GAME")
 
 if VJExists == true then
 
@@ -266,70 +263,8 @@ if VJExists == true then
 		
 		use this for the trailer
 		https://youtu.be/QEUS4uh4c4Y
-		
-		todo
-		- convar for failsafe doorsound options (sound used if it doesn't detect a doortype)
-		- fix up possession
-		
+
 		make it so spectre corpse floats up and then vanishes
-
-		for nightkin showcase vid
-		- opening: show off a nightkin den with slow zooms
-			* show a squaller sitting alone at the end
-			* use "As the Wall Protects, So Must We" as the music (Postal Brain Damaged soundtrack)
-		- show of giant zomb stomp move, hazmats, and resting behavior beforehand
-		- map: necro forest?
-		- weapons: urban coalition
-			* Glock 17
-			* M1911
-			* Model 329PD
-			* Mini-14
-			* Remington 870
-			* IZh-58
-		- playermodels: hunter-looking dudes or monster boys
-		- senseless violence part: shitty gmod realism section
-		- for the squaller bit:
-		* do a sudden cut to where it would be standing, but nothing's there
-		* camera is completely still
-		* cut to black, then cut to shaky cam pov
-		* guy is running from a squaller and hiding
-		* at the end, show the squallers face and freeze-frame + glitch sounds
-		* move onto the next zomb like nothing happened
-
-		script for nightkin showcase video
-		- fade to necro forest
-		- show the store by the train tracks or the bunker behind the barn
-		- have a scragg bust through the door (and run off?) and put up the "hey welcome" text
-		- explain we have some things to show rq first
-		- go back to de_secretcamp
-		- show off resting behavior
-		- show stomp attack using tank
-		- show hazmat
-		- return to forest
-		- do a shitty pizza tower character swap thing with the scragg (have it say "back to that guy")
-		- show the zomb standing there then fade into the demonstration
-		- show off the scragg
-		- show off the skitter
-		- show off the scourge
-		- show off the squaller
-		- show off scylla
-		- show off the spectre
-		- show off the shrieker
-		- show off the convars for these
-		- senseless violence bit
-		* fade into a view of the church
-		* show death everywhere
-		* have a priest guy shoot a zombie out a door
-		* have him go on a rampage shooting down nightkin before leaving
-		* have a duel with scylla at the end
-		- deimos teaser
-		* fade into boreas lab place
-		* show death around the place
-		* have a cazador run past the camera before fading to black
-		
-		shots to redo
-		- squaller 1v2
-		- show squaller has different attack sounds depending on if it's moving or not
 
 		for cepheus strain showcase vid
 		- map: boreas indoor areas
@@ -366,14 +301,6 @@ if VJExists == true then
 		- peacekeeper
 		- caretaker
 		- smog
-		
-		d-strain = Deimos
-		- carcass
-		- cazador
-		- cyst
-		- redead
-		- cancer
-		- revenant
 		
 		dmg types
 		name - what causes it
@@ -424,8 +351,6 @@ if VJExists == true then
 		DMG_NERVEGAS			  - Neurotoxin damage
 		DMG_RADIATION			  - Radiation damage & it will be ignored by most vehicle passengers
 
-		collapse TOTU_LNR_Crippled and LNR_Crawler into 1 variable
-		- make sure all existing zombies don't have LNR_Crawler in them
 		add lying and sitting behavior
 		- update animations to include events
 		add more spawners
@@ -439,29 +364,15 @@ if VJExists == true then
 		do varients for walker only, infected only, and both
 		see if you can use spawners as a base for spawners
 
-		april 20th
-		- upload bbbos to the workshop
-
-		june 7th
-		- upload whatever's polished to the workshop as a w.i.p. early access thing
-		- update it with a new group when the group is all ready
-		- edit the og one so it's like "hey this is the old one check out the new one"
-		- continue working on it till it's all ready
-		- when it's finished unlist the old one
-
 		add nmrih crawler biting anim for eating crawlers
-		
-		add these to milzombs? https://steamcommunity.com/sharedfiles/filedetails/?id=2926996172&searchtext=
-		
-		have wark help with the deimos showcase
-		
+
 		desert zombs?
 		- ideas
 		- desert milzombs
 		- mummy (basic zomb equivilant?)
 		- lizard (speedy crawler)
 		- move bonfire to this group
-		
+
 		make it so electricity can short-cirquit the ghost cloak and maybe the milzomb radio
 		
 		halloween mode feedback loop https://youtu.be/HPlKUziuXC0
@@ -485,48 +396,7 @@ if VJExists == true then
 		- models/props_lab/desklamp01.mdl
 		- models/props_wasteland/prison_pipefaucet001a.mdl
 		- models/props_wasteland/prison_throwswitchlever001.mdl
-		
 
-		- script for deimos showcase
-		- intro shot
-			- map: bigcity night
-			- song: land (0.5 pitch)
-			- show that the place is absolutely destroyed, lots of fires going on and stuff
-			- get closer to the streets to show off mostly redeads wandering around
-			- when we get to the first zomb at facility gamma do this instead
-				- map: boreas
-				- song: my cold lover or freezing point (probably this one), either of which gets slowed down alot
-				- show that the place is a wreck
-				- see if you can get stormfox 2 to look good outside
-		- npc intro shot
-			- do the cool spinny camera again but slower
-			- show name, health, damage, voice actor, and special gimmicks if it has any
-			- for bigcity zombs use land, for mort zombs use whatever we pick for the gamma intro shots
-			- do fades to show off different skin/bodygroup combinations and/or different subtypes
-		- film locations
-			- bigcitynight: an open section in the packed city section
-			- boreas: the cargo bay area
-		
-
-		music for deimos showcase
-		
-		taitoki
-		* definitely
-		- Lone Guy
-		- Land (probably 0.5 pitch)
-		- I'm Alive
-		
-		good
-		- Scum of the Earth
-
-		* maybe
-		- Bracket
-		- Living in Hell
-		- Men Only
-		- Soft Hearts
-		- Something isn't right
-		- The Feel of Her (probably 0.8)
-		- Father
 		
 		music for backcounty showcase
 		
@@ -565,40 +435,6 @@ if VJExists == true then
 		music for milzomb showcase redo
 
 
-		models to add $includemodel "totu/animations/zombie_animrig_valve_movement.mdl" to:
-		
-		base infected
-		
-		airman wal
-		airman inf
-		bulldozer
-		detonator
-		bulk detonator
-		ghillie wal
-		ghillie inf
-		ghost wal
-		ghost inf
-		hazmat wal
-		hazmat inf
-		grunt wal
-		grunt inf
-		tank
-		juggernaut
-		
-		scragg
-		scylla
-		shrieker
-		skitter
-		spectre
-		spitballer
-		squaller
-		
-		gail
-		
-		
-		make it so healing zombs can un-cripple zombs when they heal them
-		
-		do heavy playtesting to find any missing stuff from lnr hl2
 		
 		update the sitting/lying events
 		
@@ -628,6 +464,22 @@ if VJExists == true then
 			- detonators drop live bombs when killed (explode if shot)
 			- some sort of giant deimos zombie that falls over when it stops running
 			- "hazmat suit zombie which explodes into damaging virus cloud"
+
+	https://youtu.be/TUP_CKZuIuc
+	use these for something
+	likely an aquos zomb
+
+
+	use that one cool shirt for aquos
+	https://gamebanana.com/mods/182235
+
+
+	add doom 2016 soldier possessed voice to deimos zombs
+
+	revamp update name ideas
+	MilZomb - Reporting for Duty
+	Nightkin - Faith in Sangue
+	Deimos - Metamorphosis
 
 	*/
 
@@ -1258,12 +1110,10 @@ if VJExists == true then
 
 */
 
-    VJ.AddClientConVar("VJ_ToTU_LNR_ZombieOverlay", 1, {FCVAR_ARCHIVE})
-    VJ.AddClientConVar("VJ_ToTU_LNR_BloodDecals", 1, {FCVAR_ARCHIVE})
+    VJ.AddClientConVar("VJ_ToTU_LNR_ZombieOverlay", 1, "test")
+    VJ.AddClientConVar("VJ_ToTU_LNR_BloodDecals", 1, "test2")
 	
 	local AddConvars = {}		
-
-	-- AddConvars["VJ_ToTU_General_PainMode"] = 0
 
 	AddConvars["VJ_ToTU_General_DamageImmunity"] = 3
 	AddConvars["VJ_ToTU_MilZ_Hazmat_HeatSystem"] = 1
@@ -1291,18 +1141,24 @@ if VJExists == true then
 	AddConvars["VJ_ToTU_Deimos_Revenant_Healing"] = 1
 	AddConvars["VJ_ToTU_Deimos_Revenant_SpeedBoost"] = 1
 
+	AddConvars["VJ_ToTU_General_PainMode"] = 0
+	AddConvars["VJ_ToTU_General_PossessionUpgrades"] = 1
+	AddConvars["VJ_ToTU_MilZ_Tank_MovingAttacks"] = 1
+	AddConvars["VJ_ToTU_MilZ_Tank_Shielding"] = 1
+	AddConvars["VJ_ToTU_General_CanEat"] = 1
+	AddConvars["VJ_ToTU_General_KillInfectChance"] = 1
 
 	AddConvars["VJ_ToTU_LNR_Infection"] = 1
-	AddConvars["VJ_ToTU_LNR_InfectionHit"] = 1
+	AddConvars["VJ_ToTU_LNR_InfectionHit"] = 0
 	AddConvars["VJ_ToTU_LNR_PlayerZombie"] = 1
 	AddConvars["VJ_TOTU_LNR_Biter"] = 1
 	AddConvars["VJ_TOTU_LNR_Biter_Chance"] = 3
 	AddConvars["VJ_ToTU_LNR_Runner"] = 0
-	AddConvars["VJ_TOTU_LNR_SuperSprinter"] = 1
-	AddConvars["VJ_ToTU_LNR_Crawl"] = 1
+	AddConvars["VJ_TOTU_LNR_SuperSprinter"] = 0
+	AddConvars["VJ_ToTU_LNR_Crawl"] = 0
 	AddConvars["VJ_ToTU_LNR_Eyes"] = 1
 	AddConvars["VJ_ToTU_LNR_Alert"] = 1
-	AddConvars["VJ_ToTU_LNR_JumpClimb"] = 0
+	AddConvars["VJ_ToTU_LNR_JumpClimb"] = 2
 	AddConvars["VJ_ToTU_LNR_GroundRise"] = 1
 	AddConvars["VJ_ToTU_LNR_BreakDoors"] = 1
 	AddConvars["VJ_ToTU_LNR_Headshot"] = 0
@@ -1322,8 +1178,8 @@ if VJExists == true then
 		
 	AddConvars["VJ_ToTU_SpawnMenu_SortByCategory"] = 0
 
-	AddConvars["VJ_ToTU_Spawn_UniversalDig"] = 0
-	AddConvars["VJ_ToTU_Spawn_DigChance"] = 5
+	AddConvars["VJ_ToTU_Spawn_UniversalDig"] = 1
+	AddConvars["VJ_ToTU_Spawn_DigChance"] = 1
 	AddConvars["VJ_ToTU_Spawn_AlertSound"] = 1
 
 	AddConvars["VJ_ToTU_General_MovingDeathAnimations"] = 1
@@ -1337,8 +1193,8 @@ if VJExists == true then
 	AddConvars["VJ_ToTU_General_EasterEggs"] = 1
 	AddConvars["VJ_ToTU_General_NotZombieAllied"] = 0
 	AddConvars["VJ_ToTU_General_Stumbling_Disable"] = 0
-	AddConvars["VJ_ToTU_General_DefaultVoices_AltInfected"] = 1
-	AddConvars["VJ_ToTU_General_DefaultVoices_AltWalker"] = 1
+	AddConvars["VJ_ToTU_General_DefaultVoices_AltInfected"] = 0
+	AddConvars["VJ_ToTU_General_DefaultVoices_AltWalker"] = 0
 	AddConvars["VJ_ToTU_General_RestingSystem"] = 1
 
 	AddConvars["VJ_ToTU_MilZ_Weapons"] = 1
@@ -1446,18 +1302,24 @@ if VJExists == true then
 			VJ_ToTU_Deimos_Revenant_Healing =  "1",
 			VJ_ToTU_Deimos_Revenant_SpeedBoost = "1",
 
+			VJ_ToTU_General_PainMode = "0",
+			VJ_ToTU_General_PossessionUpgrades = "1",
+			VJ_ToTU_MilZ_Tank_MovingAttacks = "1",
+			VJ_ToTU_MilZ_Tank_Shielding = "1",
+			VJ_ToTU_General_CanEat = "1",
+			VJ_ToTU_General_KillInfectChance = "1",
 
 			VJ_ToTU_LNR_Infection = "1",
-			VJ_ToTU_LNR_InfectionHit = "1",
+			VJ_ToTU_LNR_InfectionHit = "0",
 			VJ_ToTU_LNR_PlayerZombie = "1",
 			VJ_TOTU_LNR_Biter = "1",
-			VJ_TOTU_LNR_Biter_Chance = "1",
+			VJ_TOTU_LNR_Biter_Chance = "3",
 			VJ_ToTU_LNR_Runner = "0",
-			VJ_TOTU_LNR_SuperSprinter = "1",
-			VJ_ToTU_LNR_Crawl = "1",
+			VJ_TOTU_LNR_SuperSprinter = "0",
+			VJ_ToTU_LNR_Crawl = "0",
 			VJ_ToTU_LNR_Eyes = "1",
 			VJ_ToTU_LNR_Alert = "1",
-			VJ_ToTU_LNR_JumpClimb = "0",
+			VJ_ToTU_LNR_JumpClimb = "2",
 			VJ_ToTU_LNR_GroundRise = "1",
 			VJ_ToTU_LNR_BreakDoors = "1",
 			VJ_ToTU_LNR_Headshot = "0",
@@ -1477,8 +1339,8 @@ if VJExists == true then
 
 			VJ_ToTU_SpawnMenu_SortByCategory = "0",
 			
-			VJ_ToTU_Spawn_UniversalDig = "0",
-			VJ_ToTU_Spawn_DigChance = "5",
+			VJ_ToTU_Spawn_UniversalDig = "1",
+			VJ_ToTU_Spawn_DigChance = "1",
 			VJ_ToTU_Spawn_AlertSound = "1",
 
 			VJ_ToTU_General_MovingDeathAnimations = "1",
@@ -1491,8 +1353,8 @@ if VJExists == true then
 			VJ_ToTU_General_Crawler_Chance = "5",
 			VJ_ToTU_General_EasterEggs = "1",
 			VJ_ToTU_General_Stumbling_Disable = "0",
-			VJ_ToTU_General_DefaultVoices_AltInfected = "1",
-			VJ_ToTU_General_DefaultVoices_AltWalker = "1",
+			VJ_ToTU_General_DefaultVoices_AltInfected = "0",
+			VJ_ToTU_General_DefaultVoices_AltWalker = "0",
 			VJ_ToTU_General_RestingSystem = "0",
 			VJ_ToTU_General_NotZombieAllied = "0",
 
@@ -1577,13 +1439,18 @@ if VJExists == true then
 	*/
 	
 	Panel:AddControl("ComboBox", vj_resetbutton)
-	
+
+
+	-- Panel:AddControl("Checkbox", {Label = "Enable Pain Mode?", Command = "VJ_ToTU_General_PainMode"})
+	-- Panel:ControlHelp("If enabled, zombies will have abilty/gimmick buffs/changes from NIGTHMARE! difficulty.")
+	-- Panel:ControlHelp("Does nothing if the difficulty is set to NIGHTMARE!.")
+
 	Panel:ControlHelp("--------------------------------------------------------")
 	Panel:AddControl( "Label", {Text = "Performance Options"})
 	Panel:ControlHelp("Try disabling these if you need better game performance.")
 	Panel:ControlHelp("--------------------------------------------------------")
 
-	Panel:AddControl("Checkbox", {Label ="Allow Infectee eyeglows?.", Command ="VJ_TOTU_LNR_Eyes"})
+	Panel:AddControl("Checkbox", {Label ="Allow Infectee eyeglows?", Command ="VJ_TOTU_LNR_Eyes"})
 	Panel:ControlHelp("If enabled, Infectees will have glowing eye effects.")
 	Panel:ControlHelp("May or may not look janky.")
 
@@ -1618,6 +1485,9 @@ if VJExists == true then
 	Panel:ControlHelp("If enabled, zombs will turn players and npcs they kill into zombies.")
 	Panel:ControlHelp("Only works with models that have a valvebiped skeleton.")
 
+	Panel:AddControl("Slider", {Label = "Infect on kill chance.", Command = "VJ_ToTU_General_KillInfectChance", Min = 1, Max = 10000})
+	Panel:ControlHelp("Chance of a zombie infecting their target when the target is killed.")
+
 	Panel:AddControl("Checkbox", {Label ="Enable zombies infecting from attacks?", Command ="VJ_TOTU_LNR_InfectionHit"})
 	Panel:ControlHelp("If enabled, zombs have a chance to infect their target when they hit them.")
 	Panel:ControlHelp("Infected targets will eventually keel over and die after enough time.")
@@ -1642,6 +1512,9 @@ if VJExists == true then
 
 	Panel:AddControl("Checkbox", {Label ="Player-controlled infectees?", Command ="VJ_TOTU_LNR_PlayerZombie"})
 	Panel:ControlHelp("If enabled, when a player becomes infected, they will be controlling the spawned infectee.")
+
+	Panel:AddControl("Checkbox", {Label = "Enable Possession Upgrades?", Command = "VJ_ToTU_General_PossessionUpgrades"})
+	Panel:ControlHelp("If enabled, apon possession of a zombie, the possessed zombie will be fully upgraded to its strongest form.")
 	
 	Panel:AddControl("Checkbox", {Label = "Disable the stumbling system?", Command = "VJ_ToTU_General_Stumbling_Disable"})
 	
@@ -1741,6 +1614,10 @@ if VJExists == true then
 	
 	Panel:AddControl("Checkbox", {Label ="Enable gibs?", Command ="VJ_TOTU_LNR_Gib"})		
 
+	Panel:AddControl("Checkbox", {Label = "Zombies eat corpses?", Command = "VJ_ToTU_General_CanEat"})
+	Panel:ControlHelp("If enabled, zombies that are idle and not at full health will chew on corpses.")
+	Panel:ControlHelp("This is not lore accurate to LNR.")
+
 	Panel:AddControl("Checkbox", {Label = "Digout alert sound?", Command = "VJ_ToTU_Spawn_AlertSound"})
 	Panel:ControlHelp("If enabled, zombies will play an alert sound when they dig out, regardless if they have a target or not.")
 
@@ -1820,16 +1697,16 @@ if VJExists == true then
 	Panel:ControlHelp("- Zombies with subclass restrictions have those restrictions removed.")
 	Panel:ControlHelp("- Walkers use more aggressive standing attack animations.")
 
-	Panel:ControlHelp("- Zombies with breakable armor have increased armor health.")
+	-- Panel:ControlHelp("- Zombies with breakable armor have increased armor health.")
 
-	Panel:ControlHelp("- Hazmats can do a kamikaze attack.")
-	Panel:ControlHelp("- Ghosts don't flicker randomly or when attacking.")
-	Panel:ControlHelp("- Detonators don't stop in place when they're about to explode.")
-	Panel:ControlHelp("- Scourges spit more often and now also spit multiple projectiles at once.")
-	Panel:ControlHelp("- Shriekers spawn more dangerous Nightkin more often.")
-	Panel:ControlHelp("- Deimos zombies run for far longer and have almost non-existant run cooldowns.")
-	Panel:ControlHelp("- Revenants can revive corpses into more dangerous Deimos zombies.")
-	Panel:ControlHelp("- Reapers gain an aoe yell attack and a spit attack.")
+	-- Panel:ControlHelp("- Hazmats can do a kamikaze attack.")
+	-- Panel:ControlHelp("- Ghosts don't flicker randomly or when attacking.")
+	-- Panel:ControlHelp("- Detonators don't stop in place when they're about to explode.")
+	-- Panel:ControlHelp("- Scourges spit more often and now also spit multiple projectiles at once.")
+	-- Panel:ControlHelp("- Shriekers spawn more dangerous Nightkin more often.")
+	-- Panel:ControlHelp("- Deimos zombies run for far longer and have almost non-existant run cooldowns.")
+	-- Panel:ControlHelp("- Revenants can revive corpses into more dangerous Deimos zombies.")
+	-- Panel:ControlHelp("- Reapers gain an aoe yell attack and a spit attack.")
 	Panel:ControlHelp("")
 
 	Panel:ControlHelp("------------------------------")
@@ -1960,6 +1837,12 @@ if VJExists == true then
 	Panel:ControlHelp("If enabled, Infected Ghosts will attempt to flee while their cloak device is recharging.")
 	Panel:ControlHelp("They will only do this is their current enemy is far enough.")
 	Panel:ControlHelp("If cloak recharging is disabled, then this convar doesn't do anything.")
+
+	Panel:AddControl("Checkbox", {Label = "Tanks can shield others?", Command = "VJ_ToTU_MilZ_Tank_Shielding"})
+	Panel:ControlHelp("If enabled, Tanks can shield other zombies, reducing damage they take.")
+
+	Panel:AddControl("Checkbox", {Label = "Tanks have moving attacks?", Command = "VJ_ToTU_MilZ_Tank_MovingAttacks"})
+	Panel:ControlHelp("If disabled, Tanks will have to stand still to attack.")
 	
 	Panel:AddControl("Checkbox", {Label = "Tank uses NMRiH walks?", Command = "VJ_ToTU_MilZ_Tank_NMRIHWalks"})
 	Panel:ControlHelp("If enabled, Tanks will use walking animations from No More Room in Hell instead of the cod zombies ones.")
@@ -2169,8 +2052,6 @@ if VJExists == true then
 
 	
 	/*
-	Panel:AddControl("Checkbox", {Label = "Zombies Can Eat?", Command = "VJ_ToTU_General_CanEat"})
-	Panel:ControlHelp("If enabled, zombies will sometimes chew on corpses.")
 	
 	Panel:AddControl("Checkbox", {Label = "Zombies Can Eat Gibs?", Command = "VJ_ToTU_General_CanEat_Gibs"})
 	Panel:ControlHelp("If enabled, zombies will also be allowed to eat gibs.")
@@ -2388,6 +2269,10 @@ if VJExists == true then
 		-- Spawners/Bonus
 			VJ.AddNPC("Base Walker","npc_vj_totu_base_walker",vCat8)
 			VJ.AddNPC("Base Infected","npc_vj_totu_base_infected",vCat8)
+			VJ.AddNPC("Spawner","sent_vj_totu_spawner_everything",vCat8)
+			VJ.AddNPC("Spawner (MilZombs)","sent_vj_totu_spawner_milzombs",vCat8)
+			VJ.AddNPC("Spawner (Nightkin)","sent_vj_totu_spawner_nightkin",vCat8)
+			VJ.AddNPC("Spawner (Deimos)","sent_vj_totu_spawner_deimos",vCat8)
 
 	else
 
@@ -2441,46 +2326,16 @@ if VJExists == true then
 		-- Spawners/Bonus
 			VJ.AddNPC("Base Walker","npc_vj_totu_base_walker",vCatr)
 			VJ.AddNPC("Base Infected","npc_vj_totu_base_infected",vCatr)
+			VJ.AddNPC("Spawner Base","sent_vj_totu_spawner_base",vCatr)
+			VJ.AddNPC("Random MilZomb","sent_vj_totu_random_milzombs",vCatr)
+			VJ.AddNPC("Random Nightkin","sent_vj_totu_random_nightkin",vCatr)
+			VJ.AddNPC("Random Deimos","sent_vj_totu_random_deimos",vCatr)
+			-- VJ.AddNPC("Random Nightkin","sent_vj_totu_random_",vCatr)
+			VJ.AddNPC("Spawner (All Groups)","sent_vj_totu_spawner_everything",vCatr)
+			VJ.AddNPC("Spawner (MilZombs)","sent_vj_totu_spawner_milzombs",vCatr)
+			VJ.AddNPC("Spawner (Nightkin)","sent_vj_totu_spawner_nightkin",vCatr)
+			VJ.AddNPC("Spawner (Deimos)","sent_vj_totu_spawner_deimos",vCatr)
 
-	end
-
-
-
-	-- thank you to darkborn for this bit
-	if CLIENT then
-		net.Receive("VJ_ToTU_Squaller_Hud",function(len,pl)
-		local delete = net.ReadBool()
-		local ent = net.ReadEntity()
-		
-		if !IsValid(ent) then delete = true end
-
-		if GetConVar("VJ_ToTU_LNR_ZombieOverlay"):GetInt() == 1 then
-			hook.Add("RenderScreenspaceEffects","VJ_TOTU_LNR_InfectedHUD_Overlay",function(zom)
-            local threshold = 0.30
-            DrawMaterialOverlay("lnr/overlay/infected_vision",threshold)
-			
-			
-			hook.Add("RenderScreenspaceEffects", "VJ_ToTU_SquallerHud_Colors", function(zom)
-			local tab = {
-			["$pp_colour_addr"] = 0,
-			["$pp_colour_addg"] = 0,
-			["$pp_colour_addb"] = 0,
-			["$pp_colour_brightness"] = -0.10,
-			["$pp_colour_contrast"] = 1,
-			["$pp_colour_colour"] = 0.05,
-			["$pp_colour_mulr"] = 0.1,
-			["$pp_colour_mulg"] = 0,
-			["$pp_colour_mulb"] = 0
-			}
-			DrawColorModify( tab )
-				end )	
-			end)
-		end
-		if delete then 
-			hook.Remove("RenderScreenspaceEffects","VJ_TOTU_LNR_InfectedHUD_Overlay") 
-			hook.Remove("RenderScreenspaceEffects", "VJ_ToTU_SquallerHud_Colors")
-		end
-		end)
 	end
 
 	if CLIENT then
@@ -2536,6 +2391,36 @@ if VJExists == true then
 			end)
 			if delete then
 				hook.Remove("RenderScreenspaceEffects","VJ_TOTU_DeimosHUD_Overlay")
+			end
+		end)
+
+		net.Receive("VJ_ToTU_Squaller_Hud",function(len,pl)
+			local delete = net.ReadBool()
+			local ply = net.ReadEntity()
+			if
+				!IsValid(ply) or
+				GetConVar("VJ_TOTU_LNR_ZombieOverlay"):GetInt() == 0
+			then
+				delete = true
+			end
+			hook.Add("RenderScreenspaceEffects", "VJ_ToTU_SquallerHud_Colors", function()
+				local threshold = 0.30
+				DrawMaterialOverlay("overlay/infected_vision",threshold)
+				local tab = {
+					["$pp_colour_addr"] = 0,
+					["$pp_colour_addg"] = 0,
+					["$pp_colour_addb"] = 0,
+					["$pp_colour_brightness"] = -0.10,
+					["$pp_colour_contrast"] = 1,
+					["$pp_colour_colour"] = 0.05,
+					["$pp_colour_mulr"] = 0.1,
+					["$pp_colour_mulg"] = 0,
+					["$pp_colour_mulb"] = 0
+				}
+				DrawColorModify( tab )
+			end)
+			if delete then 
+				hook.Remove("RenderScreenspaceEffects", "VJ_ToTU_SquallerHud_Colors")
 			end
 		end)
 
@@ -2632,8 +2517,6 @@ function VJ_ToTU_LNR_InfectionApply(victim,zombie)
 
 	victim.TOTU_LNR_NextCoughT = CurTime() + math.Rand(1,30)
 
-	if GetConVar("VJ_LNR_InfectionEffects"):GetInt() == 1 then
-
 		hook.Add("Think","VJ_LNR_VictimCough",function() 
 
 			if
@@ -2670,7 +2553,6 @@ function VJ_ToTU_LNR_InfectionApply(victim,zombie)
 			end
 
 		end)
-	end
 
 	local deaths
 	if victim:IsPlayer() then
@@ -2691,21 +2573,14 @@ function VJ_ToTU_LNR_InfectionApply(victim,zombie)
 			return end
 
 			if victim:IsPlayer() && GetConVar("VJ_TOTU_LNR_PlayerZombie"):GetInt() == 0 then
-				-- victim:Kill()
 				VJ_ToTU_LNR_CreateZombie(victim,victim)
 			end
 
 			if victim:IsPlayer() && GetConVar("VJ_TOTU_LNR_PlayerZombie"):GetInt() == 1 then
-				victim:Kill()
 				VJ_TOTU_LNR_SetPlayerZombie(victim,victim)
 			end	
 
 			if victim:IsNPC() then
-				-- local d = DamageInfo()
-				-- d:SetDamage(victim:GetMaxHealth())
-				-- d:SetAttacker(victim)
-				-- d:SetDamageType(DMG_DIRECT) 
-				-- victim:TakeDamageInfo(d)
 				VJ_ToTU_LNR_CreateZombie(victim,victim)
 			end
 
@@ -2714,6 +2589,8 @@ function VJ_ToTU_LNR_InfectionApply(victim,zombie)
 			else
 				VJ_CreateSound(victim,"ambient/voices/citizen_beaten"..math.random(1,5)..".wav",75,100)
 			end
+
+			victim.TOTU_InfectedVictim = false
 
 		end
 
@@ -2779,300 +2656,303 @@ function VJ_TOTU_LNR_SetPlayerZombie(victim,inflictor,attacker)
 		) then
 	return end
 
-	local zombie = NULL
-	local oldModel = victim:GetModel()
-	local oldSkin = victim:GetSkin()
-	local oldMaterial = victim:GetMaterial()	
-	local oldColor = victim:GetColor() 
-	local oldPlayerColor = victim:GetPlayerColor()
+	if math.random(1,GetConVar("VJ_ToTU_General_KillInfectChance"):GetInt()) == 1 then
 
-	if inflictor.TOTU_LNR_Walker or victim.TOTU_LNR_Walker then
-		zombie = ents.Create("npc_vj_totu_lnr_wal_ply")	
-	end
+		local zombie = NULL
+		local oldModel = victim:GetModel()
+		local oldSkin = victim:GetSkin()
+		local oldMaterial = victim:GetMaterial()	
+		local oldColor = victim:GetColor() 
+		local oldPlayerColor = victim:GetPlayerColor()
 
-	if inflictor.TOTU_LNR_Infected or victim.TOTU_LNR_Infected then
-		zombie = ents.Create("npc_vj_totu_lnr_inf_ply")	
-	end
+		if inflictor.TOTU_LNR_Walker or victim.TOTU_LNR_Walker then
+			zombie = ents.Create("npc_vj_totu_lnr_wal_ply")	
+		end
 
-	if inflictor.ToTU_Deimos or victim.ToTU_Deimos then
-		zombie = ents.Create("npc_vj_totu_deimos_redead_inf_ply")	
-	end
+		if inflictor.TOTU_LNR_Infected or victim.TOTU_LNR_Infected then
+			zombie = ents.Create("npc_vj_totu_lnr_inf_ply")	
+		end
 
-	zombie:SetPos(victim:GetPos())
-	zombie:SetAngles(victim:GetAngles())
-	zombie:Spawn()
-	zombie:VJ_ToTU_LNR_CreateBoneMerge(zombie,oldModel,oldSkin,oldColor,oldMaterial,oldPlayerColor,victim)
+		if inflictor.ToTU_Deimos or victim.ToTU_Deimos then
+			zombie = ents.Create("npc_vj_totu_deimos_redead_inf_ply")	
+		end
 
-	if !IsValid(SpawnControllerObject) then
-		local SpawnControllerObject = ents.Create("obj_vj_npccontroller")
-		SpawnControllerObject.VJCE_Player = victim
-		SpawnControllerObject:SetControlledNPC(zombie)
-		SpawnControllerObject:Spawn()
-		SpawnControllerObject:StartControlling()
-	end
+		zombie:SetPos(victim:GetPos())
+		zombie:SetAngles(victim:GetAngles())
+		zombie:Spawn()
+		zombie:VJ_ToTU_LNR_CreateBoneMerge(zombie,oldModel,oldSkin,oldColor,oldMaterial,oldPlayerColor,victim)
 
-	if zombie.IsVJBaseSNPC && zombie.CurrentPossibleEnemies == nil then -- This fixes an error that would pop up if an SNPC or entity infected more than one enemy at a time
-		zombie.CurrentPossibleEnemies = {} 
-	end
+		if !IsValid(SpawnControllerObject) then
+			local SpawnControllerObject = ents.Create("obj_vj_npccontroller")
+			SpawnControllerObject.VJCE_Player = victim
+			SpawnControllerObject:SetControlledNPC(zombie)
+			SpawnControllerObject:Spawn()
+			SpawnControllerObject:StartControlling()
+		end
 
-	if
-		string.find(oldModel,"female") or
-		string.find(oldModel,"alyx") or
-		string.find(oldModel,"mossman") or
-		string.find(oldModel,"chell")
-	then
-		zombie:ZombieSounds_GiveDefault_Female()		   
-	end
+		if zombie.IsVJBaseSNPC && zombie.CurrentPossibleEnemies == nil then -- This fixes an error that would pop up if an SNPC or entity infected more than one enemy at a time
+			zombie.CurrentPossibleEnemies = {} 
+		end
 
-	if string.find(oldModel,"police") then
-		zombie:ZombieSounds_Custom_MaskBoi()	
-	elseif string.find(oldModel,"combine") or string.find(oldModel,"zombie_soldier") then
-		zombie:ZombieSounds_Custom_RadioCuntFuq()
-	end
+		if
+			string.find(oldModel,"female") or
+			string.find(oldModel,"alyx") or
+			string.find(oldModel,"mossman") or
+			string.find(oldModel,"chell")
+		then
+			zombie:ZombieSounds_GiveDefault_Female()		   
+		end
 
-	local DeathAnims = {ACT_SIGNAL1,ACT_SIGNAL2,ACT_SIGNAL3}	
-	local AnimTime = VJ_GetSequenceDuration(zombie,zombie:GetSequenceName(zombie:GetSequence()))
-	  
-	zombie:VJ_ACT_PLAYACTIVITY(DeathAnims,true,120,false)
-	zombie.TOTU_LNR_AllowedToStumble = false	
-	zombie.GodMode = true
-	zombie.CanInvestigate = false
-	zombie.HasMeleeAttack = false
-	zombie.HasPoseParameterLooking = false
-	zombie.DisableFindEnemy = true		
-	zombie.DisableMakingSelfEnemyToNPCs = true
-	zombie:AddFlags(FL_NOTARGET)
-	zombie.MovementType = VJ_MOVETYPE_STATIONARY		
-	zombie.CanTurnWhileStationary = false
-	zombie.HasSounds = false
-	zombie.DisableSelectSchedule = true
+		if string.find(oldModel,"police") then
+			zombie:ZombieSounds_Custom_MaskBoi()	
+		elseif string.find(oldModel,"combine") or string.find(oldModel,"zombie_soldier") then
+			zombie:ZombieSounds_Custom_RadioCuntFuq()
+		end
 
-	timer.Simple(
-		math.random(
-			GetConVar("VJ_TOTU_LNR_ResurrectionTime1"):GetInt(),
-			GetConVar("VJ_TOTU_LNR_ResurrectionTime2"):GetInt()
-		),
-	function()
+		local DeathAnims = {ACT_SIGNAL1,ACT_SIGNAL2,ACT_SIGNAL3}	
+		local AnimTime = VJ_GetSequenceDuration(zombie,zombie:GetSequenceName(zombie:GetSequence()))
+		  
+		zombie:VJ_ACT_PLAYACTIVITY(DeathAnims,true,120,false)
+		zombie.TOTU_LNR_AllowedToStumble = false	
+		zombie.GodMode = true
+		zombie.CanInvestigate = false
+		zombie.HasMeleeAttack = false
+		zombie.HasPoseParameterLooking = false
+		zombie.DisableFindEnemy = true		
+		zombie.DisableMakingSelfEnemyToNPCs = true
+		zombie:AddFlags(FL_NOTARGET)
+		zombie.MovementType = VJ_MOVETYPE_STATIONARY		
+		zombie.CanTurnWhileStationary = false
+		zombie.HasSounds = false
+		zombie.DisableSelectSchedule = true
 
-		if IsValid(zombie) then
+		timer.Simple(
+			math.random(
+				GetConVar("VJ_TOTU_LNR_ResurrectionTime1"):GetInt(),
+				GetConVar("VJ_TOTU_LNR_ResurrectionTime2"):GetInt()
+			),
+		function()
 
-			zombie.GodMode = false
-			zombie.CanInvestigate = true
-			zombie.HasMeleeAttack = true		
-			zombie.DisableFindEnemy = false		
-			zombie.DisableMakingSelfEnemyToNPCs = false
-			zombie:RemoveFlags(FL_NOTARGET)
+			if IsValid(zombie) then
 
-			if GetConVar("vj_npc_sd_nosounds"):GetInt() == 0 then
-				zombie.HasSounds = true
+				zombie.GodMode = false
+				zombie.CanInvestigate = true
+				zombie.HasMeleeAttack = true		
+				zombie.DisableFindEnemy = false		
+				zombie.DisableMakingSelfEnemyToNPCs = false
+				zombie:RemoveFlags(FL_NOTARGET)
+
+				if GetConVar("vj_npc_sd_nosounds"):GetInt() == 0 then
+					zombie.HasSounds = true
+				end
+
+				if zombie:GetActivity() == ACT_SIGNAL1 then	
+					zombie:VJ_ACT_PLAYACTIVITY("infectionrise",true,false,false)
+					AnimTime = VJ_GetSequenceDuration(zombie,"infectionrise")		
+				elseif zombie:GetActivity() == ACT_SIGNAL2 then
+					zombie:VJ_ACT_PLAYACTIVITY("slumprise_a",true,false,false)
+					AnimTime = VJ_GetSequenceDuration(zombie,"slumprise_a")
+					if zombie:GetActivity() == ACT_SIGNAL2 && math.random(1,3) == 1 then
+						zombie:VJ_ACT_PLAYACTIVITY("slumprise_a2",true,false,false)
+						AnimTime = VJ_GetSequenceDuration(zombie,"slumprise_a2")			
+					end		
+				elseif zombie:GetActivity() == ACT_SIGNAL3 then
+					zombie:VJ_ACT_PLAYACTIVITY("infectionrise2",true,false,false)
+					AnimTime = VJ_GetSequenceDuration(zombie,"infectionrise2")		
+				end
+
+				timer.Simple(AnimTime,function()
+					if IsValid(zombie) then 
+						zombie.HasPoseParameterLooking = true	   
+						zombie:DoChangeMovementType(VJ_MOVETYPE_GROUND)
+						zombie.LNR_AllowedToStumble = true
+						zombie.DisableSelectSchedule = false		 
+					end	
+				end)
 			end
-
-			if zombie:GetActivity() == ACT_SIGNAL1 then	
-				zombie:VJ_ACT_PLAYACTIVITY("infectionrise",true,false,false)
-				AnimTime = VJ_GetSequenceDuration(zombie,"infectionrise")		
-			elseif zombie:GetActivity() == ACT_SIGNAL2 then
-				zombie:VJ_ACT_PLAYACTIVITY("slumprise_a",true,false,false)
-				AnimTime = VJ_GetSequenceDuration(zombie,"slumprise_a")
-				if zombie:GetActivity() == ACT_SIGNAL2 && math.random(1,3) == 1 then
-					zombie:VJ_ACT_PLAYACTIVITY("slumprise_a2",true,false,false)
-					AnimTime = VJ_GetSequenceDuration(zombie,"slumprise_a2")			
-				end		
-			elseif zombie:GetActivity() == ACT_SIGNAL3 then
-				zombie:VJ_ACT_PLAYACTIVITY("infectionrise2",true,false,false)
-				AnimTime = VJ_GetSequenceDuration(zombie,"infectionrise2")		
-			end
-
-			timer.Simple(AnimTime,function()
-				if IsValid(zombie) then 
-					zombie.HasPoseParameterLooking = true	   
-					zombie:DoChangeMovementType(VJ_MOVETYPE_GROUND)
-					zombie.LNR_AllowedToStumble = true
-					zombie.DisableSelectSchedule = false		 
-                end	
-            end)
-        end
-    end)
+		end)
+	end
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function VJ_ToTU_LNR_CreateZombie(victim,inflictor)
 
 	-- if victim:IsPlayer() then return end
 
-	 local findPos = victim:GetPos()
-	 local findMDL = victim:GetModel()
-	 timer.Simple(0.01,function()
-		for _,v in pairs(ents.FindInSphere(findPos,75)) do
-			if v:GetClass() == "prop_ragdoll" && v:GetModel() == findMDL then
-				v:Remove()
+	if math.random(1,GetConVar("VJ_ToTU_General_KillInfectChance"):GetInt()) == 1 then
+
+		local findPos = victim:GetPos()
+		local findMDL = victim:GetModel()
+		timer.Simple(0.01,function()
+			for _,v in pairs(ents.FindInSphere(findPos,75)) do
+				if v:GetClass() == "prop_ragdoll" && v:GetModel() == findMDL then
+					v:Remove()
+				end
+			end
+		end)
+
+		local zombie = NULL 
+		local sndTbl = nil
+		local oldModel = victim:GetModel()
+		local oldSkin = victim:GetSkin()
+		local oldMaterial = victim:GetMaterial()	
+		local oldColor = victim:GetColor()
+
+		if victim.GetPlayerColor && victim:GetPlayerColor() then  
+			oldPlayerColor = victim:GetPlayerColor()
+		else
+			oldPlayerColor = false
+		end
+
+		local DefaultFootSteps = {""}
+
+		if victim.SoundTbl_FootStep && #victim.SoundTbl_FootStep > 0 then
+			sndTbl = victim.SoundTbl_FootStep
+		else
+			if victim.IsVJBaseSNPC_Human && !VJ_PICK(victim.SoundTbl_FootStep) then
+				sndTbl = DefaultFootSteps
 			end
 		end
-	end)
 
-	local zombie = NULL 
-	local sndTbl = nil
-	local oldModel = victim:GetModel()
-	local oldSkin = victim:GetSkin()
-	local oldMaterial = victim:GetMaterial()	
-	local oldColor = victim:GetColor()
-
-	if victim.GetPlayerColor && victim:GetPlayerColor() then  
-		oldPlayerColor = victim:GetPlayerColor()
-	else
-		oldPlayerColor = false
-	end
-
-	local DefaultFootSteps = {""}
-
-	if victim.SoundTbl_FootStep && #victim.SoundTbl_FootStep > 0 then
-		sndTbl = victim.SoundTbl_FootStep
-	else
-		if victim.IsVJBaseSNPC_Human && !VJ_PICK(victim.SoundTbl_FootStep) then
-			sndTbl = DefaultFootSteps
-		end
-	end
-
-	if victim:IsNPC() or victim:IsPlayer() then
-		if inflictor.TOTU_LNR_Walker or victim.TOTU_LNR_Walker then
-            zombie = ents.Create("npc_vj_totu_lnr_wal")
-			if victim:IsPlayer() then
-				zombie = ents.Create("npc_vj_totu_lnr_wal_ply")
+		if victim:IsNPC() or victim:IsPlayer() then
+			if inflictor.TOTU_LNR_Walker or victim.TOTU_LNR_Walker then
+				zombie = ents.Create("npc_vj_totu_lnr_wal")
+				if victim:IsPlayer() then
+					zombie = ents.Create("npc_vj_totu_lnr_wal_ply")
+				end
 			end
-		end
-        if inflictor.TOTU_LNR_Infected or victim.TOTU_LNR_Infected then
-            zombie = ents.Create("npc_vj_totu_lnr_inf")
-			if victim:IsPlayer() then
-				zombie = ents.Create("npc_vj_totu_lnr_inf_ply")
+			if inflictor.TOTU_LNR_Infected or victim.TOTU_LNR_Infected then
+				zombie = ents.Create("npc_vj_totu_lnr_inf")
+				if victim:IsPlayer() then
+					zombie = ents.Create("npc_vj_totu_lnr_inf_ply")
+				end
 			end
-		end
-        if inflictor.ToTU_Deimos or victim.ToTU_Deimos then
-            zombie = ents.Create("npc_vj_totu_deimos_redead_inf")
-			if victim:IsPlayer() then
-				zombie = ents.Create("npc_vj_totu_deimos_redead_inf_ply")
+			if inflictor.ToTU_Deimos or victim.ToTU_Deimos then
+				zombie = ents.Create("npc_vj_totu_deimos_redead_inf")
+				if victim:IsPlayer() then
+					zombie = ents.Create("npc_vj_totu_deimos_redead_inf_ply")
+				end
 			end
+			zombie:SetPos(victim:GetPos())
+			zombie:SetAngles(victim:GetAngles())
+			zombie:Spawn()
+			undo.ReplaceEntity(victim,zombie)			
+			zombie:VJ_ToTU_LNR_CreateBoneMerge(zombie,oldModel,oldSkin,oldColor,oldMaterial,oldPlayerColor,victim)	
 		end
-		zombie:SetPos(victim:GetPos())
-		zombie:SetAngles(victim:GetAngles())
-		zombie:Spawn()
-		undo.ReplaceEntity(victim,zombie)			
-		zombie:VJ_ToTU_LNR_CreateBoneMerge(zombie,oldModel,oldSkin,oldColor,oldMaterial,oldPlayerColor,victim)	
-	end
 
-	if sndTbl then
-		zombie.SoundTbl_FootStep = sndTbl
-	end
-	-- This fixes an error that would pop up if an SNPC or entity infected more than one enemy at a time
-	if zombie.IsVJBaseSNPC && zombie.CurrentPossibleEnemies == nil then
-		zombie.CurrentPossibleEnemies = {} 
-	end
+		if sndTbl then
+			zombie.SoundTbl_FootStep = sndTbl
+		end
+		-- This fixes an error that would pop up if an SNPC or entity infected more than one enemy at a time
+		if zombie.IsVJBaseSNPC && zombie.CurrentPossibleEnemies == nil then
+			zombie.CurrentPossibleEnemies = {} 
+		end
 
-	if
-		string.find(oldModel,"female") or
-		string.find(oldModel,"alyx") or
-		string.find(oldModel,"mossman") or
-		string.find(oldModel,"chell")
-	then
-		zombie:ZombieSounds_GiveDefault_Female()
-	end
+		if
+			string.find(oldModel,"female") or
+			string.find(oldModel,"alyx") or
+			string.find(oldModel,"mossman") or
+			string.find(oldModel,"chell")
+		then
+			zombie:ZombieSounds_GiveDefault_Female()
+		end
 
-	if string.find(oldModel,"police") then
-		zombie:ZombieSounds_Custom_MaskBoi()	
-	elseif string.find(oldModel,"combine") or string.find(oldModel,"zombie_soldier") then
-		zombie:ZombieSounds_Custom_RadioCuntFuq()
-	end
+		if string.find(oldModel,"police") then
+			zombie:ZombieSounds_Custom_MaskBoi()	
+		elseif string.find(oldModel,"combine") or string.find(oldModel,"zombie_soldier") then
+			zombie:ZombieSounds_Custom_RadioCuntFuq()
+		end
 
-	local DeathAnims = {ACT_SIGNAL1,ACT_SIGNAL2,ACT_SIGNAL3}	
-	local AnimTime = VJ_GetSequenceDuration(zombie,zombie:GetSequenceName(zombie:GetSequence()))
-	  
-	zombie:VJ_ACT_PLAYACTIVITY(DeathAnims,true,120,false)
-	zombie.LNR_AllowedToStumble = false		
-	zombie.GodMode = true
-	zombie.CanInvestigate = false
-	zombie.HasPoseParameterLooking = false
-	zombie.DisableFindEnemy = true		
-	zombie.DisableMakingSelfEnemyToNPCs = true
-	zombie:AddFlags(FL_NOTARGET)
-	zombie.MovementType = VJ_MOVETYPE_STATIONARY		
-	zombie.CanTurnWhileStationary = false
-	zombie.HasSounds = false
-	zombie.DisableSelectSchedule = true
+		local DeathAnims = {ACT_SIGNAL1,ACT_SIGNAL2,ACT_SIGNAL3}	
+		local AnimTime = VJ_GetSequenceDuration(zombie,zombie:GetSequenceName(zombie:GetSequence()))
+		  
+		zombie:VJ_ACT_PLAYACTIVITY(DeathAnims,true,120,false)
+		zombie.LNR_AllowedToStumble = false		
+		zombie.GodMode = true
+		zombie.CanInvestigate = false
+		zombie.HasPoseParameterLooking = false
+		zombie.DisableFindEnemy = true		
+		zombie.DisableMakingSelfEnemyToNPCs = true
+		zombie:AddFlags(FL_NOTARGET)
+		zombie.MovementType = VJ_MOVETYPE_STATIONARY		
+		zombie.CanTurnWhileStationary = false
+		zombie.HasSounds = false
+		zombie.DisableSelectSchedule = true
 
-	timer.Simple(math.random(GetConVar("VJ_ToTU_LNR_ResurrectionTime1"):GetInt(),GetConVar("VJ_ToTU_LNR_ResurrectionTime2"):GetInt()),function()
+		timer.Simple(math.random(GetConVar("VJ_ToTU_LNR_ResurrectionTime1"):GetInt(),GetConVar("VJ_ToTU_LNR_ResurrectionTime2"):GetInt()),function()
 
-		if IsValid(zombie) then	
+			if IsValid(zombie) then	
 
-			zombie.GodMode = false
-			zombie.CanInvestigate = true		
-			zombie.DisableFindEnemy = false		
-			zombie.DisableMakingSelfEnemyToNPCs = false
-			zombie:RemoveFlags(FL_NOTARGET)
+				zombie.GodMode = false
+				zombie.CanInvestigate = true		
+				zombie.DisableFindEnemy = false		
+				zombie.DisableMakingSelfEnemyToNPCs = false
+				zombie:RemoveFlags(FL_NOTARGET)
 
-			if GetConVar("vj_npc_sd_nosounds"):GetInt() == 0 then zombie.HasSounds = true end
+				if GetConVar("vj_npc_sd_nosounds"):GetInt() == 0 then zombie.HasSounds = true end
 
-			if zombie:GetActivity() == ACT_SIGNAL1 then
+				if zombie:GetActivity() == ACT_SIGNAL1 then
 
-				zombie:VJ_ACT_PLAYACTIVITY("infectionrise",true,false,false)
-				AnimTime = VJ_GetSequenceDuration(zombie,"infectionrise")
+					zombie:VJ_ACT_PLAYACTIVITY("infectionrise",true,false,false)
+					AnimTime = VJ_GetSequenceDuration(zombie,"infectionrise")
 
-			elseif zombie:GetActivity() == ACT_SIGNAL2 then
+				elseif zombie:GetActivity() == ACT_SIGNAL2 then
 
-				zombie:VJ_ACT_PLAYACTIVITY("slumprise_a",true,false,false)
-				AnimTime = VJ_GetSequenceDuration(zombie,"slumprise_a")
+					zombie:VJ_ACT_PLAYACTIVITY("slumprise_a",true,false,false)
+					AnimTime = VJ_GetSequenceDuration(zombie,"slumprise_a")
 
-				if zombie:GetActivity() == ACT_SIGNAL2 && math.random(1,3) == 1 then
-					zombie:VJ_ACT_PLAYACTIVITY("slumprise_a2",true,false,false)
-					AnimTime = VJ_GetSequenceDuration(zombie,"slumprise_a2")
+					if zombie:GetActivity() == ACT_SIGNAL2 && math.random(1,3) == 1 then
+						zombie:VJ_ACT_PLAYACTIVITY("slumprise_a2",true,false,false)
+						AnimTime = VJ_GetSequenceDuration(zombie,"slumprise_a2")
+					end
+
+				elseif zombie:GetActivity() == ACT_SIGNAL3 then
+
+					zombie:VJ_ACT_PLAYACTIVITY("infectionrise2",true,false,false)
+					AnimTime = VJ_GetSequenceDuration(zombie,"infectionrise2")
+					
 				end
 
-			elseif zombie:GetActivity() == ACT_SIGNAL3 then
+			   timer.Simple(AnimTime,function()
+					if IsValid(zombie) then 
+						zombie.HasPoseParameterLooking = true	   
+						zombie:DoChangeMovementType(VJ_MOVETYPE_GROUND)
+						zombie.TOTU_LNR_AllowedToStumble = true
+						zombie.DisableSelectSchedule = false		 
+					end	
+				end)
 
-				zombie:VJ_ACT_PLAYACTIVITY("infectionrise2",true,false,false)
-				AnimTime = VJ_GetSequenceDuration(zombie,"infectionrise2")
-				
 			end
 
-		   timer.Simple(AnimTime,function()
-				if IsValid(zombie) then 
-					zombie.HasPoseParameterLooking = true	   
-					zombie:DoChangeMovementType(VJ_MOVETYPE_GROUND)
-					zombie.TOTU_LNR_AllowedToStumble = true
-					zombie.DisableSelectSchedule = false		 
-				end	
-			end)
+		end)
 
+		if victim.IsVJBaseSNPC then
+			victim.HasDeathRagdoll = false
+			victim.HasDeathAnimation = false				
 		end
 
-	end)
-
-	if victim.IsVJBaseSNPC then
-		victim.HasDeathRagdoll = false
-		victim.HasDeathAnimation = false				
-	end
-
-	if victim:IsPlayer() then
-		if IsValid(victim:GetRagdollEntity()) then
-			SafeRemoveEntity(victim:GetRagdollEntity())
+		if victim:IsPlayer() then
+			if IsValid(victim:GetRagdollEntity()) then
+				SafeRemoveEntity(victim:GetRagdollEntity())
+			end
 		end
-	end
 
-	if victim:IsNPC() then
-		SafeRemoveEntity(victim)	
-	end
+		if victim:IsNPC() then
+			SafeRemoveEntity(victim)	
+		end
 
-	if IsValid(victim:GetActiveWeapon()) then
-		SafeRemoveEntity(victim:GetActiveWeapon())			
-	end
+		if IsValid(victim:GetActiveWeapon()) then
+			SafeRemoveEntity(victim:GetActiveWeapon())			
+		end
 	
     end
 	
--- end				
+end				
 ---------------------------------------------------------------------------------------------------------------------------------------------
-/*
-if SERVER then
 function ENT:VJ_ToTU_LNR_CreateBoneMerge(zombieEnt,oldModel,oldSkin,oldColor,oldMaterial,oldPlayerColor,bgEnt)
 
 	 local creator = NULL
 
-	if zombieEnt:IsNPC() && !zombieEnt.LNR_Crawler then
+	if zombieEnt:IsNPC() && !zombieEnt.TOTU_LNR_Crawler then
 		creator = IsValid(zombieEnt:GetCreator()) && zombieEnt:GetCreator()
 		zombieEnt:SetCollisionBounds(zombieEnt:GetCollisionBounds())				
 	end
@@ -3103,8 +2983,6 @@ function ENT:VJ_ToTU_LNR_CreateBoneMerge(zombieEnt,oldModel,oldSkin,oldColor,old
 	zombieEnt.Bonemerge = body
 		
 end
-end
-*/
 ---------------------------------------------------------------------------------------------------------------------------------------------
 
 
